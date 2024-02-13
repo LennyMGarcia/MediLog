@@ -1,0 +1,31 @@
+{
+  "name": "medilog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "proxy": "http://localhost:3000/",
+  "scripts": {
+    "servidor": "nodemon app.js",
+    "cliente": "npm run dev --prefix ../Cliente",
+    "build": "npm run build --prefix ../Cliente",
+    "dev": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run cliente\"",
+    "devBuild": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run build\"",
+    "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.3",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "method-override": "^3.0.0",
+    "mysql2": "^3.9.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.3"
+  }
+}
