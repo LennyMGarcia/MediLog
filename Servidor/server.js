@@ -4,12 +4,17 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
+
+// Importacion de las dependencias necesarias para la elaboracion del servidor
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
 
+
+// Ejecucion de Express
 const app = express();
 
+// Numero del Puerto del Servidor
 const PORT = 3001;
 
 //Conexion a la base de datos (DB)
@@ -40,5 +45,4 @@ app.get("/especialistas", (req, res) => {
 // Iniciar Servidor en Puerto Designado
 app.listen(PORT, () => {
     console.log(`Conectado al Puerto:${PORT}`);
-    //console.log(conexion);
 });

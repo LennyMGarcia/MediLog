@@ -1,0 +1,43 @@
+{
+    "especialistas": [
+        {
+            "id": 0,
+            "nombre": "bentonico",
+            "apellido": "sempai",
+            "sexo": "M",
+            "fecha_nacimiento": "2014-02-07T05:00:00.000Z",
+            "correo": "test@test.com",
+            "direccion": "Calle G, Test, RD",
+            "telefono": "8094445252",
+            "especialidad": "Ginecologo",
+            "eliminado": 0,
+            "fecha": "2024-02-13T21:23:40.000Z"
+        },
+        {
+            "id": 1,
+            "nombre": "Julio",
+            "apellido": "Sierra",
+            "sexo": "M",
+            "fecha_nacimiento": "1999-02-07T05:00:00.000Z",
+            "correo": "test@test.com",
+            "direccion": "Calle A, Test, RD",
+            "telefono": "8095252365",
+            "especialidad": "Psicologo",
+            "eliminado": 0,
+            "fecha": "2024-02-13T21:23:40.000Z"
+        },
+        {
+            "id": 2,
+            "nombre": "Lenny",
+            "apellido": "Garcia",
+            "sexo": "F",
+            "fecha_nacimiento": "1999-02-07T05:00:00.000Z",
+            "correo": "test@test.com",
+            "direccion": "Calle B, Test, RD",
+            "telefono": "8095234747",
+            "especialidad": "Neurologo",
+            "eliminado": 0,
+            "fecha": "2024-02-13T21:23:40.000Z"
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+[
+    {
+        "id": 0,
+        "nombre": "bentonico",
+        "apellido": "sempai",
+        "sexo": "M",
+        "fecha_nacimiento": "2014-02-07T05:00:00.000Z",
+        "correo": "test@test.com",
+        "direccion": "Calle Direcion, Test, RD",
+        "telefono": "8094445252",
+        "especialidad": "Ginecologo",
+        "eliminado": 0,
+        "fecha": "2024-02-13T21:23:40.000Z"
+    },
+    {
+        "id": 0,
+        "nombre": "bentonico",
+        "apellido": "sempai",
+        "sexo": "M",
+        "fecha_nacimiento": "2014-02-07T05:00:00.000Z",
+        "correo": "test@test.com",
+        "direccion": "Calle Direcion, Test, RD",
+        "telefono": "8094445252",
+        "especialidad": "Ginecologo",
+        "eliminado": 0,
+        "fecha": "2024-02-13T21:23:40.000Z"
+    }
+]
