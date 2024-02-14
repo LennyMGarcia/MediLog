@@ -4,12 +4,22 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
 
-
 // Importacion de las dependencias necesarias para la elaboracion del servidor
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2');
+const Model = require('./Migrations/Model');
+const Especialista = require('./Migrations/Especialista');
 
+// Importacion de las Rutas Necesarias para la plataforma
+const casos_routes = require('./Routes/casos');
+const cirugias_routes = require('./Routes/cirugias');
+const consultas_routes = require('./Routes/consultas');
+const especialistas_routes = require('./Routes/especialistas');
+const pacientes_routes = require('./Routes/pacientes');
+const productos_routes = require('./Routes/productos');
+const transacciones_routes = require('./Routes/transacciones');
+const usuarios_routes = require('./Routes/usuarios');
 
 // Ejecucion de Express
 const app = express();
@@ -24,7 +34,7 @@ const db = mysql.createConnection({
     database: process.env.DATABASE_NAME,
     password: process.env.DATABASE_PASSWORD,
     port: process.env.DATABASE_PORT
-})
+});
 
 //PROXY que permite comunicacion entre cliente y servidor
 app.use(cors({ origin: 'http://localhost:3000/' }));
@@ -33,14 +43,24 @@ app.use(cors({ origin: 'http://localhost:3000/' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/especialistas", (req, res) => {
-    const query = 'SELECT * FROM especialistas';
-    db.query(query, (err, data) => {
-        if (err) res.json(err);
-        console.log(data);
-        return res.json(data);
-    });
+// Middleware de los Routes/Rutas
+app.use('/casos', casos_routes);
+app.use('/cirugias', cirugias_routes);
+app.use('/consultas', consultas_routes);
+app.use('/especialistas', especialistas_routes);
+app.use('/pacientes', pacientes_routes);
+app.use('/productos', productos_routes);
+app.use('/transacciones', transacciones_routes);
+app.use('/usuarios', usuarios_routes);
+
+app.get("/test", async (req, res) => {
+    /*const dbModel = new Model('especialistas');
+    const results = await dbModel.find(0);*/
+    const dbmodel = new Especialista();
+    const result = await dbmodel.get();
+    res.json(result);
 });
+
 
 // Iniciar Servidor en Puerto Designado
 app.listen(PORT, () => {
