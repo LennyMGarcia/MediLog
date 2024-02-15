@@ -7,7 +7,8 @@ if (process.env.NODE_ENV !== 'production') {
 // Importacion de las dependencias necesarias para la elaboracion del servidor
 const express = require('express');
 const cors = require('cors');
-const mysql = require('mysql2');
+//const mysql = require('mysql2');
+const DB = require('./Utils/db_connect');
 const Model = require('./Migrations/Model');
 const Especialista = require('./Migrations/Especialista');
 
@@ -28,13 +29,13 @@ const app = express();
 const PORT = 3001;
 
 //Conexion a la base de datos (DB)
-const db = mysql.createConnection({
+/*const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     database: process.env.DATABASE_NAME,
     password: process.env.DATABASE_PASSWORD,
     port: process.env.DATABASE_PORT
-});
+});*/
 
 //PROXY que permite comunicacion entre cliente y servidor
 app.use(cors({ origin: 'http://localhost:3000/' }));
@@ -54,13 +55,28 @@ app.use('/transacciones', transacciones_routes);
 app.use('/usuarios', usuarios_routes);
 
 app.get("/test", async (req, res) => {
-    /*const dbModel = new Model('especialistas');
-    const results = await dbModel.find(0);*/
-    const dbmodel = new Especialista();
-    const result = await dbmodel.get();
-    res.json(result);
+    const dbModel = new Model('especialistas');
+    const results = await dbModel.get();
+    /*const dbmodel = new Especialista();
+    const result = await dbmodel.get();*/
+    res.json(results);
 });
-
+app.post('/test', async (req, res) => {
+    const dbmodel = new Especialista();
+    const data = {
+        nombre: 'Test',
+        apellido: 'Test',
+        sexo: 'F',
+        fecha_nacimiento: '1998-02-02',
+        correo: 'tes11t@gmail.com',
+        direccion: '',
+        telefono: '9633698521',
+        especialidad: 'Medico',
+        eliminado: false,
+        //fecha: '2024-05-05'
+    }
+    dbmodel.insert(data);
+});
 
 // Iniciar Servidor en Puerto Designado
 app.listen(PORT, () => {
