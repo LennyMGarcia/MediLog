@@ -1,3 +1,16 @@
 [
-    {}
+    {
+        "id": 1,
+        "member_id": 1,
+        "correo": "Paciente@test.com",
+        "contrasena": "Paciente12",
+        "tipo": "Paciente",
+        "plan": 1,
+        "metodo_pago": "Tarjeta de Credito",
+        "datos_financieros": "4551663285967452",
+        "cvv": 963,
+        "fecha_expiracion": "05/25",
+        "eliminado": 0,
+        "fecha": "2024-02-16T04:25:54.000Z"
+    }
 ]

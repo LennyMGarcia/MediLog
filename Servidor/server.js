@@ -9,6 +9,7 @@ const express = require('express');
 const cors = require('cors');
 //const mysql = require('mysql2');
 const DB = require('./Utils/db_connect');
+const seeder = require('./Seeds/db_seeder');
 const Model = require('./Migrations/Model');
 const Especialista = require('./Migrations/Especialista');
 
@@ -21,6 +22,7 @@ const pacientes_routes = require('./Routes/pacientes');
 const productos_routes = require('./Routes/productos');
 const transacciones_routes = require('./Routes/transacciones');
 const usuarios_routes = require('./Routes/usuarios');
+
 
 // Ejecucion de Express
 const app = express();
@@ -55,27 +57,13 @@ app.use('/transacciones', transacciones_routes);
 app.use('/usuarios', usuarios_routes);
 
 app.get("/test", async (req, res) => {
-    const dbModel = new Model('especialistas');
+    const dbModel = new Model('transacciones');
     const results = await dbModel.get();
-    /*const dbmodel = new Especialista();
-    const result = await dbmodel.get();*/
     res.json(results);
 });
 app.post('/test', async (req, res) => {
-    const dbmodel = new Especialista();
-    const data = {
-        nombre: 'Test',
-        apellido: 'Test',
-        sexo: 'F',
-        fecha_nacimiento: '1998-02-02',
-        correo: 'tes11t@gmail.com',
-        direccion: '',
-        telefono: '9633698521',
-        especialidad: 'Medico',
-        eliminado: false,
-        //fecha: '2024-05-05'
-    }
-    dbmodel.insert(data);
+    //const dbmodel = new Especialista();
+    //dbmodel.insert(data);
 });
 
 // Iniciar Servidor en Puerto Designado

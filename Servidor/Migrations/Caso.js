@@ -1,12 +1,13 @@
 const Model = require("./Model");
 const DB = require('../Utils/db_connect');
+const Builder = require('../Utils/query_helper');
 
 class Caso extends Model {
     constructor() {
         super('casos');
         this.columns = [
             'descripcion',
-            'paciente_id',
+            'pacientes_id',
             'especialistas_id',
             'consultas',
             'cirugias',
@@ -22,11 +23,11 @@ class Caso extends Model {
         this.data = data;
         this.values = [
             this.data.descripcion,
-            this.data.paciente_id,
+            this.data.pacientes_id,
             this.data.especialistas_id,
-            this.data.consultas || 'NULL',
-            this.data.cirugias || 'NULL',
-            this.data.estado || 'NULL',
+            this.data.consultas || null,
+            this.data.cirugias || null,
+            this.data.estado || null,
             this.data.categoria || 'Activo',
             this.data.seguimiento || 'No Indicaciones',
             this.data.visibilidad || true,

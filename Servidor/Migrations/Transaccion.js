@@ -1,12 +1,13 @@
 const Model = require("./Model");
 const DB = require('../Utils/db_connect');
+const Builder = require('../Utils/query_helper');
 
 class Transaccion extends Model {
     constructor() {
         super('transacciones');
         this.columns = [
             'productos_id',
-            'usuario_id',
+            'usuarios_id',
             'monto',
             'metodo_pago',
             'descripcion',
@@ -17,10 +18,10 @@ class Transaccion extends Model {
         this.data = data;
         this.values = [
             this.data.productos_id,
-            this.data.usuario_id,
+            this.data.usuarios_id,
             this.data.monto,
-            this.data.metodo_pago || 'NULL',
-            this.data.descripcion || 'NULL',
+            this.data.metodo_pago || null,
+            this.data.descripcion || null,
             //this.data.fecha || '2024-05-05'
         ];
         const query = new Builder(this.table);

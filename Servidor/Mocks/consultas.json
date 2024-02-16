@@ -1,3 +1,14 @@
 [
-    {}
+    {
+        "id": 1,
+        "pacientes_id": 1,
+        "especialistas_id": 1,
+        "motivo": "Colonoscopia",
+        "estudios": "1",
+        "observaciones": "Se Detecto una anomalia causada por otras condiciones medicas",
+        "plan_tratamiento": "{\"plan_tratamiento\":[\"Tratar Herida Diaria con soluciones topicas\", \"Seguir Dieta Balanceada\"]}",
+        "visibilidad": 1,
+        "eliminado": 0,
+        "fecha": "2024-02-16T04:25:54.000Z"
+    }
 ]

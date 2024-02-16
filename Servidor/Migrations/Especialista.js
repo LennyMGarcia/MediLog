@@ -23,12 +23,12 @@ class Especialista extends Model {
         this.values = [
             this.data.nombre,
             this.data.apellido,
-            this.data.sexo || 'NULL',
-            this.data.fecha_nacimiento || 'NULL',
+            this.data.sexo || null,
+            this.data.fecha_nacimiento || null,
             this.data.correo,
-            this.data.direccion || 'NULL',
-            this.data.telefono || 'NULL',
-            this.data.especialidad || 'Desconocido',
+            this.data.direccion || null,
+            this.data.telefono || null,
+            this.data.especialidad || null,
             this.data.eliminado || false,
             //this.data.fecha || '2024-05-05'
         ];

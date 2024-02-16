@@ -1,5 +1,6 @@
 const Model = require("./Model");
 const DB = require('../Utils/db_connect');
+const Builder = require('../Utils/query_helper');
 
 class Usuario extends Model {
     constructor() {
@@ -25,11 +26,11 @@ class Usuario extends Model {
             this.data.correo,
             this.data.contrasena,
             this.data.tipo || 'Paciente',
-            this.data.plan || 'NULL',
-            this.data.metodo_pago || 'NULL',
-            this.data.datos_financieros || 'NULL',
-            this.data.cvv || 'NULL',
-            this.data.fecha_expiracion || 'NULL',
+            this.data.plan || null,
+            this.data.metodo_pago || null,
+            this.data.datos_financieros || null,
+            this.data.cvv || null,
+            this.data.fecha_expiracion || null,
             this.data.eliminado || false,
             //this.data.fecha || '2024-05-05'
         ];

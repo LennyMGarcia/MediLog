@@ -1,9 +1,10 @@
 const Model = require("./Model");
 const DB = require('../Utils/db_connect');
+const Builder = require('../Utils/query_helper');
 
 class Producto extends Model {
     constructor() {
-        super('Producto');
+        super('productos');
         this.columns = [
             'nombre',
             'categoria',

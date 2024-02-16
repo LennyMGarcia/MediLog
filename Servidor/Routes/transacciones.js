@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Transaccion = require('../Migrations/Transaccion');
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     const model = new Transaccion();
-    const data = model.get();
+    const data = await model.get();
     res.json(data);
 });
 router.post('/', (req, res) => {
