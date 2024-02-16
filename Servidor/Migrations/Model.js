@@ -13,17 +13,15 @@ class Model {
         this.table = table;
     }
     async get() {
-        //const [result, fields] = await DB.query(`SELECT * FROM ${this.table}`);
         const query = new Builder(this.table);
         const [result, fields] = await DB.query(query.select_query('*'));
         return result;
     }
     async find(id) {
         this.id = id;
-        //const [result, fields] = await DB.query(`SELECT * FROM ${this.table} WHERE id = ?`, [this.id]);
         const query = new Builder(this.table);
         const [result, fields] = await DB.query(query.select_query('*', 'id'), [this.id]);
-        return result;
+        return result[0];
     }
     async delete(id) {
         this.id = id;

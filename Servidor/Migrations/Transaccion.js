@@ -11,10 +11,11 @@ class Transaccion extends Model {
             'monto',
             'metodo_pago',
             'descripcion',
-            //'fecha'
         ];
     }
-    async insert(data = {}) {
+    async insert(data = null) {
+        if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios' }];
+
         this.data = data;
         this.values = [
             this.data.productos_id,
@@ -22,10 +23,24 @@ class Transaccion extends Model {
             this.data.monto,
             this.data.metodo_pago || null,
             this.data.descripcion || null,
-            //this.data.fecha || '2024-05-05'
         ];
         const query = new Builder(this.table);
         const [results, fields] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
+        return results;
+    }
+    async update(data = {}, id = null) {
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe' }];
+        this.data = data;
+        this.values = [
+            this.data.productos_id,
+            this.data.usuarios_id,
+            this.data.monto,
+            this.data.metodo_pago || null,
+            this.data.descripcion || null,
+        ];
+        const query = new Builder(this.table);
+        const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values)
+        return results;
     }
 }
 

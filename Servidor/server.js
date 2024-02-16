@@ -61,8 +61,20 @@ app.get("/test", async (req, res) => {
     const results = await dbModel.get();
     res.json(results);
 });
-app.post('/test', async (req, res) => {
-    //const dbmodel = new Especialista();
+app.put('/test', async (req, res) => {
+    const dbmodel = new Especialista();
+    const data = {
+        nombre: 'Fulano',
+        apellido: 'Detalie',
+        sexo: 'F',
+        fecha_nacimiento: '2003-04-04',
+        correo: 'testtes11t@gmail.com',
+        direccion: 'Santo Domingo, RD',
+        telefono: '8523697412',
+        especialidad: 'Psicologo',
+        eliminado: false,
+    }
+    dbmodel.update(data, 1);
     //dbmodel.insert(data);
 });
 
