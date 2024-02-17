@@ -1,0 +1,19 @@
+[
+    {
+        "id": 1,
+        "nombre": "Fulano",
+        "apellido": "Detal",
+        "fecha_nacimiento": "2003-02-02T05:00:00.000Z",
+        "documento_identidad": "6326999485546",
+        "sexo": "M",
+        "correo": "test@gmail.com",
+        "direccion": "Santo Domingo, RD",
+        "telefono": "6632859332",
+        "tipo_sangre": "O",
+        "padecimientos": "{\"padecimientos\":[\"Diabetes\", \"Ulceras\", \"Colitis\"]}",
+        "alergias": "{\"alergias\":[\"Flores\", \"Mujeres\", \"Perfume\"]}",
+        "familiares_id": "{\"familiares\": [1, 2]}",
+        "eliminado": 0,
+        "fecha": "2024-02-16T04:25:54.000Z"
+    }
+]
