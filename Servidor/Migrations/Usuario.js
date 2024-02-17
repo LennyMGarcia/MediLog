@@ -1,6 +1,8 @@
 const Model = require("./Model");
 const DB = require('../Utils/db_connect');
 const Builder = require('../Utils/query_helper');
+const bcrypt = require('bcrypt');
+const salt_level = 10;
 
 class Usuario extends Model {
     constructor() {
@@ -34,6 +36,12 @@ class Usuario extends Model {
             this.data.fecha_expiracion || null,
             this.data.eliminado || false,
         ];
+        const salt = await bcrypt.genSalt(salt_level);
+        const hashed_password = await bcrypt.hash(this.data.contrasena, salt);
+        if (!hashed_password) res.json({ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña' });
+
+        this.values[2] = hashed_password;
+
         const query = new Builder(this.table);
         const [results, fields] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
         return results;
