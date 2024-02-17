@@ -7,11 +7,10 @@ if (process.env.NODE_ENV !== 'production') {
 // Importacion de las dependencias necesarias para la elaboracion del servidor
 const express = require('express');
 const cors = require('cors');
-//const mysql = require('mysql2');
 const DB = require('./Utils/db_connect');
 const seeder = require('./Seeds/db_seeder');
+const bcrypt = require('bcrypt');
 const Model = require('./Migrations/Model');
-const Especialista = require('./Migrations/Especialista');
 
 // Importacion de las Rutas Necesarias para la plataforma
 const casos_routes = require('./Routes/casos');
@@ -22,22 +21,13 @@ const pacientes_routes = require('./Routes/pacientes');
 const productos_routes = require('./Routes/productos');
 const transacciones_routes = require('./Routes/transacciones');
 const usuarios_routes = require('./Routes/usuarios');
-
+const Usuario = require('./Migrations/Usuario');
 
 // Ejecucion de Express
 const app = express();
 
 // Numero del Puerto del Servidor
 const PORT = 3001;
-
-//Conexion a la base de datos (DB)
-/*const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    database: process.env.DATABASE_NAME,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT
-});*/
 
 //PROXY que permite comunicacion entre cliente y servidor
 app.use(cors({ origin: 'http://localhost:3000/' }));
@@ -61,21 +51,20 @@ app.get("/test", async (req, res) => {
     const results = await dbModel.get();
     res.json(results);
 });
-app.put('/test', async (req, res) => {
-    const dbmodel = new Especialista();
-    const data = {
-        nombre: 'Fulano',
-        apellido: 'Detalie',
-        sexo: 'F',
-        fecha_nacimiento: '2003-04-04',
-        correo: 'testtes11t@gmail.com',
-        direccion: 'Santo Domingo, RD',
-        telefono: '8523697412',
-        especialidad: 'Psicologo',
-        eliminado: false,
+
+app.post('/login', async (req, res) => {
+    const correo = req.body.correo;
+    const contrasena = req.body.contrasena;
+    const model = new Usuario();
+    const result = await model.authenticate(correo);
+    const hashed_password = result[0].contrasena;
+
+    if (hashed_password) {
+        //Funcion que verifica si la contrasena introducida coincide con la contrasena del usuario.
+        const authenticated = bcrypt.compareSync(contrasena, hashed_password);
+        if (!authenticated) return res.json({ 'sucess': false, 'error': 'Credenciales Incorrectas' });
+        return res.json({ 'success': true });
     }
-    dbmodel.update(data, 1);
-    //dbmodel.insert(data);
 });
 
 // Iniciar Servidor en Puerto Designado

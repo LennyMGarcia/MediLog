@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     const data = req.body;
 
     //Condicion que verifica si los campos obligatorios estan incluidos
-    if (!data.nombre || !data.apellido || !data.fecha_nacimiento || !data.documento_identidad || !data.correo) return res.json({ "created": false, 'error': 'Campos Obligatorios' });
+    if (!data.nombre || !data.apellido || !data.fecha_nacimiento || !data.documento_identidad || !data.correo) return res.json({ "success": false, 'error': 'Campos Obligatorios' });
 
     const model = new Paciente();
     const result = await model.insert(data);
@@ -29,11 +29,11 @@ router.put('/:id', async (req, res) => {
 
     //Condicion que verifica si el numero ID es realmente un INTEGER y no un STRING
     const valid = parseInt(id);
-    if (isNaN(valid)) return res.json({ 'created': false, 'error': 'Numero de Identifiacion Invalido' });
+    if (isNaN(valid)) return res.json({ 'success': false, 'error': 'Numero de Identifiacion Invalido' });
 
     //Condicion que verifica si los campos obligatorios estan incluidos
     const data = req.body;
-    if (!data.nombre || !data.apellido || !data.fecha_nacimiento || !data.documento_identidad || !data.correo) return res.json({ "created": false, 'error': 'Campos Obligatorios' });
+    if (!data.nombre || !data.apellido || !data.fecha_nacimiento || !data.documento_identidad || !data.correo) return res.json({ "success": false, 'error': 'Campos Obligatorios' });
 
     const model = new Paciente();
     const result = await model.update(data, id);
@@ -44,11 +44,11 @@ router.delete('/:id', async (req, res) => {
 
     //Condicion que verifica si el numero ID es realmente un INTEGER y no un STRING
     const valid = parseInt(id);
-    if (isNaN(valid)) return res.json({ 'deleted': false, 'error': 'Numero de Identifiacion Invalido' });
+    if (isNaN(valid)) return res.json({ 'success': false, 'error': 'Numero de Identifiacion Invalido' });
 
     const model = new Paciente();
     const destroy = await model.delete(id);
-    res.json({ 'deleted': true });
+    res.json({ 'success': true });
 });
 
 module.exports = router;

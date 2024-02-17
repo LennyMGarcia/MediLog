@@ -6,8 +6,11 @@ class QueryBuilder {
     select_query(columns = [], where = null) {
         if (!columns) return false;
 
-        if (where) {
+        if (where && columns.length > 1) {
             const query = `SELECT ${columns.toString()} FROM ${this.table} WHERE ${where} = ?`;
+            return query;
+        } else if (where && columns.length <= 1) {
+            const query = `SELECT ${columns} FROM ${this.table} WHERE ${where} = ?`;
             return query;
         }
 

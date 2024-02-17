@@ -57,6 +57,13 @@ class Usuario extends Model {
         const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values)
         return results;
     }
+    async authenticate(correo = null) {
+        if (!correo) return [{ 'success': false, 'error': 'Correo de Usuario Obligatorio' }];
+        this.correo = correo
+        const query = new Builder(this.table);
+        const [results, fields] = await DB.execute(query.select_query('contrasena', 'correo'), [this.correo]);
+        return results;
+    }
 }
 
 module.exports = Usuario;
