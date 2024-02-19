@@ -8,7 +8,7 @@ import useDataRegisterStore from "../ZustandRegisterManagement";
 
 
 
-//TODO: arreglar tipos en cada documento, agregar Yup que cambie de verificacion, agregar estado y personalizacion
+//TODO: Agregar listas para controlar elementos con Yup
 
 const initialValues = {
     nombre: "",

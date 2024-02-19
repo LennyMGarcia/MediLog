@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field, FieldProps } from 'formik';
-import { MenuItem, Select, SelectProps } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent, SelectProps } from '@mui/material';
+import useDataRegisterStore from "../../ZustandRegisterManagement";
 
 interface ISelect extends Omit<SelectProps, "variant"> {
     label?: React.ReactNode,
@@ -11,14 +12,21 @@ interface ISelect extends Omit<SelectProps, "variant"> {
     }[]
 }
 
-const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject = { key: "key", value: "value" }, ...rest }) => {
+const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, ...rest }) => {
+    
+    const { setRegisterData } = useDataRegisterStore();
+    const [value, setValue] = useState('');
+
+    const handleChange = (e: SelectChangeEvent<any>) => {
+        const newValue = e.target.value;
+        setValue(newValue);  // Actualizamos el estado
+        setRegisterData(name, newValue);  // Llamamos a la función para actualizar los datos en el almacén
+    };
+    
     return (
         <>
             <label htmlFor={name}>{label}</label>
-            <Field
-                name={name}
-                {...rest}
-            >
+            <Field id={name} name={name}>
                 {({ field, form }: FieldProps) => (
                     <React.Fragment>
                         <Select
@@ -26,19 +34,23 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject 
                             variant="filled"
                             fullWidth
                             displayEmpty
-                            {...field}
+                            value={value}  // Usamos el estado value aquí en lugar de field.value
+                            onChange={handleChange}
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}            
                         >   
+                        <MenuItem key="" value="" disabled defaultValue="sel">
+                                    Seleccione una opcion
+                          </MenuItem>
                             {Array.isArray(selectObject) ? (
                                 selectObject.map((option, index) => (
-                                    <MenuItem key={index} value={option.value}  defaultValue={option.value}  selected={index === 0}>
+                                    <MenuItem key={index} value={option.value}>
                                         {option.key}
                                     </MenuItem>
                                 ))
                             ) : (
-                                <MenuItem key={selectObject.key} value={selectObject.value}>
-                                    {selectObject.value}
+                                <MenuItem key="" value="">
+                                    <p>No hay nada</p>
                                 </MenuItem>)}
                         </Select>
                     </React.Fragment>
@@ -50,3 +62,8 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject 
 }
 
 export default RegisterSelect;
+
+
+
+
+

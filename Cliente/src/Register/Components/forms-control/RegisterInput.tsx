@@ -19,7 +19,7 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
     return (
         <>
             {label && <label htmlFor={name}>{label}</label>}
-            <Field name={name}>
+            <Field id={name} name={name}>
                 {({ field, form }: FieldProps) => (
                     <TextField
                         id={name}
