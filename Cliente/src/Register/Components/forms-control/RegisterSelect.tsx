@@ -19,22 +19,22 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
 
     const handleChange = (e: SelectChangeEvent<any>) => {
         const newValue = e.target.value;
-        setValue(newValue);  // Actualizamos el estado
-        setRegisterData(name, newValue);  // Llamamos a la función para actualizar los datos en el almacén
+        setValue(newValue);  
+        setRegisterData(name, newValue);  
     };
     
     return (
         <>
             <label htmlFor={name}>{label}</label>
             <Field id={name} name={name}>
-                {({ field, form }: FieldProps) => (
+                {({ form }: FieldProps) => (
                     <React.Fragment>
                         <Select
                             id={name}
                             variant="filled"
                             fullWidth
                             displayEmpty
-                            value={value}  // Usamos el estado value aquí en lugar de field.value
+                            value={value}  
                             onChange={handleChange}
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}            

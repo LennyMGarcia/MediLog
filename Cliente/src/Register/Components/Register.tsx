@@ -36,7 +36,7 @@ const Register:React.FC = () =>{
     return(
         <Formik initialValues={initialValues}  onSubmit={onSubmit} validationSchema={validationSchema}>
         {
-            formik => {
+            () => {
                 return <Form>
                     {step}
                     <button type="submit">ClickMe</button>
