@@ -1,11 +1,10 @@
 import { SelectProps, TextFieldProps } from "@mui/material";
 import RegisterInput from "./RegisterInput";
 import RegisterSelect from "./RegisterSelect";
-import { RegisterSchema } from "../../ZustandRegisterManagement";
+import { ChangeEvent} from 'react';
 
 interface IRegistrationTexfieldfControl extends  Omit<TextFieldProps, 'variant'>{
-    onChange:(field:object) => void
-    setRegisterData: (newData: RegisterSchema) => void,
+    onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 interface IRegistrationControl extends  Omit<SelectProps | TextFieldProps, 'variant'>{
     control:string,
@@ -20,11 +19,13 @@ interface IRegistrationSelectfControl extends  Omit<SelectProps, 'variant'>{
         value: string;
     }[]
 }
+
+
 //Permite que los componentes sean mas extensibles pasando solo el {..rest} y evitando muchas declaraciones de propiedad
 const RegistrationControl:React.FC<IRegistrationControl> = ({control,  ...rest}) =>{
     switch(control){
         case "input":
-            return <RegisterInput {...rest as IRegistrationTexfieldfControl}/>
+            return <RegisterInput  {...rest as IRegistrationTexfieldfControl}/>
              break;
         case "select":
             return <RegisterSelect {...rest as IRegistrationSelectfControl}></RegisterSelect>

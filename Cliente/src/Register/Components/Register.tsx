@@ -3,6 +3,9 @@ import * as Yup from 'yup'
 import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./ContactInformationForm";
 import BasicInformationForm from "./BasicInformationForm";
+import { getRegisterData } from "../ZustandRegisterManagement";
+import useDataRegisterStore from "../ZustandRegisterManagement";
+
 
 
 //TODO: arreglar tipos en cada documento, agregar Yup que cambie de verificacion, agregar estado y personalizacion
@@ -19,11 +22,12 @@ const validationSchema = Yup.object({
 })
 
 const Register:React.FC = () =>{
-
+    const {setRegisterData} = useDataRegisterStore()
 
     function onSubmit(){
          next()
-        return   console.log("Estado del formulario:");
+         setRegisterData("nombre", "hola")
+        return   console.log(getRegisterData()) ;
 
     }
 

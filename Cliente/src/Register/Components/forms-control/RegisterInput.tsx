@@ -1,41 +1,40 @@
 import { Field, FieldProps } from 'formik';
 import { TextField, TextFieldProps } from '@mui/material';
-import { ChangeEvent} from 'react';
-import { RegisterSchema } from '../../ZustandRegisterManagement';
+import { ChangeEvent } from 'react';
+import useDataRegisterStore from "../../ZustandRegisterManagement";
+
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
-    label?: React.ReactNode, 
+    label?: React.ReactNode,
     name?: string,
-    onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
-    setRegisterData: (newData: RegisterSchema) => void,
 }
 
-const RegisterInput: React.FC<InputProps> = ({ label, name = "name", onChange, setRegisterData, ...rest }) => {
+const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
+    const { setRegisterData } = useDataRegisterStore();
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const newValue = e.target.value; // Extraer el valor del evento
-        
+    const handleChange = (e: ChangeEvent<any>) => {
+        const value = e.target.value;
+        setRegisterData(name, value);
     };
 
     return (
         <>
             {label && <label htmlFor={name}>{label}</label>}
-            <Field
-                name={name}
-                value={"todavia"} 
-                onChange={handleChange} 
-                {...rest}
-            >
+            <Field name={name}>
                 {({ field, form }: FieldProps) => (
                     <TextField
                         id={name}
-                        size="medium" 
+                        size="medium"
                         variant="filled"
                         fullWidth
                         color="primary"
-                        {...field}
-                        {...rest}
+                        value={field.value}
+                        onChange={(e) => {
+                            field.onChange(e);
+                            handleChange(e);
+                        }}
                         error={Boolean(form.errors[name] && form.touched[name])}
                         helperText={form.errors[name] && form.touched[name] ? String(form.errors[name]) : ''}
+                        {...rest}
                     />
                 )}
             </Field>
@@ -44,3 +43,6 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "name", onChange, s
 };
 
 export default RegisterInput;
+
+
+

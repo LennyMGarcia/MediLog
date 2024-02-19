@@ -7,9 +7,13 @@ import UserSchema from './Utils/zod-schemas/zodUserSchema';
 
 const registerSchema = PatientSchema.merge(SpecialistSchema).merge(UserSchema); 
 
-export type RegisterSchema = z.infer<typeof registerSchema>;
+export type RegisterSchemaValues = z.infer<typeof registerSchema>;
 
-const initialRegisterValues: RegisterSchema ={
+type RegisterSchemaActions = {
+    setRegisterData: (name:string, values:any) => void, 
+}
+
+const useDataRegisterStore = create<RegisterSchemaValues & RegisterSchemaActions>()((set) => ({
     nombre: '',
     apellido: '',
     fecha_nacimiento: '',
@@ -24,27 +28,19 @@ const initialRegisterValues: RegisterSchema ={
     tipo: '',
     plan: '',
     metodo_pago: '',
-    fecha_expiracion: new Date(),
-    cvv: ''
-}
-
-const useDataRegisterStore = create<typeof initialRegisterValues>()(() => (
-   initialRegisterValues
-));
-
-export const setRegisterData = (newData:RegisterSchema) => {
-    try{
-        registerSchema.parse(newData)
-        //useDataRegisterStore.setState((state) => ({registerData: [...state.registerData, newData]}));
+    fecha_expiracion: null,
+    cvv: '',
+    setRegisterData: (name, value) => {
+        set((state) => ({
+            ...state,
+            [name]: value,
+        }));
     }
-    catch(error){
-        console.error("Error en zustand", error)
-    }
-}
+}));
 
-export const getRegisterDataByName = (name: string) => {
-    
-    return null;
+
+export const getRegisterData = () => {
+    return useDataRegisterStore.getState();
 }
 
 export default useDataRegisterStore;
