@@ -11,4 +11,4 @@ const UserSchema = z.object({
     cvv: z.string().max(4),
 });
 
-type User = z.infer<typeof UserSchema>;
+export default UserSchema;

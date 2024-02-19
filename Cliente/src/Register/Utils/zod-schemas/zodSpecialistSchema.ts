@@ -10,4 +10,5 @@ const SpecialistSchema = z.object({
     especialidad:z.string(),
 });
 
-type Specialist = z.infer<typeof SpecialistSchema>;
+
+export default SpecialistSchema;

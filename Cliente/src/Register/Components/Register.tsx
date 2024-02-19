@@ -4,6 +4,7 @@ import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./ContactInformationForm";
 import BasicInformationForm from "./BasicInformationForm";
 
+
 //TODO: arreglar tipos en cada documento, agregar Yup que cambie de verificacion, agregar estado y personalizacion
 
 const initialValues = {
@@ -19,9 +20,11 @@ const validationSchema = Yup.object({
 
 const Register:React.FC = () =>{
 
+
     function onSubmit(){
          next()
-        return console.log("rico")
+        return   console.log("Estado del formulario:");
+
     }
 
     const {step, next, back} = useMultiForm([<BasicInformationForm type="especialista"/>, <ContactInformationForm/>])

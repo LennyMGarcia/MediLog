@@ -1,6 +1,6 @@
 import React from "react";
 import RegistrationControl from "./forms-control/RegistratioControl";
-import { red } from "@mui/material/colors";
+
 
 interface IBasicInformationForm {
 type:string
@@ -20,7 +20,21 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({type = "paciente
                     <RegistrationControl
                         control="input"
                         label="Apellido"
-                        name="apellido" />
+                        name="apellido"
+                         />
+                </div>
+
+                <div>
+                    <RegistrationControl
+                        control="select"
+                        label="Sexo"
+                        name="Sexo"
+                        selectObject={[
+                            {key:"Hombre", value:"m"},
+                            {key:"Mujer", value:"f"},
+                        
+                        ]}
+                    />
                 </div>
 
                 { type == "paciente" ?

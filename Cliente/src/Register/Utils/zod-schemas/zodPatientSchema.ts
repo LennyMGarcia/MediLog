@@ -16,4 +16,6 @@ const PatientSchema = z.object({
     telefono: z.string(),
 });
 
-type Patient = z.infer<typeof PatientSchema>;
+//type Patient = z.infer<typeof PatientSchema>;
+
+export default PatientSchema
