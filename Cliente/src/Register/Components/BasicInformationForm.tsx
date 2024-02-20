@@ -1,58 +1,60 @@
 import React from "react";
 import RegistrationControl from "./forms-control/RegistratioControl";
+import { Box, Typography } from "@mui/material";
 
 
 interface IBasicInformationForm {
-type:string
+    type: string
 }
 
-const BasicInformationForm: React.FC<IBasicInformationForm> = ({type = "paciente"}) => {
+const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }) => {
     return (
         <>
-            <div>
-                <div>
+            <Box>
+                <Box sx={{textAlign:"center"}}><Typography variant={"h5"}>Informacion Basica</Typography></Box>
+                <Box>
                     <RegistrationControl
                         control="input"
                         label="Nombre"
                         name="nombre" />
-                </div>
-                <div>
+                </Box>
+                <Box>
                     <RegistrationControl
                         control="input"
                         label="Apellido"
                         name="apellido"
-                         />
-                </div>
+                    />
+                </Box>
 
-                <div>
+                <Box>
                     <RegistrationControl
                         control="select"
                         label="Sexo"
                         name="Sexo"
                         selectObject={[
-                            {key:"Hombre", value:"m"},
-                            {key:"Mujer", value:"f"},
-                        
+                            { key: "Hombre", value: "m" },
+                            { key: "Mujer", value: "f" },
+
                         ]}
                     />
-                </div>
+                </Box>
 
-                { type == "paciente" ?
-                <div><RegistrationControl
+                {type == "paciente" ?
+                    <Box><RegistrationControl
                         control="input"
                         label="Cedula"
                         name="Cedula" />
 
-                </div>: "especialista" ? 
-                <div> <RegistrationControl
-                        control="input"
-                        label="Especialidad"
-                        name="especialidad"  />
-                </div>
-                : <div style={{color:"red"}}>Tipo no encontrado</div>
+                    </Box> : "especialista" ?
+                        <Box> <RegistrationControl
+                            control="input"
+                            label="Especialidad"
+                            name="especialidad" />
+                        </Box>
+                        : <Box style={{ color: "red" }}>Tipo no encontrado</Box>
                 }
 
-            </div>
+            </Box>
         </>
     )
 }

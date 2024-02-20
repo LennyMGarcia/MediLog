@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps } from 'formik';
-import { MenuItem, Select, SelectChangeEvent, SelectProps } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent, SelectProps, useMediaQuery, useTheme } from '@mui/material';
 import useDataRegisterStore, {RegisterSchemaValues } from "../../ZustandRegisterManagement";
 
 //Solo para omitir variant en la seleccion de SelectProps, puede ser usado nuevamente
@@ -37,6 +37,9 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
         setRegisterData(name, newValue);
     };
 
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
     return (
         <>
             <label htmlFor={name}>{label}</label>
@@ -52,6 +55,8 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                             onChange={handleChange}
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}
+                            sx={{height: '50px',
+                             mb:"10px",display:"block", width: isMediumScreen? "31.25rem" : "18.75rem"}}
                         >
                             <MenuItem key="" value="" disabled defaultValue="sel">
                                 Seleccione una opcion

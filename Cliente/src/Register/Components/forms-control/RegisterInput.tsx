@@ -40,7 +40,9 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
                         error={Boolean(form.errors[name] && form.touched[name])}
                         helperText={form.errors[name] && form.touched[name] ? String(form.errors[name]) : ''}
                         {...rest}
-                        sx={{display:"block", width: isMediumScreen? "31.25rem" : "18.75rem"}}
+                        sx={{'& .MuiInputBase-root': { //componente interno de textField
+                            height: '45px',
+                        }, pb:"10px",display:"block", width: isMediumScreen? "31.25rem" : "18.75rem"}}
                     />
                 )}
             </Field>

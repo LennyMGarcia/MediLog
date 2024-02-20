@@ -48,13 +48,13 @@ const Register: React.FC = () => {
       ];
 
     return (
-        <Box mt={"7.5vh"} width={"100vw"} height={"85vh"} sx={{ backgroundColor: "#E9ECEF" }}>
-            <Grid container spacing={isMediumScreen ? 8 : 0} width={"100vw"}>
-                <Grid item width={isMediumScreen ? "100vw" : "0"} height={isMediumScreen ? "85vh" : "0"} md={4}>
-                    <img style={{margin: -20}} width={"100%"} height={"100%"} src={prueba2} alt="" />
-                </Grid>
+        <Box width={"100vw"} height={"100vh"} sx={{ backgroundColor: "#E9ECEF" }}>
+            <Grid container  width={"100vw"}>
+            <Grid item md={4}>
+    <img style={{ width: '110%', height: '100vh' }} src={prueba2} alt="" />
+</Grid>
                 <Grid item md={8} xs={12}>
-                    <Stepper activeStep={1} alternativeLabel>
+                    <Stepper sx={{pt: "30px"}}  activeStep={1} alternativeLabel>
                         {steps.map((label) => (
                             <Step key={label}>
                                 <StepLabel>{label}</StepLabel>
