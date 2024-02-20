@@ -7,55 +7,65 @@ const salt_level = 10;
 router.get('/', async (req, res) => {
     const model = new Usuario();
     const data = await model.get();
-    res.json(data);
+
+    if (data.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
+
+    return res.status(200).json(data);
 });
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
     const model = new Usuario();
     const data = await model.find(id);
-    res.json(data);
+
+    if (!data) return res.status(404).json({ 'message': 'Registro No Existe.' });
+    return res.status(200).json(data);
 });
 router.post('/', async (req, res) => {
     const data = req.body;
 
     //Condicion que verifica si los campos obligatorios estan incluidos
-    if (!data.member_id || !data.correo || !data.contrasena) return res.json({ "success": false, 'error': 'Campos Obligatorios' });
+    if (!data.member_id || !data.correo || !data.contrasena) return res.status(400).json({ 'message': 'Campos Obligatorios' });
 
     //Funccion que encripta la contrasena del usuario antes de creacion
     const salt = await bcrypt.genSalt(salt_level);
     const hashed_password = await bcrypt.hash(data.contrasena, salt);
-    if (!hashed_password) res.json({ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña' });
+    if (!hashed_password) res.status(400).json({ 'message': 'Por favor, Intentar Otra Contraseña' });
 
     data.contrasena = hashed_password;
     const model = new Usuario();
     const result = await model.insert(data);
-    return res.json({ 'success': true })
+
+    if (result[0].success === false) return res.status(result[0].status).json(result);
+
+    return res.status(201).json(result);
 });
 router.put('/:id', async (req, res) => {
     const id = req.params.id;
 
     //Condicion que verifica si el numero ID es realmente un INTEGER y no un STRING
     const valid = parseInt(id);
-    if (isNaN(valid)) return res.json({ 'success': false, 'error': 'Numero de Identifiacion Invalido' });
+    if (isNaN(valid)) return res.status(400).json({ 'message': 'Numero de Identifiacion Invalido.' });
 
     //Condicion que verifica si los campos obligatorios estan incluidos
     const data = req.body;
-    if (!data.contrasena || !data.correo) return res.json({ "success": false, 'error': 'Campos Obligatorios' });
+    if (!data.contrasena || !data.correo) return res.status(400).json({ 'message': 'Campos Obligatorios.' });
 
     const model = new Usuario();
     const result = await model.update(data, id);
-    return res.json(result);
+
+    if (result[0].success === false) return res.status(result[0].status).json(result);
+    return res.status(201).json(result);
 });
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
 
     //Condicion que verifica si el numero ID es realmente un INTEGER y no un STRING
     const valid = parseInt(id);
-    if (isNaN(valid)) return res.json({ 'success': false, 'error': 'Numero de Identifiacion Invalido' });
+    if (isNaN(valid)) return res.status(400).json({ 'message': 'Numero de Identifiacion Invalido' });
 
     const model = new Usuario();
     const destroy = await model.delete(id);
-    res.json({ 'success': true });
+    return res.status(200).json({ 'message': 'Registro Eliminado Exitosamente.' });
 });
 
 module.exports = router;
