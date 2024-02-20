@@ -1,7 +1,8 @@
 import { Field, FieldProps } from 'formik';
-import { TextField, TextFieldProps } from '@mui/material';
+import { Box, TextField, TextFieldProps, useMediaQuery, useTheme } from '@mui/material';
 import { ChangeEvent } from 'react';
 import useDataRegisterStore from "../../ZustandRegisterManagement";
+
 //Ignora variant pero puede seguir utilizandose despues, es para la interfaz
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode, //Agrega funcionalidad si quieres poner un nodo para editarlo
@@ -16,17 +17,21 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
         setRegisterData(name, value);
     };
 
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
     return (
         <>
+            <Box >
             {label && <label htmlFor={name}>{label}</label>}
-            <Field id={name} name={name}>
+            <Field id={name} name={name} >
                 {({ field, form }: FieldProps) => (
                     <TextField
                         id={name}
-                        size="medium"
+                        placeholder={`Escriba su ${name}`}
                         variant="filled"
-                        fullWidth
                         color="primary"
+                        fullWidth
                         value={field.value}
                         onChange={(e) => {
                             field.onChange(e);
@@ -35,9 +40,11 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
                         error={Boolean(form.errors[name] && form.touched[name])}
                         helperText={form.errors[name] && form.touched[name] ? String(form.errors[name]) : ''}
                         {...rest}
+                        sx={{display:"block", width: isMediumScreen? "31.25rem" : "18.75rem"}}
                     />
                 )}
             </Field>
+            </Box>
         </>
     );
 };
