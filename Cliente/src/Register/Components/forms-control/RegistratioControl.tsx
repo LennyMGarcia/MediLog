@@ -1,11 +1,9 @@
 import { SelectProps, TextFieldProps } from "@mui/material";
 import RegisterInput from "./RegisterInput";
 import RegisterSelect from "./RegisterSelect";
-import { ChangeEvent} from 'react';
 
-interface IRegistrationTexfieldfControl extends  Omit<TextFieldProps, 'variant'>{
-    onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-}
+//Interfaces utiles para ayudar a que las propiedades se lean como sus respectivas propiedades de Select, input...
+interface IRegistrationTexfieldfControl extends  Omit<TextFieldProps, 'variant'>{}
 interface IRegistrationControl extends  Omit<SelectProps | TextFieldProps, 'variant'>{
     control:string,
     selectObject?: {

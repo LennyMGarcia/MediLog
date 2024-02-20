@@ -2,9 +2,9 @@ import { Field, FieldProps } from 'formik';
 import { TextField, TextFieldProps } from '@mui/material';
 import { ChangeEvent } from 'react';
 import useDataRegisterStore from "../../ZustandRegisterManagement";
-
+//Ignora variant pero puede seguir utilizandose despues, es para la interfaz
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
-    label?: React.ReactNode,
+    label?: React.ReactNode, //Agrega funcionalidad si quieres poner un nodo para editarlo
     name?: string,
 }
 

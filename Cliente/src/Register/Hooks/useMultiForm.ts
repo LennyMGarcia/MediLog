@@ -1,5 +1,6 @@
 import { useState, ReactElement } from "react";
 
+//Hook que recorre una lista y ya
 export default function useMultiForm(steps:ReactElement[]){
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
 

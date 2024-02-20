@@ -4,12 +4,12 @@ import PatientSchema from './Utils/zod-schemas/zodPatientSchema';
 import SpecialistSchema from './Utils/zod-schemas/zodSpecialistSchema';
 import UserSchema from './Utils/zod-schemas/zodUserSchema';
 
-
+//Merge de los distintos tipos, los zods separados ayudan a saber de donde vienen 
 const registerSchema = PatientSchema.merge(SpecialistSchema).merge(UserSchema); 
 
 export type RegisterSchemaValues = z.infer<typeof registerSchema>;
 
-type RegisterSchemaActions = {
+export type RegisterSchemaActions = {
     setRegisterData: (name:string, values:any) => void, 
 }
 
