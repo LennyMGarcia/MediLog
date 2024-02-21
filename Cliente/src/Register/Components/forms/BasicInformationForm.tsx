@@ -1,5 +1,5 @@
 import React from "react";
-import RegistrationControl from "./forms-control/RegistratioControl";
+import RegistrationControl from "../forms-control/RegistratioControl";
 import { Box, Typography } from "@mui/material";
 
 
@@ -11,20 +11,33 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
     return (
         <>
             <Box>
-                <Box sx={{textAlign:"center"}}><Typography variant={"h5"}>Informacion Basica</Typography></Box>
-                <Box>
+                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Informacion Basica</Typography></Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: { xs: 'column', md: 'row' }, 
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        '& > *': { //hijos directos
+                            maxWidth: { xs: '100vw', md: '15rem'}, 
+                            marginBottom: { xs: '0.625rem', md: 0 }, 
+                            marginRight: { xs: 0, md: '0.938rem' }, 
+                            flex: 1, 
+                        },
+                    }}
+                >
                     <RegistrationControl
                         control="input"
                         label="Nombre"
-                        name="nombre" />
-                </Box>
-                <Box>
+                        name="nombre"
+                    />
                     <RegistrationControl
                         control="input"
                         label="Apellido"
                         name="apellido"
                     />
                 </Box>
+
 
                 <Box>
                     <RegistrationControl

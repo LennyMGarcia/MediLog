@@ -56,7 +56,7 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}
                             sx={{height: '50px',
-                             mb:"10px",display:"block", width: isMediumScreen? "31.25rem" : "18.75rem"}}
+                             mb:"10px",display:"block", maxWidth: isMediumScreen? "31.25rem" : "18.75rem"}}
                         >
                             <MenuItem key="" value="" disabled defaultValue="sel">
                                 Seleccione una opcion

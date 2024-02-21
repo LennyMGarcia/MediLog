@@ -3,9 +3,8 @@ import { Box, TextField, TextFieldProps, useMediaQuery, useTheme } from '@mui/ma
 import { ChangeEvent } from 'react';
 import useDataRegisterStore from "../../ZustandRegisterManagement";
 
-//Ignora variant pero puede seguir utilizandose despues, es para la interfaz
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
-    label?: React.ReactNode, //Agrega funcionalidad si quieres poner un nodo para editarlo
+    label?: React.ReactNode,
     name?: string,
 }
 
@@ -21,10 +20,9 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     return (
-        <>
-            <Box >
+        <Box display="flex" flexDirection="column" width={isMediumScreen ? "31.25rem" : "18.75rem"} pb="0.625rem">
             {label && <label htmlFor={name}>{label}</label>}
-            <Field id={name} name={name} >
+            <Field id={name} name={name}>
                 {({ field, form }: FieldProps) => (
                     <TextField
                         id={name}
@@ -40,18 +38,21 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
                         error={Boolean(form.errors[name] && form.touched[name])}
                         helperText={form.errors[name] && form.touched[name] ? String(form.errors[name]) : ''}
                         {...rest}
-                        sx={{'& .MuiInputBase-root': { //componente interno de textField
-                            height: '45px',
-                        }, pb:"10px",display:"block", width: isMediumScreen? "31.25rem" : "18.75rem"}}
+                        sx={{
+                            '& .MuiInputBase-root': { //elementos que tienen textfield le aplica el heigth
+                                height: '2.813rem',
+                            },
+                            display: "block",
+                        }}
                     />
                 )}
             </Field>
-            </Box>
-        </>
+        </Box>
     );
 };
 
 export default RegisterInput;
+
 
 
 

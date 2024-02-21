@@ -1,40 +1,38 @@
 import React from "react";
-import RegistrationControl from "./forms-control/RegistratioControl";
+import RegistrationControl from "../forms-control/RegistratioControl";
+import { Box, Typography } from "@mui/material";
 
-interface IUserForm {
-
-}
-
-const ContactInformationForm: React.FC<IUserForm> = () => {
+const ContactInformationForm: React.FC = () => {
     return (
         <>
-            <div>
-                <div>
+            <Box>
+            <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Informacion de contacto</Typography></Box>
+                <Box>
                     <RegistrationControl
                         control="input"
                         label="Telefono"
                         name="telefono" />
-                </div>
-                <div>
+                </Box>
+                <Box>
                     <RegistrationControl
                         control="input"
                         label="Correo"
-                        name="Correo" />
-                </div>
-                <div>
+                        name="correo" />
+                </Box>
+                <Box>
                     <RegistrationControl
                         control="input"
                         label="Contrasena"
                         name="contrasena" />
-                </div>
-                <div>
+                </Box>
+                <Box>
                     <RegistrationControl
                         control="input"
                         label="Confirmar contrasena"
-                        name="ConfContrasena" />
-                </div>
+                        name="confirmarContrasena" />
+                </Box>
 
-            </div>
+            </Box>
         </>
     )
 }
