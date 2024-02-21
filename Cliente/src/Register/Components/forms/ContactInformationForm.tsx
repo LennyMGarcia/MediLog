@@ -11,7 +11,8 @@ const ContactInformationForm: React.FC = () => {
                     <RegistrationControl
                         control="input"
                         label="Telefono"
-                        name="Escriba su telefono" />
+                        name="telefono"
+                        placeholder="Escriba su telefono" />
                 </Box>
                 <Box>
                     <RegistrationControl

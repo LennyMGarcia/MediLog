@@ -6,7 +6,8 @@ const SpecialistSchema = z.object({
     sexo: z.string(),
     correo: z.string().email(),
     direccion: z.string(),
-    telefono: z.string(),
+    telefono: z.string().regex(/^1?(809|829|849)\d{7}$/, {
+        message: "El numero de telefono invalido en  Rep. Dom."}),
     especialidad:z.string(),
 });
 
