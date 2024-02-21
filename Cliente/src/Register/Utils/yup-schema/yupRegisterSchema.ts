@@ -3,7 +3,7 @@ import * as Yup from 'yup'
 const basicInfoSchema = Yup.object({
     nombre: Yup.string().required("requerido"),
     apellido: Yup.string().required("requerido"),
-    //sexo: Yup.string().required("required"),
+    sexo: Yup.string().oneOf(['m', 'f']).required("requerido"),
     especialidad: Yup.string().required("requerido"),
 })
 

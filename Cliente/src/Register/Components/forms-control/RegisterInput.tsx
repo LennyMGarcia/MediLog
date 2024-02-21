@@ -1,7 +1,7 @@
 import { Field, FieldProps } from 'formik';
 import { Box, TextField, TextFieldProps, useMediaQuery, useTheme } from '@mui/material';
 import { ChangeEvent } from 'react';
-import useDataRegisterStore from "../../ZustandRegisterManagement";
+import useDataRegisterStore, { getAllRegisterData } from "../../ZustandRegisterManagement";
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -14,6 +14,7 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
 
     const handleChange = (e: ChangeEvent<any>) => {
         const value = e.target.value;
+        console.log(getAllRegisterData());
         setRegisterData(name, value);
     };
 
@@ -27,7 +28,7 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
                 {({ field, form }: FieldProps) => (
                     <TextField
                         id={name}
-                        placeholder={placeHolder ? `${placeHolder}` : "Escriba"}
+                        placeholder={placeHolder ? `${placeHolder}` : ""}
                         variant="filled"
                         color="primary"
                         fullWidth

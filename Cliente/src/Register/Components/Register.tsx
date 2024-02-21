@@ -3,7 +3,6 @@ import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
 import { getAllRegisterData } from "../ZustandRegisterManagement";
-import useDataRegisterStore from "../ZustandRegisterManagement";
 import { Box, Button, Grid, Step, StepLabel, Stepper, useMediaQuery, useTheme } from "@mui/material";
 import prueba2 from "../assets/prueba2.jpg"
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
@@ -18,7 +17,7 @@ import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema"
 const initialValues = [
     {nombre: "",
     apellido: "",
-    //sexo:"",
+    sexo:"",
     especialidad:"",},
 
     {correo:"",
@@ -27,12 +26,9 @@ const initialValues = [
 }]
 
 const Register: React.FC = () => {
-    const { setRegisterData } = useDataRegisterStore()
-
     function onSubmit() {
+        console.log(getAllRegisterData());
         next()
-        setRegisterData("nombre", "hola")
-        return console.log(getAllRegisterData());
     }
 
     const theme = useTheme();

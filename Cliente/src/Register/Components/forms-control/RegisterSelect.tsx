@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Field, FieldProps } from 'formik';
-import { MenuItem, Select, SelectChangeEvent, SelectProps, useMediaQuery, useTheme } from '@mui/material';
-import useDataRegisterStore, {RegisterSchemaValues } from "../../ZustandRegisterManagement";
+import { ErrorMessage, Field, FieldProps } from 'formik';
+import { FormHelperText, MenuItem, Select, SelectChangeEvent, SelectProps, useMediaQuery, useTheme } from '@mui/material';
+import useDataRegisterStore from "../../ZustandRegisterManagement";
 
 //Solo para omitir variant en la seleccion de SelectProps, puede ser usado nuevamente
 interface ISelect extends Omit<SelectProps, "variant"> {
@@ -29,8 +29,6 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
 
     const handleChange = (e: SelectChangeEvent<any>) => {
         const newValue = e.target.value;
-        console.log(name + newValue);
-        console.log(getRegisterData(name))
         setRegisterData(name, newValue);
     };
 
@@ -41,15 +39,19 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
         <>
             <label htmlFor={name}>{label}</label>
             <Field id={name} name={name}>
-                {({ form }: FieldProps) => (
+                {({field, form }: FieldProps) => (
                     <React.Fragment>
                         <Select
                             id={name}
+                            name={field.name}
                             variant="filled"
                             fullWidth
                             displayEmpty 
                             value={getRegisterData(name) || ''}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                field.onChange(e);
+                                handleChange(e);
+                            }}
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}
                             sx={{height: '50px',
@@ -69,6 +71,7 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                                     <span>No hay nada</span> 
                                 </MenuItem>)}
                         </Select>
+                        <ErrorMessage name={name} component={FormHelperText}></ErrorMessage>
                     </React.Fragment>
                 )}
             </Field>
