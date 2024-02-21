@@ -7,12 +7,12 @@ if (process.env.NODE_ENV !== 'production') {
 // Importacion de las dependencias necesarias para la elaboracion del servidor
 const express = require('express');
 const cors = require('cors');
-const DB = require('./Utils/db_connect');
-const seeder = require('./Seeds/db_seeder');
-const bcrypt = require('bcrypt');
+//const DB = require('./Utils/db_connect');
+//const seeder = require('./Seeds/db_seeder');
 const Model = require('./Migrations/Model');
 
 // Importacion de las Rutas Necesarias para la plataforma
+const inicios_routes = require('./Routes/inicios');
 const casos_routes = require('./Routes/casos');
 const cirugias_routes = require('./Routes/cirugias');
 const consultas_routes = require('./Routes/consultas');
@@ -21,7 +21,6 @@ const pacientes_routes = require('./Routes/pacientes');
 const productos_routes = require('./Routes/productos');
 const transacciones_routes = require('./Routes/transacciones');
 const usuarios_routes = require('./Routes/usuarios');
-const Usuario = require('./Migrations/Usuario');
 
 // Ejecucion de Express
 const app = express();
@@ -37,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Middleware de los Routes/Rutas
+app.use('/', inicios_routes)
 app.use('/casos', casos_routes);
 app.use('/cirugias', cirugias_routes);
 app.use('/consultas', consultas_routes);
@@ -50,21 +50,6 @@ app.get("/test", async (req, res) => {
     const dbModel = new Model('transacciones');
     const results = await dbModel.get();
     res.json(results);
-});
-
-app.post('/login', async (req, res) => {
-    const correo = req.body.correo;
-    const contrasena = req.body.contrasena;
-    const model = new Usuario();
-    const result = await model.authenticate(correo);
-    const hashed_password = result[0].contrasena;
-
-    if (hashed_password) {
-        //Funcion que verifica si la contrasena introducida coincide con la contrasena del usuario.
-        const authenticated = bcrypt.compareSync(contrasena, hashed_password);
-        if (!authenticated) return res.json({ 'sucess': false, 'error': 'Credenciales Incorrectas' });
-        return res.json({ 'success': true });
-    }
 });
 
 // Iniciar Servidor en Puerto Designado
