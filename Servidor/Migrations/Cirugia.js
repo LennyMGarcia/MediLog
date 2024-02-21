@@ -16,7 +16,7 @@ class Cirugia extends Model {
             'resultado',
             'visibilidad',
             'eliminado',
-        ]
+        ];
     }
     async insert(data = null) {
         if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios', 'status': 400 }];

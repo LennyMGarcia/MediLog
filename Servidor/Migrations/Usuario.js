@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const salt_level = 10;
 
 class Usuario extends Model {
-    constructor() {
+    constructor(id = null) {
         super('usuarios');
         this.columns = [
             'member_id',
@@ -19,6 +19,28 @@ class Usuario extends Model {
             'fecha_expiracion',
             'eliminado',
         ];
+        this.id = id;
+        this.member_id = null;
+        this.tipo = null;
+        this.plan = null;
+    }
+    //Funccion que se encarga de autentificar un usuario segun se numero de identificacion.
+
+    async getUser() {
+        if (!this.id) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
+
+        try {
+            const result = await this.find(this.id);
+            this.member_id = result?.member_id;
+            this.tipo = result?.tipo;
+            this.plan = result?.plan;
+            return result;
+
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
     }
     async insert(data = null) {
         if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
@@ -45,6 +67,7 @@ class Usuario extends Model {
 
             const query = new Builder(this.table);
             const [results, fields] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
+
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
@@ -71,6 +94,7 @@ class Usuario extends Model {
             ];
             const query = new Builder(this.table);
             const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values)
+
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
@@ -85,6 +109,7 @@ class Usuario extends Model {
             this.correo = correo
             const query = new Builder(this.table);
             const [results, fields] = await DB.execute(query.select_query('contrasena', 'correo'), [this.correo]);
+
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
@@ -93,6 +118,246 @@ class Usuario extends Model {
 
     }
 
+    //Funccion que se encarga de buscar los casos de un usuario especifico.
+    async casos() {
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+
+        const columns = [
+            'descripcion',
+            'pacientes_id',
+            'especialistas_id',
+            'consultas',
+            'cirugias',
+            'estado',
+            'categoria',
+            'seguimiento',
+            'visibilidad',
+            'eliminado',
+        ];
+
+        if (this.tipo === 'Paciente') {
+            try {
+                const query = new Builder('casos');
+                const [results, fields] = await DB.execute(query.select_query(columns, 'pacientes_id'), [this.member_id]);
+
+                if (results.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+
+                return results;
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        } else {
+            try {
+                const query = new Builder('casos');
+                const [results, fields] = await DB.execute(query.select_query(columns, 'especialistas_id'), [this.member_id]);
+
+                if (results.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+
+                return results;
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        }
+    }
+    //Funccion que se encarga de buscar los cirugias de un usuario especifico.
+
+    async cirugias() {
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+
+        const columns = [
+            'pacientes_id',
+            'especialistas_id',
+            'categoria',
+            'motivo',
+            'estudios',
+            'observaciones',
+            'instrucciones',
+            'resultado',
+            'visibilidad',
+            'eliminado',
+        ];
+
+        if (this.tipo === 'Paciente') {
+            try {
+                const query = new Builder('cirugias');
+                const [results, fields] = await DB.execute(query.select_query(columns, 'pacientes_id'), [this.member_id]);
+
+                if (results.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+
+                return results;
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        } else {
+            try {
+                const query = new Builder('cirugias');
+                const [results, fields] = await DB.execute(query.select_query(columns, 'especialistas_id'), [this.member_id]);
+
+                if (results.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+
+                return results;
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        }
+
+    }
+    //Funccion que se encarga de buscar los consultas de un usuario especifico.
+
+    async consultas() {
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+
+        const columns = [
+            'pacientes_id',
+            'especialistas_id',
+            'motivo',
+            'estudios',
+            'observaciones',
+            'plan_tratamiento',
+            'visibilidad',
+            'eliminado',
+        ];
+
+        if (this.tipo === 'Paciente') {
+            try {
+                const query = new Builder('consultas');
+                const [results, fields] = await DB.execute(query.select_query(columns, 'pacientes_id'), [this.member_id]);
+
+                if (results.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+
+                return results;
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        } else {
+            try {
+                const query = new Builder('consultas');
+                const [results, fields] = await DB.execute(query.select_query(columns, 'especialistas_id'), [this.member_id]);
+
+                if (results.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+
+                return results;
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        }
+    }
+    //Funccion que se encarga de buscar los pacientes de un usuario especifico.
+
+    async pacientes() {
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado o Registro No Existe.', 'status': 400 }];
+        const casos_columns = [
+            'pacientes_id',
+            'especialistas_id',
+        ];
+
+        if (this.tipo !== 'Paciente') {
+            try {
+                const pacientes_ids = [];
+                const query = new Builder('casos');
+                const [results, fields] = await DB.execute(query.select_query(casos_columns, 'especialistas_id'), [this.member_id]);
+
+                if (results.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+                results.forEach(el => {
+                    if (!pacientes_ids.includes(el.pacientes_id)) {
+                        pacientes_ids.push(el.pacientes_id);
+                    }
+                });
+                const res = this.getAllPacientes(pacientes_ids);
+
+                if (res.length <= 0) {
+                    return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+                }
+
+                return res;
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        }
+        return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+
+    }
+    //Funccion que se encarga de buscar los pacientes de un usuario especifico.
+
+    async getAllPacientes(ids = []) {
+        if (!ids) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+
+        const pacientes_columns = [
+            'nombre',
+            'apellido',
+            'fecha_nacimiento',
+            'documento_identidad',
+            'sexo',
+            'correo',
+            'direccion',
+            'telefono',
+            'tipo_sangre',
+            'padecimientos',
+            'alergias',
+            'familiares_id',
+            'eliminado',
+        ];
+        const pacientes = [];
+
+        for (let i = 0; i < ids.length; i++) {
+            const id = ids[i];
+            try {
+                const query = new Builder('pacientes');
+                const [results, fields] = await DB.execute(query.select_query(pacientes_columns, 'id'), [id]);
+                pacientes.push(results);
+            } catch (error) {
+                return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+            }
+        }
+        return pacientes;
+    }
+    //Funccion que se encarga de buscar las transacciones de un usuario especifico.
+
+    async transacciones() {
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+
+        const columns = [
+            'productos_id',
+            'usuarios_id',
+            'monto',
+            'metodo_pago',
+            'descripcion',
+        ];
+
+        try {
+            const query = new Builder('transacciones');
+            const [results, fields] = await DB.execute(query.select_query(columns, 'usuarios_id'), [this.member_id]);
+            if (results.length <= 0) {
+                return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+            }
+            return results;
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+    }
 }
 
 module.exports = Usuario;

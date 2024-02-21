@@ -10,6 +10,7 @@ const cors = require('cors');
 //const DB = require('./Utils/db_connect');
 //const seeder = require('./Seeds/db_seeder');
 const Model = require('./Migrations/Model');
+const Usuario = require('./Migrations/Usuario');
 
 // Importacion de las Rutas Necesarias para la plataforma
 const inicios_routes = require('./Routes/inicios');
@@ -47,9 +48,18 @@ app.use('/transacciones', transacciones_routes);
 app.use('/usuarios', usuarios_routes);
 
 app.get("/test", async (req, res) => {
-    const dbModel = new Model('transacciones');
+    /*const dbModel = new Model('transacciones');
     const results = await dbModel.get();
-    res.json(results);
+    res.json(results);*/
+    const model = new Usuario(7);
+    const user = await model.getUser();
+    //const results = await model.casos();
+    //const results = await model.cirugias();
+    //const results = await model.consultas();
+    //const results = await model.pacientes();
+    const results = await model.transacciones();
+    if (results[0].success === false) return res.status(results[0].status).json(results);
+    return res.json(results);
 });
 
 // Iniciar Servidor en Puerto Designado
