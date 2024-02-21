@@ -2,7 +2,7 @@ import { Formik, Form } from "formik";
 import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
-import { getRegisterData } from "../ZustandRegisterManagement";
+import { getAllRegisterData } from "../ZustandRegisterManagement";
 import useDataRegisterStore from "../ZustandRegisterManagement";
 import { Box, Button, Grid, Step, StepLabel, Stepper, useMediaQuery, useTheme } from "@mui/material";
 import prueba2 from "../assets/prueba2.jpg"
@@ -13,6 +13,7 @@ import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema"
 // se ve feo, agregar todo en un sitio y mas lo que se repite
 // Arreglar todo lo que esta mal, sobre todo las variables de prueba y el diseno
 //ARREGLAR ARRAY DE VALORES INICIALES Y YUP, sexo al ser select no funciona como se espera
+//Crear posible tema de material para que no se vea asi
 
 const initialValues = [
     {nombre: "",
@@ -31,8 +32,7 @@ const Register: React.FC = () => {
     function onSubmit() {
         next()
         setRegisterData("nombre", "hola")
-        return console.log(getRegisterData());
-
+        return console.log(getAllRegisterData());
     }
 
     const theme = useTheme();

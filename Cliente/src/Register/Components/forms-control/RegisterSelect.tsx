@@ -14,26 +14,23 @@ interface ISelect extends Omit<SelectProps, "variant"> {
     }[]
 }
 
-//Lo hice para sacar una propiedad de getState de zustand, puede estar mas arriba ya que puede ser utilizado nuevamente
-interface RegisterExtendedState extends RegisterSchemaValues {
-    [key: string]: any;
-}
-
 const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, ...rest }) => {
 
-    const { setRegisterData } = useDataRegisterStore();
+    const { setRegisterData, getRegisterData } = useDataRegisterStore();
     //Para mantener el select cuando se vuelva atras, simplemente revisa name y setRegister data y actualiza
     /*Tenia useState pero este funciona mejor ya que el useState cuando se desmontaba se reiniciaba
        y podia agregarla pero seria mucho codigo cuando se usara un useEffect*/
     useEffect(() => {
-        const state = useDataRegisterStore.getState() as RegisterExtendedState;
-        if (!state[name]) {
+        const state = getRegisterData(name);
+        if (!state) {
             setRegisterData(name, '');
         }
     }, [name, setRegisterData]);
 
     const handleChange = (e: SelectChangeEvent<any>) => {
         const newValue = e.target.value;
+        console.log(name + newValue);
+        console.log(getRegisterData(name))
         setRegisterData(name, newValue);
     };
 
@@ -51,7 +48,7 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                             variant="filled"
                             fullWidth
                             displayEmpty 
-                            value={(useDataRegisterStore.getState() as RegisterExtendedState)[name] || ''}//explicacion en la interfaz
+                            value={getRegisterData(name) || ''}
                             onChange={handleChange}
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}

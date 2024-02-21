@@ -30,11 +30,13 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                         control="input"
                         label="Nombre"
                         name="nombre"
+                        placeholder=" Escriba su nombre"
                     />
                     <RegistrationControl
                         control="input"
                         label="Apellido"
                         name="apellido"
+                        placeholder="Escriba su apellido"
                     />
                 </Box>
 
@@ -43,7 +45,8 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                     <RegistrationControl
                         control="select"
                         label="Sexo"
-                        name="Sexo"
+                        name="sexo"
+                        placeholder="Escriba su sexo"
                         selectObject={[
                             { key: "Hombre", value: "m" },
                             { key: "Mujer", value: "f" },
@@ -56,13 +59,17 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                     <Box><RegistrationControl
                         control="input"
                         label="Cedula"
-                        name="Cedula" />
+                        name="cedula" 
+                        placeholder="Escriba su cedula"
+                        />
 
                     </Box> : "especialista" ?
                         <Box> <RegistrationControl
                             control="input"
                             label="Especialidad"
-                            name="especialidad" />
+                            name="especialidad" 
+                            placeholder="Escriba su especialidad"
+                            />
                         </Box>
                         : <Box style={{ color: "red" }}>Tipo no encontrado</Box>
                 }

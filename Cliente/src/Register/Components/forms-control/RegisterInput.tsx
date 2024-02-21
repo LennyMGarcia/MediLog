@@ -6,9 +6,10 @@ import useDataRegisterStore from "../../ZustandRegisterManagement";
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
     name?: string,
+    placeHolder?:string
 }
 
-const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
+const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ...rest }) => {
     const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = (e: ChangeEvent<any>) => {
@@ -26,7 +27,7 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", ...rest }) => {
                 {({ field, form }: FieldProps) => (
                     <TextField
                         id={name}
-                        placeholder={`Escriba su ${name}`}
+                        placeholder={placeHolder ? `${placeHolder}` : "Escriba"}
                         variant="filled"
                         color="primary"
                         fullWidth

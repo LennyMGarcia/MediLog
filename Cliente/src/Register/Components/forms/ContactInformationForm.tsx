@@ -11,25 +11,28 @@ const ContactInformationForm: React.FC = () => {
                     <RegistrationControl
                         control="input"
                         label="Telefono"
-                        name="telefono" />
+                        name="Escriba su telefono" />
                 </Box>
                 <Box>
                     <RegistrationControl
                         control="input"
                         label="Correo"
-                        name="correo" />
+                        name="correo" 
+                        placeholder="Escriba su correo"/>
                 </Box>
                 <Box>
                     <RegistrationControl
                         control="input"
                         label="Contrasena"
-                        name="contrasena" />
+                        name="contrasena" 
+                        placeholder="Escriba su contrasena"/>
                 </Box>
                 <Box>
                     <RegistrationControl
                         control="input"
                         label="Confirmar contrasena"
-                        name="confirmarContrasena" />
+                        name="confirmarContrasena"
+                        placeholder="Reescriba su contrasena" />
                 </Box>
 
             </Box>
