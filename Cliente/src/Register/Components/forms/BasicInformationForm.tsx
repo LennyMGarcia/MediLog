@@ -55,6 +55,15 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                     />
                 </Box>
 
+                <Box><RegistrationControl
+                        control="date"
+                        label="Fecha de nacimiento"
+                        name="fecha_nacimiento" 
+                        
+                        />
+
+                    </Box> 
+
                 {type == "paciente" ?
                     <Box><RegistrationControl
                         control="input"
