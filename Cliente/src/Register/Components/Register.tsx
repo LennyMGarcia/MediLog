@@ -2,7 +2,7 @@ import { Formik, Form } from "formik";
 import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
-import { getAllRegisterData } from "../ZustandRegisterManagement";
+import useDataRegisterStore, { getAllRegisterData } from "../ZustandRegisterManagement";
 import { Box, Button, Grid, Step, StepLabel, Stepper, useMediaQuery, useTheme } from "@mui/material";
 import prueba2 from "../assets/prueba2.jpg"
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
@@ -13,45 +13,55 @@ import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema"
 // Arreglar todo lo que esta mal, sobre todo las variables de prueba y el diseno
 //ARREGLAR ARRAY DE VALORES INICIALES Y YUP, sexo al ser select no funciona como se espera
 //Crear posible tema de material para que no se vea asi
+//Arreglar fecha y cedula
 
 const initialValues = [
     {nombre: "",
     apellido: "",
     sexo:"",
-    especialidad:"",},
+    //fecha_nacimiento:"",
+    tipo:"",
+    especialidad:"",
+    documento_identidad:""},
 
     {correo:"",
     contrasena:"",
     confirmarContrasena:""
 }]
 
+
+
 const Register: React.FC = () => {
     function onSubmit() {
         console.log(getAllRegisterData());
         next()
-    }
-
-    const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+    };
 
     const stepperSteps = [
         'Registro A',
         'Registro B',
         'Registro C',
     ];
+    
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
+    const {getRegisterData } = useDataRegisterStore();
+
+    
 
     const { currentStepIndex, step, next, back } = useMultiForm([
-        <BasicInformationForm type="especialista" />,
+        <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
         <ContactInformationForm />])
 
     return (
-        <Box width={"100vw"} height={"100vh"} sx={{ backgroundColor: "#E9ECEF" }}>
+        <Box width={"100vw"} height={"105vh"} sx={{ backgroundColor: "#E9ECEF" }}>
             <Grid container width={"100vw"}>
                 <Grid item md={4}>
-                    {isMediumScreen ? <img style={{ width: '110%', height: '100vh' }} src={prueba2} alt="" /> : null}
+                    {isMediumScreen ? <img style={{ width: '110%', height: '105vh' }} src={prueba2} alt="" /> : null}
                 </Grid>
                 <Grid item md={8} xs={12}>
-                    <Stepper sx={{ pt: "30px" }} activeStep={1} alternativeLabel>
+                    <Stepper sx={{ pt: "30px" }} activeStep={currentStepIndex} alternativeLabel>
                         {stepperSteps.map((label) => (
                             <Step key={label}>
                                 <StepLabel>{label}</StepLabel>
@@ -63,7 +73,7 @@ const Register: React.FC = () => {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}
-                        padding={isMediumScreen ? "10px" : "120px"}>
+                        padding={isMediumScreen ? "10px" : "20px"}>
                         <Formik
                             initialValues={initialValues[currentStepIndex]}
                             onSubmit={onSubmit}
@@ -90,6 +100,8 @@ const Register: React.FC = () => {
     );
 
 };
+
+
 
 export default Register;
 

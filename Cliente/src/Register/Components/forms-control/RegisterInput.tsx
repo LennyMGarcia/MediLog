@@ -22,8 +22,8 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     return (
-        <Box display="flex" flexDirection="column" width={isMediumScreen ? "31.25rem" : "18.75rem"} pb="0.625rem">
-            {label && <label htmlFor={name}>{label}</label>}
+        <Box display="flex" flexDirection="column" width={isMediumScreen ? "29.25rem" : "18.75rem"} pb="-2rem">
+            {label && <label htmlFor={name} style={{fontSize:"0.9rem", marginBottom:"2px"}}>{label}</label>}
             <Field id={name} name={name}>
                 {({ field, form }: FieldProps) => (
                     <TextField
@@ -42,7 +42,7 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
                         {...rest}
                         sx={{
                             '& .MuiInputBase-root': { //elementos que tienen textfield le aplica el heigth
-                                height: '2.813rem',
+                                height: '2rem',
                             },
                             display: "block",
                         }}

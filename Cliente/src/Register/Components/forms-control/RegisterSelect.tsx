@@ -37,7 +37,8 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
 
     return (
         <>
-            <label htmlFor={name}>{label}</label>
+            <label htmlFor={name} style={{fontSize:"0.9rem", display:"block"} }>{label}</label>
+            
             <Field id={name} name={name}>
                 {({field, form }: FieldProps) => (
                     <React.Fragment>
@@ -54,10 +55,10 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                             }}
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}
-                            sx={{height: '50px',
-                             mb:"10px",display:"block", maxWidth: isMediumScreen? "31.25rem" : "18.75rem"}}
+                            sx={{height: '2rem', fontSize:"0.9rem",
+                             mb:"1px", maxWidth: isMediumScreen? "29.25rem" : "18.75rem"}}
                         >
-                            <MenuItem key="" value="" disabled defaultValue="sel">
+                            <MenuItem key="" value="" disabled defaultValue="sel" sx={{border:"1px black dotted"}}>
                                 Seleccione una opcion
                             </MenuItem>
                             {Array.isArray(selectObject) ? ( //Revisa si hay un array de objetos y lo recorre

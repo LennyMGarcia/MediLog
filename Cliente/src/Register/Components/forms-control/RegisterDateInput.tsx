@@ -2,8 +2,8 @@ import * as React from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
-import { ErrorMessage, Field, FieldProps } from 'formik';
-import { Box, FormHelperText, useMediaQuery, useTheme } from '@mui/material';
+import { Field, FieldProps } from 'formik';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import useDataRegisterStore, { getAllRegisterData } from "../../ZustandRegisterManagement";
 
 interface DateProps  {
@@ -24,8 +24,8 @@ const RegisterDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) =
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     return (
-        <Box display="flex" flexDirection="column" width={isMediumScreen ? "31.25rem" : "18.75rem"} pb="0.625rem">
-            {label && <label htmlFor={name}>{label}</label>}
+        <Box display="flex" flexDirection="column" width={isMediumScreen ? "29.25rem" : "18.75rem"} pb="0.625rem">
+            {label && <label htmlFor={name} style={{fontSize:"0.9rem"}}>{label}</label>}
             <Field id={name} name={name}>
                 {({ field, form }: FieldProps) => (
                  <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -45,12 +45,11 @@ const RegisterDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) =
                         {...rest}
                         sx={{
                             '& .MuiInputBase-root': { //elementos que tienen textfield le aplica el heigth
-                                height: '2.813rem',
+                                height: '2rem',
                             },
                             display: "block",
                         }}
                     />
-                     <ErrorMessage name={name} component={FormHelperText}></ErrorMessage>
                     </LocalizationProvider>
                 )}
             </Field>
