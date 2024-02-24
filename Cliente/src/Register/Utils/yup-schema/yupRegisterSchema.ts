@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 import useDataRegisterStore from '../../ZustandRegisterManagement'
+import dayjs from 'dayjs';
 
  let isPaciente = String(useDataRegisterStore.getState()["tipo"]) === "Paciente";
 
@@ -7,34 +8,34 @@ const basicInfoSchema = Yup.object({
     nombre: Yup.string().required("requerido"),
     apellido: Yup.string().required("requerido"),
     sexo: Yup.string().oneOf(['m', 'f']).required("requerido"),
-    /*fecha_nacimiento: Yup.string()
-    .matches(
-      /^\d{4}-\d{2}-\d{2}$/, 
-      'Formato de fecha inválido. Utiliza el formato YYYY-MM-DD'
-    )
+    fecha_nacimiento: Yup.date()
+    .nonNullable() 
     .transform((value, originalValue) => {
-
-      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-        return value;
+      if (typeof originalValue === 'string') {
+        // si el valor original es una cadena, intenta parsearlo como una fecha
+        const date = dayjs(originalValue, 'YYYY-MM-DD').toDate();
+        return date;
       }
-    
-      return originalValue;
+      return value;
     })
-    .max(new Date().getTime(), 'La fecha no puede ser posterior a la fecha actual').nullable(),*/
+    .max(new Date(), 'La fecha no puede ser posterior a la fecha actual')
+    .required("Campo requerido")
+    .typeError('Debe ser una fecha válida en formato YYYY-MM-DD como 2001-05-27'),
     tipo: Yup.string().oneOf(['Paciente', 'Especialista']).required("requerido"),
-    especialidad: Yup.string().test('especialidad-required', 'Especialidad requerida', function(value) {
-        if (!isPaciente) {
-            return !!value; 
-        }
-        return true; 
+    documento_identidad:Yup.string().when('tipo', {
+      is: "Paciente",
+      then: (basicInfoSchema) => basicInfoSchema.required("requerido").length(11, "Documento de indentidad debe tener exactamente 11 digitos"),
+      otherwise: (basicInfoSchema) => basicInfoSchema.notRequired()
     }),
-    documento_identidad: Yup.string().test('documento-required', 'Documento de identidad debe tener exactamente 11 digitos', function(value) {
-        if (!isPaciente) {
-            return Boolean(value && /^\d{11}$/.test(value)); 
-        }
-        return true; 
+    especialidad: Yup.string().when('tipo', {
+      is: "Especialista",
+      then: (basicInfoSchema) => basicInfoSchema.required('Especialidad requerida'),
+      otherwise: (basicInfoSchema) => basicInfoSchema.notRequired(),
     }),
+    
 })
+
+basicInfoSchema.describe({ value: { tipo: isPaciente } });
 
 const contactSchema = Yup.object({
     telefono: Yup.string()
@@ -48,6 +49,6 @@ const contactSchema = Yup.object({
     confirmarContrasena: Yup.string()
       .oneOf([Yup.ref('contrasena'), undefined], 'La contrasena debe coincidir')
       .required('Requerido'),
-  })
+  });
 
   export const registerValidationSchema = [basicInfoSchema, contactSchema]
