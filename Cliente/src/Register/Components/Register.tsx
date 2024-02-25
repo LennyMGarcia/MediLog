@@ -6,6 +6,7 @@ import useDataRegisterStore, { getAllRegisterData } from "../ZustandRegisterMana
 import { Box, Button, Grid, Step, StepLabel, Stepper, useMediaQuery, useTheme } from "@mui/material";
 import prueba2 from "../assets/prueba2.jpg"
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
+import FinancialInformationForm from "./forms/FinancialInformationForm";
 
 //TODO: Agregar listas para controlar elementos con Yup y crear documentacion
 //agregar date control y comenzar con css module y/o material
@@ -52,7 +53,9 @@ const Register: React.FC = () => {
 
     const { currentStepIndex, step, next, back } = useMultiForm([
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
-        <ContactInformationForm />])
+        <ContactInformationForm />,
+        <FinancialInformationForm/>
+    ])
 
     return (
         <Box width={"100vw"} height={"105vh"} sx={{ backgroundColor: "#E9ECEF" }}>

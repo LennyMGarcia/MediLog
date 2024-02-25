@@ -30,7 +30,7 @@ const RegistrationControl: React.FC<IRegistrationControl> = ({ control, ...rest 
             return <RegisterSelect {...rest as IRegistrationSelectfControl}></RegisterSelect>
             break;
         case "date":
-            return <RegisterDateInput {...rest as IRegistrationSelectfControl}></RegisterDateInput>
+            return <RegisterDateInput {...rest as IRegistrationControl}></RegisterDateInput>
             break;
         default:
             throw new Error("No se encontro el tipo requerido")

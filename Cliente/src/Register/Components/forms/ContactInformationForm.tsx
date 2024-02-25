@@ -12,6 +12,7 @@ const ContactInformationForm: React.FC = () => {
                         control="input"
                         label="Telefono"
                         name="telefono"
+                        type="number"
                         placeholder="Escriba su telefono" />
                 </Box>
                 <Box>
@@ -26,6 +27,7 @@ const ContactInformationForm: React.FC = () => {
                         control="input"
                         label="Contrasena"
                         name="contrasena" 
+                        type="password"
                         placeholder="Escriba su contrasena"/>
                 </Box>
                 <Box>
@@ -33,6 +35,7 @@ const ContactInformationForm: React.FC = () => {
                         control="input"
                         label="Confirmar contrasena"
                         name="confirmarContrasena"
+                        type="password"
                         placeholder="Reescriba su contrasena" />
                 </Box>
 
