@@ -7,6 +7,7 @@ import { Box, Button, Grid, Step, StepLabel, Stepper, useMediaQuery, useTheme } 
 import prueba2 from "../assets/prueba2.jpg"
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
 import FinancialInformationForm from "./forms/FinancialInformationForm";
+import PricingForm from "./forms/PricingForm";
 
 //TODO: Agregar listas para controlar elementos con Yup y crear documentacion
 //agregar date control y comenzar con css module y/o material
@@ -52,18 +53,21 @@ const Register: React.FC = () => {
     
 
     const { currentStepIndex, step, next, back } = useMultiForm([
+        <PricingForm/>,
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
         <ContactInformationForm />,
         <FinancialInformationForm/>
     ])
 
     return (
-        <Box width={"100vw"} height={"105vh"} sx={{ backgroundColor: "#E9ECEF" }}>
-            <Grid container width={"100vw"}>
-                <Grid item md={4}>
-                    {isMediumScreen ? <img style={{ width: '110%', height: '105vh' }} src={prueba2} alt="" /> : null}
-                </Grid>
-                <Grid item md={8} xs={12}>
+        <Box height={isMediumScreen? "105vh" : "auto"} sx={{ backgroundColor: "#E9ECEF" }}>
+            <Grid container spacing={2}>
+                {isMediumScreen && (
+                    <Grid item xs={12} md={4}>
+                        <img style={{ width: '110%', height: '105vh', marginTop:"-16px" }} src={prueba2} alt="" />
+                    </Grid>
+                )}
+                <Grid item xs={12} md={isMediumScreen ? 8 : 12}>
                     <Stepper sx={{ pt: "30px" }} activeStep={currentStepIndex} alternativeLabel>
                         {stepperSteps.map((label) => (
                             <Step key={label}>
@@ -74,9 +78,9 @@ const Register: React.FC = () => {
                     <Box sx={{
                         display: 'flex',
                         justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                        padding={isMediumScreen ? "10px" : "20px"}>
+                        alignItems: 'center',
+                        padding: isMediumScreen ? "10px" : "20px"
+                    }}>
                         <Formik
                             initialValues={initialValues[currentStepIndex]}
                             onSubmit={onSubmit}
@@ -91,7 +95,7 @@ const Register: React.FC = () => {
                                         mt: "1rem"
                                     }}>
                                         <Button fullWidth sx={{ ml: "10px", color: "#52B69A" }} variant="outlined" type="button" onClick={back}>Regresar</Button>
-                                        <Button fullWidth sx={{ ml: "10px", backgroundColor: "#52B69A" }} variant="contained" type="submit">Siguiente {/*finish*/}</Button>
+                                        <Button fullWidth sx={{ ml: "10px", backgroundColor: "#52B69A" }} variant="contained" type="submit">Siguiente</Button>
                                     </Box>
                                 </Form>
                             )}
@@ -103,8 +107,6 @@ const Register: React.FC = () => {
     );
 
 };
-
-
 
 export default Register;
 
