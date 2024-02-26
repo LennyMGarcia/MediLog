@@ -10,8 +10,8 @@ const PatientSchema = z.object({
     }).transform(value => dayjs(value).format('YYYY-MM-DD')),
     sexo: z.string(),
     correo: z.string().email(),
-    direccion: z.string(),
-    telefono: z.string(),
+    direccion: z.string().nullable(),
+    telefono: z.string().nullable(),
 });
 
 //type Patient = z.infer<typeof PatientSchema>;

@@ -7,6 +7,7 @@ const UserSchema = z.object({
     tipo: z.string(),
     plan: z.number().nullable(),
     metodo_pago: z.string().nullable(),
+    datos_financieros:z.string().length(16).nullable(),
     fecha_expiracion: z.date().nullable(),
     cvv: z.string().max(4).nullable(),
 });

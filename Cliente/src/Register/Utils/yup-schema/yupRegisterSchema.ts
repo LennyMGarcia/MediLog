@@ -40,7 +40,7 @@ basicInfoSchema.describe({ value: { tipo: isPaciente } });
 const contactSchema = Yup.object({
     telefono: Yup.string()
     .matches(/^1?(809|829|849)\d{7}$/, 'El numero de telefono invalido en  Rep. Dom.')
-    .required('Número telefonico obligatorio'),
+    .notRequired(),
     correo: Yup.string().email('Direccion de correo invalida').required('Requerido'),
     contrasena: Yup.string()
     .min(6, 'La contrasena debe tener al menos 8 caracteres')
@@ -53,6 +53,27 @@ const contactSchema = Yup.object({
 
   const pricingSchema = Yup.object({
     pricing: Yup.string().required("Plan requerido")
-  })
+  });
 
-  export const registerValidationSchema = [basicInfoSchema, contactSchema, pricingSchema, ]
+  const FinancialSchema = Yup.object({
+    metodo_pago: Yup.string().oneOf(['Tarjeta de credito', 'Tarjeta de debito']).notRequired(),
+    datos_financieros: Yup.string().length(16, "Debe tener 16 digitos").notRequired(),
+    cvv: Yup.string()
+    .min(3, "debe tener minimo 3 digitos")
+    .max(4, "debe tener maximo 4 digitos")
+    .notRequired(),
+    fecha_expiracion: Yup.date()
+    .nonNullable() 
+    .transform((value, originalValue) => {
+      if (typeof originalValue === 'string') {
+        const date = dayjs(originalValue, 'YYYY-MM-DD').toDate();
+        return date;
+      }
+      return value;
+    })
+    .notRequired()
+    .typeError('Debe ser una fecha válida en formato YYYY-MM-DD como 2001-05-27'),
+    descripcion: Yup.string().notRequired(),
+  });
+
+  export const registerValidationSchema = [basicInfoSchema, contactSchema, pricingSchema, FinancialSchema]
