@@ -4,9 +4,13 @@ import PatientSchema from './Utils/zod-schemas/zodPatientSchema';
 import SpecialistSchema from './Utils/zod-schemas/zodSpecialistSchema';
 import UserSchema from './Utils/zod-schemas/zodUserSchema';
 import { Dayjs } from 'dayjs';
+import ProductSchema from './Utils/zod-schemas/ZodProductsSchema';
 
 // Merge de los distintos tipos, los zods separados ayudan a saber de donde vienen 
-const registerSchema = PatientSchema.merge(SpecialistSchema).merge(UserSchema); 
+const registerSchema = PatientSchema
+.merge(SpecialistSchema)
+.merge(UserSchema)
+.merge(ProductSchema); 
 
 export type RegisterSchemaValues = z.infer<typeof registerSchema>;
 
@@ -32,6 +36,8 @@ const useDataRegisterStore = create<RegisterSchemaValues & RegisterSchemaActions
     metodo_pago: '',
     fecha_expiracion: null,
     cvv: '',
+    precio:0,
+    categoria:"Basico",
     setRegisterData: (name, value) => {
         try {
             const validatedName = name as keyof RegisterSchemaValues;

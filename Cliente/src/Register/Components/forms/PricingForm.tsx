@@ -1,3 +1,4 @@
+import  { useState } from "react";
 import { Box, Button, FormHelperText } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -5,43 +6,43 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import StarIcon from "@mui/icons-material/StarBorder";
+import StarIcon from '@mui/icons-material/Star';
 import Typography from "@mui/material/Typography";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { styled } from "@mui/system";
 import { ErrorMessage, Field, FieldProps, useFormikContext} from "formik";
-
+import useDataRegisterStore from "../../ZustandRegisterManagement";
 
 const tiers = [
   {
     title: "Basico",
-    price: "0",
+    price: 0,
     description: [
       "Acceso basico a informacion personal",
     ],
-    buttonText: "Sign up for free",
+    buttonText: "SELECCIONAR",
   },
   {
     title: "Familiar",
     subheader: "Mas popular",
     position: "middle",
-    price: "1000",
+    price: 1000,
     description: [
       "Status de procemientos en tiempo real",
       "Cuenta para hasta 5 personas",
       "No anuncios",
     ],
-    buttonText: "Get started",
+    buttonText: "SELECCIONAR",
   },
   {
     title: "Paciente",
-    price: "600",
+    price: 600,
     description: [
       "Info acerca de centros medicos",
       "Info acerca de servicios cubiertos",
       "No anuncios",
     ],
-    buttonText: "Contact us",
+    buttonText: "SELECCIONAR",
   },
 ];
 
@@ -52,9 +53,10 @@ const PricingList = styled("ul")({
 });
 
 export default function PricingForm() {
-  const pricing:string = 'pricing'
-
-  const formik = useFormikContext(); // obtener el contexto de Formik en ves de buscarlo desde arriba
+  const [selectedPlan, setSelectedPlan] = useState('');
+  const formik = useFormikContext(); // obtener el contexto de Formik en vez de buscarlo desde arriba
+  const { setRegisterData } = useDataRegisterStore();
+  const pricing = 'pricing';
 
   return (
     <Field
@@ -62,7 +64,6 @@ export default function PricingForm() {
       name={pricing}
     >
       {({ form }: FieldProps) => (
-        //si van a usar este solo saquen el container
         <Container maxWidth="md" component="main">
           <Grid container spacing={2} alignItems="flex-end">
             {tiers.map((tier, index) => (
@@ -73,12 +74,12 @@ export default function PricingForm() {
                 sm={6}
                 md={4}
               >
-
                 <Box>
                   <Card sx={{
                     backgroundColor: tier.position === "middle" ? "#52b69a" : "white",
                     boxShadow: tier.position === 'middle' ? "4px 4px" : 3,
-                    border: tier.position === 'middle' ? "2px black solid" : "none",
+                    border: tier.position === 'middle' ? "2px black solid" : selectedPlan === tier.title ? "1px black solid" :"1px black",
+                    borderColor: selectedPlan === tier.title ? "#168aad" : "inherit",
                     borderRadius: "2vh",
                     minHeight: tier.position === "middle" ? "60vh" : "50vh",
                     width: "15rem", display: 'flex', flexDirection: 'column', height: '100%'
@@ -87,11 +88,10 @@ export default function PricingForm() {
                       title={tier.title}
                       subheader={tier.subheader}
                       titleTypographyProps={{ align: "center" }}
-                      //action={tier.title === "familiar" ? <StarIcon /> : null} usar algo como esto para cuando se seleccione un plan
+                      action={selectedPlan === tier.title ? <StarIcon sx={{color:"yellow", textShadow:10}}/> : null}
                       subheaderTypographyProps={{
                         align: "center",
                       }}
-
                     />
                     <CardContent>
                       <Box
@@ -123,7 +123,6 @@ export default function PricingForm() {
                       </PricingList>
                     </CardContent>
                     <Box sx={{ flexGrow: 1 }} />
-
                     <CardActions sx={{ width: "13rem", alignSelf: 'center' }}>
                       <Button
                         fullWidth
@@ -132,22 +131,24 @@ export default function PricingForm() {
                         type="button"
                         onClick={() => {
                           console.log("Price clicked:", tier.price);
-                          formik.setFieldValue(pricing, tier.price); 
+                          formik.setFieldValue(pricing, tier.price);
+
+                          setRegisterData("precio", tier.price);
+                          setRegisterData("categoria", tier.title);
+
+                          setSelectedPlan(tier.title); 
                         }}
                       >
                         {tier.buttonText}
                       </Button>
                     </CardActions>
-                    
                   </Card>
                 </Box>
-
               </Grid>
             ))}
           </Grid>
           {Boolean(form.errors[pricing] && form.touched[pricing]) && <ErrorMessage name={pricing} component={FormHelperText}></ErrorMessage>}
         </Container>
-        
       )}
     </Field>
   );
