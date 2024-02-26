@@ -9,7 +9,7 @@ import StarIcon from "@mui/icons-material/StarBorder";
 import Typography from "@mui/material/Typography";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { styled } from "@mui/system";
-import { ErrorMessage, Field, FieldProps} from "formik";
+import { ErrorMessage, Field, FieldProps, useFormikContext} from "formik";
 
 
 const tiers = [
@@ -52,10 +52,14 @@ const PricingList = styled("ul")({
 });
 
 export default function PricingForm() {
+  const pricing:string = 'pricing'
+
+  const formik = useFormikContext(); // obtener el contexto de Formik en ves de buscarlo desde arriba
+
   return (
     <Field
-      id="pricing"
-      name="pricing"
+      id={pricing}
+      name={pricing}
     >
       {({ form }: FieldProps) => (
         //si van a usar este solo saquen el container
@@ -126,19 +130,24 @@ export default function PricingForm() {
                         variant='contained'
                         sx={{ background: tier.position === 'middle' ? "#168aad" : "#52b69a" }}
                         type="button"
-                        onClick={() => console.log("Price clicked:", tier.price)}
+                        onClick={() => {
+                          console.log("Price clicked:", tier.price);
+                          formik.setFieldValue(pricing, tier.price); 
+                        }}
                       >
                         {tier.buttonText}
                       </Button>
                     </CardActions>
-                    {Boolean(form.errors["pricing"] && form.touched["pricing"]) && <ErrorMessage name="pricing" component={FormHelperText}></ErrorMessage>}
+                    
                   </Card>
                 </Box>
 
               </Grid>
             ))}
           </Grid>
+          {Boolean(form.errors[pricing] && form.touched[pricing]) && <ErrorMessage name={pricing} component={FormHelperText}></ErrorMessage>}
         </Container>
+        
       )}
     </Field>
   );

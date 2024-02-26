@@ -18,6 +18,7 @@ import PricingForm from "./forms/PricingForm";
 //Arreglar fecha y cedula
 
 const initialValues = [
+    {pricing:""},
     {nombre: "",
     apellido: "",
     sexo:"",

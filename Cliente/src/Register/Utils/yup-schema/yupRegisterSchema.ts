@@ -51,4 +51,8 @@ const contactSchema = Yup.object({
       .required('Requerido'),
   });
 
-  export const registerValidationSchema = [basicInfoSchema, contactSchema]
+  const pricingSchema = Yup.object({
+    pricing: Yup.string().required("Plan requerido")
+  })
+
+  export const registerValidationSchema = [pricingSchema, basicInfoSchema, contactSchema]
