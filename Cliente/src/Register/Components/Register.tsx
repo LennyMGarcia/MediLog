@@ -18,19 +18,26 @@ import PricingForm from "./forms/PricingForm";
 //Arreglar fecha y cedula
 
 const initialValues = [
-    {pricing:""},
-    {nombre: "",
-    apellido: "",
-    sexo:"",
-    //fecha_nacimiento:"",
-    tipo:"",
-    especialidad:"",
-    documento_identidad:""},
+    {
+        nombre: "",
+        apellido: "",
+        sexo:"",
+        fecha_nacimiento:"",
+        tipo:"",
+        especialidad:"",
+        documento_identidad:""
+    },
 
-    {correo:"",
-    contrasena:"",
-    confirmarContrasena:""
-}]
+    {
+        correo:"",
+        contrasena:"",
+        confirmarContrasena:""
+    },
+
+    {
+        pricing:""
+    },
+]
 
 
 
@@ -51,13 +58,11 @@ const Register: React.FC = () => {
 
     const {getRegisterData } = useDataRegisterStore();
 
-    
-
     const { currentStepIndex, step, next, back } = useMultiForm([
-        <PricingForm/>,
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
         <ContactInformationForm />,
-        <FinancialInformationForm/>
+        <PricingForm/>,
+        <FinancialInformationForm/>,
     ])
 
     return (

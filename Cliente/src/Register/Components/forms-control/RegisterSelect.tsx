@@ -58,7 +58,7 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                             sx={{height: '2rem', fontSize:"0.9rem",
                              mb:"1px", maxWidth: isMediumScreen? "29.25rem" : "18.75rem"}}
                         >
-                            <MenuItem key="" value="" disabled defaultValue="sel" sx={{border:"1px black dotted"}}>
+                            <MenuItem key="" value="" disabled defaultValue="sel" >
                                 Seleccione una opcion
                             </MenuItem>
                             {Array.isArray(selectObject) ? ( //Revisa si hay un array de objetos y lo recorre

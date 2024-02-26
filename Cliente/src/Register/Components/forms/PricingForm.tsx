@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import  { useEffect, useState } from "react";
 import { Box, Button, FormHelperText } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -14,6 +14,7 @@ import { ErrorMessage, Field, FieldProps, useFormikContext} from "formik";
 import useDataRegisterStore from "../../ZustandRegisterManagement";
 
 const tiers = [
+  
   {
     title: "Basico",
     price: 0,
@@ -55,8 +56,16 @@ const PricingList = styled("ul")({
 export default function PricingForm() {
   const [selectedPlan, setSelectedPlan] = useState('');
   const formik = useFormikContext(); // obtener el contexto de Formik en vez de buscarlo desde arriba
-  const { setRegisterData } = useDataRegisterStore();
+  const { setRegisterData, getRegisterData } = useDataRegisterStore();
   const pricing = 'pricing';
+
+    useEffect(() => {
+      const state = getRegisterData("categoria");
+      if (!state) {
+          setSelectedPlan('');
+      }
+      setSelectedPlan(String(state))
+  }, [selectedPlan, setSelectedPlan, getRegisterData]);
 
   return (
     <Field
@@ -134,6 +143,7 @@ export default function PricingForm() {
                           formik.setFieldValue(pricing, tier.price);
 
                           setRegisterData("precio", tier.price);
+                          setRegisterData("monto", tier.price);
                           setRegisterData("categoria", tier.title);
 
                           setSelectedPlan(tier.title); 
