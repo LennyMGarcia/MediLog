@@ -33,7 +33,7 @@ const useDataRegisterStore = create<RegisterSchemaValues & RegisterSchemaActions
     especialidad: '',
     member_id: 0,
     contrasena: '',
-    tipo: 'Paciente',
+    tipo: '',
     plan: null,
     metodo_pago: 'Tarjeta de Credito',
     datos_financieros:null,

@@ -2,6 +2,7 @@ import React from "react";
 import RegistrationControl from "../forms-control/RegistratioControl";
 import { Box, Typography } from "@mui/material";
 import useDataRegisterStore from "../../ZustandRegisterManagement";
+import BoxRowWrapper from "../style/Wrappers/BoxRowWrapper";
 
 const FinancialInformationForm: React.FC = () => {
     const { getRegisterData } = useDataRegisterStore();
@@ -11,20 +12,7 @@ const FinancialInformationForm: React.FC = () => {
             <Box>
                 <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Informacion Financiera</Typography></Box>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: { xs: 'column', md: 'row' },
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        '& > *': { //hijos directos
-                            maxWidth: { xs: '100vw', md: '14rem' },
-                            marginBottom: { xs: '0.625rem', md: 0 },
-                            marginRight: { xs: 0, md: '0.938rem' },
-                            flex: 1,
-                        },
-                    }}
-                >
+                <BoxRowWrapper>
                     <RegistrationControl
                         control="input"
                         label="Monto"
@@ -40,9 +28,7 @@ const FinancialInformationForm: React.FC = () => {
                         disabled
                         value={getRegisterData("categoria")}
                         />
-
-                </Box>
-
+                </BoxRowWrapper>
 
                 <Box>
                     <RegistrationControl
@@ -52,24 +38,25 @@ const FinancialInformationForm: React.FC = () => {
                         selectObject={[
                             { key: "Tarjeta de credito", value: "Tarjeta de credito" },
                             { key: "Tarjeta de debito", value: "Tarjeta de debito" },
-
                         ]}
                     />
                 </Box>
-                <Box>
+                <BoxRowWrapper>
                     <RegistrationControl
                         control="input"
                         label="Tarjeta de credito "
                         name="datos_financieros"
-                        placeholder="Escriba su tarjeta" />
-                </Box>
-                <Box>
+                        placeholder="Escriba su tarjeta" 
+                        />
+            
                     <RegistrationControl
                         control="input"
                         label="CVV"
                         name="cvv"
-                        placeholder="Escriba su cvv" />
-                </Box>
+                        placeholder="Escriba su cvv" 
+                        />
+                </BoxRowWrapper>
+
                 <Box>
                     <RegistrationControl
                         control="date"

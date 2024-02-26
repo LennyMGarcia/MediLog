@@ -1,6 +1,7 @@
 import React from "react";
 import RegistrationControl from "../forms-control/RegistratioControl";
 import { Box, Typography } from "@mui/material";
+import BoxRowWrapper from "../style/Wrappers/BoxRowWrapper";
 
 
 interface IBasicInformationForm {
@@ -12,20 +13,7 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
         <>
             <Box>
                 <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Informacion Basica</Typography></Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: { xs: 'column', md: 'row' },
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        '& > *': { //hijos directos
-                            maxWidth: { xs: '100vw', md: '14rem' },
-                            marginBottom: { xs: '0.625rem', md: 0 },
-                            marginRight: { xs: 0, md: '0.938rem' },
-                            flex: 1,
-                        },
-                    }}
-                >
+                <BoxRowWrapper  >
                     <RegistrationControl
                         control="input"
                         label="Nombre"
@@ -38,8 +26,7 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                         name="apellido"
                         placeholder="Escriba su apellido"
                     />
-                </Box>
-
+                </BoxRowWrapper>
 
                 <Box>
                     <RegistrationControl
@@ -57,9 +44,7 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                 <Box><RegistrationControl
                     control="date"
                     label="Fecha de nacimiento"
-                    name="fecha_nacimiento"
-
-                />
+                    name="fecha_nacimiento"/>
 
                 </Box>
 
@@ -71,7 +56,6 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                         selectObject={[
                             { key: "Paciente", value: "Paciente" },
                             { key: "Especialista", value: "Especialista" },
-
                         ]}
                     />
                 </Box>
