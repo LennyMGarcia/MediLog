@@ -87,7 +87,7 @@ export default function PricingForm() {
                       title={tier.title}
                       subheader={tier.subheader}
                       titleTypographyProps={{ align: "center" }}
-                      action={tier.title === "Pro" ? <StarIcon /> : null}
+                      //action={tier.title === "familiar" ? <StarIcon /> : null} usar algo como esto para cuando se seleccione un plan
                       subheaderTypographyProps={{
                         align: "center",
                       }}
