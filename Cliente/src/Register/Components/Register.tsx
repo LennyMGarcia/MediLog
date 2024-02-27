@@ -24,8 +24,8 @@ const initialValues = [
         sexo:"",
         fecha_nacimiento:"",
         tipo:"",
-        especialidad:"",
-        documento_identidad:""
+        especialidad:undefined,
+        documento_identidad:undefined
     },
 
     {
@@ -39,7 +39,11 @@ const initialValues = [
     },
 
     {
-        
+        metodo_pago: '',
+        datos_financieros: '',
+        cvv: '',
+        fecha_expiracion: '',
+        descripcion: '',
     }
 ]
 

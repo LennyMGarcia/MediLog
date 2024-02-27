@@ -13,8 +13,10 @@ import { styled } from "@mui/system";
 import { ErrorMessage, Field, FieldProps, useFormikContext} from "formik";
 import useDataRegisterStore from "../../ZustandRegisterManagement";
 
+
+
 const tiers = [
-  
+  [
   {
     title: "Basico",
     price: 0,
@@ -44,8 +46,44 @@ const tiers = [
       "No anuncios",
     ],
     buttonText: "SELECCIONAR",
-  },
+  }
+  ],
+
+  [
+    {
+      title: "Independiente",
+      price: 3000,
+      description: [
+        "Acceso basico a aplicaciones Web, Movil y Escritorio",
+        " Acceso a 50TB de memoria"
+      ],
+      buttonText: "SELECCIONAR",
+    },
+    {
+      title: "Hospitales",
+      subheader: "Mas popular",
+      position: "middle",
+      price: 7000,
+      description: [
+        "Todo incluido",
+        " Acceso a 450TB de memoria",
+        "Mantenimiento de base de datos"
+      ],
+      buttonText: "SELECCIONAR",
+    },
+    {
+      title: "Especialista",
+      price: 5000,
+      description: [
+        "Todo incluido",
+        " Acceso a 250TB de memoria",
+        "Mantenimiento de base de datos"
+      ],
+      buttonText: "SELECCIONAR",
+    },
+  ]
 ];
+
 
 const PricingList = styled("ul")({
   margin: 0,
@@ -58,6 +96,8 @@ export default function PricingForm() {
   const formik = useFormikContext(); // obtener el contexto de Formik en vez de buscarlo desde arriba
   const { setRegisterData, getRegisterData } = useDataRegisterStore();
   const pricing = 'pricing';
+
+  const tierIndex = getRegisterData('tipo') == "Paciente" ? 0 : 1
 
     useEffect(() => {
       const state = getRegisterData("categoria");
@@ -75,7 +115,7 @@ export default function PricingForm() {
       {({ form }: FieldProps) => (
         <Container maxWidth="md" component="main">
           <Grid container spacing={2} alignItems="flex-end">
-            {tiers.map((tier, index) => (
+            {tiers[tierIndex].map((tier, index) => (
               <Grid
                 item
                 key={index}

@@ -36,8 +36,8 @@ const FinancialInformationForm: React.FC = () => {
                         label="Metodo de pago"
                         name="metodo_pago"
                         selectObject={[
-                            { key: "Tarjeta de credito", value: "Tarjeta de credito" },
-                            { key: "Tarjeta de debito", value: "Tarjeta de debito" },
+                            { key: "Tarjeta de credito", value: "Tarjeta de Credito" },
+                            { key: "Tarjeta de debito", value: "Tarjeta de Debito" },
                         ]}
                     />
                 </Box>

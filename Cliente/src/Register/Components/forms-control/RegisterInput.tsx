@@ -32,7 +32,8 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
                         variant="filled"
                         color="primary"
                         fullWidth
-                        value={field.value}
+                        
+                        value={field.value || ""}
                         onChange={(e) => {
                             field.onChange(e);
                             handleChange(e);
