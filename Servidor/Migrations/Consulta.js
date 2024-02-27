@@ -14,7 +14,7 @@ class Consulta extends Model {
             'plan_tratamiento',
             'visibilidad',
             'eliminado',
-        ]
+        ];
     }
     async insert(data = null) {
         if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios', 'status': 400 }];

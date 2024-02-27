@@ -13,20 +13,38 @@ class Model {
         this.table = table;
     }
     async get() {
-        const query = new Builder(this.table);
-        const [result, fields] = await DB.query(query.select_query('*'));
-        return result;
+        try {
+            const query = new Builder(this.table);
+            const [result, fields] = await DB.query(query.select_query('*'));
+            return result;
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
     }
     async find(id) {
-        this.id = id;
-        const query = new Builder(this.table);
-        const [result, fields] = await DB.query(query.select_query('*', 'id'), [this.id]);
-        return result[0];
+        try {
+            this.id = id;
+            const query = new Builder(this.table);
+            const [result, fields] = await DB.query(query.select_query('*', 'id'), [this.id]);
+            return result[0];
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
     }
     async delete(id) {
-        this.id = id;
-        const [result, fields] = await DB.query(`DELETE FROM ${this.table} WHERE id = ?`, [this.id]);
-        return result;
+        try {
+            this.id = id;
+            const [result, fields] = await DB.query(`DELETE FROM ${this.table} WHERE id = ?`, [this.id]);
+            return result;
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
     }
 }
 
