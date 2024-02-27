@@ -3,6 +3,8 @@ const DB = require('../Utils/db_connect');
 const Builder = require('../Utils/query_helper');
 const bcrypt = require('bcrypt');
 const salt_level = 10;
+const Paciente = require('./Paciente');
+const Especialista = require('./Especialista');
 
 class Usuario extends Model {
     constructor(id = null) {
@@ -48,7 +50,7 @@ class Usuario extends Model {
         try {
             this.data = data;
             this.values = [
-                this.data.member_id,
+                this.data.member_id || null,
                 this.data.correo,
                 this.data.contrasena,
                 this.data.tipo || 'Paciente',
@@ -59,16 +61,66 @@ class Usuario extends Model {
                 this.data.fecha_expiracion || null,
                 this.data.eliminado || false,
             ];
+
+            //Funccion que encripta la contrasena
             const salt = await bcrypt.genSalt(salt_level);
             const hashed_password = await bcrypt.hash(this.data.contrasena, salt);
             if (!hashed_password) res.json({ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña', 'status': 400 });
 
             this.values[2] = hashed_password;
 
-            const query = new Builder(this.table);
-            const [results, fields] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
+            //Condicion que crea el usuario segun su tipo (Paciente / Especialista)
+            if (this.values[3] === 'Paciente') {
+                this.pacientes_values = {
+                    'nombre': this.data.nombre,
+                    'apellido': this.data.apellido,
+                    'fecha_nacimiento': this.data.fecha_nacimiento,
+                    'documento_identidad': this.data.documento_identidad || 'X-XXXXXXXXXX-XXX',
+                    'sexo': this.data.sexo || null,
+                    'correo': this.data.correo,
+                    'direccion': this.data.direccion || null,
+                    'telefono': this.data.telefono || null,
+                    'tipo_sangre': this.data.tipo_sangre || null,
+                    'padecimientos': this.data.padecimientos || null,
+                    'alergias': this.data.alergias || null,
+                    'familiares_id': this.data.familiares_id || null,
+                };
 
-            return results;
+                const paciente = new Paciente();
+                const model = await paciente.insert(this.pacientes_values);
+
+                //Condicion que registra el usuario solamente si se creo el especialista correctamente.
+
+                if (model.insertId) {
+                    this.values[0] = model.insertId;
+                    const query = new Builder(this.table);
+                    const [results, field] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
+                    return results;
+                }
+                return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 500 }];
+            } else {
+                this.especialistas_values = {
+                    'nombre': this.data.nombre,
+                    'apellido': this.data.apellido,
+                    'sexo': this.data.sexo || null,
+                    'fecha_nacimiento': this.data.fecha_nacimiento || null,
+                    'correo': this.data.correo,
+                    'direccion': this.data.direccion || null,
+                    'telefono': this.data.telefono || null,
+                    'especialidad': this.data.especialidad,
+                };
+                const especialista = new Especialista();
+                const model = await especialista.insert(this.especialistas_values);
+
+                //Condicion que registra el usuario solamente si se creo el especialista correctamente.
+                if (model.insertId) {
+                    this.values[0] = model.insertId;
+                    const query = new Builder(this.table);
+                    const [results, field] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
+                    return results;
+                }
+                return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 500 }];
+            }
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
             // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
@@ -81,7 +133,6 @@ class Usuario extends Model {
         try {
             this.data = data;
             this.values = [
-                this.data.member_id,
                 this.data.correo,
                 this.data.contrasena,
                 this.data.tipo || 'Paciente',
@@ -92,8 +143,20 @@ class Usuario extends Model {
                 this.data.fecha_expiracion || null,
                 this.data.eliminado || false,
             ];
+
+            this.editable_columns = [
+                'correo',
+                'contrasena',
+                'tipo',
+                'plan',
+                'metodo_pago',
+                'datos_financieros',
+                'cvv',
+                'fecha_expiracion',
+                'eliminado',
+            ];
             const query = new Builder(this.table);
-            const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values)
+            const [results, fields] = await DB.execute(query.update_query(this.editable_columns, this.values, id), this.values)
 
             return results;
         } catch (error) {

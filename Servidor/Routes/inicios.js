@@ -6,20 +6,13 @@ const salt_level = 10;
 
 router.post('/register', async (req, res) => {
     const data = req.body;
-
     //Condicion que verifica si los campos obligatorios estan incluidos
-    if (!data.member_id || !data.correo || !data.contrasena) return res.status(400).json({ 'message': 'Campos Obligatorios.' });
+    if (!data.correo || !data.contrasena) return res.status(400).json({ 'message': 'Campos Obligatorios' });
 
-    //Funccion que encripta la contrasena del usuario antes de creacion
-    const salt = await bcrypt.genSalt(salt_level);
-    const hashed_password = await bcrypt.hash(data.contrasena, salt);
-    if (!hashed_password) res.status(400).json({ 'message': 'Por favor, Intentar Otra Contraseña.' });
-
-    data.contrasena = hashed_password;
     const model = new Usuario();
     const result = await model.insert(data);
 
-    if (result[0].success === false) return res.status(result[0].status).json(result);
+    if (result[0]?.success === false) return res.status(result[0].status).json(result);
 
     return res.status(201).json(result);
 });
