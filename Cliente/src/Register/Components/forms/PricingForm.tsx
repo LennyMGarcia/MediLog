@@ -180,7 +180,7 @@ export default function PricingForm() {
                         type="button"
                         onClick={() => {
                           console.log("Price clicked:", tier.price);
-                          formik.setFieldValue(pricing, tier.price);
+                          formik.setFieldValue(pricing, tier.title);
 
                           setRegisterData("precio", tier.price);
                           setRegisterData("monto", tier.price);

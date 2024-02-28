@@ -52,7 +52,11 @@ const contactSchema = Yup.object({
   });
 
   const pricingSchema = Yup.object({
-    pricing: Yup.string().required("Plan requerido")
+    pricing: Yup.string().required("Plan requerido").when('tipo', {
+      is: "Paciente",
+      then: (basicInfoSchema) => basicInfoSchema.oneOf(['Basico', 'Familiar', "Paciente"], "Debe seleccionar un plan basico, familiar o paciente").required("requerido"),
+      otherwise: (basicInfoSchema) => basicInfoSchema.oneOf(['Independiente', 'Hospitales', "Especialista"], "debe seleccionar un plan independiente, de especialista o hospitalario").required("requerido"),
+    }),
   });
 
   const FinancialSchema = Yup.object({

@@ -17,6 +17,8 @@ import PricingForm from "./forms/PricingForm";
 //Crear posible tema de material para que no se vea asi
 //Arreglar fecha y cedula
 
+//Crear pricing condicional, si eres paciente no puedes ir a cojer algo que no es tuyo
+
 const initialValues = [
     {
         nombre: "",
