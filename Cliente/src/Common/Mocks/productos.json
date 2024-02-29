@@ -1,0 +1,9 @@
+[
+    {
+        "id": 1,
+        "nombre": "Basico",
+        "categoria": "Paciente",
+        "precio": 500,
+        "fecha": "2024-02-16T04:25:54.000Z"
+    }
+]

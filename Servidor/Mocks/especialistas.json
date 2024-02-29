@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "nombre": "Fulano",
+        "apellido": "Detal",
+        "sexo": "M",
+        "fecha_nacimiento": "2003-04-04T05:00:00.000Z",
+        "correo": "testtes11t@gmail.com",
+        "direccion": "Santo Domingo, RD",
+        "telefono": "8523697412",
+        "especialidad": "Terapeuta",
+        "eliminado": 0,
+        "fecha": "2024-02-16T04:25:54.000Z"
+    }
+]
