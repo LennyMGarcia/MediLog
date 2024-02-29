@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
 import Navbar from "../Common/Components/Navbar";
 import { Box } from "@mui/material";
+import Footer from "../Common/Components/Footer";
 
 export default function NoPrivate() {
   return (
@@ -14,6 +15,7 @@ export default function NoPrivate() {
       <Box>
         <Outlet />
       </Box>
+      <Footer />
     </Box>
   );
 }

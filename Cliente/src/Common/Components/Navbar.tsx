@@ -1,4 +1,4 @@
-import { Box, Grid, Link, Typography } from "@mui/material";
+import { Box, Button, Grid, Link, Typography } from "@mui/material";
 
 export default function Navbar() {
   const navbarLinks = [
@@ -31,78 +31,80 @@ export default function Navbar() {
       xs={12}
       sx={{
         width: "100%",
+        backgroundColor: "#184E77",
       }}
+      display={"flex"}
+      justifyContent={"space-between"}
+      color={"#FFFFFF"}
+      flexDirection={"row"}
+      padding={"10px"}
     >
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          // height: "100%",
-          flexDirection: "row",
-          // backgroundColor: "var(--secciones-pagina.#184E77)",
-          backgroundColor: "#184E77",
-          justifyContent: "space-between",
-          color: "#FFFFFF",
-          padding: "10px",
-        }}
+      <Grid
+        xs={3}
+        item
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
       >
-        <Grid>
-          <Box
-            sx={{
-              display: "flex",
-              // height: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "25px",
-                fontWeight: "600",
-                textTransform: "uppercase",
-              }}
-            >
-              MediLog
-            </Typography>
-          </Box>
+        <Typography
+          sx={{
+            fontSize: "25px",
+            fontWeight: "600",
+            textTransform: "uppercase",
+          }}
+        >
+          MediLog
+        </Typography>
+      </Grid>
+
+      <Grid
+        item
+        container
+        xs={6}
+        display={"flex"}
+        flexDirection={"row"}
+        gap={"24px"}
+        alignItems={"center"}
+        marginRight={"15px"}
+        justifyContent={"space-between"}
+      >
+        <Grid item container xs={6} direction="row" display={"flex"} gap={1}>
+          {navbarLinks.map((nav, idx) => {
+            return (
+              // <Grid item display={"flex"}>
+              <Link
+                href={nav.link}
+                key={idx}
+                style={{
+                  color: "#FFFFFF",
+                  textDecorationLine: "none",
+                  // width: "20%",
+                  // borderRight: "1px solid #958b8b",
+                  // borderLeft: "1px solid #958b8b",
+                  // display: "flex",
+                  // justifyContent: "center",
+                  // alignItems: "center",
+                  // width: "90px",
+                }}
+              >
+                {nav.name}
+              </Link>
+              // </Grid>
+            );
+          })}
         </Grid>
 
-        <Grid>
-          <Box
+        <Grid item xs={5} display={"flex"} gap={"10px"} alignItems={"center"}>
+          <Link
             sx={{
-              display: "flex",
-              // width: "100%",
-              flexDirection: "row",
-              gap: "24px",
-              alignItems: "center",
-              // padding: "16px",
-              height: "100%",
-              marginRight: "15px",
+              textDecorationLine: "none",
             }}
           >
-            {navbarLinks.map((nav, idx) => {
-              return (
-                <Link
-                  href={nav.link}
-                  key={idx}
-                  style={{
-                    color: "#FFFFFF",
-                    textDecorationLine: "none",
-                    // width: "20%",
-                    borderRight: "1px solid #958b8b",
-                    borderLeft: "1px solid #958b8b",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  {nav.name}
-                </Link>
-              );
-            })}
-          </Box>
+            Iniciar Sesion
+          </Link>
+          <Button variant="contained">Registrarte</Button>
         </Grid>
-      </Box>
+      </Grid>
     </Grid>
   );
 }
