@@ -1,17 +1,18 @@
-
-import './App.css'
-import Register from './Register/Components/Register'
+import { Box } from "@mui/material";
+import "./App.css";
+import RoutesProvider from "./Routes/Routes";
 
 function App() {
-
-
   return (
-    <>
-      <div style={{background:"#194E77", width:"100VW", height:"100px"}} ></div>
-      <Register></Register>
-      <div style={{background:"#194E77", width:"100VW", height:"100px"}} ></div>
-    </>
-  )
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <RoutesProvider />
+    </Box>
+  );
 }
 
-export default App
+export default App;
