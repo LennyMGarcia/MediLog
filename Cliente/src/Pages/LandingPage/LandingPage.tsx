@@ -3,24 +3,93 @@ import consultaPicture from "/assets/Pictures/ConsultaMedica.jpg";
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
+  // const founder = [
+  //   {
+  //     name: "Julio Sierra",
+  //     img: "/",
+  //     job: "Ingeniero en Sistmas",
+  //     descripcion: "Experimentado, meticuloso, innovador",
+  //   },
+  //   {
+  //     name: "Lenny Garcia",
+  //     img: "/",
+  //     job: "Ingeniero en Sistmas",
+  //     descripcion: "Apasionado, orientado a resultados, escalable",
+  //   },
+  //   {
+  //     name: "Ben Junior",
+  //     img: "/",
+  //     job: "Ingeniero en Sistmas",
+  //     descripcion: "Estratégico, líder, centrado en el usuario",
+  //   },
+  // ];
+
   const founder = [
     {
       name: "Julio Sierra",
-      img: "/",
-      job: "",
-      descripcion: "",
+      img: "https://www.themoviedb.org/person/73968-henry-cavill/images/profiles",
+      job: "Luchador por la igualdad para todos",
+      descripcion: "Buena persona, liberal, apoya a todo ser discriminado",
     },
     {
       name: "Lenny Garcia",
-      img: "/",
-      job: "",
-      descripcion: "",
+      img: "https://www.mtholyoke.edu/~nunez20y/worldpolitics/who%20was%20rafael%20leonidas%20trujillo.html",
+      job: "Machito blanco opresor",
+      descripcion: "clasista, machista, Racista",
     },
     {
-      name: "JBen Junior",
-      img: "/",
-      job: "",
-      descripcion: "",
+      name: "Ben Junior",
+      img: "http://shimenpun.wordpress.com/2013/03/07/adolf-hitler/",
+      job: "nigga",
+      descripcion: "Racista, machsita, facista",
+    },
+  ];
+
+  const planes = [
+    {
+      name: "Basico",
+      costo: "Gratis",
+      beneficios: [
+        "Acceso basico a informacion personal",
+        "Anuncios incorporados",
+        "Actualizaciones periódicas sobre temas de salud",
+      ],
+    },
+    {
+      name: "Paciente",
+      costo: "600",
+      beneficios: [
+        "Informacion acerca de centros medicos",
+        "Informacion acerca de servicios cubiertos",
+        "Registro de todos los casos medicos",
+      ],
+    },
+    {
+      name: "Familiar",
+      costo: "2000",
+      beneficios: [
+        "Status de procemientos en tiempo real",
+        "Cuenta para hasta 5 personas",
+        "Registro de todos los casos medicos en conjunto",
+      ],
+    },
+    {
+      name: "Doctores",
+      costo: "1200",
+      beneficios: [
+        "Disponibilidad para creacion de casos",
+        "Registro de casos de pacientes",
+        "Poder ver historial de casos de pacientes",
+      ],
+    },
+    {
+      name: "Centro Medicos",
+      costo: "10000",
+      beneficios: [
+        "Cuenta para hasta 10 medicos",
+        "Reportes Personalizados",
+        "Soporte Prioritario",
+      ],
     },
   ];
 
@@ -54,7 +123,7 @@ export default function LandingPage() {
       direction={"column"}
       // spacing={5}
       display={"flex"}
-      gap={"30px"}
+      gap={7}
       bgcolor={"#E9ECEF"}
     >
       <Grid
@@ -64,7 +133,9 @@ export default function LandingPage() {
         // border={"1px solid gray"}
         borderRadius={5}
         // padding={3}
-        spacing={1}
+        // spacing={1}
+        bgcolor={"#184E77"}
+        columnSpacing={2}
       >
         <Grid item container xs={6} spacing={1}>
           <Grid
@@ -77,6 +148,7 @@ export default function LandingPage() {
           >
             <Typography
               variant="h4"
+              color={"#E9ECEF"}
               sx={{
                 fontWeight: "600",
                 textAlign: "center",
@@ -88,6 +160,7 @@ export default function LandingPage() {
 
             <Typography
               variant="body1"
+              color={"#E9ECEF"}
               sx={{
                 fontWeight: "400",
                 textAlign: "center",
@@ -111,20 +184,22 @@ export default function LandingPage() {
             spacing={1}
             // padding={"10px"}
           >
-            <Grid item xs={3}>
+            <Grid item xs={3} justifyContent={"center"}>
               <Button
                 variant={"outlined"}
                 sx={{
                   textTransform: "capitalize",
+                  color: "#E9ECEF",
                 }}
               >
                 Iniciar Sesion
               </Button>
             </Grid>
 
-            <Grid item xs={5}>
+            <Grid item xs={5} textAlign={"center"}>
               <Typography
                 variant="body1"
+                color={"#E9ECEF"}
                 sx={{
                   fontSize: "18px",
                 }}
@@ -147,7 +222,212 @@ export default function LandingPage() {
         </Grid>
       </Grid>
 
-      <Grid></Grid>
+      <Grid item container xs={12} spacing={2}>
+        <Grid item xs={12}>
+          <Typography
+            variant="h5"
+            fontSize={20}
+            textAlign={"center"}
+            fontWeight={700}
+            color={"#8A898E"}
+          >
+            Planes
+          </Typography>
+          <Typography
+            fontSize={52}
+            fontWeight={700}
+            color={"#0B1B35"}
+            textAlign={"center"}
+          >
+            Nuestros planes y servicios
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          container
+          // spacing={2}
+          xs={12}
+          justifyContent={"space-around"}
+          direction={"row"}
+          gap={2}
+          // rowGap={5}
+          // columnGap={1}
+        >
+          {planes.map((plan, idx) => {
+            return (
+              <Grid
+                item
+                container
+                key={idx}
+                bgcolor={"#FFFFFF"}
+                borderRadius={"28px"}
+                xs={3}
+                // height={"408px"}
+                // spacing={1}
+                justifyContent={"center"}
+                padding={2}
+                gap={3}
+                sx={{
+                  boxShadow:
+                    "0px 12.521552085876465px 10.017241477966309px 0px rgba(0,0,0,0.09)",
+                }}
+              >
+                <Grid item xs={12} textAlign={"center"}>
+                  <Typography fontWeight={700} fontSize={36} color={"#000000"}>
+                    {plan.name}
+                  </Typography>
+                  <Typography
+                    fontWeight={700}
+                    fontSize={20}
+                    color={"#15143966"}
+                  >
+                    {plan.costo == "Gratis"
+                      ? plan.costo
+                      : `RD$${plan.costo}/mes`}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} spacing={"12px"}>
+                  <ul
+                    style={{
+                      // listStyleType: "none",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                    }}
+                  >
+                    {plan.beneficios.map((benefit, idx) => {
+                      return (
+                        <li key={idx}>
+                          <Typography fontWeight={400} fontSize={16}>
+                            {benefit}
+                          </Typography>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </Grid>
+                <Button
+                  variant="contained"
+                  sx={{
+                    height: "35px",
+
+                    fielset: {
+                      borderRadius: "10px",
+                    },
+                  }}
+                >
+                  Mas informacion
+                </Button>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Grid>
+
+      <Grid
+        item
+        container
+        xs={12}
+        // border={"1px solid gray"}
+        borderRadius={5}
+        padding={3}
+        gap={1}
+        bgcolor={"#184E77"}
+      >
+        <Grid item xs={12} direction={"column"}>
+          <Typography
+            variant="h5"
+            textAlign={"center"}
+            fontSize={20}
+            fontWeight={700}
+            color={"#8A898E"}
+          >
+            Sobre nosotros
+          </Typography>
+          <Typography
+            textAlign={"center"}
+            variant="h4"
+            fontSize={52}
+            fontWeight={700}
+            // color={"#0B1B35"}
+            color={"#CDCAD9"}
+          >
+            La Empresa
+          </Typography>
+          <Typography
+            textAlign={"center"}
+            fontWeight={400}
+            fontSize={16}
+            color={"#E9ECEF"}
+          >
+            SatoruScript desarrolla soluciones tecnológicas innovadoras para la
+            salud, enfocadas en mejorar la calidad de vida. Trabajamos con
+            profesionales de la salud para crear sistemas fiables y
+            personalizados. Nuestro equipo multidisciplinario se esfuerza por
+            superar expectativas y generar un impacto positivo en la salud
+            digital. ¡Gracias por confiar en nosotros!
+          </Typography>
+        </Grid>
+
+        <Grid item container xs={12} spacing={3}>
+          <Grid item xs={12}>
+            <Typography color={"#E9ECEF"}>Conoce a nuestro equipo:</Typography>
+          </Grid>
+          <Grid item container xs={12} spacing={2}>
+            {founder.map((found, idx) => {
+              return (
+                <Grid
+                  key={idx}
+                  xs={4}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  alignItems={"center"}
+                  gap={"20px"}
+                  // border={"1px solid #15143966"}
+                >
+                  {/* <Grid item xs={12}> */}
+                  <Avatar
+                    src={found.img}
+                    sx={{
+                      width: "90px",
+                      height: "90px",
+                    }}
+                  />
+                  <Grid xs={12}>
+                    <Typography
+                      textAlign={"center"}
+                      fontSize={22}
+                      fontWeight={700}
+                      // color={"E9ECEF"}
+                      color={"#E9ECEF"}
+                    >
+                      {found.name}
+                    </Typography>
+                    {/* <Typography
+                    textAlign={"center"}
+                    fontSize={18}
+                    color={"#15143966"}
+                    fontWeight={400}
+                  >
+                    {found.descripcion}
+                  </Typography> */}
+                    <Typography
+                      textAlign={"center"}
+                      fontSize={14}
+                      // color={"#15143966"}
+                      color={"#CDCAD9"}
+                      fontWeight={400}
+                    >
+                      {found.job}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Grid>
+      </Grid>
 
       <Grid
         item
@@ -173,6 +453,7 @@ export default function LandingPage() {
             textAlign={"center"}
             fontSize={52}
             fontWeight={700}
+            color={"#0B1B35"}
           >
             Lo que los clientes dicen de nosotros!!
           </Typography>
@@ -267,78 +548,6 @@ export default function LandingPage() {
         padding={3}
         gap={2}
       >
-        <Grid item xs={12} direction={"column"}>
-          <Typography
-            variant="h5"
-            textAlign={"center"}
-            fontSize={20}
-            fontWeight={700}
-            color={"#8A898E"}
-          >
-            Sobre nosotros
-          </Typography>
-          <Typography
-            textAlign={"center"}
-            variant="h4"
-            fontSize={52}
-            fontWeight={700}
-          >
-            La Empresa
-          </Typography>
-          <Typography textAlign={"center"} fontWeight={400} fontSize={16}>
-            SatoruScript desarrolla soluciones tecnológicas innovadoras para la
-            salud, enfocadas en mejorar la calidad de vida. Trabajamos con
-            profesionales de la salud para crear sistemas fiables y
-            personalizados. Nuestro equipo multidisciplinario se esfuerza por
-            superar expectativas y generar un impacto positivo en la salud
-            digital. ¡Gracias por confiar en nosotros!
-          </Typography>
-        </Grid>
-
-        <Grid item container xs={12} spacing={1}>
-          <Grid item xs={12}>
-            <Typography>Conoce a nuestro equipo</Typography>
-          </Grid>
-          <Grid item container xs={12}>
-            {founder.map((found, idx) => {
-              return (
-                <Grid
-                  key={idx}
-                  xs={4}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  alignItems={"center"}
-                  gap={"20px"}
-                >
-                  {/* <Grid item xs={12}> */}
-                  <Avatar
-                    sx={{
-                      width: "90px",
-                      height: "90px",
-                    }}
-                  />
-                  {/* </Grid> */}
-                  <Typography textAlign={"center"}>{found.name}</Typography>
-                  <Typography textAlign={"center"}>{found.job}</Typography>
-                  <Typography textAlign={"center"}>
-                    {found.descripcion}
-                  </Typography>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid
-        item
-        container
-        xs={12}
-        // border={"1px solid gray"}
-        borderRadius={5}
-        padding={3}
-        gap={2}
-      >
         <Grid item xs={12}>
           <Typography
             variant="h5"
@@ -354,6 +563,7 @@ export default function LandingPage() {
             variant="h4"
             fontSize={52}
             fontWeight={700}
+            color={"#0B1B35"}
           >
             Habla con nosotros
           </Typography>

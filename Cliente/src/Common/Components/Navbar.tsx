@@ -37,10 +37,10 @@ export default function Navbar() {
       justifyContent={"space-between"}
       color={"#FFFFFF"}
       flexDirection={"row"}
-      padding={"10px"}
+      padding={"10px 35px"}
     >
       <Grid
-        xs={3}
+        xs={1}
         item
         display={"flex"}
         alignItems={"center"}
@@ -60,15 +60,15 @@ export default function Navbar() {
       <Grid
         item
         container
-        xs={6}
+        xs={7}
         display={"flex"}
         flexDirection={"row"}
-        gap={"24px"}
+        // gap={"24px"}
         alignItems={"center"}
-        marginRight={"15px"}
+        // marginRight={"15px"}
         justifyContent={"space-between"}
       >
-        <Grid item container xs={6} direction="row" display={"flex"} gap={1}>
+        <Grid item container xs={7} direction="row" display={"flex"} gap={1}>
           {navbarLinks.map((nav, idx) => {
             return (
               // <Grid item display={"flex"}>
@@ -78,6 +78,7 @@ export default function Navbar() {
                 style={{
                   color: "#FFFFFF",
                   textDecorationLine: "none",
+                  padding: "5px 10px",
                   // width: "20%",
                   // borderRight: "1px solid #958b8b",
                   // borderLeft: "1px solid #958b8b",
@@ -94,7 +95,14 @@ export default function Navbar() {
           })}
         </Grid>
 
-        <Grid item xs={5} display={"flex"} gap={"10px"} alignItems={"center"}>
+        <Grid
+          item
+          xs={4}
+          display={"flex"}
+          gap={"10px"}
+          alignItems={"center"}
+          justifyContent={"flex-end"}
+        >
           <Link
             sx={{
               textDecorationLine: "none",
