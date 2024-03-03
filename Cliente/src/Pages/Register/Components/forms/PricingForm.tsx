@@ -110,7 +110,7 @@ export default function PricingForm() {
 
   return (
     <React.Fragment>
-      <Box sx={{ textAlign: "center", mb:"2rem", mt:"1rem" }}><Typography variant={"h5"}>Selección de Planes</Typography></Box>
+      <Box sx={{ textAlign: "center", mb:"0.5rem"}}><Typography variant={"h5"}>Selección de Planes</Typography></Box>
       <Field
         id={pricing}
         name={pricing}

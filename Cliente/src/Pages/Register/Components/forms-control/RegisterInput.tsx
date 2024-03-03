@@ -1,6 +1,6 @@
-import { Field, FieldProps } from 'formik';
-import { Box, TextField, TextFieldProps, useMediaQuery, useTheme } from '@mui/material';
-import { ChangeEvent } from 'react';
+import { ErrorMessage, Field, FieldProps } from 'formik';
+import { Box, FormHelperText, TextField, TextFieldProps, useMediaQuery, useTheme } from '@mui/material';
+import React, { ChangeEvent } from 'react';
 import useDataRegisterStore, { getAllRegisterData } from "../../ZustandRegisterManagement";
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
@@ -13,7 +13,7 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
     const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = (e: ChangeEvent<any>) => {
-        const value = e.target.value;
+        const value = e.target.value.trim();
         console.log(getAllRegisterData());
         setRegisterData(name, value);
     };
@@ -26,6 +26,7 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
             {label && <label htmlFor={name} style={{fontSize:"0.9rem", marginBottom:"2px"}}>{label}</label>}
             <Field id={name} name={name}>
                 {({ field, form }: FieldProps) => (
+                   <React.Fragment>
                     <TextField
                         id={name}
                         placeholder={placeHolder ? `${placeHolder}` : ""}
@@ -39,7 +40,6 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
                             handleChange(e);
                         }}
                         error={Boolean(form.errors[name] && form.touched[name])}
-                        helperText={form.errors[name] && form.touched[name] ? String(form.errors[name]) : ''}
                         {...rest}
                         sx={{
                             '& .MuiInputBase-root': { //elementos que tienen textfield le aplica el heigth
@@ -48,6 +48,12 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
                             display: "block",
                         }}
                     />
+                    <ErrorMessage name={name}>
+                            {(msg) => (
+                                <FormHelperText style={{ color: 'red' }}>{msg}</FormHelperText>
+                            )}
+                        </ErrorMessage>
+                    </React.Fragment>
                 )}
             </Field>
         </Box>

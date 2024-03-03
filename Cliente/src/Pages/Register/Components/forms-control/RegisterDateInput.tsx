@@ -2,8 +2,8 @@ import * as React from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
-import { Field, FieldProps, useFormikContext } from 'formik';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { ErrorMessage, Field, useFormikContext } from 'formik';
+import { Box, FormHelperText, useMediaQuery, useTheme } from '@mui/material';
 import useDataRegisterStore from "../../ZustandRegisterManagement";
 import dayjs, { Dayjs } from 'dayjs';
 import { useEffect } from 'react';
@@ -37,7 +37,7 @@ const RegisterDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) =
         <Box display="flex" flexDirection="column" width={isMediumScreen ? "29.25rem" : "18.75rem"} pb="0.625rem">
             {label && <label htmlFor={name} style={{fontSize:"0.9rem"}}>{label}</label>}
             <Field id={name} name={name}>
-                {({ form }: FieldProps) => (
+                {() => (
                  <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DateField
                         id={name}
@@ -48,7 +48,6 @@ const RegisterDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) =
                         fullWidth
                         value={value}
                         onChange={(date) => handleChange(date)}
-                        helperText={form.errors[name] && form.touched[name] ? String(form.errors[name]) : ''}
                         {...rest}
                         sx={{
                             '& .MuiInputBase-root': {
@@ -57,6 +56,11 @@ const RegisterDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) =
                             display: "block",
                         }}
                     />
+                    <ErrorMessage name={name}>
+                            {(msg) => (
+                                <FormHelperText style={{ color: 'red' }}>{msg}</FormHelperText>
+                            )}
+                        </ErrorMessage>
                     </LocalizationProvider>
                 )}
             </Field>

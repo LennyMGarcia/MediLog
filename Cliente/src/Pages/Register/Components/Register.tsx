@@ -9,6 +9,7 @@ import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema"
 import FinancialInformationForm from "./forms/FinancialInformationForm";
 import PricingForm from "./forms/PricingForm";
 import RegisterStepper from "./style/Wrappers/RegisterStepper";
+import ThanksForm from "./forms/ThanksForm";
 
 //TODO: Agregar listas para controlar elementos con Yup y crear documentacion
 //agregar date control y comenzar con css module y/o material
@@ -63,11 +64,12 @@ const Register: React.FC = () => {
 
     const {getRegisterData } = useDataRegisterStore();
 
-    const { currentStepIndex, step, next, back } = useMultiForm([
+    const { currentStepIndex, step, isLastStep ,next, back } = useMultiForm([
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
         <ContactInformationForm />,
         <PricingForm/>,
         <FinancialInformationForm/>,
+        <ThanksForm/>
     ])
 
     return (
@@ -79,7 +81,7 @@ const Register: React.FC = () => {
                     </Grid>
                 )}
                 <Grid item xs={12} md={isMediumScreen ? 8 : 12}>
-                    <RegisterStepper activeStep={currentStepIndex}/>
+                    {!isLastStep && <RegisterStepper activeStep={currentStepIndex}/>}
                     <Box sx={{
                         display: 'flex',
                         justifyContent: 'center',
