@@ -8,6 +8,7 @@ import registerDoctor from "/assets/Pictures/registerDoctor.jpg"
 import asianDoctor from "/assets/Pictures/asianDoctor.jpeg"
 import indianDoctor from "/assets/Pictures/indianDoctor.jpg"
 import registerExample from "/assets/Pictures/registerExample.jpg"
+import healthDoctor from "/assets/Pictures/healthDoctor.jpg"
 
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
 import FinancialInformationForm from "./forms/FinancialInformationForm";
@@ -21,6 +22,7 @@ import Grid from "@mui/material/Grid/Grid";
 import Button from "@mui/material/Button/Button";
 import styles from '../Components/style/RegisterStyle/RegisterTheme.module.css';
 import { Fade } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 
 //TODO: Agregar listas para controlar elementos con Yup y crear documentacion
@@ -35,7 +37,8 @@ const ImageArray = [
     registerDoctor,
     asianDoctor,
     indianDoctor,
-    registerExample
+    registerExample,
+    healthDoctor
 ]
 
 const initialValues = [
@@ -69,7 +72,13 @@ const initialValues = [
 ]
 
 const Register: React.FC = () => {
+
+    let navigate = useNavigate();
+
     function onSubmit() {
+        if(isLastStep){
+            navigate("/")
+        }
         console.log(getAllRegisterData());
         next()
     };
@@ -112,8 +121,21 @@ const Register: React.FC = () => {
                                 <Form>
                                     {step}
                                     <Box className={styles.buttonContainer}>
-                                        <Button fullWidth disabled={isFirstStep ? true : false} className={styles.backButton} variant="outlined" type="button" onClick={back}>Regresar</Button>
-                                        <Button fullWidth className={styles.nextButton} variant="contained" type="submit">{!isLastStep ? "Siguiente" : "Finalizar"}</Button>
+                                        { !isLastStep && <Button
+                                            fullWidth
+                                            disabled={isFirstStep ? true : false}
+                                            className={styles.backButton} 
+                                            variant="outlined" type="button" 
+                                            onClick={back}>
+                                                Regresar
+                                        </Button>}
+                                        <Button 
+                                            fullWidth 
+                                            className={styles.nextButton} 
+                                            variant="contained" 
+                                            type="submit">
+                                                {!isLastStep ? "Siguiente" : "Finalizar"}
+                                            </Button>
                                     </Box>
                                 </Form>
                             )}
