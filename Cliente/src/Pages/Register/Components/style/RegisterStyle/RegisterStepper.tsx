@@ -44,8 +44,8 @@ const ColorlibStepIconRoot = styled('div')<{
   backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
   zIndex: 1,
   color: '#fff',
-  width: 50,
-  height: 50,
+  width: "2.8rem",
+  height: "2.8rem",
   display: 'flex',
   borderRadius: '50%',
   justifyContent: 'center',
@@ -89,9 +89,9 @@ const RegisterStepper: React.FC<IStepper> = ({ activeStep }) => {
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
 
-<Stepper alternativeLabel activeStep={activeStep} connector={null}>
+<Stepper  alternativeLabel activeStep={activeStep} connector={null}>
   {steps.map((label, index) => (
-    <Step key={label}>
+    <Step key={label} >
       <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
       {index === activeStep && index > 0 && (
         <Grow

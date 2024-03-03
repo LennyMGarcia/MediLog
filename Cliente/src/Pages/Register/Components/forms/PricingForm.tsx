@@ -10,16 +10,13 @@ import Typography from "@mui/material/Typography";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import useDataRegisterStore from "../../ZustandRegisterManagement";
 import React from "react";
-
 import Box from "@mui/material/Box/Box";
-
 import Button from "@mui/material/Button/Button";
 import styled from "@mui/material/styles/styled";
-
 import FormHelperText from "@mui/material/FormHelperText/FormHelperText";
 import { ErrorMessage, Field, FieldProps, useFormikContext } from "formik";
-
-
+import useTheme from "@mui/material/styles/useTheme";
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 
 const tiers = [
   [
@@ -113,6 +110,9 @@ export default function PricingForm() {
     setSelectedPlan(String(state))
   }, [selectedPlan, setSelectedPlan, getRegisterData]);
 
+  const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
   return (
     <React.Fragment>
       <Box sx={{ textAlign: "center", mb:"0.5rem"}}><Typography variant={"h5"}>Selección de Planes</Typography></Box>
@@ -131,7 +131,7 @@ export default function PricingForm() {
                   sm={6}
                   md={4}
                 >
-                  <Box>
+                  <Box sx={{paddingLeft:isMediumScreen ? "0.8rem" : "2.5rem"}}>
                     <Card sx={{
                       backgroundColor: tier.position === "middle" ? "#52b69a" : "white",
                       boxShadow: tier.position === 'middle' ? "4px 4px" : 3,
@@ -139,7 +139,7 @@ export default function PricingForm() {
                       borderColor: selectedPlan === tier.title ? "#168aad" : "inherit",
                       borderRadius: "2vh",
                       minHeight: tier.position === "middle" ? "60vh" : "50vh",
-                      width: "15rem", display: 'flex', flexDirection: 'column', height: '100%'
+                      width: "14rem", display: 'flex', flexDirection: 'column', height: '100%'
                     }}>
                       <CardHeader
                         title={tier.title}

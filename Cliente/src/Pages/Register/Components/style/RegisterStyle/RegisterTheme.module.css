@@ -4,12 +4,11 @@
 }
 
 .image {
-  width: 60vw;
+  width: 55vw;
   height: 105vh;
   margin-top: -1rem;
-  margin-left: -22rem;
-  background-size: contain;
-  background-position: center;
+  margin-left: -17rem;
+  background-size: cover;
 }
 
 .formContainer {
