@@ -12,7 +12,7 @@ const ContactInformationForm: React.FC = () => {
                 <Box>
                     <RegistrationControl
                         control="input"
-                        label="Telefono"
+                        label="Telefono (opcional)"
                         name="telefono"
                         type="number"
                         placeholder="Escriba su telefono" />

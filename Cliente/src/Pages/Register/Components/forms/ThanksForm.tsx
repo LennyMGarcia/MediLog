@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography/Typography";
 import React from "react";
-
-import { Link } from "react-router-dom";
+import highFiving from "/assets/Pictures/highFiving.png"
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 
 const ThanksForm: React.FC = () => {
@@ -11,9 +11,14 @@ const ThanksForm: React.FC = () => {
     return (
         <>
             <Box>
-                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Agradecimientos</Typography></Box>
-                <Box sx={{ textAlign: "center", padding:"100px" }}><Typography variant={"body1"}>Gracias por suscribirte a la aplicacion de nuestro lider Julio Sierra, de verdad te agradecemos por tu cooperacion y por tu tiempo, Julio te vigilara siempre si llenaste algo mal y danaste el backend de Ben </Typography></Box>
-                <Link style={{padding:"100px"}} to={"/"} type="button">dame duro</Link>
+
+                 
+                <Box sx={{ width:"13rem", height:"13rem" ,textAlign: "center", backgroundColor: "#52B69A" , borderRadius:"50%", display:"flex", justifyContent:"center", alignItems:"center", margin:"auto"}}>
+                    <img src={highFiving} style={{width:"15rem", height:"15rem", marginBottom:"20px"}}/>
+                    </Box>
+                <Box sx={{ textAlign: "center", margin:"20px" }}><Typography variant={"h5"}>Gracias por subcribirse! </Typography></Box>
+                <Box sx={{ textAlign: "center", margin:"50px" }}><Typography variant={"body1"}>Deseamos que disfrute de nuestros servicios</Typography></Box>
+
             </Box>
         </>
     )

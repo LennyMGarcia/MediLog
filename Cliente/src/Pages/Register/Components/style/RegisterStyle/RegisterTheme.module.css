@@ -22,7 +22,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: auto;
   margin-top: 1rem;
+  max-width: 40rem;
 }
 
 .box .buttonContainer .backButton {

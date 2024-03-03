@@ -12,7 +12,7 @@ const FinancialInformationForm: React.FC = () => {
     return (
         <>
             <Box>
-                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Informacion Financiera</Typography></Box>
+                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>{"Informacion Financiera (opcional)"}</Typography></Box>
 
                 <BoxRowWrapper>
                     <RegistrationControl

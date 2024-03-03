@@ -3,10 +3,12 @@ import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
 import useDataRegisterStore, { getAllRegisterData } from "../ZustandRegisterManagement";
+
 import registerDoctor from "/assets/Pictures/registerDoctor.jpg"
 import asianDoctor from "/assets/Pictures/asianDoctor.jpeg"
 import indianDoctor from "/assets/Pictures/indianDoctor.jpg"
 import registerExample from "/assets/Pictures/registerExample.jpg"
+
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
 import FinancialInformationForm from "./forms/FinancialInformationForm";
 import PricingForm from "./forms/PricingForm";
