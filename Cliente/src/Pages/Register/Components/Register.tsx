@@ -3,13 +3,19 @@ import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
 import useDataRegisterStore, { getAllRegisterData } from "../ZustandRegisterManagement";
-import { Box, Button, Grid, useMediaQuery, useTheme } from "@mui/material";
-import prueba2 from "../assets/prueba2.jpg"
+import registerDoctor from "/assets/Pictures/registerDoctor.jpg"
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
 import FinancialInformationForm from "./forms/FinancialInformationForm";
 import PricingForm from "./forms/PricingForm";
-import RegisterStepper from "./style/Wrappers/RegisterStepper";
+import RegisterStepper from "./style/RegisterStyle/RegisterStepper";
 import ThanksForm from "./forms/ThanksForm";
+import useTheme from "@mui/material/styles/useTheme";
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
+import Box from "@mui/material/Box/Box";
+import Grid from "@mui/material/Grid/Grid";
+import Button from "@mui/material/Button/Button";
+import styles from '../Components/style/RegisterStyle/RegisterTheme.module.css';
+
 
 //TODO: Agregar listas para controlar elementos con Yup y crear documentacion
 //agregar date control y comenzar con css module y/o material
@@ -19,7 +25,6 @@ import ThanksForm from "./forms/ThanksForm";
 //Crear posible tema de material para que no se vea asi
 //Arreglar fecha y cedula
 
-//Crear pricing condicional, si eres paciente no puedes ir a cojer algo que no es tuyo
 
 const initialValues = [
     {
@@ -51,8 +56,6 @@ const initialValues = [
     }
 ]
 
-
-
 const Register: React.FC = () => {
     function onSubmit() {
         console.log(getAllRegisterData());
@@ -64,7 +67,7 @@ const Register: React.FC = () => {
 
     const {getRegisterData } = useDataRegisterStore();
 
-    const { currentStepIndex, step, isLastStep ,next, back } = useMultiForm([
+    const { currentStepIndex, step, isFirstStep, isLastStep ,next, back } = useMultiForm([
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
         <ContactInformationForm />,
         <PricingForm/>,
@@ -73,21 +76,16 @@ const Register: React.FC = () => {
     ])
 
     return (
-        <Box height={isMediumScreen? "105vh" : "auto"} sx={{ backgroundColor: "#E9ECEF" }}>
+         <Box height={isMediumScreen? "105vh" : "auto"} className={styles.box}>
             <Grid container spacing={2}>
                 {isMediumScreen && (
                     <Grid item xs={12} md={4}>
-                        <img style={{ width: '110%', height: '105vh', marginTop:"-16px" }} src={prueba2} alt="" />
+                        <img className={styles.image} src={registerDoctor} alt="" />
                     </Grid>
                 )}
                 <Grid item xs={12} md={isMediumScreen ? 8 : 12}>
                     {!isLastStep && <RegisterStepper activeStep={currentStepIndex}/>}
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: isMediumScreen ? "10px" : "20px"
-                    }}>
+                    <Box className={styles.formContainer}>
                         <Formik
                             initialValues={initialValues[currentStepIndex]}
                             onSubmit={onSubmit}
@@ -95,14 +93,9 @@ const Register: React.FC = () => {
                             {() => (
                                 <Form>
                                     {step}
-                                    <Box sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        mt: "1rem"
-                                    }}>
-                                        <Button fullWidth sx={{ ml: "10px", color: "#52B69A" }} variant="outlined" type="button" onClick={back}>Regresar</Button>
-                                        <Button fullWidth sx={{ ml: "10px", backgroundColor: "#52B69A" }} variant="contained" type="submit">Siguiente</Button>
+                                    <Box className={styles.buttonContainer}>
+                                        <Button fullWidth disabled={isFirstStep ? true : false} className={styles.backButton} variant="outlined" type="button" onClick={back}>Regresar</Button>
+                                        <Button fullWidth className={styles.nextButton} variant="contained" type="submit">{!isLastStep ? "Siguiente" : "Finalizar"}</Button>
                                     </Box>
                                 </Form>
                             )}

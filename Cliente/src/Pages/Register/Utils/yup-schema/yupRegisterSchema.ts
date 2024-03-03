@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import useDataRegisterStore from '../../ZustandRegisterManagement'
 import dayjs from 'dayjs';
 
- let isPaciente = String(useDataRegisterStore.getState()["tipo"]) === "Paciente";
+ let isPaciente:boolean = String(useDataRegisterStore.getState()["tipo"]) === "Paciente";
 
 const basicInfoSchema = Yup.object({
     nombre: Yup.string()

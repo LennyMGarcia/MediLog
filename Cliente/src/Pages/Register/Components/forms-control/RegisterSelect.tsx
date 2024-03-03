@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
-import { ErrorMessage, Field, FieldProps } from 'formik';
-import { FormHelperText, MenuItem, Select, SelectChangeEvent, SelectProps, useMediaQuery, useTheme } from '@mui/material';
+
 import useDataRegisterStore from "../../ZustandRegisterManagement";
+import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select/Select';
+import { Field, FieldProps, ErrorMessage  } from 'formik';
+import MenuItem from '@mui/material/MenuItem/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
+import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 
 //Solo para omitir variant en la seleccion de SelectProps, puede ser usado nuevamente
 interface ISelect extends Omit<SelectProps, "variant"> {

@@ -1,7 +1,12 @@
-import { ErrorMessage, Field, FieldProps } from 'formik';
-import { Box, FormHelperText, TextField, TextFieldProps, useMediaQuery, useTheme } from '@mui/material';
+
 import React, { ChangeEvent } from 'react';
 import useDataRegisterStore, { getAllRegisterData } from "../../ZustandRegisterManagement";
+import useTheme from '@mui/material/styles/useTheme';
+import { Field, FieldProps, ErrorMessage } from 'formik';
+import TextField, { TextFieldProps } from '@mui/material/TextField/TextField';
+import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
+import Box from '@mui/material/Box/Box';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,

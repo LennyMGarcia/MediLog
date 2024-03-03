@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Box, Button, FormHelperText } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -9,10 +8,16 @@ import Grid from "@mui/material/Grid";
 import StarIcon from '@mui/icons-material/Star';
 import Typography from "@mui/material/Typography";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { styled } from "@mui/system";
-import { ErrorMessage, Field, FieldProps, useFormikContext } from "formik";
 import useDataRegisterStore from "../../ZustandRegisterManagement";
 import React from "react";
+
+import Box from "@mui/material/Box/Box";
+
+import Button from "@mui/material/Button/Button";
+import styled from "@mui/material/styles/styled";
+
+import FormHelperText from "@mui/material/FormHelperText/FormHelperText";
+import { ErrorMessage, Field, FieldProps, useFormikContext } from "formik";
 
 
 
