@@ -3,11 +3,12 @@ import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
 import useDataRegisterStore, { getAllRegisterData } from "../ZustandRegisterManagement";
-import { Box, Button, Grid, Step, StepLabel, Stepper, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Grid, useMediaQuery, useTheme } from "@mui/material";
 import prueba2 from "../assets/prueba2.jpg"
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
 import FinancialInformationForm from "./forms/FinancialInformationForm";
 import PricingForm from "./forms/PricingForm";
+import RegisterStepper from "./style/Wrappers/RegisterStepper";
 
 //TODO: Agregar listas para controlar elementos con Yup y crear documentacion
 //agregar date control y comenzar con css module y/o material
@@ -56,12 +57,6 @@ const Register: React.FC = () => {
         console.log(getAllRegisterData());
         next()
     };
-
-    const stepperSteps = [
-        'Registro A',
-        'Registro B',
-        'Registro C',
-    ];
     
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
@@ -84,13 +79,7 @@ const Register: React.FC = () => {
                     </Grid>
                 )}
                 <Grid item xs={12} md={isMediumScreen ? 8 : 12}>
-                    <Stepper sx={{ pt: "30px" }} activeStep={currentStepIndex} alternativeLabel>
-                        {stepperSteps.map((label) => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
+                    <RegisterStepper activeStep={currentStepIndex}/>
                     <Box sx={{
                         display: 'flex',
                         justifyContent: 'center',
