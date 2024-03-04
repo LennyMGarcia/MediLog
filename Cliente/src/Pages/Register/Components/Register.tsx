@@ -3,11 +3,27 @@ import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
 import useDataRegisterStore, { getAllRegisterData } from "../ZustandRegisterManagement";
-import { Box, Button, Grid, Step, StepLabel, Stepper, useMediaQuery, useTheme } from "@mui/material";
-import prueba2 from "../assets/prueba2.jpg"
+
+import registerDoctor from "/assets/Pictures/registerDoctor.jpg"
+import asianDoctor from "/assets/Pictures/asianDoctor.jpeg"
+import indianDoctor from "/assets/Pictures/indianDoctor.jpg"
+import registerExample from "/assets/Pictures/registerExample.jpg"
+import healthDoctor from "/assets/Pictures/healthDoctor.jpg"
+
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
 import FinancialInformationForm from "./forms/FinancialInformationForm";
 import PricingForm from "./forms/PricingForm";
+import RegisterStepper from "./style/RegisterStyle/RegisterStepper";
+import ThanksForm from "./forms/ThanksForm";
+import useTheme from "@mui/material/styles/useTheme";
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
+import Box from "@mui/material/Box/Box";
+import Grid from "@mui/material/Grid/Grid";
+import Button from "@mui/material/Button/Button";
+import styles from '../Components/style/RegisterStyle/RegisterTheme.module.css';
+import { Fade } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+
 
 //TODO: Agregar listas para controlar elementos con Yup y crear documentacion
 //agregar date control y comenzar con css module y/o material
@@ -15,29 +31,34 @@ import PricingForm from "./forms/PricingForm";
 // Arreglar todo lo que esta mal, sobre todo las variables de prueba y el diseno
 //ARREGLAR ARRAY DE VALORES INICIALES Y YUP, sexo al ser select no funciona como se espera
 //Crear posible tema de material para que no se vea asi
-//Arreglar fecha y cedula
 
-//Crear pricing condicional, si eres paciente no puedes ir a cojer algo que no es tuyo
+const ImageArray = [
+    registerDoctor,
+    asianDoctor,
+    indianDoctor,
+    registerExample,
+    healthDoctor
+]
 
 const initialValues = [
     {
         nombre: "",
         apellido: "",
-        sexo:"",
-        fecha_nacimiento:"",
-        tipo:"",
-        especialidad:undefined,
-        documento_identidad:undefined
+        sexo: "",
+        fecha_nacimiento: "",
+        tipo: "",
+        especialidad: undefined,
+        documento_identidad: undefined
     },
 
     {
-        correo:"",
-        contrasena:"",
-        confirmarContrasena:""
+        correo: "",
+        contrasena: "",
+        confirmarContrasena: ""
     },
 
     {
-        pricing:""
+        pricing: ""
     },
 
     {
@@ -49,54 +70,48 @@ const initialValues = [
     }
 ]
 
-
-
 const Register: React.FC = () => {
+
+    let navigate = useNavigate();
+
     function onSubmit() {
+        if(isLastStep){
+            navigate("/")
+        }
         console.log(getAllRegisterData());
         next()
     };
 
-    const stepperSteps = [
-        'Registro A',
-        'Registro B',
-        'Registro C',
-    ];
-    
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
-    const {getRegisterData } = useDataRegisterStore();
+    const { getRegisterData } = useDataRegisterStore();
 
-    const { currentStepIndex, step, next, back } = useMultiForm([
+    const { currentStepIndex, step, isFirstStep, isLastStep, next, back } = useMultiForm([
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
         <ContactInformationForm />,
-        <PricingForm/>,
-        <FinancialInformationForm/>,
+        <PricingForm />,
+        <FinancialInformationForm />,
+        <ThanksForm />
     ])
 
     return (
-        <Box height={isMediumScreen? "105vh" : "auto"} sx={{ backgroundColor: "#E9ECEF" }}>
+        <Box height={isMediumScreen ? "105vh" : "auto"} className={styles.box}>
             <Grid container spacing={2}>
                 {isMediumScreen && (
                     <Grid item xs={12} md={4}>
-                        <img style={{ width: '110%', height: '105vh', marginTop:"-16px" }} src={prueba2} alt="" />
+                        <Fade
+                            in={true}
+                            key={currentStepIndex}
+                            timeout={1000}
+                        >
+                            <img className={styles.image} src={ImageArray[currentStepIndex]} alt="" />
+                        </Fade>
                     </Grid>
                 )}
                 <Grid item xs={12} md={isMediumScreen ? 8 : 12}>
-                    <Stepper sx={{ pt: "30px" }} activeStep={currentStepIndex} alternativeLabel>
-                        {stepperSteps.map((label) => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-                    <Box sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: isMediumScreen ? "10px" : "20px"
-                    }}>
+                    {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
+                    <Box className={styles.formContainer}>
                         <Formik
                             initialValues={initialValues[currentStepIndex]}
                             onSubmit={onSubmit}
@@ -104,14 +119,22 @@ const Register: React.FC = () => {
                             {() => (
                                 <Form>
                                     {step}
-                                    <Box sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        mt: "1rem"
-                                    }}>
-                                        <Button fullWidth sx={{ ml: "10px", color: "#52B69A" }} variant="outlined" type="button" onClick={back}>Regresar</Button>
-                                        <Button fullWidth sx={{ ml: "10px", backgroundColor: "#52B69A" }} variant="contained" type="submit">Siguiente</Button>
+                                    <Box className={styles.buttonContainer}>
+                                        { !isLastStep && <Button
+                                            fullWidth
+                                            disabled={isFirstStep ? true : false}
+                                            className={styles.backButton} 
+                                            variant="outlined" type="button" 
+                                            onClick={back}>
+                                                Regresar
+                                        </Button>}
+                                        <Button 
+                                            fullWidth 
+                                            className={styles.nextButton} 
+                                            variant="contained" 
+                                            type="submit">
+                                                {!isLastStep ? "Siguiente" : "Finalizar"}
+                                            </Button>
                                     </Box>
                                 </Form>
                             )}
