@@ -1,4 +1,5 @@
-import { Box, Button, Grid, Link, Typography } from "@mui/material";
+import { Button, Grid, Link, Typography } from "@mui/material";
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
   const navbarLinks = [
@@ -24,6 +25,8 @@ export default function Navbar() {
       link: "#acercaDe",
     },
   ];
+
+  const navigate = useNavigate();
 
   return (
     <Grid
@@ -103,14 +106,24 @@ export default function Navbar() {
           alignItems={"center"}
           justifyContent={"flex-end"}
         >
-          <Link
+          <Button
             sx={{
-              textDecorationLine: "none",
+              color: "#FFF",
+              fontSize: "16px",
             }}
+            variant="text"
           >
             Iniciar Sesion
-          </Link>
-          <Button variant="contained">Registrarte</Button>
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "#168AAD",
+            }}
+            onClick={() => navigate("/register")}
+          >
+            Registrarte
+          </Button>
         </Grid>
       </Grid>
     </Grid>
