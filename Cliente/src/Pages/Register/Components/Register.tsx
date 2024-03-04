@@ -31,7 +31,6 @@ import { useNavigate } from 'react-router-dom';
 // Arreglar todo lo que esta mal, sobre todo las variables de prueba y el diseno
 //ARREGLAR ARRAY DE VALORES INICIALES Y YUP, sexo al ser select no funciona como se espera
 //Crear posible tema de material para que no se vea asi
-//Arreglar fecha y cedula
 
 const ImageArray = [
     registerDoctor,
