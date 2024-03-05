@@ -1,7 +1,8 @@
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import consultaPicture from "/assets/Pictures/ConsultaMedica.jpg";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AccordionNormal from "./Components/Accordion";
+import useModalLogin from "../../Common/Modals/useModalLogin";
 
 export default function LandingPage() {
   // const founder = [
@@ -171,314 +172,328 @@ export default function LandingPage() {
     },
   ];
 
+  const navigate = useNavigate();
+  const { ModalLogin, handleOpenModal } = useModalLogin();
+
   return (
-    <Grid
-      container
-      sx={{ padding: "16px 35px" }}
-      direction={"column"}
-      // spacing={5}
-      display={"flex"}
-      gap={7}
-      bgcolor={"#E9ECEF"}
-    >
+    <>
       <Grid
         container
-        item
-        xs={12}
-        // border={"1px solid gray"}
-        borderRadius={5}
-        // padding={3}
-        // spacing={1}
-        bgcolor={"#184E77"}
-        columnSpacing={2}
+        sx={{ padding: "16px 35px" }}
+        direction={"column"}
+        // spacing={5}
+        display={"flex"}
+        gap={7}
+        bgcolor={"#E9ECEF"}
       >
-        <Grid item container xs={6} spacing={1}>
-          <Grid
-            item
-            xs={12}
-            display={"flex"}
-            alignItems={"flex-end"}
-            justifyContent={"flex-end"}
-            direction={"column"}
-          >
-            <Typography
-              variant="h4"
-              color={"#E9ECEF"}
-              sx={{
-                fontWeight: "600",
-                textAlign: "center",
-              }}
+        <Grid
+          container
+          item
+          xs={12}
+          // border={"1px solid gray"}
+          borderRadius={5}
+          // padding={3}
+          // spacing={1}
+          bgcolor={"#184E77"}
+          columnSpacing={2}
+        >
+          <Grid item container xs={6} spacing={1}>
+            <Grid
+              item
+              xs={12}
+              display={"flex"}
+              alignItems={"flex-end"}
+              justifyContent={"flex-end"}
+              direction={"column"}
             >
-              Unete a nosotros y obten el control total de los registros de tus
-              casos medicos
-            </Typography>
-
-            <Typography
-              variant="body1"
-              color={"#E9ECEF"}
-              sx={{
-                fontWeight: "400",
-                textAlign: "center",
-              }}
-            >
-              Con nuestra aplicación de registro de casos médicos, podrás
-              mantener un seguimiento detallado de tu historial médico personal.
-              Desde diagnósticos hasta tratamientos y seguimientos, nuestra
-              plataforma intuitiva te permite acceder y actualizar tu
-              información de manera rápida y segura.
-            </Typography>
-          </Grid>
-
-          <Grid
-            item
-            container
-            xs={12}
-            // display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            // spacing={1}
-            gap="20px"
-            textAlign={"center"}
-            // padding={"10px"}
-          >
-            {/* <Grid item xs={3} justifyContent={"flex-end"}> */}
-            <Button
-              variant={"contained"}
-              sx={{
-                textTransform: "capitalize",
-                color: "#E9ECEF",
-                bgcolor: "#168AAD",
-              }}
-            >
-              Iniciar Sesion
-            </Button>
-            {/* </Grid> */}
-
-            {/* <Grid item xs={5} textAlign={"center"}> */}
-            <Typography
-              variant="body1"
-              color={"#E9ECEF"}
-              sx={{
-                fontSize: "18px",
-              }}
-            >
-              No tienes cuenta?
-              <Button
+              <Typography
+                variant="h4"
+                color={"#E9ECEF"}
                 sx={{
-                  color: "#168AAD",
+                  fontWeight: "600",
+                  textAlign: "center",
+                }}
+              >
+                Unete a nosotros y obten el control total de los registros de
+                tus casos medicos
+              </Typography>
+
+              <Typography
+                variant="body1"
+                color={"#E9ECEF"}
+                sx={{
+                  fontWeight: "400",
+                  textAlign: "center",
+                }}
+              >
+                Con nuestra aplicación de registro de casos médicos, podrás
+                mantener un seguimiento detallado de tu historial médico
+                personal. Desde diagnósticos hasta tratamientos y seguimientos,
+                nuestra plataforma intuitiva te permite acceder y actualizar tu
+                información de manera rápida y segura.
+              </Typography>
+            </Grid>
+
+            <Grid
+              item
+              container
+              xs={12}
+              // display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              // spacing={1}
+              gap="20px"
+              textAlign={"center"}
+              // padding={"10px"}
+            >
+              {/* <Grid item xs={3} justifyContent={"flex-end"}> */}
+              <Button
+                variant={"contained"}
+                sx={{
+                  textTransform: "capitalize",
+                  color: "#E9ECEF",
+                  bgcolor: "#168AAD",
+                }}
+                onClick={() => {
+                  handleOpenModal();
+                }}
+              >
+                Iniciar Sesion
+              </Button>
+              {/* </Grid> */}
+
+              {/* <Grid item xs={5} textAlign={"center"}> */}
+              <Typography
+                variant="body1"
+                color={"#E9ECEF"}
+                sx={{
                   fontSize: "18px",
                 }}
               >
-                Create una cuenta
-              </Button>
-            </Typography>
-            {/* </Grid> */}
+                No tienes cuenta?
+                <Button
+                  sx={{
+                    color: "#168AAD",
+                    fontSize: "18px",
+                  }}
+                  onClick={() => navigate("/register")}
+                >
+                  Create una cuenta
+                </Button>
+              </Typography>
+              {/* </Grid> */}
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            height={"400px"}
+            // textAlign={"center"}
+            // border={"0% 5% 5% 0%"}
+          >
+            <img
+              src={consultaPicture}
+              alt="Consulta Medica"
+              style={{
+                width: "101%",
+                height: "100%",
+                borderRadius: "0% 5% 5% 0%",
+              }}
+            />
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={6}
-          height={"400px"}
-          // textAlign={"center"}
-          // border={"0% 5% 5% 0%"}
-        >
-          <img
-            src={consultaPicture}
-            alt="Consulta Medica"
-            style={{
-              width: "101%",
-              height: "100%",
-              borderRadius: "0% 5% 5% 0%",
-            }}
-          />
-        </Grid>
-      </Grid>
 
-      <Grid item container xs={12} spacing={2}>
-        <Grid item xs={12}>
-          <Typography
-            variant="h5"
-            fontSize={20}
-            textAlign={"center"}
-            fontWeight={700}
-            color={"#8A898E"}
+        <Grid item container xs={12} spacing={2}>
+          <Grid item xs={12}>
+            <Typography
+              variant="h5"
+              fontSize={20}
+              textAlign={"center"}
+              fontWeight={700}
+              color={"#8A898E"}
+              id={"planes"}
+            >
+              Planes
+            </Typography>
+            <Typography
+              fontSize={52}
+              fontWeight={700}
+              color={"#0B1B35"}
+              textAlign={"center"}
+            >
+              Nuestros planes y servicios
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            container
+            // spacing={2}
+            xs={12}
+            justifyContent={"space-around"}
+            direction={"row"}
+            gap={2}
+            // rowGap={5}
+            // columnGap={1}
           >
-            Planes
-          </Typography>
-          <Typography
-            fontSize={52}
-            fontWeight={700}
-            color={"#0B1B35"}
-            textAlign={"center"}
-          >
-            Nuestros planes y servicios
-          </Typography>
+            {planes.map((plan, idx) => {
+              return (
+                <Grid
+                  item
+                  container
+                  key={idx}
+                  bgcolor={"#FFFFFF"}
+                  borderRadius={"28px"}
+                  xs={3}
+                  // height={"408px"}
+                  // spacing={1}
+                  justifyContent={"center"}
+                  padding={2}
+                  gap={3}
+                  sx={{
+                    boxShadow:
+                      "0px 12.521552085876465px 10.017241477966309px 0px rgba(0,0,0,0.09)",
+                  }}
+                >
+                  <Grid item xs={12} textAlign={"center"}>
+                    <Typography
+                      fontWeight={700}
+                      fontSize={36}
+                      color={"#000000"}
+                    >
+                      {plan.name}
+                    </Typography>
+                    <Typography
+                      fontWeight={700}
+                      fontSize={20}
+                      color={"#15143966"}
+                    >
+                      {plan.costo == "Gratis"
+                        ? plan.costo
+                        : `RD$${plan.costo}/mes`}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item xs={12} spacing={"12px"}>
+                    <ul
+                      style={{
+                        // listStyleType: "none",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "10px",
+                      }}
+                    >
+                      {plan.beneficios.map((benefit, idx) => {
+                        return (
+                          <li key={idx}>
+                            <Typography fontWeight={400} fontSize={16}>
+                              {benefit}
+                            </Typography>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </Grid>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      height: "35px",
+
+                      fielset: {
+                        borderRadius: "10px",
+                      },
+                    }}
+                  >
+                    Mas informacion
+                  </Button>
+                </Grid>
+              );
+            })}
+          </Grid>
         </Grid>
+
         <Grid
           item
           container
-          // spacing={2}
           xs={12}
-          justifyContent={"space-around"}
-          direction={"row"}
-          gap={2}
-          // rowGap={5}
-          // columnGap={1}
+          // border={"1px solid gray"}
+          borderRadius={5}
+          padding={3}
+          gap={1}
+          bgcolor={"#184E77"}
         >
-          {planes.map((plan, idx) => {
-            return (
-              <Grid
-                item
-                container
-                key={idx}
-                bgcolor={"#FFFFFF"}
-                borderRadius={"28px"}
-                xs={3}
-                // height={"408px"}
-                // spacing={1}
-                justifyContent={"center"}
-                padding={2}
-                gap={3}
-                sx={{
-                  boxShadow:
-                    "0px 12.521552085876465px 10.017241477966309px 0px rgba(0,0,0,0.09)",
-                }}
-              >
-                <Grid item xs={12} textAlign={"center"}>
-                  <Typography fontWeight={700} fontSize={36} color={"#000000"}>
-                    {plan.name}
-                  </Typography>
-                  <Typography
-                    fontWeight={700}
-                    fontSize={20}
-                    color={"#15143966"}
-                  >
-                    {plan.costo == "Gratis"
-                      ? plan.costo
-                      : `RD$${plan.costo}/mes`}
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12} spacing={"12px"}>
-                  <ul
-                    style={{
-                      // listStyleType: "none",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                    }}
-                  >
-                    {plan.beneficios.map((benefit, idx) => {
-                      return (
-                        <li key={idx}>
-                          <Typography fontWeight={400} fontSize={16}>
-                            {benefit}
-                          </Typography>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </Grid>
-                <Button
-                  variant="contained"
-                  sx={{
-                    height: "35px",
-
-                    fielset: {
-                      borderRadius: "10px",
-                    },
-                  }}
-                >
-                  Mas informacion
-                </Button>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Grid>
-
-      <Grid
-        item
-        container
-        xs={12}
-        // border={"1px solid gray"}
-        borderRadius={5}
-        padding={3}
-        gap={1}
-        bgcolor={"#184E77"}
-      >
-        <Grid item xs={12} direction={"column"}>
-          <Typography
-            variant="h5"
-            textAlign={"center"}
-            fontSize={20}
-            fontWeight={700}
-            color={"#D3D3D3"}
-          >
-            Sobre nosotros
-          </Typography>
-          <Typography
-            textAlign={"center"}
-            variant="h4"
-            fontSize={52}
-            fontWeight={700}
-            // color={"#0B1B35"}
-            color={"#E9ECEF"}
-          >
-            La Empresa
-          </Typography>
-          <Typography
-            textAlign={"center"}
-            fontWeight={400}
-            fontSize={18}
-            color={"#E9ECEF"}
-          >
-            SatoruScript desarrolla soluciones tecnológicas innovadoras para la
-            salud, enfocadas en mejorar la calidad de vida. Trabajamos con
-            profesionales de la salud para crear sistemas fiables y
-            personalizados. Nuestro equipo multidisciplinario se esfuerza por
-            superar expectativas y generar un impacto positivo en la salud
-            digital. ¡Gracias por confiar en nosotros!
-          </Typography>
-        </Grid>
-
-        <Grid item container xs={12} spacing={3}>
-          <Grid item xs={12}>
-            <Typography color={"#E9ECEF"} fontSize={18}>
-              Conoce a nuestro equipo:
+          <Grid item xs={12} direction={"column"}>
+            <Typography
+              variant="h5"
+              textAlign={"center"}
+              fontSize={20}
+              fontWeight={700}
+              color={"#D3D3D3"}
+              id={"acercaDe"}
+            >
+              Sobre nosotros
+            </Typography>
+            <Typography
+              textAlign={"center"}
+              variant="h4"
+              fontSize={52}
+              fontWeight={700}
+              // color={"#0B1B35"}
+              color={"#E9ECEF"}
+            >
+              La Empresa
+            </Typography>
+            <Typography
+              textAlign={"center"}
+              fontWeight={400}
+              fontSize={18}
+              color={"#E9ECEF"}
+            >
+              SatoruScript desarrolla soluciones tecnológicas innovadoras para
+              la salud, enfocadas en mejorar la calidad de vida. Trabajamos con
+              profesionales de la salud para crear sistemas fiables y
+              personalizados. Nuestro equipo multidisciplinario se esfuerza por
+              superar expectativas y generar un impacto positivo en la salud
+              digital. ¡Gracias por confiar en nosotros!
             </Typography>
           </Grid>
-          <Grid item container xs={12} spacing={2}>
-            {founder.map((found, idx) => {
-              return (
-                <Grid
-                  key={idx}
-                  xs={4}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  alignItems={"center"}
-                  gap={"20px"}
-                  // border={"1px solid #15143966"}
-                >
-                  {/* <Grid item xs={12}> */}
-                  <Avatar
-                    src={found.img}
-                    sx={{
-                      width: "90px",
-                      height: "90px",
-                    }}
-                  />
-                  <Grid xs={12}>
-                    <Typography
-                      textAlign={"center"}
-                      fontSize={22}
-                      fontWeight={700}
-                      // color={"E9ECEF"}
-                      color={"#E9ECEF"}
-                    >
-                      {found.name}
-                    </Typography>
-                    {/* <Typography
+
+          <Grid item container xs={12} spacing={3}>
+            <Grid item xs={12}>
+              <Typography color={"#E9ECEF"} fontSize={18}>
+                Conoce a nuestro equipo:
+              </Typography>
+            </Grid>
+            <Grid item container xs={12} spacing={2}>
+              {founder.map((found, idx) => {
+                return (
+                  <Grid
+                    key={idx}
+                    xs={4}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
+                    gap={"20px"}
+                    // border={"1px solid #15143966"}
+                  >
+                    {/* <Grid item xs={12}> */}
+                    <Avatar
+                      src={found.img}
+                      sx={{
+                        width: "90px",
+                        height: "90px",
+                      }}
+                    />
+                    <Grid xs={12}>
+                      <Typography
+                        textAlign={"center"}
+                        fontSize={22}
+                        fontWeight={700}
+                        // color={"E9ECEF"}
+                        color={"#E9ECEF"}
+                      >
+                        {found.name}
+                      </Typography>
+                      {/* <Typography
                     textAlign={"center"}
                     fontSize={18}
                     color={"#15143966"}
@@ -486,97 +501,105 @@ export default function LandingPage() {
                   >
                     {found.descripcion}
                   </Typography> */}
-                    <Typography
-                      textAlign={"center"}
-                      fontSize={14}
-                      // color={"#15143966"}
-                      color={"#CDCAD9"}
-                      fontWeight={400}
-                    >
-                      {found.job}
-                    </Typography>
+                      <Typography
+                        textAlign={"center"}
+                        fontSize={14}
+                        // color={"#15143966"}
+                        color={"#CDCAD9"}
+                        fontWeight={400}
+                      >
+                        {found.job}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
-              );
-            })}
+                );
+              })}
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-
-      <Grid
-        item
-        container
-        xs={12}
-        // border={"1px solid gray"}
-        borderRadius={5}
-        padding={3}
-        gap={2}
-      >
-        <Grid item xs={12} justifyContent={"center"}>
-          <Typography
-            variant="h5"
-            textAlign={"center"}
-            fontSize={20}
-            fontWeight={700}
-            color={"#8A898E"}
-          >
-            Testimonios
-          </Typography>
-          <Typography
-            variant="h4"
-            textAlign={"center"}
-            fontSize={52}
-            fontWeight={700}
-            color={"#0B1B35"}
-          >
-            Lo que los clientes dicen de nosotros!!
-          </Typography>
         </Grid>
 
         <Grid
           item
           container
           xs={12}
-          // spacing={2}
-          rowGap={2}
-          justifyContent={"space-between"}
+          // border={"1px solid gray"}
+          borderRadius={5}
+          padding={3}
+          gap={2}
         >
-          {opiniones.map((op, idx) => {
-            return (
-              <Grid
-                item
-                container
-                xs={5.9}
-                key={idx}
-                bgcolor={"#FFFFFF"}
-                borderRadius={"28px"}
-                padding={2}
-                sx={{
-                  boxShadow:
-                    "0px 12.521552085876465px 10.017241477966309px 0px rgba(0,0,0,0.09)",
-                }}
-              >
-                <Grid item xs={2} justifyContent={"flex-end"}>
-                  <Avatar sx={{ width: "70px", height: "70px" }} src={op.img} />
-                </Grid>
-                <Grid item xs={10}>
-                  <Typography
-                    fontSize={15}
-                    fontWeight={"500"}
-                    textAlign={"justify"}
-                  >
-                    {op.description}
-                  </Typography>
-                  <Typography fontSize={14} fontWeight={700} color={"#0B1B35"}>
-                    {op.name}
-                  </Typography>
-                </Grid>
-              </Grid>
-            );
-          })}
-        </Grid>
+          <Grid item xs={12} justifyContent={"center"}>
+            <Typography
+              variant="h5"
+              textAlign={"center"}
+              fontSize={20}
+              fontWeight={700}
+              color={"#8A898E"}
+              id={"testimonios"}
+            >
+              Testimonios
+            </Typography>
+            <Typography
+              variant="h4"
+              textAlign={"center"}
+              fontSize={52}
+              fontWeight={700}
+              color={"#0B1B35"}
+            >
+              Lo que los clientes dicen de nosotros!!
+            </Typography>
+          </Grid>
 
-        {/* <Grid item container xs={12}>
+          <Grid
+            item
+            container
+            xs={12}
+            // spacing={2}
+            rowGap={2}
+            justifyContent={"space-between"}
+          >
+            {opiniones.map((op, idx) => {
+              return (
+                <Grid
+                  item
+                  container
+                  xs={5.9}
+                  key={idx}
+                  bgcolor={"#FFFFFF"}
+                  borderRadius={"28px"}
+                  padding={2}
+                  sx={{
+                    boxShadow:
+                      "0px 12.521552085876465px 10.017241477966309px 0px rgba(0,0,0,0.09)",
+                  }}
+                >
+                  <Grid item xs={2} justifyContent={"flex-end"}>
+                    <Avatar
+                      sx={{ width: "70px", height: "70px" }}
+                      src={op.img}
+                    />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Typography
+                      fontSize={15}
+                      fontWeight={"500"}
+                      textAlign={"justify"}
+                    >
+                      {op.description}
+                    </Typography>
+                    <Typography
+                      fontSize={14}
+                      fontWeight={700}
+                      color={"#0B1B35"}
+                    >
+                      {op.name}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              );
+            })}
+          </Grid>
+
+          {/* <Grid item container xs={12}>
           <Grid
             item
             xs={2}
@@ -630,150 +653,153 @@ export default function LandingPage() {
             <Typography>Juan García</Typography>
           </Grid>
         </Grid> */}
-      </Grid>
-
-      <Grid item xs={12} bgcolor={"#184E77"} borderRadius={5} padding={4}>
-        <Grid item xs={12}>
-          <Typography
-            variant="h5"
-            textAlign={"center"}
-            fontSize={20}
-            fontWeight={700}
-            color={"#D3D3D3"}
-          >
-            Pregutnas Frecuentes
-          </Typography>
-          <Typography
-            textAlign={"center"}
-            variant="h4"
-            fontSize={52}
-            fontWeight={700}
-            color={"#E9ECEF"}
-          >
-            Resuelve tus dudas
-          </Typography>
         </Grid>
-        <Grid item container xs={12} justifyContent={"space-around"}>
-          <Grid item xs={5.9} columnGap={4}>
-            {questions.map((question, index) => {
-              if (index % 2 === 0) {
-                return (
-                  <AccordionNormal
-                    question={question.ask}
-                    answer={question.answer}
-                    key={index}
-                    defaultExpanded={question.expand}
-                  />
-                );
-              }
-            })}
+
+        <Grid item xs={12} bgcolor={"#184E77"} borderRadius={5} padding={4}>
+          <Grid item xs={12}>
+            <Typography
+              variant="h5"
+              textAlign={"center"}
+              fontSize={20}
+              fontWeight={700}
+              color={"#D3D3D3"}
+            >
+              Preguntas Frecuentes
+            </Typography>
+            <Typography
+              textAlign={"center"}
+              variant="h4"
+              fontSize={52}
+              fontWeight={700}
+              color={"#E9ECEF"}
+            >
+              Resuelve tus dudas
+            </Typography>
           </Grid>
-          <Grid item xs={5.9} rowGap={4}>
-            {questions.map((question, index) => {
-              if (index % 2 !== 0) {
-                return (
-                  <AccordionNormal
-                    question={question.ask}
-                    answer={question.answer}
-                    key={index}
-                    defaultExpanded={question.expand}
-                  />
-                );
-              }
-            })}
+          <Grid item container xs={12} justifyContent={"space-around"}>
+            <Grid item xs={5.9} columnGap={4}>
+              {questions.map((question, index) => {
+                if (index % 2 === 0) {
+                  return (
+                    <AccordionNormal
+                      question={question.ask}
+                      answer={question.answer}
+                      key={index}
+                      defaultExpanded={question.expand}
+                    />
+                  );
+                }
+              })}
+            </Grid>
+            <Grid item xs={5.9} rowGap={4}>
+              {questions.map((question, index) => {
+                if (index % 2 !== 0) {
+                  return (
+                    <AccordionNormal
+                      question={question.ask}
+                      answer={question.answer}
+                      key={index}
+                      defaultExpanded={question.expand}
+                    />
+                  );
+                }
+              })}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid
-        item
-        container
-        xs={12}
-        // border={"1px solid gray"}
-        borderRadius={5}
-        padding={3}
-        gap={2}
-      >
-        <Grid item xs={12}>
-          <Typography
-            variant="h5"
-            textAlign={"center"}
-            fontSize={20}
-            fontWeight={700}
-            color={"#8A898E"}
-          >
-            Contactanos
-          </Typography>
-          <Typography
-            textAlign={"center"}
-            variant="h4"
-            fontSize={52}
-            fontWeight={700}
-            color={"#0B1B35"}
-          >
-            Habla con nosotros
-          </Typography>
-        </Grid>
-        <Grid item container xs={12} direction={"row"} spacing={2}>
-          <Grid item xs={6}>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1891.9739469285603!2d-69.83307074736764!3d18.486019273634536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf87b9d4dce0e5%3A0x1b4aea9871257623!2sCoral%20Mall!5e0!3m2!1ses-419!2sdo!4v1709088366981!5m2!1ses-419!2sdo"
-              width="100%"
-              height="450"
-              // styles={{"border:0"}}
-              loading="lazy"
-            ></iframe>
+        <Grid
+          item
+          container
+          xs={12}
+          // border={"1px solid gray"}
+          borderRadius={5}
+          padding={3}
+          gap={2}
+        >
+          <Grid item xs={12}>
+            <Typography
+              variant="h5"
+              textAlign={"center"}
+              fontSize={20}
+              fontWeight={700}
+              color={"#8A898E"}
+              id={"contactarnos"}
+            >
+              Contactanos
+            </Typography>
+            <Typography
+              textAlign={"center"}
+              variant="h4"
+              fontSize={52}
+              fontWeight={700}
+              color={"#0B1B35"}
+            >
+              Habla con nosotros
+            </Typography>
           </Grid>
-
-          <Grid
-            item
-            container
-            xs={6}
-            // height="450"
-            // display={"flex"}
-            // flexDirection={"column"}
-            // justifyContent={"space-around"}
-          >
-            <Grid item xs={12}>
-              <Grid item xs={12}>
-                <Typography variant="h5" fontSize={25} color={"#8A898E"}>
-                  Teléfono:
-                </Typography>
-                <Typography variant="body1" fontSize={20}>
-                  +1 (809) 123-4567
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="h5" fontSize={25} color={"#8A898E"}>
-                  Correo electrónico:
-                </Typography>
-                <Typography variant="body1" fontSize={20}>
-                  info@satoruscript.com
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="h5" fontSize={25} color={"#8A898E"}>
-                  Dirección:
-                </Typography>
-                <Typography variant="body1" fontSize={20}>
-                  Calle Ficticia #123, Ciudad Ficticia, República Dominicana
-                </Typography>
-              </Grid>
+          <Grid item container xs={12} direction={"row"} spacing={2}>
+            <Grid item xs={6}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1891.9739469285603!2d-69.83307074736764!3d18.486019273634536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf87b9d4dce0e5%3A0x1b4aea9871257623!2sCoral%20Mall!5e0!3m2!1ses-419!2sdo!4v1709088366981!5m2!1ses-419!2sdo"
+                width="100%"
+                height="450"
+                // styles={{"border:0"}}
+                loading="lazy"
+              ></iframe>
             </Grid>
 
-            <Grid item xs={12}></Grid>
-          </Grid>
-        </Grid>
+            <Grid
+              item
+              container
+              xs={6}
+              // height="450"
+              // display={"flex"}
+              // flexDirection={"column"}
+              // justifyContent={"space-around"}
+            >
+              <Grid item xs={12}>
+                <Grid item xs={12}>
+                  <Typography variant="h5" fontSize={25} color={"#8A898E"}>
+                    Teléfono:
+                  </Typography>
+                  <Typography variant="body1" fontSize={20}>
+                    +1 (809) 123-4567
+                  </Typography>
+                </Grid>
 
-        {/* <Grid item xs={12}>
+                <Grid item xs={12}>
+                  <Typography variant="h5" fontSize={25} color={"#8A898E"}>
+                    Correo electrónico:
+                  </Typography>
+                  <Typography variant="body1" fontSize={20}>
+                    info@satoruscript.com
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Typography variant="h5" fontSize={25} color={"#8A898E"}>
+                    Dirección:
+                  </Typography>
+                  <Typography variant="body1" fontSize={20}>
+                    Calle Ficticia #123, Ciudad Ficticia, República Dominicana
+                  </Typography>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12}></Grid>
+            </Grid>
+          </Grid>
+
+          {/* <Grid item xs={12}>
           <Typography textAlign={"center"}>
             ¡Gracias por confiar en nosotros para tus necesidades tecnológicas
             en el ámbito de la salud!
           </Typography>
         </Grid> */}
+        </Grid>
       </Grid>
-    </Grid>
+      <ModalLogin />
+    </>
   );
 }
