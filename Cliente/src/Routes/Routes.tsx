@@ -11,7 +11,7 @@ export default function App() {
         <Route path="/" element={<NoPrivate />}>
           <Route index element={<LandingPage />} />
           <Route path={"/register"} element={<Register />} />
-          <Route path={"/profile"} element={<Profile/>}/>
+          <Route path={"/profile/:id"} element={<Profile/>}/>
         </Route>
       </Routes>
     </Router>

@@ -1,24 +1,93 @@
 
 import Accordion from "@mui/material/Accordion/Accordion";
-import AccordionActions from "@mui/material/AccordionActions/AccordionActions";
 import AccordionDetails from "@mui/material/AccordionDetails/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary/AccordionSummary";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from "@mui/material/Box/Box";
-import Button from "@mui/material/Button/Button";
 import Grid from "@mui/material/Grid/Grid";
-import List from "@mui/material/List/List";
-import ListItem from "@mui/material/ListItem/ListItem";
 import Typography from "@mui/material/Typography/Typography";
-import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import ProfileList from "./ProfileList/ProfileList";
+
+interface IProfileData {
+  nombre: string,
+  apellido: string,
+  fecha_nacimiento: string,
+  documento_identidad: string,
+  correo: string,
+  telefono: string,
+  tipo_sangre: string,
+}
+
+function getFakeProfileData(id: string = "1") {
+  const profiles: Record<string, IProfileData> = {
+    '1': {
+      nombre: 'Lenny',
+      apellido: 'Garcia',
+      fecha_nacimiento: '27-05-2001',
+      documento_identidad: '11987654321',
+      correo: 'lenny@gmail.com',
+      telefono: '18296572014',
+      tipo_sangre: 'O+',
+    },
+    '2': {
+      nombre: 'Ben',
+      apellido: 'Dourlouis',
+      fecha_nacimiento: '16-9-2001',
+      documento_identidad: '12345678911',
+      correo: 'ben@gmail.com',
+      telefono: '18291041014',
+      tipo_sangre: 'AB+',
+    },
+
+  };
+
+  return profiles[id];
+}
+
+function generateSlug(profileData: IProfileData) {
+  const { nombre, apellido } = profileData;
+  const slug = `${nombre}-${apellido}`;
+  return slug;
+}
 
 const Profile: React.FC = () => {
 
+
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [profileData, setProfileData] = useState<IProfileData | undefined>();
+
+  useEffect(() => {
+    const fetchedProfileData = getFakeProfileData(id);
+
+    if (!fetchedProfileData) {
+      console.log('No se encontró el perfil');
+      navigate('/404'); 
+      return;
+    }
+
+    setProfileData(fetchedProfileData);
+  }, [id, navigate]);
+
+  useEffect(() => {
+    if (profileData) {
+      const slug = generateSlug(profileData);
+      navigate(`/profile/${slug}`);
+    }
+  }, [profileData, navigate]);
+
+  if (!profileData) {
+    return <div>Cargando...</div>; 
+  }
+
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
-      <Typography sx={{paddingTop:"2rem", paddingLeft:"5rem"}} variant="h5">Perfil</Typography>
-      <Grid container spacing={2} sx={{ padding: "2rem", paddingTop:"1rem", paddingLeft: "5rem" }}>
+      <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem" }} variant="h5">Perfil</Typography>
+      <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
         <Grid item md={9} sx={{ marginLeft: "auto", marginRight: "auto" }}>
 
           <Accordion defaultExpanded>
@@ -30,92 +99,15 @@ const Profile: React.FC = () => {
               Informacion basica
             </AccordionSummary>
             <AccordionDetails>
-              <List >
-              <ListItem sx={{ marginTop: "-1rem" }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Nombre:</Typography>
-                    <Typography variant="body1"><strong>Lenny</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Apellido:</Typography>
-                    <Typography variant="body1"><strong>Garcia</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Fecha de nacimiento:</Typography>
-                    <Typography variant="body1"><strong>27-05-2001</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Documento de indentidad:</Typography>
-                    <Typography variant="body1"><strong>Para que quieres saber eso</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Sexo:</Typography>
-                    <Typography variant="body1"><strong></strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Correo:</Typography>
-                    <Typography variant="body1"><strong>l@gmail.com</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Direccion:</Typography>
-                    <Typography variant="body1"><strong></strong></Typography>
-                  </Box>
-                  </ListItem>
-                  <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Telefono:</Typography>
-                    <Typography variant="body1"><strong>18296572014</strong></Typography>
-                  </Box>
-                </ListItem>
-                  <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Tipo de sangre:</Typography>
-                    <Typography variant="body1"><strong>O+</strong></Typography>
-                  </Box>
-                </ListItem>
-                  <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Padecimiento:</Typography>
-                    <Typography variant="body1"><strong></strong></Typography>
-                  </Box>
-                </ListItem>
-                  <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Alergias:</Typography>
-                    <Typography variant="body1"><strong></strong></Typography>
-                  </Box>
-                </ListItem>
-                  <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Familiares:</Typography>
-                    <Typography variant="body1"><strong></strong></Typography>
-                  </Box>
-                </ListItem>
-               
-              </List>
+              <ProfileList dataList={[
+                { name: "Nombre", data: profileData.nombre, },
+                { name: "Apellido", data: profileData.apellido, },
+                { name: "Fecha de nacimiento", data: profileData.fecha_nacimiento, },
+                { name: "Documento de indentidad", data: profileData.documento_identidad, },
+                { name: "Correo", data: profileData.correo, },
+                { name: "Telefono", data: profileData.telefono, },
+                { name: "Tipo de sangre", data: profileData.tipo_sangre, },
+              ]} />
             </AccordionDetails>
           </Accordion>
 
@@ -128,28 +120,15 @@ const Profile: React.FC = () => {
               Informacion de contacto
             </AccordionSummary>
             <AccordionDetails>
-              <List >
-                <ListItem sx={{ marginTop: "-1rem" }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Nombre:</Typography>
-                    <Typography variant="body1"><strong>John Doe</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Nombre:</Typography>
-                    <Typography variant="body1"><strong>John Doe</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Nombre:</Typography>
-                    <Typography variant="body1"><strong>John Doe</strong></Typography>
-                  </Box>
-                </ListItem>
-              </List>
+              <ProfileList dataList={[
+                {
+                  name: "Nombre", data: profileData.nombre,
+                },
+                {
+                  name: "Apellido", data: profileData.nombre,
+                }
+
+              ]} />
             </AccordionDetails>
           </Accordion>
 
@@ -162,28 +141,7 @@ const Profile: React.FC = () => {
               Informacion financiera
             </AccordionSummary>
             <AccordionDetails>
-              <List >
-                <ListItem sx={{ marginTop: "-1rem" }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Nombre:</Typography>
-                    <Typography variant="body1"><strong>John Doe</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Nombre:</Typography>
-                    <Typography variant="body1"><strong>John Doe</strong></Typography>
-                  </Box>
-                </ListItem>
-                <Divider component="li" />
-                <ListItem >
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="subtitle2">Nombre:</Typography>
-                    <Typography variant="body1"><strong>John Doe</strong></Typography>
-                  </Box>
-                </ListItem>
-              </List>
+
             </AccordionDetails>
           </Accordion>
 
@@ -198,7 +156,7 @@ const Profile: React.FC = () => {
             borderRadius: "1rem",
 
           }}>
-            <Typography sx={{padding:"1rem"}} variant="body1">Foto de perfil</Typography>
+            <Typography sx={{ padding: "1rem" }} variant="body1">Foto de perfil</Typography>
             <Box sx={{
 
               display: "flex",
