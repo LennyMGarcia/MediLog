@@ -1,6 +1,6 @@
 
 import React, { ChangeEvent } from 'react';
-import useDataRegisterStore, { getAllRegisterData } from "../../ZustandRegisterManagement";
+import useDataRegisterStore from "../../ZustandRegisterManagement";
 import useTheme from '@mui/material/styles/useTheme';
 import { Field, FieldProps, ErrorMessage } from 'formik';
 import TextField, { TextFieldProps } from '@mui/material/TextField/TextField';
@@ -19,7 +19,6 @@ const RegisterInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ..
 
     const handleChange = (e: ChangeEvent<any>) => {
         const value = e.target.value.trim();
-        console.log(getAllRegisterData());
         setRegisterData(name, value);
     };
 
