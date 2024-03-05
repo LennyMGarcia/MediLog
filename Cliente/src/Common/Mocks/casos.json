@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "descripcion": "Dolores Cronicos",
+        "pacientes_id": 1,
+        "especialistas_id": 1,
+        "consultas": 1,
+        "cirugias": 1,
+        "estado": "Activo",
+        "categoria": "Cirugia",
+        "seguimiento": "Citas en 3 meses",
+        "visibilidad": 1,
+        "eliminado": 0,
+        "fecha": "2024-02-16T04:25:54.000Z"
+    }
+]
