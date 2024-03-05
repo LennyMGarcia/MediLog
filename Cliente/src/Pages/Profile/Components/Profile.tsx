@@ -22,10 +22,10 @@ interface IProfileData {
   tipo_sangre: string,
 }
 
-function getFakeProfileData(id: string = "1") {
-  const profiles: Record<string, IProfileData> = {
+function getFakeProfileData(idOrName: string = "1") {
+  const profiles: Record<string, IProfileData | undefined> = {
     '1': {
-      nombre: 'Lenny',
+      nombre: 'Lenny Manuel',
       apellido: 'Garcia',
       fecha_nacimiento: '27-05-2001',
       documento_identidad: '11987654321',
@@ -42,27 +42,40 @@ function getFakeProfileData(id: string = "1") {
       telefono: '18291041014',
       tipo_sangre: 'AB+',
     },
-
   };
 
-  return profiles[id];
+  if (!idOrName) {
+    return undefined; // Si idOrName es una cadena vacía, devolver undefined
+  }
+
+  // Intenta buscar por ID
+  let profile = profiles[idOrName];
+  if (profile) {
+    return profile;
+  }
+
+  // Si no se encuentra por ID, intenta buscar por nombre y apellido
+  const profileValues = Object.values(profiles);
+  profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === idOrName);
+  return profile;
 }
+
 
 function generateSlug(profileData: IProfileData) {
   const { nombre, apellido } = profileData;
-  const slug = `${nombre}-${apellido}`;
+  const slug = `${nombre}${apellido}`;
   return slug;
 }
 
 const Profile: React.FC = () => {
 
 
-  const { id } = useParams<{ id: string }>();
+  const { idOrName } = useParams<{ idOrName: string }>();
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<IProfileData | undefined>();
 
   useEffect(() => {
-    const fetchedProfileData = getFakeProfileData(id);
+    const fetchedProfileData = getFakeProfileData(idOrName);
 
     if (!fetchedProfileData) {
       console.log('No se encontró el perfil');
@@ -71,7 +84,7 @@ const Profile: React.FC = () => {
     }
 
     setProfileData(fetchedProfileData);
-  }, [id, navigate]);
+  }, [idOrName]);
 
   useEffect(() => {
     if (profileData) {
