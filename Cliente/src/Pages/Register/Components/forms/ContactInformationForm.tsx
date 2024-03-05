@@ -1,6 +1,8 @@
 import React from "react";
 import RegistrationControl from "../forms-control/RegistratioControl";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box/Box";
+import Typography from "@mui/material/Typography/Typography";
+
 
 const ContactInformationForm: React.FC = () => {
     return (
@@ -10,7 +12,7 @@ const ContactInformationForm: React.FC = () => {
                 <Box>
                     <RegistrationControl
                         control="input"
-                        label="Telefono"
+                        label="Telefono (opcional)"
                         name="telefono"
                         type="number"
                         placeholder="Escriba su telefono" />

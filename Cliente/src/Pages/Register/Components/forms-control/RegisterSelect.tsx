@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
-import { ErrorMessage, Field, FieldProps } from 'formik';
-import { FormHelperText, MenuItem, Select, SelectChangeEvent, SelectProps, useMediaQuery, useTheme } from '@mui/material';
+
 import useDataRegisterStore from "../../ZustandRegisterManagement";
+import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select/Select';
+import { Field, FieldProps, ErrorMessage  } from 'formik';
+import MenuItem from '@mui/material/MenuItem/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
+import useTheme from '@mui/material/styles/useTheme';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 
 //Solo para omitir variant en la seleccion de SelectProps, puede ser usado nuevamente
 interface ISelect extends Omit<SelectProps, "variant"> {
@@ -37,17 +42,17 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
 
     return (
         <>
-            <label htmlFor={name} style={{fontSize:"0.9rem", display:"block"} }>{label}</label>
-            
+            <label htmlFor={name} style={{ fontSize: "0.9rem", display: "block" }}>{label}</label>
+
             <Field id={name} name={name}>
-                {({field, form }: FieldProps) => (
+                {({ field, form }: FieldProps) => (
                     <React.Fragment>
                         <Select
                             id={name}
                             name={field.name}
                             variant="filled"
                             fullWidth
-                            displayEmpty 
+                            displayEmpty
                             value={getRegisterData(name) || ''}
                             onChange={(e) => {
                                 field.onChange(e);
@@ -55,8 +60,10 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                             }}
                             {...rest}
                             error={Boolean(form.errors[name] && form.touched[name])}
-                            sx={{height: '2rem', fontSize:"0.9rem",
-                             mb:"1px", maxWidth: isMediumScreen? "29.25rem" : "18.75rem"}}
+                            sx={{
+                                height: '2rem', fontSize: "0.9rem",
+                                mb: "1px", maxWidth: isMediumScreen ? "29.25rem" : "18.75rem"
+                            }}
                         >
                             <MenuItem key="" value="" disabled defaultValue="sel" >
                                 Seleccione una opcion
@@ -69,10 +76,14 @@ const RegisterSelect: React.FC<ISelect> = ({ label, name = "name", selectObject,
                                 ))
                             ) : (
                                 <MenuItem key="" value="" disabled>
-                                    <span>No hay nada</span> 
+                                    <span>No hay nada</span>
                                 </MenuItem>)}
                         </Select>
-                        <ErrorMessage name={name} component={FormHelperText}></ErrorMessage>
+                        <ErrorMessage name={name}>
+                            {(msg) => (
+                                <FormHelperText style={{ color: 'red' }}>{msg}</FormHelperText>
+                            )}
+                        </ErrorMessage>
                     </React.Fragment>
                 )}
             </Field>
