@@ -45,16 +45,14 @@ function getFakeProfileData(idOrName: string = "1") {
   };
 
   if (!idOrName) {
-    return undefined; // Si idOrName es una cadena vacía, devolver undefined
+    return undefined; 
   }
 
-  // Intenta buscar por ID
   let profile = profiles[idOrName];
   if (profile) {
     return profile;
   }
 
-  // Si no se encuentra por ID, intenta buscar por nombre y apellido
   const profileValues = Object.values(profiles);
   profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === idOrName);
   return profile;
@@ -137,10 +135,6 @@ const Profile: React.FC = () => {
                 {
                   name: "Nombre", data: profileData.nombre,
                 },
-                {
-                  name: "Apellido", data: profileData.nombre,
-                }
-
               ]} />
             </AccordionDetails>
           </Accordion>
