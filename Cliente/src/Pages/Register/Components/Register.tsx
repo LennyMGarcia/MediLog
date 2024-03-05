@@ -96,8 +96,8 @@ const Register: React.FC = () => {
     ])
 
     return (
-        <Box height={isMediumScreen ? "105vh" : "auto"} className={styles.box}>
-            <Grid container spacing={2}>
+        <Box  className={styles.box}>
+            <Grid container >
                 {isMediumScreen && (
                     <Grid item xs={12} md={4}>
                         <Fade
@@ -109,7 +109,7 @@ const Register: React.FC = () => {
                         </Fade>
                     </Grid>
                 )}
-                <Grid item xs={12} md={isMediumScreen ? 8 : 12}>
+                <Grid sx={{paddingTop:"2rem"}} item xs={12} md={isMediumScreen ? 8 : 12}>
                     {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
                     <Box className={styles.formContainer}>
                         <Formik

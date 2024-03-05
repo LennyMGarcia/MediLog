@@ -5,8 +5,7 @@
 
 .image {
   width: 55vw;
-  height: 105vh;
-  margin-top: -1rem;
+  height: 105vh; 
   margin-left: -17rem;
   background-size: cover;
 }
