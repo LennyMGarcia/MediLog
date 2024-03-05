@@ -1,7 +1,9 @@
-import { SelectProps, TextFieldProps } from "@mui/material";
+
 import RegisterInput from "./RegisterInput";
 import RegisterSelect from "./RegisterSelect";
 import RegisterDateInput from "./RegisterDateInput";
+import { SelectProps } from "@mui/material/Select/Select";
+import { TextFieldProps } from "@mui/material/TextField/TextField";
 
 //Interfaces utiles para ayudar a que las propiedades se lean como sus respectivas propiedades de Select, input...
 interface IRegistrationTexfieldfControl extends Omit<TextFieldProps, 'variant'> { }
