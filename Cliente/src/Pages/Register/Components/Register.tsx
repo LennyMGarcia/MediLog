@@ -2,9 +2,7 @@ import { Formik, Form } from "formik";
 import useMultiForm from "../Hooks/useMultiForm";
 import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
-import useDataRegisterStore, {
-  getAllRegisterData,
-} from "../ZustandRegisterManagement";
+import useDataRegisterStore from "../ZustandRegisterManagement";
 
 import registerDoctor from "/assets/Pictures/registerDoctor.jpg";
 import asianDoctor from "/assets/Pictures/asianDoctor.jpeg";
@@ -25,13 +23,8 @@ import Button from "@mui/material/Button/Button";
 import styles from "../Components/style/RegisterStyle/RegisterTheme.module.css";
 import { Fade } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-//TODO: Agregar listas para controlar elementos con Yup y crear documentacion
-//agregar date control y comenzar con css module y/o material
-// se ve feo, agregar todo en un sitio y mas lo que se repite
-// Arreglar todo lo que esta mal, sobre todo las variables de prueba y el diseno
-//ARREGLAR ARRAY DE VALORES INICIALES Y YUP, sexo al ser select no funciona como se espera
-//Crear posible tema de material para que no se vea asi
+import axios from "axios";
+import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 
 const ImageArray = [
   registerDoctor,
@@ -74,11 +67,28 @@ const initialValues = [
 const Register: React.FC = () => {
   let navigate = useNavigate();
 
-  function onSubmit() {
+  async function onSubmit() {
     if (isLastStep) {
+      const data = await axios
+        .post(
+          getBackendConnectionString("test"),
+          {
+            nombre: "Test",
+            apellido: "Test",
+          },
+          {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      console.log(data);
       navigate("/");
     }
-    console.log(getAllRegisterData());
     next();
   }
 
@@ -97,8 +107,8 @@ const Register: React.FC = () => {
     ]);
 
   return (
-    <Box height={isMediumScreen ? "105vh" : "auto"} className={styles.box}>
-      <Grid container spacing={2}>
+    <Box className={styles.box}>
+      <Grid container>
         {isMediumScreen && (
           <Grid item xs={12} md={4}>
             <Fade in={true} key={currentStepIndex} timeout={1000}>
@@ -110,7 +120,12 @@ const Register: React.FC = () => {
             </Fade>
           </Grid>
         )}
-        <Grid item xs={12} md={isMediumScreen ? 8 : 12}>
+        <Grid
+          sx={{ paddingTop: "2rem" }}
+          item
+          xs={12}
+          md={isMediumScreen ? 8 : 12}
+        >
           {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
           <Box className={styles.formContainer}>
             <Formik
