@@ -8,7 +8,7 @@ import List from "@mui/material/List/List";
 interface IProfileList {
     dataList?: {
         name: string | undefined,
-        data: any | undefined,
+        data: any | React.ReactNode |undefined,
     }[]
 }
 
