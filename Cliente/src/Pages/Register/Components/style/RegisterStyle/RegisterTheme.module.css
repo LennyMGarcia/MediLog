@@ -1,6 +1,6 @@
 .box {
   height: 105vh;
-  background-color: #E9ECEF;
+  background-color: #e9ecef;
 }
 
 .image {
@@ -28,12 +28,12 @@
 
 .box .buttonContainer .backButton {
   margin-left: 10px;
-  color: #52B69A;
+  color: #52b69a;
 }
 
 .box .buttonContainer .nextButton {
   margin-left: 10px;
-  background-color: #52B69A;
+  background-color: #52b69a;
 }
 
 .box .buttonContainer .backButton:hover {
