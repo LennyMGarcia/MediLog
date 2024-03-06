@@ -3,6 +3,7 @@ import consultaPicture from "/assets/Pictures/ConsultaMedica.jpg";
 import { useNavigate } from "react-router-dom";
 import AccordionNormal from "./Components/Accordion";
 import useModalLogin from "../../Common/Modals/useModalLogin";
+import IconAndLabel from "/assets/Pictures/IconAndLabelFix.png";
 
 export default function LandingPage() {
   // const founder = [
@@ -197,7 +198,7 @@ export default function LandingPage() {
           bgcolor={"#184E77"}
           columnSpacing={2}
         >
-          <Grid item container xs={6} spacing={1}>
+          <Grid item container xs={12} md={6} spacing={1}>
             <Grid
               item
               xs={12}
@@ -284,12 +285,19 @@ export default function LandingPage() {
               {/* </Grid> */}
             </Grid>
           </Grid>
+
           <Grid
             item
             xs={6}
             height={"400px"}
             // textAlign={"center"}
             // border={"0% 5% 5% 0%"}
+            sx={{
+              display: {
+                xs: "none",
+                md: "flex",
+              },
+            }}
           >
             <img
               src={consultaPicture}
@@ -343,7 +351,9 @@ export default function LandingPage() {
                   key={idx}
                   bgcolor={"#FFFFFF"}
                   borderRadius={"28px"}
-                  xs={3}
+                  xs={12}
+                  sm={5}
+                  md={3}
                   // height={"408px"}
                   // spacing={1}
                   justifyContent={"center"}
@@ -468,7 +478,8 @@ export default function LandingPage() {
                 return (
                   <Grid
                     key={idx}
-                    xs={4}
+                    xs={12}
+                    sm={4}
                     display={"flex"}
                     flexDirection={"column"}
                     alignItems={"center"}
@@ -562,23 +573,47 @@ export default function LandingPage() {
                 <Grid
                   item
                   container
-                  xs={5.9}
+                  xs={12}
+                  sm={12}
+                  md={5.9}
+                  lg={5.9}
                   key={idx}
                   bgcolor={"#FFFFFF"}
                   borderRadius={"28px"}
                   padding={2}
+                  justifyContent={"space-between"}
                   sx={{
                     boxShadow:
                       "0px 12.521552085876465px 10.017241477966309px 0px rgba(0,0,0,0.09)",
                   }}
                 >
-                  <Grid item xs={2} justifyContent={"flex-end"}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={2}
+                    md={2}
+                    justifyContent={{
+                      xs: "center",
+                      sm: "flex-end",
+                    }}
+                    margin={{
+                      xs: "0px 40%",
+                      sm: "0px",
+                    }}
+                  >
                     <Avatar
-                      sx={{ width: "70px", height: "70px" }}
+                      sx={{
+                        width: "70px",
+                        height: "70px",
+                        justifyContent: {
+                          xs: "center",
+                          md: "flex-start",
+                        },
+                      }}
                       src={op.img}
                     />
                   </Grid>
-                  <Grid item xs={10}>
+                  <Grid item sm={10} md={9} lg={10} columnGap={1}>
                     <Typography
                       fontSize={15}
                       fontWeight={"500"}
@@ -663,6 +698,7 @@ export default function LandingPage() {
               fontSize={20}
               fontWeight={700}
               color={"#D3D3D3"}
+              id={"preguntas"}
             >
               Preguntas Frecuentes
             </Typography>
@@ -677,7 +713,7 @@ export default function LandingPage() {
             </Typography>
           </Grid>
           <Grid item container xs={12} justifyContent={"space-around"}>
-            <Grid item xs={5.9} columnGap={4}>
+            <Grid item xs={12} md={5.9} columnGap={4}>
               {questions.map((question, index) => {
                 if (index % 2 === 0) {
                   return (
@@ -691,7 +727,7 @@ export default function LandingPage() {
                 }
               })}
             </Grid>
-            <Grid item xs={5.9} rowGap={4}>
+            <Grid item xs={12} md={5.9} rowGap={4}>
               {questions.map((question, index) => {
                 if (index % 2 !== 0) {
                   return (
@@ -738,8 +774,9 @@ export default function LandingPage() {
               Habla con nosotros
             </Typography>
           </Grid>
+
           <Grid item container xs={12} direction={"row"} spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1891.9739469285603!2d-69.83307074736764!3d18.486019273634536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf87b9d4dce0e5%3A0x1b4aea9871257623!2sCoral%20Mall!5e0!3m2!1ses-419!2sdo!4v1709088366981!5m2!1ses-419!2sdo"
                 width="100%"
@@ -752,18 +789,29 @@ export default function LandingPage() {
             <Grid
               item
               container
-              xs={6}
+              xs={12}
               // height="450"
               // display={"flex"}
               // flexDirection={"column"}
               // justifyContent={"space-around"}
             >
-              <Grid item xs={12}>
+              <Grid item xs={12} md={6} textAlign={"center"} height={"auto"}>
+                <img
+                  src={IconAndLabel}
+                  style={{
+                    marginTop: "20px",
+                    width: "75%",
+                    height: "80%",
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
                 <Grid item xs={12}>
                   <Typography variant="h5" fontSize={25} color={"#8A898E"}>
                     Teléfono:
                   </Typography>
-                  <Typography variant="body1" fontSize={20}>
+                  <Typography variant="body1" fontSize={20} color={"#0B1B35"}>
                     +1 (809) 123-4567
                   </Typography>
                 </Grid>
@@ -772,7 +820,7 @@ export default function LandingPage() {
                   <Typography variant="h5" fontSize={25} color={"#8A898E"}>
                     Correo electrónico:
                   </Typography>
-                  <Typography variant="body1" fontSize={20}>
+                  <Typography variant="body1" fontSize={20} color={"#0B1B35"}>
                     info@satoruscript.com
                   </Typography>
                 </Grid>
@@ -781,13 +829,11 @@ export default function LandingPage() {
                   <Typography variant="h5" fontSize={25} color={"#8A898E"}>
                     Dirección:
                   </Typography>
-                  <Typography variant="body1" fontSize={20}>
+                  <Typography variant="body1" fontSize={20} color={"#0B1B35"}>
                     Calle Ficticia #123, Ciudad Ficticia, República Dominicana
                   </Typography>
                 </Grid>
               </Grid>
-
-              <Grid item xs={12}></Grid>
             </Grid>
           </Grid>
 

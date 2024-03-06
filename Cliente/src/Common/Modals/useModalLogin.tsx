@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 // import { useModal } from "../hooks/useModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonIcon from "@mui/icons-material/Person";
@@ -42,6 +42,51 @@ export default function useModalLogin(): IProps {
     const [email, setEmail] = useState("");
 
     const [password, setPasswords] = useState("");
+    const [errors, setErrors] = useState({
+      email: "",
+      password: "",
+    });
+
+    const validateForm = () => {
+      let valid = true;
+      const newErrors = {
+        email: "",
+        password: "",
+      };
+      var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+      // console.log(!regex.test(formData.email))
+
+      // Validate email
+      {
+        email.length === 0
+          ? ((valid = false), (newErrors.email = "Este campo es obligatorio"))
+          : {};
+      }
+      {
+        !regex.test(email) && email.length !== 0
+          ? ((valid = false),
+            (newErrors.email = "Esto no es un correo electronico valido"))
+          : {};
+      }
+
+      // Validate password
+      {
+        password.length === 0
+          ? ((valid = false),
+            (newErrors.password = "Este campo es obligatorio"))
+          : {};
+      }
+      {
+        password.length <= 7 && password.length !== 0
+          ? ((valid = false),
+            (newErrors.password =
+              "La contraseña debe tener minimo 8 caracteres"))
+          : {};
+      }
+
+      setErrors(newErrors);
+      return valid;
+    };
 
     const textFieldStyle = {
       color: "#CDCECF",
@@ -72,6 +117,36 @@ export default function useModalLogin(): IProps {
         },
     };
 
+    const checkErrors = () => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (password.length < 8)
+        setErrors((prev) => ({
+          ...prev,
+          password: "La contraseña debe tener mas de 8 caracteres",
+        }));
+
+      if (emailRegex.test(email))
+        setErrors((prev) => ({
+          ...prev,
+          email: "Este correo electronico no es valido",
+        }));
+
+      if (!email)
+        setErrors((prev) => ({
+          ...prev,
+          email: "Este campo no puede estar vacio",
+        }));
+
+      if (password) {
+        console.log("prueba");
+        setErrors((prev) => ({
+          ...prev,
+          password: "Este campo no puede estar vacio",
+        }));
+      }
+    };
+
     return (
       <Modal
         open={open}
@@ -89,19 +164,6 @@ export default function useModalLogin(): IProps {
               gap: "16px",
             }}
           >
-            {/* <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-                borderRadius: "100px",
-                padding: "16px",
-                backgroundColor: "#F4F9EC",
-                width: "60px",
-              }}
-            >
-              <img src={lockGreen} />
-            </Box> */}
-
             <Box
               sx={{
                 display: "flex",
@@ -161,6 +223,8 @@ export default function useModalLogin(): IProps {
             InputProps={{
               endAdornment: <PersonIcon />,
             }}
+            helperText={errors.email}
+            error={errors.email.length != 0}
           />
           <TextField
             label="Nueva contraseña"
@@ -201,6 +265,8 @@ export default function useModalLogin(): IProps {
                 </InputAdornment>
               ),
             }}
+            helperText={errors.password}
+            error={errors.password.length != 0}
           />
 
           <Box
@@ -252,7 +318,9 @@ export default function useModalLogin(): IProps {
                 boxShadow: "none",
               }}
               onClick={() => {
-                handleClose();
+                if (validateForm()) {
+                  handleClose();
+                }
               }}
             >
               Iniciar Sesion

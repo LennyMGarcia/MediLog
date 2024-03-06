@@ -1,5 +1,5 @@
 import { Button, Grid, Link, Typography } from "@mui/material";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import useModalLogin from "../Modals/useModalLogin";
 
 export default function Navbar() {
@@ -9,27 +9,28 @@ export default function Navbar() {
       link: "#planes",
     },
     {
+      name: "Sobre Nosotros",
+      link: "#acercaDe",
+    },
+    {
       name: "Testimonios",
       link: "#testimonios",
     },
-    // {
-    //   name: "Inicio",
-    //   link: "#inicio",
-    // },
-
+    {
+      name: "Preguntas",
+      link: "#preguntas",
+    },
     {
       name: "Contactarnos",
       link: "#contactarnos",
-    },
-    {
-      name: "Acerca de",
-      link: "#acercaDe",
     },
   ];
 
   const navigate = useNavigate();
 
   const { ModalLogin, handleOpenModal } = useModalLogin();
+
+  const location = useLocation();
 
   return (
     <>
@@ -47,7 +48,9 @@ export default function Navbar() {
         padding={"10px 35px"}
       >
         <Grid
-          xs={1}
+          xs={12}
+          sm={12}
+          md={1}
           item
           display={"flex"}
           alignItems={"center"}
@@ -71,48 +74,81 @@ export default function Navbar() {
         <Grid
           item
           container
-          xs={7}
+          xs={12}
+          sm={12}
+          md={11}
+          lg={8}
           display={"flex"}
           flexDirection={"row"}
           // gap={"24px"}
           alignItems={"center"}
           // marginRight={"15px"}
-          justifyContent={"space-between"}
+          justifyContent={"flex-end"}
         >
-          <Grid item container xs={7} direction="row" display={"flex"} gap={1}>
-            {navbarLinks.map((nav, idx) => {
-              return (
-                // <Grid item display={"flex"}>
-                <Link
-                  href={nav.link}
-                  key={idx}
-                  style={{
-                    color: "#FFFFFF",
-                    textDecorationLine: "none",
-                    padding: "5px 10px",
-                    // width: "20%",
-                    // borderRight: "1px solid #958b8b",
-                    // borderLeft: "1px solid #958b8b",
-                    // display: "flex",
-                    // justifyContent: "center",
-                    // alignItems: "center",
-                    // width: "90px",
-                  }}
-                >
-                  {nav.name}
-                </Link>
-                // </Grid>
-              );
-            })}
-          </Grid>
+          {location.pathname == "/" && (
+            <Grid
+              item
+              container
+              xs={8}
+              sm={12}
+              md={8}
+              direction="row"
+              // display={"flex"}
+              gap={1}
+              sx={{
+                justifyContent: {
+                  sm: "space-around",
+                  md: "flex-end",
+                },
+                display: {
+                  xs: "none",
+                  sm: "flex",
+                },
+              }}
+            >
+              {navbarLinks.map((nav, idx) => {
+                return (
+                  // <Grid item display={"flex"}>
+                  <Link
+                    href={nav.link}
+                    key={idx}
+                    style={{
+                      color: "#FFFFFF",
+                      textDecorationLine: "none",
+                      padding: "5px 10px",
+                      // width: "20%",
+                      // borderRight: "1px solid #958b8b",
+                      // borderLeft: "1px solid #958b8b",
+                      // display: "flex",
+                      // justifyContent: "center",
+                      // alignItems: "center",
+                      // width: "90px",
+                    }}
+                  >
+                    {nav.name}
+                  </Link>
+                  // </Grid>
+                );
+              })}
+            </Grid>
+          )}
 
           <Grid
             item
-            xs={4}
+            xs={12}
+            sm={12}
+            md={4}
             display={"flex"}
             gap={"10px"}
             alignItems={"center"}
             justifyContent={"flex-end"}
+            sx={{
+              justifyContent: {
+                xs: "center",
+                sm: "center",
+                md: "flex-end",
+              },
+            }}
           >
             <Button
               sx={{

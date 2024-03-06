@@ -47,8 +47,8 @@ export default function AccordionNormal({
         sx={{
           display: "flex",
           // width: "557px",
-          height: "54px",
-          padding: "16px",
+          height: "85px",
+          // padding: "16px",
           // flexDirection: "column",
           alignItems: "center",
           gap: "10px",
