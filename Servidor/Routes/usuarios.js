@@ -3,6 +3,22 @@ const router = express.Router();
 const Usuario = require('../Migrations/Usuario');
 const bcrypt = require('bcrypt');
 const salt_level = 10;
+const { body, param, validationResult } = require('express-validator');
+
+// Reglas de Validaciones
+const validaciones = [
+    body('member_id').escape().trim().notEmpty().withMessage('Nombre Obligatorio.'),
+    body('correo').escape().trim().isEmail().notEmpty().withMessage('Correo Invalido.'),
+    body('contrasena').escape().trim().isAlphanumeric().isLength({ max: 12, min: 8 }).notEmpty().withMessage('Contraseña Obligatoria.'),
+    body('tipo').escape().trim().isString().optional(),
+    body('plan').escape().trim().isInt().optional(),
+    body('datos_financieros').escape().trim().isString().optional(),
+    body('cvv').escape().trim().isString().optional(),
+    body('fecha_expiracion').escape().trim().isString().optional(),
+];
+const id_validation = [
+    param('id').escape().trim().notEmpty().isInt().withMessage('Numero de Identificacion Invalido.')
+];
 
 router.get('/', async (req, res) => {
     const model = new Usuario();
@@ -12,53 +28,73 @@ router.get('/', async (req, res) => {
 
     return res.status(200).json(data);
 });
-router.get('/:id', async (req, res) => {
+router.get('/:id', id_validation, async (req, res) => {
     const id = req.params.id;
-    const model = new Usuario();
-    const data = await model.find(id);
+    const validated = validationResult(req);
 
-    if (!data) return res.status(404).json({ 'message': 'Registro No Existe.' });
-    return res.status(200).json(data);
+    //Condicion que verifica si los campos obligatorios estan incluidos
+    if (validated.isEmpty()) {
+        const model = new Usuario();
+        const data = await model.find(id);
+
+        if (!data) return res.status(404).json({ 'message': 'Registro No Existe.' });
+        return res.status(200).json(data);
+    }
+
+    const error_msg = validated.errors[0].msg;
+    return res.status(400).json({ 'message': error_msg });
 });
 router.post('/', async (req, res) => {
     const data = req.body;
-    //Condicion que verifica si los campos obligatorios estan incluidos
-    if (!data.correo || !data.contrasena) return res.status(400).json({ 'message': 'Campos Obligatorios' });
-
-    const model = new Usuario();
-    const result = await model.insert(data);
-
-    if (result[0]?.success === false) return res.status(result[0].status).json(result);
-
-    return res.status(201).json(result);
-});
-router.put('/:id', async (req, res) => {
-    const id = req.params.id;
-
-    //Condicion que verifica si el numero ID es realmente un INTEGER y no un STRING
-    const valid = parseInt(id);
-    if (isNaN(valid)) return res.status(400).json({ 'message': 'Numero de Identifiacion Invalido.' });
+    const validated = validationResult(req);
 
     //Condicion que verifica si los campos obligatorios estan incluidos
-    const data = req.body;
-    if (!data.contrasena || !data.correo) return res.status(400).json({ 'message': 'Campos Obligatorios.' });
+    if (validated.isEmpty()) {
 
-    const model = new Usuario();
-    const result = await model.update(data, id);
+        const model = new Usuario();
+        const result = await model.insert(data);
 
-    if (result[0].success === false) return res.status(result[0].status).json(result);
-    return res.status(201).json(result);
+        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+
+        return res.status(201).json(result);
+    }
+
+    const error_msg = validated.errors[0].msg;
+    return res.status(400).json({ 'message': error_msg });
 });
-router.delete('/:id', async (req, res) => {
+router.put('/:id', id_validation, async (req, res) => {
     const id = req.params.id;
+    const validated = validationResult(req);
 
-    //Condicion que verifica si el numero ID es realmente un INTEGER y no un STRING
-    const valid = parseInt(id);
-    if (isNaN(valid)) return res.status(400).json({ 'message': 'Numero de Identifiacion Invalido' });
+    //Condicion que verifica si los campos obligatorios estan incluidos
+    if (validated.isEmpty()) {
+        const data = req.body;
+        if (!data.contrasena || !data.correo) return res.status(400).json({ 'message': 'Campos Obligatorios.' });
 
-    const model = new Usuario();
-    const destroy = await model.delete(id);
-    return res.status(200).json({ 'message': 'Registro Eliminado Exitosamente.' });
+        const model = new Usuario();
+        const result = await model.update(data, id);
+
+        if (result[0].success === false) return res.status(result[0].status).json(result);
+        return res.status(201).json(result);
+    }
+
+    const error_msg = validated.errors[0].msg;
+    return res.status(400).json({ 'message': error_msg });
+});
+router.delete('/:id', id_validation, async (req, res) => {
+    const id = req.params.id;
+    const validated = validationResult(req);
+
+    //Condicion que verifica si los campos obligatorios estan incluidos
+    if (validated.isEmpty()) {
+
+        const model = new Usuario();
+        const destroy = await model.delete(id);
+        return res.status(200).json({ 'message': 'Registro Eliminado Exitosamente.' });
+    }
+
+    const error_msg = validated.errors[0].msg;
+    return res.status(400).json({ 'message': error_msg });
 });
 
 module.exports = router;

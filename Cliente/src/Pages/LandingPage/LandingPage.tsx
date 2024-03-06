@@ -17,7 +17,7 @@ export default function LandingPage() {
       descripcion: "",
     },
     {
-      name: "JBen Junior",
+      name: "Ben Junior",
       img: "/",
       job: "",
       descripcion: "",
@@ -109,7 +109,7 @@ export default function LandingPage() {
             justifyContent={"center"}
             alignItems={"center"}
             spacing={1}
-            // padding={"10px"}
+          // padding={"10px"}
           >
             <Grid item xs={3}>
               <Button
