@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Typography } from "@mui/material";
 import consultaPicture from "/assets/Pictures/ConsultaMedica.jpg";
 import { useNavigate } from "react-router-dom";
 import AccordionNormal from "./Components/Accordion";

@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 // import { useModal } from "../hooks/useModal";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonIcon from "@mui/icons-material/Person";
@@ -115,36 +115,6 @@ export default function useModalLogin(): IProps {
         {
           border: "1px solid #CDCECF",
         },
-    };
-
-    const checkErrors = () => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (password.length < 8)
-        setErrors((prev) => ({
-          ...prev,
-          password: "La contraseña debe tener mas de 8 caracteres",
-        }));
-
-      if (emailRegex.test(email))
-        setErrors((prev) => ({
-          ...prev,
-          email: "Este correo electronico no es valido",
-        }));
-
-      if (!email)
-        setErrors((prev) => ({
-          ...prev,
-          email: "Este campo no puede estar vacio",
-        }));
-
-      if (password) {
-        console.log("prueba");
-        setErrors((prev) => ({
-          ...prev,
-          password: "Este campo no puede estar vacio",
-        }));
-      }
     };
 
     return (

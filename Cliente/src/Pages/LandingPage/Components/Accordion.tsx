@@ -6,8 +6,6 @@ import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import styles from "../LandingPage.module.css";
-
 type IProps = {
   question: string;
   answer: string;
