@@ -30,7 +30,7 @@ const app = express();
 const PORT = 3001;
 
 //PROXY que permite comunicacion entre cliente y servidor
-app.use(cors({ origin: 'http://localhost:3000/' }));
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 // Middleware que convierte los datos provenientes de los request a formato JSON (BODY PARSE)
 app.use(express.urlencoded({ extended: true }));
@@ -61,6 +61,13 @@ app.get("/test", async (req, res) => {
     ///if (results[0].success === false) return res.status(results[0].status).json(results);
     //return res.json(results);
     return res.json('Pendejo tu DB no esta configurado!')
+});
+app.post("/test", async (req, res) => {
+    const nombre = req.body.nombre;
+    const apellido = req.body.apellido;
+    console.log(nombre)
+    console.log(apellido)
+    return res.json({ 'nombre': nombre, 'apellido': apellido });
 });
 
 // Iniciar Servidor en Puerto Designado

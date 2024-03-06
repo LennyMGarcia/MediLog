@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "proxy": "http://localhost:3000/",
   "scripts": {
     "servidor": "nodemon app.js",
     "cliente": "npm run dev --prefix ../Cliente",
@@ -12,6 +11,7 @@
     "devBuild": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run build\"",
     "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1"
   },
+  "proxy": "http://localhost:5173/",
   "keywords": [],
   "author": "",
   "license": "ISC",

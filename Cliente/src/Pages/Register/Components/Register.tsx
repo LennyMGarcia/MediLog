@@ -23,7 +23,8 @@ import Button from "@mui/material/Button/Button";
 import styles from '../Components/style/RegisterStyle/RegisterTheme.module.css';
 import { Fade } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
-
+import axios from "axios";
+import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 
 const ImageArray = [
     registerDoctor,
@@ -67,8 +68,19 @@ const Register: React.FC = () => {
 
     let navigate = useNavigate();
 
-    function onSubmit() {
-        if(isLastStep){
+    async function onSubmit() {
+        if (isLastStep) {
+            const data = await axios.post(getBackendConnectionString('test'), {
+                nombre: 'Test',
+                apellido: 'Test'
+            }, {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(response => {
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+            });
+            console.log(data);
             navigate("/")
         }
         next()
@@ -112,21 +124,21 @@ const Register: React.FC = () => {
                                 <Form>
                                     {step}
                                     <Box className={styles.buttonContainer}>
-                                        { !isLastStep && <Button
+                                        {!isLastStep && <Button
                                             fullWidth
                                             disabled={isFirstStep ? true : false}
-                                            className={styles.backButton} 
-                                            variant="outlined" type="button" 
+                                            className={styles.backButton}
+                                            variant="outlined" type="button"
                                             onClick={back}>
-                                                Regresar
+                                            Regresar
                                         </Button>}
-                                        <Button 
-                                            fullWidth 
-                                            className={styles.nextButton} 
-                                            variant="contained" 
+                                        <Button
+                                            fullWidth
+                                            className={styles.nextButton}
+                                            variant="contained"
                                             type="submit">
-                                                {!isLastStep ? "Siguiente" : "Finalizar"}
-                                            </Button>
+                                            {!isLastStep ? "Siguiente" : "Finalizar"}
+                                        </Button>
                                     </Box>
                                 </Form>
                             )}
