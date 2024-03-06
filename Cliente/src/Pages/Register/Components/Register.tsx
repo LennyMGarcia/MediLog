@@ -65,42 +65,70 @@ const initialValues = [
 ]
 
 const Register: React.FC = () => {
-
-    let navigate = useNavigate();
+    const { getRegisterData } = useDataRegisterStore()
+    const navigate = useNavigate();
 
     async function onSubmit() {
-        if (isLastStep) {
+        if (currentStepIndex === steps.length - 2) {
             const data = await axios.post(getBackendConnectionString('test'), {
-                nombre: 'Test',
-                apellido: 'Test'
+                nombre: getRegisterData('nombre'),
+                apellido: getRegisterData('apellido'),
+                fecha_nacimiento: getRegisterData('fecha_nacimiento'),
+                documento_identidad: getRegisterData('documento_identidad'),
+                sexo: getRegisterData('sexo'),
+                correo: getRegisterData('correo'),
+                direccion: getRegisterData('direccion'),
+                telefono: getRegisterData('telefono'),
+                especialidad: getRegisterData('especialidad'),
+                member_id: getRegisterData('member_id'),
+                contrasena: getRegisterData('contrasena'),
+                tipo: getRegisterData('tipo'),
+                plan: getRegisterData('plan'),
+                metodo_pago: getRegisterData('metodo_pago'),
+                datos_financieros: getRegisterData('datos_financieros'),
+                fecha_expiracion: getRegisterData('fecha_expiracion'),
+                cvv: getRegisterData('cvv'),
+                precio: getRegisterData('precio'),
+                categoria: getRegisterData('categoria'),
+                monto: getRegisterData('monto'),
+                producto_id: getRegisterData('producto_id'),
+                usuario_id: getRegisterData('usuario_id'),
+                descripcion: getRegisterData('descripcion'),
             }, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).then(response => {
-                console.log(response);
+                //Condicion que verifica si la solicitud fue exitosa
+                if (response.status === 201 || response.status === 200) {
+                    next();
+                } else {
+                    console.log(response.data?.message);
+                }
             }).catch(error => {
                 console.log(error);
+                console.log(error?.response?.data?.message);
             });
-            console.log(data);
-            navigate("/")
+        } else if (isLastStep) {
+            navigate("/");
+        } else {
+            next()
         }
-        next()
     };
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
-    const { getRegisterData } = useDataRegisterStore();
+    //const { getRegisterData } = useDataRegisterStore();
 
-    const { currentStepIndex, step, isFirstStep, isLastStep, next, back } = useMultiForm([
+    const { currentStepIndex, step, steps, isFirstStep, isLastStep, next, back } = useMultiForm([
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
         <ContactInformationForm />,
         <PricingForm />,
         <FinancialInformationForm />,
         <ThanksForm />
-    ])
+    ]);
 
     return (
-        <Box  className={styles.box}>
+        <Box className={styles.box}>
             <Grid container >
                 {isMediumScreen && (
                     <Grid item xs={12} md={4}>
@@ -113,7 +141,7 @@ const Register: React.FC = () => {
                         </Fade>
                     </Grid>
                 )}
-                <Grid sx={{paddingTop:"2rem"}} item xs={12} md={isMediumScreen ? 8 : 12}>
+                <Grid sx={{ paddingTop: "2rem" }} item xs={12} md={isMediumScreen ? 8 : 12}>
                     {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
                     <Box className={styles.formContainer}>
                         <Formik

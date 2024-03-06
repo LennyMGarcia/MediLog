@@ -62,11 +62,14 @@ app.get("/test", async (req, res) => {
     //return res.json(results);
     return res.json('Pendejo tu DB no esta configurado!')
 });
+
+// RUTA PARA COMPROBAR ALGORITMO DE SNAPBACK
 app.post("/test", async (req, res) => {
     const nombre = req.body.nombre;
     const apellido = req.body.apellido;
-    console.log(nombre)
-    console.log(apellido)
+    /* console.log(nombre)
+     console.log(req.body);*/
+    return res.status(404).json({ 'message': 'Credenciales Incorrectas.' });
     return res.json({ 'nombre': nombre, 'apellido': apellido });
 });
 
