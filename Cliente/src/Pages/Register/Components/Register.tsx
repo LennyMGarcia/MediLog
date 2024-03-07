@@ -21,10 +21,13 @@ import Box from "@mui/material/Box/Box";
 import Grid from "@mui/material/Grid/Grid";
 import Button from "@mui/material/Button/Button";
 import styles from '../Components/style/RegisterStyle/RegisterTheme.module.css';
-import { Fade } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import getBackendConnectionString from "../../../Common/Utils/getBackendString";
+import Fade from "@mui/material/Fade/Fade";
+import Alert from "@mui/material/Alert/Alert";
+import Snackbar from "@mui/material/Snackbar/Snackbar";
+import { useState } from "react";
 
 const ImageArray = [
     registerDoctor,
@@ -68,6 +71,16 @@ const Register: React.FC = () => {
     const { getRegisterData } = useDataRegisterStore()
     const navigate = useNavigate();
 
+    const [open, setOpen] = useState(false);
+  
+    const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+  
+      setOpen(false);
+    };
+
     async function onSubmit() {
         if (currentStepIndex === steps.length - 2) {
             const result = await axios.post(getBackendConnectionString('test'), {
@@ -106,6 +119,22 @@ const Register: React.FC = () => {
             }).catch(error => {
                 console.log(error);
                 console.log(error?.response?.data?.message);
+                setOpen(true)
+                return (
+                    <div>
+                      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+                        <Alert
+                          onClose={handleClose}
+                          severity="error"
+                          variant="filled"
+                          sx={{ width: '100%' }}
+                        >
+                          This is a success Alert inside a Snackbar!
+                        </Alert>
+                      </Snackbar>
+                    </div>
+                  );
+                
             });
         } else if (isLastStep) {
             navigate("/");
@@ -117,7 +146,6 @@ const Register: React.FC = () => {
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
-    //const { getRegisterData } = useDataRegisterStore();
 
     const { currentStepIndex, step, steps, isFirstStep, isLastStep, next, back } = useMultiForm([
         <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
@@ -128,7 +156,7 @@ const Register: React.FC = () => {
     ]);
 
     return (
-        <Box className={styles.box}>
+        <Box className={styles.box} height={isMediumScreen ? "105vh" : "auto"}>
             <Grid container >
                 {isMediumScreen && (
                     <Grid item xs={12} md={4}>

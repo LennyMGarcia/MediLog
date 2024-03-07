@@ -5,9 +5,14 @@ import useDataRegisterStore from "../../ZustandRegisterManagement";
 import BoxRowWrapper from "../style/Wrappers/BoxRowWrapper";
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography/Typography";
+import useTheme from "@mui/material/styles/useTheme";
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 
 const FinancialInformationForm: React.FC = () => {
     const { getRegisterData } = useDataRegisterStore();
+
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     return (
         <>
@@ -32,7 +37,7 @@ const FinancialInformationForm: React.FC = () => {
                         />
                 </BoxRowWrapper>
 
-                <Box>
+                <Box sx={{ marginLeft:isMediumScreen? "0" :"2rem"}}>
                     <RegistrationControl
                         control="select"
                         label="Metodo de pago"
@@ -43,6 +48,7 @@ const FinancialInformationForm: React.FC = () => {
                         ]}
                     />
                 </Box>
+
                 <BoxRowWrapper>
                     <RegistrationControl
                         control="input"
@@ -59,13 +65,13 @@ const FinancialInformationForm: React.FC = () => {
                         />
                 </BoxRowWrapper>
 
-                <Box>
+                <Box sx={{ marginLeft:isMediumScreen? "0" :"2rem"}}>
                     <RegistrationControl
                         control="date"
                         label="Fecha de expiracion"
                         name="fecha_expiracion" />
                 </Box>
-                <Box>
+                <Box sx={{ marginLeft:isMediumScreen? "0" :"2rem"}}>
                     <RegistrationControl
                         control="input"
                         label="Descripcion"
