@@ -70,7 +70,7 @@ const Register: React.FC = () => {
 
     async function onSubmit() {
         if (currentStepIndex === steps.length - 2) {
-            await axios.post(getBackendConnectionString('test'), {
+            const result = await axios.post(getBackendConnectionString('test'), {
                 nombre: getRegisterData('nombre'),
                 apellido: getRegisterData('apellido'),
                 fecha_nacimiento: getRegisterData('fecha_nacimiento'),
@@ -115,7 +115,7 @@ const Register: React.FC = () => {
     };
 
     const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     //const { getRegisterData } = useDataRegisterStore();
 
@@ -180,3 +180,4 @@ const Register: React.FC = () => {
 };
 
 export default Register;
+
