@@ -17,8 +17,11 @@ import Modal from "@mui/material/Modal/Modal";
 import Button from "@mui/material/Button/Button";
 import Tabs from "@mui/material/Tabs/Tabs";
 import Tab from "@mui/material/Tab/Tab";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 
+import PhoneIcon from '@mui/icons-material/Phone';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
 
 
 const style = {
@@ -161,6 +164,13 @@ const Profile: React.FC = () => {
     return <div>Cargando...</div>;
   }
 
+  const initialValues = {
+    tabValue: "one", // Valor inicial de la pestaña activa
+    field1: "", // Campos de ejemplo
+    field2: "",
+    field3: ""
+  };
+
   const userType: string = profileData.tipo;
 
   return (
@@ -271,29 +281,47 @@ const Profile: React.FC = () => {
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                   <Box sx={{ width: '100%', height: "50vh" }}>
                     <Formik
-                      initialValues={{} }
-                      onSubmit={()=> console.log("adios")}
-                      >
-                      {({ values, handleSubmit }) => (
+                      initialValues={{initialValues}}
+                      onSubmit={() => console.log("adios")}
+                    >
+                      {({handleSubmit}) => (
                         <Form onSubmit={handleSubmit}>
                           <Tabs
                             value={tabValue}
                             onChange={handleTabChange}
-                            textColor="secondary"
-                            indicatorColor="secondary"
-                            aria-label="secondary tabs example"
+                           
                           >
-                            <Tab value="one" label="Item One" >
-
-                            </Tab>
-                            <Tab value="two" label="Item Two" >
-
-                            </Tab>
-                            <Tab value="three" label="Item Three" >
-
-                            </Tab>
+                            <Tab icon={<PhoneIcon />} value="one" label="Item One" />
+                            <Tab icon={<FavoriteIcon />} value="two" label="Item Two" />
+                            <Tab icon={<PersonPinIcon />} value="three" label="Item Three" />
                           </Tabs>
-
+                          <div role="tabpanel" hidden={tabValue !== "one"}>
+                            <Field
+                              type="text"
+                              name="field1"
+                              placeholder="Campo 1"
+                              onChange={console.log("1")}
+                            />
+                           
+                          </div>
+                          <div role="tabpanel" hidden={tabValue !== "two"}>
+                            <Field
+                              type="text"
+                              name="field2"
+                              placeholder="Campo 2"
+                              onChange={console.log("1")}
+                            />
+                            
+                          </div>
+                          <div role="tabpanel" hidden={tabValue !== "three"}>
+                            <Field
+                              type="text"
+                              name="field3"
+                              placeholder="Campo 3"
+                              onChange={console.log("1")}
+                            />
+                          
+                          </div>
                           <button type="submit">Enviar</button>
                         </Form>
                       )}
