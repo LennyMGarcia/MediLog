@@ -4,11 +4,11 @@ import ContactInformationForm from "./forms/ContactInformationForm";
 import BasicInformationForm from "./forms/BasicInformationForm";
 import useDataRegisterStore from "../ZustandRegisterManagement";
 
-import registerDoctor from "/assets/Pictures/registerDoctor.jpg"
-import asianDoctor from "/assets/Pictures/asianDoctor.jpeg"
-import indianDoctor from "/assets/Pictures/indianDoctor.jpg"
-import registerExample from "/assets/Pictures/registerExample.jpg"
-import healthDoctor from "/assets/Pictures/healthDoctor.jpg"
+import registerDoctor from "/assets/Pictures/registerDoctor.jpg";
+import asianDoctor from "/assets/Pictures/asianDoctor.jpeg";
+import indianDoctor from "/assets/Pictures/indianDoctor.jpg";
+import registerExample from "/assets/Pictures/registerExample.jpg";
+import healthDoctor from "/assets/Pictures/healthDoctor.jpg";
 
 import { registerValidationSchema } from "../Utils/yup-schema/yupRegisterSchema";
 import FinancialInformationForm from "./forms/FinancialInformationForm";
@@ -20,9 +20,9 @@ import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import Box from "@mui/material/Box/Box";
 import Grid from "@mui/material/Grid/Grid";
 import Button from "@mui/material/Button/Button";
-import styles from '../Components/style/RegisterStyle/RegisterTheme.module.css';
+import styles from "../Components/style/RegisterStyle/RegisterTheme.module.css";
 import { Fade } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 
@@ -31,8 +31,8 @@ const ImageArray = [
     asianDoctor,
     indianDoctor,
     registerExample,
-    healthDoctor
-]
+    healthDoctor,
+];
 
 const initialValues = [
     {
@@ -42,27 +42,27 @@ const initialValues = [
         fecha_nacimiento: "",
         tipo: "",
         especialidad: undefined,
-        documento_identidad: undefined
+        documento_identidad: undefined,
     },
 
     {
         correo: "",
         contrasena: "",
-        confirmarContrasena: ""
+        confirmarContrasena: "",
     },
 
     {
-        pricing: ""
+        pricing: "",
     },
 
     {
-        metodo_pago: '',
-        datos_financieros: '',
-        cvv: '',
-        fecha_expiracion: '',
-        descripcion: '',
-    }
-]
+        metodo_pago: "",
+        datos_financieros: "",
+        cvv: "",
+        fecha_expiracion: "",
+        descripcion: "",
+    },
+];
 
 const Register: React.FC = () => {
     const { getRegisterData } = useDataRegisterStore()
@@ -115,7 +115,7 @@ const Register: React.FC = () => {
     };
 
     const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
     //const { getRegisterData } = useDataRegisterStore();
 
@@ -180,4 +180,3 @@ const Register: React.FC = () => {
 };
 
 export default Register;
-
