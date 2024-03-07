@@ -22,6 +22,9 @@ import { Field, Form, Formik } from "formik";
 import PhoneIcon from '@mui/icons-material/Phone';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
+import ProfileControl from "./forms-control/ProfileControl";
+import BoxRowWrapper from "../../../Common/Wrappers/BoxRowWrapper";
+
 
 
 const style = {
@@ -29,11 +32,22 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: "auto",
+  height: "auto",
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  maxHeight: '80vh', // Establece la altura máxima del modal
+  overflowY: 'auto', // Habilita el scroll vertical si el contenido excede la altura máxima
+  '&::-webkit-scrollbar': {
+    width: '0.5em', // Ancho de la barra de desplazamiento
+  },
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)', // Color de la barra de desplazamiento
+    borderRadius: '4px', // Borde redondeado de la barra de desplazamiento
+  },
+
 };
 
 interface IPatientProfileData {
@@ -165,8 +179,8 @@ const Profile: React.FC = () => {
   }
 
   const initialValues = {
-    tabValue: "one", // Valor inicial de la pestaña activa
-    field1: "", // Campos de ejemplo
+    tabValue: "one", //valores de ej
+    field1: "", 
     field2: "",
     field3: ""
   };
@@ -274,54 +288,212 @@ const Profile: React.FC = () => {
               keepMounted
               open={modalOpen}
               onClose={handleModalClose}
-              aria-labelledby="keep-mounted-modal-title"
-              aria-describedby="keep-mounted-modal-description"
+
             >
-              <Box sx={style}>
+              <Box sx={style} >
                 <Box sx={{ width: '100%', typography: 'body1' }}>
-                  <Box sx={{ width: '100%', height: "50vh" }}>
+                  <Box sx={{ width: '100%', height: "100%" }}>
                     <Formik
-                      initialValues={{initialValues}}
+                      initialValues={{ initialValues }}
                       onSubmit={() => console.log("adios")}
                     >
-                      {({handleSubmit}) => (
+                      {({ handleSubmit }) => (
                         <Form onSubmit={handleSubmit}>
                           <Tabs
                             value={tabValue}
                             onChange={handleTabChange}
-                           
+                            variant="fullWidth"
+                            sx={{
+                              '& .MuiTabs-indicator': {
+                                backgroundColor: ' #52b69a', 
+                              },
+                              '& .MuiTab-root': {
+                                color: '#168aad', 
+                                '&.Mui-selected': {
+                                  color: ' #52b69a', 
+                                },
+                                '&:hover': {
+                                  color: '#34a0a4', 
+                                },
+                              },
+                            }}
                           >
-                            <Tab icon={<PhoneIcon />} value="one" label="Item One" />
-                            <Tab icon={<FavoriteIcon />} value="two" label="Item Two" />
-                            <Tab icon={<PersonPinIcon />} value="three" label="Item Three" />
+                            <Tab icon={<PhoneIcon />} value="one" label="basico" />
+                            <Tab icon={<FavoriteIcon />} value="two" label="Contacto" />
+                            <Tab icon={<PersonPinIcon />} value="three" label="MonetariO" />
                           </Tabs>
-                          <div role="tabpanel" hidden={tabValue !== "one"}>
-                            <Field
-                              type="text"
-                              name="field1"
-                              placeholder="Campo 1"
-                              onChange={console.log("1")}
-                            />
-                           
-                          </div>
-                          <div role="tabpanel" hidden={tabValue !== "two"}>
-                            <Field
-                              type="text"
-                              name="field2"
-                              placeholder="Campo 2"
-                              onChange={console.log("1")}
-                            />
-                            
-                          </div>
-                          <div role="tabpanel" hidden={tabValue !== "three"}>
-                            <Field
-                              type="text"
-                              name="field3"
-                              placeholder="Campo 3"
-                              onChange={console.log("1")}
-                            />
-                          
-                          </div>
+                          <Box sx={{
+                            maxHeight: '60vh', 
+                            overflowY: 'scroll', 
+                            '&::-webkit-scrollbar': {
+                              width: '0.5em', 
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                              backgroundColor: '#52b69a', 
+                              borderRadius: '4px',
+                            },
+                          }}>
+                            <Box hidden={tabValue !== "one"}>
+
+                              <BoxRowWrapper  >
+                                <ProfileControl
+                                  control="input"
+                                  label="Nombre"
+                                  name="nombre"
+                                  placeholder=" Escriba su nombre"
+                                />
+                                <ProfileControl
+                                  control="input"
+                                  label="Apellido"
+                                  name="apellido"
+                                  placeholder="Escriba su apellido"
+                                />
+                              </BoxRowWrapper>
+
+                              <Box>
+                                <ProfileControl
+                                  control="select"
+                                  label="Sexo"
+                                  name="sexo"
+                                  selectObject={[
+                                    { key: "Hombre", value: "m" },
+                                    { key: "Mujer", value: "f" },
+
+                                  ]}
+                                />
+                              </Box>
+
+                              <Box><ProfileControl
+                                control="date"
+                                label="Fecha de nacimiento"
+                                name="fecha_nacimiento" />
+
+                              </Box>
+
+                              {userType == "Paciente" ?
+                                <Box>
+                                  <ProfileControl
+                                    control="input"
+                                    label="Cedula"
+                                    name="documento_identidad"
+                                    placeholder="Escriba su cedula"
+                                  />
+
+                                  <ProfileControl
+                                    control="input"
+                                    label="Tipo de sangre" //select
+                                    name="tipo_sangre"
+                                    placeholder="Escriba su cedula"
+                                  />
+                                </Box> : userType == "Especialista" ?
+                                  <Box>
+                                    <ProfileControl
+                                      control="input"
+                                      label="Especialidad"
+                                      name="especialidad"
+                                      placeholder="Escriba su especialidad"
+                                    />
+
+                                  </Box>
+                                  : <Box></Box>
+                              }
+
+
+                            </Box>
+                            <Box role="tabpanel" hidden={tabValue !== "two"}>
+                              <Box>
+                                <ProfileControl
+                                  control="input"
+                                  label="Telefono (opcional)"
+                                  name="telefono"
+                                  type="number"
+                                  placeholder="Escriba su telefono" />
+                              </Box>
+                              <Box>
+                                <ProfileControl
+                                  control="input"
+                                  label="Correo"
+                                  name="correo"
+                                  placeholder="Escriba su correo" />
+                              </Box>
+                              <Box>
+                                <ProfileControl
+                                  control="input"
+                                  label="Direccion"
+                                  name="direccion"
+                                  placeholder="Escriba su direccion"
+                                  multiline
+                                  rows={4} />
+                              </Box>
+
+                            </Box>
+
+                            <Box role="tabpanel" hidden={tabValue !== "three"}>
+                              <BoxRowWrapper>
+                                <ProfileControl
+                                  control="input"
+                                  label="Monto"
+                                  name="monto"
+                                  disabled
+
+                                />
+
+                                <ProfileControl
+                                  control="input"
+                                  label="Categoria"
+                                  name="categoria"
+                                  disabled
+
+                                />
+                              </BoxRowWrapper>
+
+                              <Box>
+                                <ProfileControl
+                                  control="select"
+                                  label="Metodo de pago"
+                                  name="metodo_pago"
+                                  selectObject={[
+                                    { key: "Tarjeta de credito", value: "Tarjeta de Credito" },
+                                    { key: "Tarjeta de debito", value: "Tarjeta de Debito" },
+                                  ]}
+                                />
+                              </Box>
+                              <BoxRowWrapper>
+                                <ProfileControl
+                                  control="input"
+                                  label="Tarjeta de credito "
+                                  name="datos_financieros"
+                                  placeholder="Escriba su tarjeta"
+                                />
+
+                                <ProfileControl
+                                  control="input"
+                                  label="CVV"
+                                  name="cvv"
+                                  placeholder="Escriba su cvv"
+                                />
+                              </BoxRowWrapper>
+
+                              <Box>
+                                <ProfileControl
+                                  control="date"
+                                  label="Fecha de expiracion"
+                                  name="fecha_expiracion" />
+                              </Box>
+                              <Box>
+                                <ProfileControl
+                                  control="input"
+                                  label="Descripcion"
+                                  name="descripcion"
+                                  multiline
+                                  rows={4}
+                                  placeholder="Escriba su descripcion" />
+                              </Box>
+
+                            </Box>
+                          </Box>
+
+
                           <button type="submit">Enviar</button>
                         </Form>
                       )}
