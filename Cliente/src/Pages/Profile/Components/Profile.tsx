@@ -13,6 +13,25 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import ProfileList from "./ProfileList/ProfileList";
 import ListFormater from "./ProfileList/ListFormater";
+import Modal from "@mui/material/Modal/Modal";
+import Button from "@mui/material/Button/Button";
+import Tabs from "@mui/material/Tabs/Tabs";
+import Tab from "@mui/material/Tab/Tab";
+import { Form, Formik } from "formik";
+
+
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 interface IPatientProfileData {
   tipo: string,
@@ -45,8 +64,6 @@ interface ISpecialistProfileData {
   metodo_pago: string,
   datos_financieros: string,
 }
-
-
 
 const profilesObject = {
   '1': {
@@ -106,6 +123,16 @@ function generateSlug(profileData: IPatientProfileData | ISpecialistProfileData)
 const Profile: React.FC = () => {
 
   const { idOrName } = useParams<{ idOrName: string }>();
+
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+  const [tabValue, setTabValue] = React.useState('one');
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
 
@@ -117,6 +144,10 @@ const Profile: React.FC = () => {
       navigate('/404');
       return;
     }
+
+    const handleSubmit = () => {
+      console.log("hola")
+    };
 
     setProfileData(fetchedProfileData);
 
@@ -155,9 +186,9 @@ const Profile: React.FC = () => {
                   { name: "Sexo", data: profileData.sexo, },
                   { name: "Correo", data: profileData.correo, },
                   { name: "Tipo de sangre", data: (profileData as IPatientProfileData).tipo_sangre, },
-                  { name: "Padecimiento", data: <ListFormater formatData={(profileData as IPatientProfileData).padecimientos}/> },
-                  { name: "Alergias", data: <ListFormater formatData={(profileData as IPatientProfileData).alergias}/>},
-                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profileData as IPatientProfileData).familiares}/> },
+                  { name: "Padecimiento", data: <ListFormater formatData={(profileData as IPatientProfileData).padecimientos} /> },
+                  { name: "Alergias", data: <ListFormater formatData={(profileData as IPatientProfileData).alergias} /> },
+                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profileData as IPatientProfileData).familiares} /> },
                 ]} />
                 :
                 <ProfileList dataList={[
@@ -220,6 +251,58 @@ const Profile: React.FC = () => {
             }}>
               <Avatar sx={{ height: "10rem", width: "10rem" }} variant="square" />
             </Box>
+          </Box>
+          <Box sx={{
+            marginTop: "1rem",
+            marginLeft: "-3rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem" }}>Editar</Button>
+            <Modal
+              keepMounted
+              open={modalOpen}
+              onClose={handleModalClose}
+              aria-labelledby="keep-mounted-modal-title"
+              aria-describedby="keep-mounted-modal-description"
+            >
+              <Box sx={style}>
+                <Box sx={{ width: '100%', typography: 'body1' }}>
+                  <Box sx={{ width: '100%', height: "50vh" }}>
+                    <Formik
+                      initialValues={{} }
+                      onSubmit={()=> console.log("adios")}
+                      >
+                      {({ values, handleSubmit }) => (
+                        <Form onSubmit={handleSubmit}>
+                          <Tabs
+                            value={tabValue}
+                            onChange={handleTabChange}
+                            textColor="secondary"
+                            indicatorColor="secondary"
+                            aria-label="secondary tabs example"
+                          >
+                            <Tab value="one" label="Item One" >
+
+                            </Tab>
+                            <Tab value="two" label="Item Two" >
+
+                            </Tab>
+                            <Tab value="three" label="Item Three" >
+
+                            </Tab>
+                          </Tabs>
+
+                          <button type="submit">Enviar</button>
+                        </Form>
+                      )}
+                    </Formik>
+
+                  </Box>
+                </Box>
+              </Box>
+            </Modal>
           </Box>
         </Grid>
       </Grid>
