@@ -9,6 +9,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
+import getBackendConnectionString from "../Utils/getBackendString";
+import axios from "axios";
+
 // import lockGreen from "/assets/icons/lockGreen.svg";
 
 const style = {
@@ -84,6 +87,21 @@ export default function useModalLogin(): IProps {
           : {};
       }
 
+      //Condicion que verifica si los datos son validos y indica si el login fue exitoso(Cierra el Modal) o no (Muestra Error de Autenticacion)
+      if (valid) {
+        login_handler().then(({ logged, message }) => {
+          if (!logged) {
+            newErrors.email = message;
+            newErrors.password = message;
+            setErrors(newErrors);
+          } else {
+            handleClose();
+          }
+        });
+
+        return valid;
+      }
+
       setErrors(newErrors);
       return valid;
     };
@@ -112,10 +130,30 @@ export default function useModalLogin(): IProps {
         display: "none",
       },
       ".css-bnnwws-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-        {
-          border: "1px solid #CDCECF",
-        },
+      {
+        border: "1px solid #CDCECF",
+      },
     };
+
+    //Funccion que se encarga del algoritmo de Login e indica si las credenciales son correctas o no
+    const login_handler = async (): Promise<any> => {
+      const data = await axios.post(getBackendConnectionString('test'), {
+        correo: email,
+        contrasena: password,
+      }, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then(response => {
+        if (response.status === 200 || response.status === 201) {
+          return { logged: true, message: response.statusText };
+        } else {
+          return { logged: false, message: 'Credenciales Incorrectas.' };
+        }
+      }).catch(error => {
+        const error_msj = error?.response?.data?.message;
+        return { logged: false, message: error_msj };
+      });
+      return data;
+    }
 
     return (
       <Modal
@@ -288,9 +326,7 @@ export default function useModalLogin(): IProps {
                 boxShadow: "none",
               }}
               onClick={() => {
-                if (validateForm()) {
-                  handleClose();
-                }
+                validateForm()
               }}
             >
               Iniciar Sesion

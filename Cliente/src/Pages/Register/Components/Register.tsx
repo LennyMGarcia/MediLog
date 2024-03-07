@@ -70,7 +70,7 @@ const Register: React.FC = () => {
 
     async function onSubmit() {
         if (currentStepIndex === steps.length - 2) {
-            const data = await axios.post(getBackendConnectionString('test'), {
+            await axios.post(getBackendConnectionString('test'), {
                 nombre: getRegisterData('nombre'),
                 apellido: getRegisterData('apellido'),
                 fecha_nacimiento: getRegisterData('fecha_nacimiento'),

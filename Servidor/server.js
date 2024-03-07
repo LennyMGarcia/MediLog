@@ -65,11 +65,15 @@ app.get("/test", async (req, res) => {
 
 // RUTA PARA COMPROBAR ALGORITMO DE SNAPBACK
 app.post("/test", async (req, res) => {
-    const nombre = req.body.nombre;
-    const apellido = req.body.apellido;
-    /* console.log(nombre)
-     console.log(req.body);*/
-    return res.status(404).json({ 'message': 'Credenciales Incorrectas.' });
+    /*  const nombre = req.body.nombre;
+      const apellido = req.body.apellido;*/
+    const correo = req.body.correo;
+    const contrasena = req.body.contrasena;
+    /*console.log(nombre)
+    console.log(req.body);*/
+    console.log(correo);
+    console.log(contrasena);
+    return res.status(201).json({ 'message': 'Credenciales Incorrectas o Contrasena Correcta.' });
     return res.json({ 'nombre': nombre, 'apellido': apellido });
 });
 
