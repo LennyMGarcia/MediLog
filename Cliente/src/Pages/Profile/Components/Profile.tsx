@@ -17,15 +17,15 @@ import Modal from "@mui/material/Modal/Modal";
 import Button from "@mui/material/Button/Button";
 import Tabs from "@mui/material/Tabs/Tabs";
 import Tab from "@mui/material/Tab/Tab";
-import { Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, FieldArray, FieldProps, Form, Formik } from "formik";
 
 import PhoneIcon from '@mui/icons-material/Phone';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import ProfileControl from "./forms-control/ProfileControl";
 import BoxRowWrapper from "../../../Common/Wrappers/BoxRowWrapper";
-
-
+import TextField from "@mui/material/TextField/TextField";
+import FormHelperText from "@mui/material/FormHelperText/FormHelperText";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -38,16 +38,6 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-  maxHeight: '80vh', // Establece la altura máxima del modal
-  overflowY: 'auto', // Habilita el scroll vertical si el contenido excede la altura máxima
-  '&::-webkit-scrollbar': {
-    width: '0.5em', // Ancho de la barra de desplazamiento
-  },
-  '&::-webkit-scrollbar-thumb': {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)', // Color de la barra de desplazamiento
-    borderRadius: '4px', // Borde redondeado de la barra de desplazamiento
-  },
-
 };
 
 interface IPatientProfileData {
@@ -180,9 +170,10 @@ const Profile: React.FC = () => {
 
   const initialValues = {
     tabValue: "one", //valores de ej
-    field1: "", 
+    field1: "",
     field2: "",
-    field3: ""
+    field3: "",
+    arrayValues: [""],
   };
 
   const userType: string = profileData.tipo;
@@ -305,15 +296,15 @@ const Profile: React.FC = () => {
                             variant="fullWidth"
                             sx={{
                               '& .MuiTabs-indicator': {
-                                backgroundColor: ' #52b69a', 
+                                backgroundColor: ' #52b69a',
                               },
                               '& .MuiTab-root': {
-                                color: '#168aad', 
+                                color: '#168aad',
                                 '&.Mui-selected': {
-                                  color: ' #52b69a', 
+                                  color: ' #52b69a',
                                 },
                                 '&:hover': {
-                                  color: '#34a0a4', 
+                                  color: '#34a0a4',
                                 },
                               },
                             }}
@@ -323,13 +314,13 @@ const Profile: React.FC = () => {
                             <Tab icon={<PersonPinIcon />} value="three" label="MonetariO" />
                           </Tabs>
                           <Box sx={{
-                            maxHeight: '60vh', 
-                            overflowY: 'scroll', 
+                            maxHeight: '60vh',
+                            overflowY: 'scroll',
                             '&::-webkit-scrollbar': {
-                              width: '0.5em', 
+                              width: '0.5em',
                             },
                             '&::-webkit-scrollbar-thumb': {
-                              backgroundColor: '#52b69a', 
+                              backgroundColor: '#52b69a',
                               borderRadius: '4px',
                             },
                           }}>
@@ -363,11 +354,11 @@ const Profile: React.FC = () => {
                                 />
                               </Box>
 
-                              <Box><ProfileControl
+                              <Box>
+                                <ProfileControl
                                 control="date"
                                 label="Fecha de nacimiento"
                                 name="fecha_nacimiento" />
-
                               </Box>
 
                               {userType == "Paciente" ?
@@ -385,7 +376,90 @@ const Profile: React.FC = () => {
                                     name="tipo_sangre"
                                     placeholder="Escriba su cedula"
                                   />
-                                </Box> : userType == "Especialista" ?
+
+                                  <Box>
+                                    <Accordion defaultExpanded>
+                                      <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        id="Informacion_basica"
+                                      >
+                                        Padecimientos
+                                      </AccordionSummary>
+                                      <AccordionDetails>
+                                        <FieldArray name='arrayValues'>
+                                          {fieldArrayProps => {
+                                            const { push, remove, form } = fieldArrayProps
+                                            const { values } = form
+                                            const arrayValues = values.arrayValues || []
+
+                                            return (
+                                              <Box>
+                                                {arrayValues.map((_: any, index: any) => (
+                                                  <Box key={index}>
+                                                    <Field name={`arrayValues[${index}]`} >
+                                                      {({ field, form }: FieldProps) => (
+                                                        <React.Fragment>
+                                                          <TextField
+                                                            id={"padecimientos"}
+                                                            placeholder={"Padecimientos" /*placeHolder ? `${placeHolder}` : ""*/}
+                                                            variant="outlined"
+                                                            color="primary"
+                                                            fullWidth
+                                                            value={field.value || ""}
+                                                            /* onChange={(e) => {
+                                                               field.onChange(e);
+                                                               handleChange(e);
+                                                             }}*/
+                                                            error={Boolean(form.errors["padecimientos"] && form.touched["padecimientos"])}
+                                                            //{...rest}
+                                                            sx={{
+                                                              '& .MuiInputBase-root': { //elementos que tienen textfield le aplica el heigth
+                                                                height: 'auto',
+                                                              },
+                                                              mt: index ==  0 ?"-1rem" : "0.5rem "
+                                                            }}
+                                                          />
+                                                          <ErrorMessage name={"padecimientos"}>
+                                                            {(msg) => (
+                                                              <FormHelperText style={{ color: 'red' }}>{msg}</FormHelperText>
+                                                            )}
+                                                          </ErrorMessage>
+                                                        </React.Fragment>
+                                                      )}
+                                                    </Field>
+                                                    {index > 0 && (
+                                                      <Button variant="contained" sx={{
+                                                        backgroundColor: " #52b69a",
+                                                        height: "1rem",
+                                                        width: '1rem',
+                                                        '&:hover': {
+                                                          backgroundColor: "#34a0a4"
+                                                        }
+                                                      }} type='button' onClick={() => remove(index)}>
+                                                        -
+                                                      </Button>
+                                                    )}
+                                                  </Box>
+                                                ))}
+                                                <Button sx={{
+                                                  backgroundColor: " #52b69a",
+                                                  height: "1rem",
+                                                  width: '1rem',
+                                                  '&:hover': {
+                                                    backgroundColor: "#34a0a4"
+                                                  }
+                                                }} variant="contained" type='button' onClick={() => push('')}>
+                                                  +
+                                                </Button>
+                                              </Box>
+                                            )
+                                          }}
+                                        </FieldArray>
+                                      </AccordionDetails>
+                                    </Accordion>
+                                  </Box>
+                                </Box>
+                                : userType == "Especialista" ?
                                   <Box>
                                     <ProfileControl
                                       control="input"
@@ -393,11 +467,9 @@ const Profile: React.FC = () => {
                                       name="especialidad"
                                       placeholder="Escriba su especialidad"
                                     />
-
                                   </Box>
                                   : <Box></Box>
                               }
-
 
                             </Box>
                             <Box role="tabpanel" hidden={tabValue !== "two"}>
@@ -425,7 +497,6 @@ const Profile: React.FC = () => {
                                   multiline
                                   rows={4} />
                               </Box>
-
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "three"}>
@@ -435,15 +506,12 @@ const Profile: React.FC = () => {
                                   label="Monto"
                                   name="monto"
                                   disabled
-
                                 />
-
                                 <ProfileControl
                                   control="input"
                                   label="Categoria"
                                   name="categoria"
                                   disabled
-
                                 />
                               </BoxRowWrapper>
 
@@ -492,9 +560,14 @@ const Profile: React.FC = () => {
 
                             </Box>
                           </Box>
+                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                            fullWidth
 
-
-                          <button type="submit">Enviar</button>
+                            variant="contained"
+                            type="submit"
+                          >
+                            Miami me lo confirmo
+                          </Button>
                         </Form>
                       )}
                     </Formik>
