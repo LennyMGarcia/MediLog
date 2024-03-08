@@ -2,12 +2,18 @@ import React from "react";
 import Box from "@mui/material/Box/Box";
 import ProfileControl from "../forms-control/ProfileControl";
 
-const ContactProfileForm: React.FC = () => {
+interface IContactProfileForm {
+    profileValues:Record<string, any>;
+}
+
+
+const ContactProfileForm: React.FC<IContactProfileForm> = ({profileValues}) => {
     return (
         <>
 
             <Box>
                 <ProfileControl
+                    value={profileValues["telefono"]}
                     control="input"
                     label="Telefono"
                     name="telefono"
@@ -16,6 +22,7 @@ const ContactProfileForm: React.FC = () => {
             </Box>
             <Box>
                 <ProfileControl
+                    value={profileValues["correo"]}
                     control="input"
                     label="Correo"
                     name="correo"
@@ -23,6 +30,7 @@ const ContactProfileForm: React.FC = () => {
             </Box>
             <Box>
                 <ProfileControl
+                    value={profileValues["direccion"]}
                     control="input"
                     label="Direccion"
                     name="direccion"

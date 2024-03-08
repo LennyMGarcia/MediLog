@@ -5,20 +5,23 @@ import ProfileControl from "../forms-control/ProfileControl";
 
 
 interface IBasicInformationForm {
-    type: string
+    type: string,
+    profileValues:Record<string, any>;
 }
 
-const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }) => {
+const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente", profileValues }) => {
     return (
         <>
             <BoxRowWrapper  >
                 <ProfileControl
+                    value={profileValues["nombre"]}
                     control="input"
                     label="Nombre"
                     name="nombre"
                     placeholder=" Escriba su nombre"
                 />
                 <ProfileControl
+                    value={profileValues["apellido"]}
                     control="input"
                     label="Apellido"
                     name="apellido"
@@ -28,6 +31,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }
 
             <Box>
                 <ProfileControl
+                    value={profileValues["sexo"]}
                     control="select"
                     label="Sexo"
                     name="sexo"
@@ -41,6 +45,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }
 
             <Box>
                 <ProfileControl
+                    
                     control="date"
                     label="Fecha de nacimiento"
                     name="fecha_nacimiento" />
@@ -49,6 +54,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }
             {type == "Paciente" ?
                 <Box>
                     <ProfileControl
+                        value={profileValues["documento_identidad"]}
                         control="input"
                         label="Cedula"
                         name="documento_identidad"
@@ -63,6 +69,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }
                     />
 
                     <ProfileControl
+                        Values={profileValues["padecimientos"]}
                         control="multiInput"
                         label="Padecimientos"
                         name="padecimientos"
@@ -70,6 +77,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }
                     />
 
                     <ProfileControl
+                        Values={profileValues["alergias"]}
                         control="multiInput"
                         label="Alergias"
                         name="alergias"
@@ -77,6 +85,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }
                     />
 
                     <ProfileControl
+                        Values={profileValues["familiares"]}
                         control="multiInput"
                         label="Familiares"
                         name="familiares"
@@ -87,6 +96,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente" }
                 : type == "Especialista" ?
                     <Box>
                         <ProfileControl
+                            value={profileValues["especialidad"]}
                             control="input"
                             label="Especialidad"
                             name="especialidad"

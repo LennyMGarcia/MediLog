@@ -276,7 +276,8 @@ const Profile: React.FC = () => {
             justifyContent: "center",
             alignItems: "center"
           }}>
-            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem" }}>Editar</Button>
+            {/*EDITAR*/}
+            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem",  backgroundColor: "#52b69a"  }}>Editar</Button>
             <Modal
               keepMounted
               open={modalOpen}
@@ -326,18 +327,19 @@ const Profile: React.FC = () => {
                             },
                           }}>
                             <Box hidden={tabValue !== "one"}>
-                              <BasicProfileForm type={userType}/>
+                              <BasicProfileForm type={userType} profileValues={profileData}/>
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "two"}>
-                              <ContactProfileForm/>
+                              <ContactProfileForm profileValues={profileData}/>
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "three"}>
-                              <FinancialProfileForm/>
+                              <FinancialProfileForm profileValues={profileData}/>
                             </Box>
 
                           </Box>
+                           {/*ENVIAR INFORMACION*/}
                           <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
                             fullWidth
 

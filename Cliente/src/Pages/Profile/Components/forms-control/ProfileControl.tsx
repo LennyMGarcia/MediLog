@@ -7,13 +7,16 @@ import { TextFieldProps } from "@mui/material/TextField/TextField";
 import ProfileMultiInput from "./ProfileMultiInput";
 
 //Interfaces utiles para ayudar a que las propiedades se lean como sus respectivas propiedades de Select, input...
-interface IProfileTexfieldfControl extends Omit<TextFieldProps, 'variant'> { }
+interface IProfileTexfieldfControl extends Omit<TextFieldProps, 'variant'> { 
+    Values?:[]
+}
 interface IProfileControl extends Omit<SelectProps | TextFieldProps, 'variant'> {
     control: string,
     selectObject?: {
         key: string;
         value: string;
-    }[]
+    }[],
+    Values?: any[]
 }
 interface IProfileSelectfControl extends Omit<SelectProps, 'variant'> {
     selectObject?: {

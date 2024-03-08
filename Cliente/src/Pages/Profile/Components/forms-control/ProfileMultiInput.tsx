@@ -17,16 +17,19 @@ import profileStyle from "../../style/profileStyle.module.css"
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
     name?: string,
-    placeHolder?: string
+    placeHolder?: string,
+    Values?:any[],
 }
 
-const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ...rest }) => {
+const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder, Values ,...rest }) => {
     //const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = (e: ChangeEvent<any>) => {
         const value = e.target.value.trim();
         //setRegisterData(name, value);
     };
+    
+    
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
@@ -43,15 +46,20 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                 <AccordionDetails>
                     <FieldArray name={name}>
                         {fieldArrayProps => {
-                            const { push, remove, form } = fieldArrayProps
-                            const { values } = form
-                            const arrayValues = values[name] || []
+                            const { push, remove, form } = fieldArrayProps;
+                            const { values } = form;
+                            const arrayValues = values[name] || [];
+                            
+                             
+                            
 
                             return (
                                 <Box>
                                     {arrayValues.map((_: any, index: any) => (
                                         <Box key={index}>
-                                            <Field name={`arrayValues[${index}]`}>
+                                            <Field name={`arrayValues[${index}]`}
+                                           
+                                            >
                                                 {({ field, form }: FieldProps) => (
                                                     <React.Fragment>
                                                         <TextField
@@ -60,10 +68,11 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                                             variant="outlined"
                                                             color="primary"
                                                             fullWidth
-                                                            value={field.value || ""}
+                                                            value={(Values ?? [])[index] ?? ""}
                                                             onChange={(e) => {
                                                                 field.onChange(e);
                                                                 handleChange(e);
+                                                                {console.log(`arrayValues[${index}]`)}
                                                             }}
                                                             error={Boolean(form.errors[name] && form.touched[name])}
                                                             {...rest}
@@ -137,6 +146,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                     }} variant="contained" type='button' onClick={() => push('')}>
                                         + {/*Simbolo positivo*/}
                                     </Button>
+                                    
                                 </Box>
                             )
                         }}

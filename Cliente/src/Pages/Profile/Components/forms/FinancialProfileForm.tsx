@@ -3,17 +3,23 @@ import Box from "@mui/material/Box/Box";
 import ProfileControl from "../forms-control/ProfileControl";
 import BoxRowWrapper from "../../../../Common/Wrappers/BoxRowWrapper";
 
-const FinancialProfileForm: React.FC = () => {
+interface IFinancialProfileForm {
+    profileValues:Record<string, any>;
+}
+
+const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) => {
     return (
         <>
             <BoxRowWrapper>
                 <ProfileControl
+                    value={profileValues["monto"]}
                     control="input"
                     label="Monto"
                     name="monto"
                     disabled
                 />
                 <ProfileControl
+                    value={profileValues["categoria"]}
                     control="input"
                     label="Categoria"
                     name="categoria"
@@ -23,6 +29,7 @@ const FinancialProfileForm: React.FC = () => {
 
             <Box>
                 <ProfileControl
+                    
                     control="select"
                     label="Metodo de pago"
                     name="metodo_pago"
@@ -34,6 +41,7 @@ const FinancialProfileForm: React.FC = () => {
             </Box>
             <BoxRowWrapper>
                 <ProfileControl
+                    value={profileValues["datos_financieros"]}
                     control="input"
                     label="Tarjeta de credito "
                     name="datos_financieros"
@@ -41,6 +49,7 @@ const FinancialProfileForm: React.FC = () => {
                 />
 
                 <ProfileControl
+                value={profileValues["cvv"]}
                     control="input"
                     label="CVV"
                     name="cvv"
@@ -56,6 +65,7 @@ const FinancialProfileForm: React.FC = () => {
             </Box>
             <Box>
                 <ProfileControl
+                    value={profileValues["descripcion"]}
                     control="input"
                     label="Descripcion"
                     name="descripcion"
