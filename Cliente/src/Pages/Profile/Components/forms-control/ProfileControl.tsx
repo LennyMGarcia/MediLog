@@ -1,9 +1,10 @@
 
-import RegisterInput from "./ProfileInput";
-import RegisterSelect from "./ProfileSelect";
-import RegisterDateInput from "./ProfileDateInput";
+import ProfileInput from "./ProfileInput";
+import ProfileSelect from "./ProfileSelect";
+import ProfileDateInput from "./ProfileDateInput";
 import { SelectProps } from "@mui/material/Select/Select";
 import { TextFieldProps } from "@mui/material/TextField/TextField";
+import ProfileMultiInput from "./ProfileMultiInput";
 
 //Interfaces utiles para ayudar a que las propiedades se lean como sus respectivas propiedades de Select, input...
 interface IProfileTexfieldfControl extends Omit<TextFieldProps, 'variant'> { }
@@ -26,13 +27,16 @@ interface IProfileSelectfControl extends Omit<SelectProps, 'variant'> {
 const ProfileControl: React.FC<IProfileControl> = ({ control, ...rest }) => {
     switch (control) {
         case "input":
-            return <RegisterInput  {...rest as IProfileTexfieldfControl} />
+            return <ProfileInput  {...rest as IProfileTexfieldfControl} />
             break;
         case "select":
-            return <RegisterSelect {...rest as IProfileSelectfControl}></RegisterSelect>
+            return <ProfileSelect {...rest as IProfileSelectfControl}></ProfileSelect>
             break;
         case "date":
-            return <RegisterDateInput {...rest as IProfileControl}></RegisterDateInput>
+            return <ProfileDateInput {...rest as IProfileControl}></ProfileDateInput>
+            break;
+        case "multiInput":
+            return <ProfileMultiInput {...rest as IProfileTexfieldfControl}></ProfileMultiInput>
             break;
         default:
             throw new Error("No se encontro el tipo requerido")

@@ -17,15 +17,15 @@ import Modal from "@mui/material/Modal/Modal";
 import Button from "@mui/material/Button/Button";
 import Tabs from "@mui/material/Tabs/Tabs";
 import Tab from "@mui/material/Tab/Tab";
-import { ErrorMessage, Field, FieldArray, FieldProps, Form, Formik } from "formik";
+import {Form, Formik } from "formik";
 
 import PhoneIcon from '@mui/icons-material/Phone';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
-import ProfileControl from "./forms-control/ProfileControl";
-import BoxRowWrapper from "../../../Common/Wrappers/BoxRowWrapper";
-import TextField from "@mui/material/TextField/TextField";
-import FormHelperText from "@mui/material/FormHelperText/FormHelperText";
+import PaidIcon from '@mui/icons-material/Paid';
+
+import BasicProfileForm from "./forms/BasicProfileForm";
+import ContactProfileForm from "./forms/ContactProfileForm";
+import FinancialProfileForm from "./forms/FinancialProfileForm";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -173,7 +173,9 @@ const Profile: React.FC = () => {
     field1: "",
     field2: "",
     field3: "",
-    arrayValues: [""],
+    padecimientos: [""],
+    alergias: [""],
+    familiares: [""],
   };
 
   const userType: string = profileData.tipo;
@@ -279,7 +281,6 @@ const Profile: React.FC = () => {
               keepMounted
               open={modalOpen}
               onClose={handleModalClose}
-
             >
               <Box sx={style} >
                 <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -309,9 +310,9 @@ const Profile: React.FC = () => {
                               },
                             }}
                           >
-                            <Tab icon={<PhoneIcon />} value="one" label="basico" />
-                            <Tab icon={<FavoriteIcon />} value="two" label="Contacto" />
-                            <Tab icon={<PersonPinIcon />} value="three" label="MonetariO" />
+                            <Tab icon={<PersonPinIcon />} value="one" label="basico" />
+                            <Tab icon={<PhoneIcon />} value="two" label="Contacto" />
+                            <Tab icon={<PaidIcon />} value="three" label="MonetariO" />
                           </Tabs>
                           <Box sx={{
                             maxHeight: '60vh',
@@ -325,240 +326,17 @@ const Profile: React.FC = () => {
                             },
                           }}>
                             <Box hidden={tabValue !== "one"}>
-
-                              <BoxRowWrapper  >
-                                <ProfileControl
-                                  control="input"
-                                  label="Nombre"
-                                  name="nombre"
-                                  placeholder=" Escriba su nombre"
-                                />
-                                <ProfileControl
-                                  control="input"
-                                  label="Apellido"
-                                  name="apellido"
-                                  placeholder="Escriba su apellido"
-                                />
-                              </BoxRowWrapper>
-
-                              <Box>
-                                <ProfileControl
-                                  control="select"
-                                  label="Sexo"
-                                  name="sexo"
-                                  selectObject={[
-                                    { key: "Hombre", value: "m" },
-                                    { key: "Mujer", value: "f" },
-
-                                  ]}
-                                />
-                              </Box>
-
-                              <Box>
-                                <ProfileControl
-                                control="date"
-                                label="Fecha de nacimiento"
-                                name="fecha_nacimiento" />
-                              </Box>
-
-                              {userType == "Paciente" ?
-                                <Box>
-                                  <ProfileControl
-                                    control="input"
-                                    label="Cedula"
-                                    name="documento_identidad"
-                                    placeholder="Escriba su cedula"
-                                  />
-
-                                  <ProfileControl
-                                    control="input"
-                                    label="Tipo de sangre" //select
-                                    name="tipo_sangre"
-                                    placeholder="Escriba su cedula"
-                                  />
-
-                                  <Box>
-                                    <Accordion defaultExpanded>
-                                      <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        id="Informacion_basica"
-                                      >
-                                        Padecimientos
-                                      </AccordionSummary>
-                                      <AccordionDetails>
-                                        <FieldArray name='arrayValues'>
-                                          {fieldArrayProps => {
-                                            const { push, remove, form } = fieldArrayProps
-                                            const { values } = form
-                                            const arrayValues = values.arrayValues || []
-
-                                            return (
-                                              <Box>
-                                                {arrayValues.map((_: any, index: any) => (
-                                                  <Box key={index}>
-                                                    <Field name={`arrayValues[${index}]`} >
-                                                      {({ field, form }: FieldProps) => (
-                                                        <React.Fragment>
-                                                          <TextField
-                                                            id={"padecimientos"}
-                                                            placeholder={"Padecimientos" /*placeHolder ? `${placeHolder}` : ""*/}
-                                                            variant="outlined"
-                                                            color="primary"
-                                                            fullWidth
-                                                            value={field.value || ""}
-                                                            /* onChange={(e) => {
-                                                               field.onChange(e);
-                                                               handleChange(e);
-                                                             }}*/
-                                                            error={Boolean(form.errors["padecimientos"] && form.touched["padecimientos"])}
-                                                            //{...rest}
-                                                            sx={{
-                                                              '& .MuiInputBase-root': { //elementos que tienen textfield le aplica el heigth
-                                                                height: 'auto',
-                                                              },
-                                                              mt: index ==  0 ?"-1rem" : "0.5rem "
-                                                            }}
-                                                          />
-                                                          <ErrorMessage name={"padecimientos"}>
-                                                            {(msg) => (
-                                                              <FormHelperText style={{ color: 'red' }}>{msg}</FormHelperText>
-                                                            )}
-                                                          </ErrorMessage>
-                                                        </React.Fragment>
-                                                      )}
-                                                    </Field>
-                                                    {index > 0 && (
-                                                      <Button variant="contained" sx={{
-                                                        backgroundColor: " #52b69a",
-                                                        height: "1rem",
-                                                        width: '1rem',
-                                                        '&:hover': {
-                                                          backgroundColor: "#34a0a4"
-                                                        }
-                                                      }} type='button' onClick={() => remove(index)}>
-                                                        -
-                                                      </Button>
-                                                    )}
-                                                  </Box>
-                                                ))}
-                                                <Button sx={{
-                                                  backgroundColor: " #52b69a",
-                                                  height: "1rem",
-                                                  width: '1rem',
-                                                  '&:hover': {
-                                                    backgroundColor: "#34a0a4"
-                                                  }
-                                                }} variant="contained" type='button' onClick={() => push('')}>
-                                                  +
-                                                </Button>
-                                              </Box>
-                                            )
-                                          }}
-                                        </FieldArray>
-                                      </AccordionDetails>
-                                    </Accordion>
-                                  </Box>
-                                </Box>
-                                : userType == "Especialista" ?
-                                  <Box>
-                                    <ProfileControl
-                                      control="input"
-                                      label="Especialidad"
-                                      name="especialidad"
-                                      placeholder="Escriba su especialidad"
-                                    />
-                                  </Box>
-                                  : <Box></Box>
-                              }
-
+                              <BasicProfileForm type={userType}/>
                             </Box>
+
                             <Box role="tabpanel" hidden={tabValue !== "two"}>
-                              <Box>
-                                <ProfileControl
-                                  control="input"
-                                  label="Telefono (opcional)"
-                                  name="telefono"
-                                  type="number"
-                                  placeholder="Escriba su telefono" />
-                              </Box>
-                              <Box>
-                                <ProfileControl
-                                  control="input"
-                                  label="Correo"
-                                  name="correo"
-                                  placeholder="Escriba su correo" />
-                              </Box>
-                              <Box>
-                                <ProfileControl
-                                  control="input"
-                                  label="Direccion"
-                                  name="direccion"
-                                  placeholder="Escriba su direccion"
-                                  multiline
-                                  rows={4} />
-                              </Box>
+                              <ContactProfileForm/>
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "three"}>
-                              <BoxRowWrapper>
-                                <ProfileControl
-                                  control="input"
-                                  label="Monto"
-                                  name="monto"
-                                  disabled
-                                />
-                                <ProfileControl
-                                  control="input"
-                                  label="Categoria"
-                                  name="categoria"
-                                  disabled
-                                />
-                              </BoxRowWrapper>
-
-                              <Box>
-                                <ProfileControl
-                                  control="select"
-                                  label="Metodo de pago"
-                                  name="metodo_pago"
-                                  selectObject={[
-                                    { key: "Tarjeta de credito", value: "Tarjeta de Credito" },
-                                    { key: "Tarjeta de debito", value: "Tarjeta de Debito" },
-                                  ]}
-                                />
-                              </Box>
-                              <BoxRowWrapper>
-                                <ProfileControl
-                                  control="input"
-                                  label="Tarjeta de credito "
-                                  name="datos_financieros"
-                                  placeholder="Escriba su tarjeta"
-                                />
-
-                                <ProfileControl
-                                  control="input"
-                                  label="CVV"
-                                  name="cvv"
-                                  placeholder="Escriba su cvv"
-                                />
-                              </BoxRowWrapper>
-
-                              <Box>
-                                <ProfileControl
-                                  control="date"
-                                  label="Fecha de expiracion"
-                                  name="fecha_expiracion" />
-                              </Box>
-                              <Box>
-                                <ProfileControl
-                                  control="input"
-                                  label="Descripcion"
-                                  name="descripcion"
-                                  multiline
-                                  rows={4}
-                                  placeholder="Escriba su descripcion" />
-                              </Box>
-
+                              <FinancialProfileForm/>
                             </Box>
+
                           </Box>
                           <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
                             fullWidth
@@ -571,7 +349,6 @@ const Profile: React.FC = () => {
                         </Form>
                       )}
                     </Formik>
-
                   </Box>
                 </Box>
               </Box>
