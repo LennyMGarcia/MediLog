@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 const Usuario = require('../Migrations/Usuario');
 const bcrypt = require('bcrypt');
 const salt_level = 10;
@@ -7,8 +9,8 @@ const { body, validationResult } = require('express-validator');
 
 // Reglas de Validaciones
 const validaciones = [
-    body('correo').escape().trim().isEmail().notEmpty().withMessage('Correo Invalido.'),
-    body('contrasena').escape().trim().isAlphanumeric().isLength({ max: 12, min: 8 }).notEmpty().withMessage('Contraseña Obligatoria.'),
+    body('username').escape().trim().isEmail().notEmpty().withMessage('Correo Invalido.'),
+    body('password').escape().trim().isAlphanumeric().isLength({ max: 12, min: 8 }).notEmpty().withMessage('Contraseña Obligatoria.'),
 ];
 
 router.post('/register', validaciones, async (req, res) => {
@@ -31,8 +33,8 @@ router.post('/register', validaciones, async (req, res) => {
 });
 
 router.post('/login', validaciones, async (req, res) => {
-    const correo = req.body.correo;
-    const contrasena = req.body.contrasena;
+    const correo = req.body.username;
+    const contrasena = req.body.password;
     const validated = validationResult(req);
 
     //Condicion que verifica si los campos obligatorios estan incluidos
@@ -45,7 +47,10 @@ router.post('/login', validaciones, async (req, res) => {
             //Funcion que verifica si la contrasena introducida coincide con la contrasena del usuario.
             const authenticated = bcrypt.compareSync(contrasena, hashed_password);
             if (!authenticated) return res.status(404).json({ 'message': 'Credenciales Incorrectas.' });
-            return res.status(200).json({ 'message': 'Conectado Exitosamente.' });
+            const query = new Usuario(result[0].id);
+            const user = await query.getUser();
+            console.log(user);
+            return res.status(200).json({ user: user, 'message': 'Conectado Exitosamente.' });
         }
         return res.status(404).json({ 'message': 'Credenciales Incorrectas.' });
     }

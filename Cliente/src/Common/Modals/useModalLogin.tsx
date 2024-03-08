@@ -11,6 +11,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
 import getBackendConnectionString from "../Utils/getBackendString";
 import axios from "axios";
+import useUserStore from "../Utils/setUserSession";
+import { useNavigate } from "react-router-dom";
 
 // import lockGreen from "/assets/icons/lockGreen.svg";
 
@@ -36,9 +38,13 @@ type IProps = {
 };
 
 export default function useModalLogin(): IProps {
+  const { authUser } = useUserStore();
+
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const navigate = useNavigate();
 
   const ModalLogin = () => {
     const [showPassword, setshowPassword] = useState(false);
@@ -95,7 +101,9 @@ export default function useModalLogin(): IProps {
             newErrors.password = message;
             setErrors(newErrors);
           } else {
+            //Condicion que  cierra el Modal y Redirecciona al Usuario a otra ruta, despues de un inicio de session exitosa
             handleClose();
+            navigate("/");
           }
         });
 
@@ -137,19 +145,23 @@ export default function useModalLogin(): IProps {
 
     //Funccion que se encarga del algoritmo de Login e indica si las credenciales son correctas o no
     const login_handler = async (): Promise<any> => {
-      const data = await axios.post(getBackendConnectionString('test'), {
-        correo: email,
-        contrasena: password,
+      const data = await axios.post(getBackendConnectionString('login'), {
+        username: email,
+        password: password,
       }, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }).then(response => {
         if (response.status === 200 || response.status === 201) {
+          console.log(response)
+          authUser(response.data.user);
           return { logged: true, message: response.statusText };
         } else {
+          console.log(response)
           return { logged: false, message: 'Credenciales Incorrectas.' };
         }
       }).catch(error => {
         const error_msj = error?.response?.data?.message;
+        console.log(error)
         return { logged: false, message: error_msj };
       });
       return data;
@@ -232,7 +244,7 @@ export default function useModalLogin(): IProps {
               endAdornment: <PersonIcon />,
             }}
             helperText={errors.email}
-            error={errors.email.length != 0}
+            error={errors.email?.length != 0}
           />
           <TextField
             label="Nueva contraseña"
@@ -274,7 +286,7 @@ export default function useModalLogin(): IProps {
               ),
             }}
             helperText={errors.password}
-            error={errors.password.length != 0}
+            error={errors.password?.length != 0}
           />
 
           <Box

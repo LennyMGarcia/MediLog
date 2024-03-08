@@ -107,6 +107,7 @@ const Register: React.FC = () => {
                 console.log(error);
                 console.log(error?.response?.data?.message);
             });
+            return result;
         } else if (isLastStep) {
             navigate("/");
         } else {
