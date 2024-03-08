@@ -9,6 +9,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
+import getBackendConnectionString from "../Utils/getBackendString";
+import axios from "axios";
+import useUserStore from "../Utils/setUserSession";
+import { useNavigate } from "react-router-dom";
+
 // import lockGreen from "/assets/icons/lockGreen.svg";
 
 const style = {
@@ -33,9 +38,13 @@ type IProps = {
 };
 
 export default function useModalLogin(): IProps {
+  const { authUser } = useUserStore();
+
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const navigate = useNavigate();
 
   const ModalLogin = () => {
     const [showPassword, setshowPassword] = useState(false);
@@ -84,6 +93,23 @@ export default function useModalLogin(): IProps {
           : {};
       }
 
+      //Condicion que verifica si los datos son validos y indica si el login fue exitoso(Cierra el Modal) o no (Muestra Error de Autenticacion)
+      if (valid) {
+        login_handler().then(({ logged, message }) => {
+          if (!logged) {
+            newErrors.email = message;
+            newErrors.password = message;
+            setErrors(newErrors);
+          } else {
+            //Condicion que  cierra el Modal y Redirecciona al Usuario a otra ruta, despues de un inicio de session exitosa
+            handleClose();
+            navigate("/");
+          }
+        });
+
+        return valid;
+      }
+
       setErrors(newErrors);
       return valid;
     };
@@ -112,10 +138,34 @@ export default function useModalLogin(): IProps {
         display: "none",
       },
       ".css-bnnwws-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-        {
-          border: "1px solid #CDCECF",
-        },
+      {
+        border: "1px solid #CDCECF",
+      },
     };
+
+    //Funccion que se encarga del algoritmo de Login e indica si las credenciales son correctas o no
+    const login_handler = async (): Promise<any> => {
+      const data = await axios.post(getBackendConnectionString('login'), {
+        username: email,
+        password: password,
+      }, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then(response => {
+        if (response.status === 200 || response.status === 201) {
+          console.log(response)
+          authUser(response.data.user);
+          return { logged: true, message: response.statusText };
+        } else {
+          console.log(response)
+          return { logged: false, message: 'Credenciales Incorrectas.' };
+        }
+      }).catch(error => {
+        const error_msj = error?.response?.data?.message;
+        console.log(error)
+        return { logged: false, message: error_msj };
+      });
+      return data;
+    }
 
     return (
       <Modal
@@ -194,7 +244,7 @@ export default function useModalLogin(): IProps {
               endAdornment: <PersonIcon />,
             }}
             helperText={errors.email}
-            error={errors.email.length != 0}
+            error={errors.email?.length != 0}
           />
           <TextField
             label="Nueva contraseña"
@@ -236,7 +286,7 @@ export default function useModalLogin(): IProps {
               ),
             }}
             helperText={errors.password}
-            error={errors.password.length != 0}
+            error={errors.password?.length != 0}
           />
 
           <Box
@@ -288,9 +338,7 @@ export default function useModalLogin(): IProps {
                 boxShadow: "none",
               }}
               onClick={() => {
-                if (validateForm()) {
-                  handleClose();
-                }
+                validateForm()
               }}
             >
               Iniciar Sesion

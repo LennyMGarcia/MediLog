@@ -36,6 +36,12 @@ class Usuario extends Model {
             this.member_id = result?.member_id;
             this.tipo = result?.tipo;
             this.plan = result?.plan;
+            const rows = {
+                id: result.id,
+                member_id: result.member_id,
+                tipo: result.tipo
+            }
+            return rows;
             return result;
 
         } catch (error) {
@@ -171,7 +177,7 @@ class Usuario extends Model {
         try {
             this.correo = correo
             const query = new Builder(this.table);
-            const [results, fields] = await DB.execute(query.select_query('contrasena', 'correo'), [this.correo]);
+            const [results, fields] = await DB.execute(query.select_query('contrasena, member_id, tipo, id', 'correo'), [this.correo]);
 
             return results;
         } catch (error) {

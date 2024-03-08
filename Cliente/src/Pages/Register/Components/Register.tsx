@@ -27,145 +27,158 @@ import axios from "axios";
 import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 
 const ImageArray = [
-  registerDoctor,
-  asianDoctor,
-  indianDoctor,
-  registerExample,
-  healthDoctor,
+    registerDoctor,
+    asianDoctor,
+    indianDoctor,
+    registerExample,
+    healthDoctor,
 ];
 
 const initialValues = [
-  {
-    nombre: "",
-    apellido: "",
-    sexo: "",
-    fecha_nacimiento: "",
-    tipo: "",
-    especialidad: undefined,
-    documento_identidad: undefined,
-  },
+    {
+        nombre: "",
+        apellido: "",
+        sexo: "",
+        fecha_nacimiento: "",
+        tipo: "",
+        especialidad: undefined,
+        documento_identidad: undefined,
+    },
 
-  {
-    correo: "",
-    contrasena: "",
-    confirmarContrasena: "",
-  },
+    {
+        correo: "",
+        contrasena: "",
+        confirmarContrasena: "",
+    },
 
-  {
-    pricing: "",
-  },
+    {
+        pricing: "",
+    },
 
-  {
-    metodo_pago: "",
-    datos_financieros: "",
-    cvv: "",
-    fecha_expiracion: "",
-    descripcion: "",
-  },
+    {
+        metodo_pago: "",
+        datos_financieros: "",
+        cvv: "",
+        fecha_expiracion: "",
+        descripcion: "",
+    },
 ];
 
 const Register: React.FC = () => {
-  let navigate = useNavigate();
+    const { getRegisterData } = useDataRegisterStore()
+    const navigate = useNavigate();
 
-  async function onSubmit() {
-    if (isLastStep) {
-      const data = await axios
-        .post(
-          getBackendConnectionString("test"),
-          {
-            nombre: "Test",
-            apellido: "Test",
-          },
-          {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      console.log(data);
-      navigate("/");
-    }
-    next();
-  }
+    async function onSubmit() {
+        if (currentStepIndex === steps.length - 2) {
+            const result = await axios.post(getBackendConnectionString('test'), {
+                nombre: getRegisterData('nombre'),
+                apellido: getRegisterData('apellido'),
+                fecha_nacimiento: getRegisterData('fecha_nacimiento'),
+                documento_identidad: getRegisterData('documento_identidad'),
+                sexo: getRegisterData('sexo'),
+                correo: getRegisterData('correo'),
+                direccion: getRegisterData('direccion'),
+                telefono: getRegisterData('telefono'),
+                especialidad: getRegisterData('especialidad'),
+                member_id: getRegisterData('member_id'),
+                contrasena: getRegisterData('contrasena'),
+                tipo: getRegisterData('tipo'),
+                plan: getRegisterData('plan'),
+                metodo_pago: getRegisterData('metodo_pago'),
+                datos_financieros: getRegisterData('datos_financieros'),
+                fecha_expiracion: getRegisterData('fecha_expiracion'),
+                cvv: getRegisterData('cvv'),
+                precio: getRegisterData('precio'),
+                categoria: getRegisterData('categoria'),
+                monto: getRegisterData('monto'),
+                producto_id: getRegisterData('producto_id'),
+                usuario_id: getRegisterData('usuario_id'),
+                descripcion: getRegisterData('descripcion'),
+            }, {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(response => {
+                //Condicion que verifica si la solicitud fue exitosa
+                if (response.status === 201 || response.status === 200) {
+                    next();
+                } else {
+                    console.log(response.data?.message);
+                }
+            }).catch(error => {
+                console.log(error);
+                console.log(error?.response?.data?.message);
+            });
+            return result;
+        } else if (isLastStep) {
+            navigate("/");
+        } else {
+            next()
+        }
+    };
 
-  const theme = useTheme();
-  const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
-  const { getRegisterData } = useDataRegisterStore();
+    //const { getRegisterData } = useDataRegisterStore();
 
-  const { currentStepIndex, step, isFirstStep, isLastStep, next, back } =
-    useMultiForm([
-      <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
-      <ContactInformationForm />,
-      <PricingForm />,
-      <FinancialInformationForm />,
-      <ThanksForm />,
+    const { currentStepIndex, step, steps, isFirstStep, isLastStep, next, back } = useMultiForm([
+        <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
+        <ContactInformationForm />,
+        <PricingForm />,
+        <FinancialInformationForm />,
+        <ThanksForm />
     ]);
 
-  return (
-    <Box className={styles.box}>
-      <Grid container>
-        {isMediumScreen && (
-          <Grid item xs={12} md={4}>
-            <Fade in={true} key={currentStepIndex} timeout={1000}>
-              <img
-                className={styles.image}
-                src={ImageArray[currentStepIndex]}
-                alt=""
-              />
-            </Fade>
-          </Grid>
-        )}
-        <Grid
-          sx={{ paddingTop: "2rem" }}
-          item
-          xs={12}
-          md={isMediumScreen ? 8 : 12}
-        >
-          {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
-          <Box className={styles.formContainer}>
-            <Formik
-              initialValues={initialValues[currentStepIndex]}
-              onSubmit={onSubmit}
-              validationSchema={registerValidationSchema[currentStepIndex]}
-            >
-              {() => (
-                <Form>
-                  {step}
-                  <Box className={styles.buttonContainer}>
-                    {!isLastStep && (
-                      <Button
-                        fullWidth
-                        disabled={isFirstStep ? true : false}
-                        className={styles.backButton}
-                        variant="outlined"
-                        type="button"
-                        onClick={back}
-                      >
-                        Regresar
-                      </Button>
-                    )}
-                    <Button
-                      fullWidth
-                      className={styles.nextButton}
-                      variant="contained"
-                      type="submit"
-                    >
-                      {!isLastStep ? "Siguiente" : "Finalizar"}
-                    </Button>
-                  </Box>
-                </Form>
-              )}
-            </Formik>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
-  );
+    return (
+        <Box className={styles.box}>
+            <Grid container >
+                {isMediumScreen && (
+                    <Grid item xs={12} md={4}>
+                        <Fade
+                            in={true}
+                            key={currentStepIndex}
+                            timeout={1000}
+                        >
+                            <img className={styles.image} src={ImageArray[currentStepIndex]} alt="" />
+                        </Fade>
+                    </Grid>
+                )}
+                <Grid sx={{ paddingTop: "2rem" }} item xs={12} md={isMediumScreen ? 8 : 12}>
+                    {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
+                    <Box className={styles.formContainer}>
+                        <Formik
+                            initialValues={initialValues[currentStepIndex]}
+                            onSubmit={onSubmit}
+                            validationSchema={registerValidationSchema[currentStepIndex]}>
+                            {() => (
+                                <Form>
+                                    {step}
+                                    <Box className={styles.buttonContainer}>
+                                        {!isLastStep && <Button
+                                            fullWidth
+                                            disabled={isFirstStep ? true : false}
+                                            className={styles.backButton}
+                                            variant="outlined" type="button"
+                                            onClick={back}>
+                                            Regresar
+                                        </Button>}
+                                        <Button
+                                            fullWidth
+                                            className={styles.nextButton}
+                                            variant="contained"
+                                            type="submit">
+                                            {!isLastStep ? "Siguiente" : "Finalizar"}
+                                        </Button>
+                                    </Box>
+                                </Form>
+                            )}
+                        </Formik>
+                    </Box>
+                </Grid>
+            </Grid>
+        </Box>
+    );
+
 };
 
 export default Register;
+
