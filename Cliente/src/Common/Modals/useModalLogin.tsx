@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 // import { useModal } from "../hooks/useModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonIcon from "@mui/icons-material/Person";
@@ -39,12 +39,23 @@ type IProps = {
 
 export default function useModalLogin(): IProps {
   const { authUser } = useUserStore();
+  const { authenticated } = useUserStore();
+  const [logged, setLogged] = useState(false);
 
   const [open, setOpen] = useState(false);
   const handleOpenModal = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
+
+  //Funccion que denega acceso al modal de login si el usuario esta loggeado
+  useEffect(() => {
+    setLogged(authenticated());
+    if (logged) {
+      return handleClose();
+    }
+    return;
+  });
 
   const ModalLogin = () => {
     const [showPassword, setshowPassword] = useState(false);
@@ -103,7 +114,7 @@ export default function useModalLogin(): IProps {
           } else {
             //Condicion que  cierra el Modal y Redirecciona al Usuario a otra ruta, despues de un inicio de session exitosa
             handleClose();
-            navigate("/");
+            navigate("/"); // Redirige a esa ruta en caso de que el usuario se conecte exitosamente. Reemplazar con /dashboard
           }
         });
 
@@ -152,16 +163,21 @@ export default function useModalLogin(): IProps {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }).then(response => {
         if (response.status === 200 || response.status === 201) {
+          const incomingUser = response.data?.user;
           console.log(response)
-          authUser(response.data.user);
+          console.log(incomingUser)
+          authUser(incomingUser);
           return { logged: true, message: response.statusText };
         } else {
+          const error_msj = response.data?.message;
           console.log(response)
-          return { logged: false, message: 'Credenciales Incorrectas.' };
+          console.log(error_msj)
+          return { logged: false, message: error_msj };
         }
       }).catch(error => {
         const error_msj = error?.response?.data?.message;
         console.log(error)
+        console.log(error_msj)
         return { logged: false, message: error_msj };
       });
       return data;

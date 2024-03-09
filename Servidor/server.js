@@ -7,8 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
 // Importacion de las dependencias necesarias para la elaboracion del servidor
 const express = require('express');
 const cors = require('cors');
-//const DB = require('./Utils/db_connect');
-//const seeder = require('./Seeds/db_seeder');
 const Model = require('./Migrations/Model');
 const Usuario = require('./Migrations/Usuario');
 
