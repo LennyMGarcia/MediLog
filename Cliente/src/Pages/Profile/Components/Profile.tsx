@@ -17,7 +17,7 @@ import Modal from "@mui/material/Modal/Modal";
 import Button from "@mui/material/Button/Button";
 import Tabs from "@mui/material/Tabs/Tabs";
 import Tab from "@mui/material/Tab/Tab";
-import {Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 
 import PhoneIcon from '@mui/icons-material/Phone';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
@@ -26,6 +26,7 @@ import PaidIcon from '@mui/icons-material/Paid';
 import BasicProfileForm from "./forms/BasicProfileForm";
 import ContactProfileForm from "./forms/ContactProfileForm";
 import FinancialProfileForm from "./forms/FinancialProfileForm";
+import useDataRegisterStore from "../../Register/ZustandRegisterManagement";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -42,7 +43,7 @@ const style = {
 
 interface IPatientProfileData {
   tipo: string,
-  nombre: string,
+  nombre: any | null,
   apellido: string,
   fecha_nacimiento: string,
   documento_identidad: string,
@@ -72,54 +73,8 @@ interface ISpecialistProfileData {
   datos_financieros: string,
 }
 
-const profilesObject = {
-  '1': {
-    tipo: "Paciente",
-    nombre: 'Lenny Manuel',
-    apellido: 'Garcia',
-    fecha_nacimiento: '27-05-2001',
-    documento_identidad: '11987654321',
-    sexo: "m",
-    correo: 'lenny@gmail.com',
-    direccion: "La casa de ben",
-    telefono: '18296572014',
-    tipo_sangre: 'O+',
-    padecimientos: ["E-Coli", "Disfuncion Erectil"],
-    alergias: ["mujeres", "cafe", "Mi prima"],
-    familiares: ["BenJunior", "maikol", "jose Jimenez"],
-    metodo_pago: "Tarjeta de Debito",
-    datos_financieros: "1234567892222222",
 
-  },
-  '2': {
-    tipo: "Especialista",
-    nombre: "Ben",
-    apellido: "Junior",
-    fecha_nacimiento: "11-11-2011",
-    sexo: "m",
-    correo: "ben@gmail.com",
-    direccion: "la casa de Julio",
-    telefono: "8295455555",
-    especialidad: "Ginecologo",
-    metodo_pago: "Tarjeta de Credito",
-    datos_financieros: "1234567891111111",
-  },
-};
 
-function getFakeProfileData(idOrName: string = "1", profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>): IPatientProfileData | ISpecialistProfileData | undefined {
-
-  if (!idOrName) {
-    return undefined;
-  }
-
-  if (profiles[idOrName]) {
-    return profiles[idOrName];
-  }
-
-  const profileValues = Object.values(profiles);
-  const profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === idOrName);
-  return profile;
-}
 
 function generateSlug(profileData: IPatientProfileData | ISpecialistProfileData) {
   const { nombre, apellido } = profileData;
@@ -129,7 +84,85 @@ function generateSlug(profileData: IPatientProfileData | ISpecialistProfileData)
 
 const Profile: React.FC = () => {
 
+  const { setRegisterData, getRegisterData } = useDataRegisterStore();
+
+  const [id, setId] = useState<string | undefined>('0');
+
+  function getIdFromName(name: string, profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>): string | undefined {
+    for (const [id, profile] of Object.entries(profiles)) {
+      if (profile && profile.nombre === name) {
+        return id;
+      }
+    }
+    return undefined; 
+  }
+
+
+  function getFakeProfileData(
+    idOrNameObj: { idOrName: string; name: string },
+    profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>
+  ): IPatientProfileData | ISpecialistProfileData | undefined {
+    const { idOrName, name } = idOrNameObj;
+  
+    if (!idOrName) {
+      return undefined;
+    }
+  
+    // Intenta buscar el perfil por el ID proporcionado en idOrName
+    if (profiles[idOrName]) {
+      return profiles[idOrName];
+    }
+  
+    // Si no se encuentra por ID, intenta buscar por el nombre
+    const profileValues = Object.values(profiles);
+    const profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === name);
+  
+    return profile;
+  }
+  
+  const profilesObject = {
+    '1': {
+      tipo: "Paciente",
+      nombre: getRegisterData("nombre"),
+      apellido: 'Garcia',
+      fecha_nacimiento: '27-05-2001',
+      documento_identidad: '11987654321',
+      sexo: "m",
+      correo: 'lenny@gmail.com',
+      direccion: "La casa de ben",
+      telefono: '18296572014',
+      tipo_sangre: 'O+',
+      padecimientos: ["E-Coli", "Disfuncion Erectil"],
+      alergias: ["mujeres", "cafe", "Mi prima"],
+      familiares: ["BenJunior", "maikol", "jose Jimenez"],
+      metodo_pago: "Tarjeta de Debito",
+      datos_financieros: "1234567892222222",
+
+    },
+    '3': {
+      tipo: "Especialista",
+      nombre: "Ben",
+      apellido: "Junior",
+      fecha_nacimiento: "11-11-2011",
+      sexo: "m",
+      correo: "ben@gmail.com",
+      direccion: "la casa de Julio",
+      telefono: "8295455555",
+      especialidad: "Ginecologo",
+      metodo_pago: "Tarjeta de Credito",
+      datos_financieros: "1234567891111111",
+    },
+  };
+
   const { idOrName } = useParams<{ idOrName: string }>();
+  const fetchedData: any = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);
+
+  useEffect(() => {
+    if (fetchedData) {
+      const profileId = getIdFromName(fetchedData?.nombre, profilesObject);
+      setId(profileId);
+    }
+  }, []);
 
   const [modalOpen, setModalOpen] = React.useState(false);
   const handleModalOpen = () => setModalOpen(true);
@@ -144,28 +177,25 @@ const Profile: React.FC = () => {
   const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
 
   useEffect(() => {
-    const fetchedProfileData = getFakeProfileData(idOrName, profilesObject);
+    if (idOrName) {
+      const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
 
-    if (!fetchedProfileData) {
-      console.log('No se encontró el perfil');
-      navigate('/404');
-      return;
-    }
+      if (!fetchedProfileData) {
+        console.log('No se encontró el perfil');
+        navigate('/404');
+        return;
+      }
 
-    const handleSubmit = () => {
-      console.log("hola")
-    };
+      setProfileData(fetchedProfileData);
 
-    setProfileData(fetchedProfileData);
-
-    if (fetchedProfileData) {
       const slug = generateSlug(fetchedProfileData);
       navigate(`/profile/${slug}`);
     }
   }, [idOrName, navigate]);
 
+
   if (!profileData) {
-    return <div>Cargando...</div>;
+    return <div>Cargando...</div>; //shadow
   }
 
   const initialValues = {
@@ -176,9 +206,16 @@ const Profile: React.FC = () => {
     padecimientos: [""],
     alergias: [""],
     familiares: [""],
+    nombre: "",
   };
 
   const userType: string = profileData.tipo;
+
+  console.log("idOrName:", fetchedData?.nombre);
+  console.log("profilesObject keys:", Object.keys(profilesObject));
+  console.log(id)
+ 
+  console.log("idOrName:", idOrName);
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
@@ -196,8 +233,8 @@ const Profile: React.FC = () => {
             <AccordionDetails>
               {userType == "Paciente" ?
                 <ProfileList dataList={[
-                  { name: "Nombre", data: profileData.nombre, },
-                  { name: "Apellido", data: profileData.apellido, },
+                  { name: "Nombre", data: profilesObject[id as keyof typeof profilesObject]?.nombre || '' },
+                  { name: "Apellido", data: fetchedData?.apellido, },
                   { name: "Fecha de nacimiento", data: profileData.fecha_nacimiento, },
                   { name: "Documento de indentidad", data: (profileData as IPatientProfileData).documento_identidad, },
                   { name: "Sexo", data: profileData.sexo, },
@@ -277,7 +314,7 @@ const Profile: React.FC = () => {
             alignItems: "center"
           }}>
             {/*EDITAR*/}
-            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem",  backgroundColor: "#52b69a"  }}>Editar</Button>
+            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a" }}>Editar</Button>
             <Modal
               keepMounted
               open={modalOpen}
@@ -327,19 +364,19 @@ const Profile: React.FC = () => {
                             },
                           }}>
                             <Box hidden={tabValue !== "one"}>
-                              <BasicProfileForm type={userType} profileValues={profileData}/>
+                              <BasicProfileForm type={userType} profileValues={profilesObject} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "two"}>
-                              <ContactProfileForm profileValues={profileData}/>
+                              <ContactProfileForm profileValues={profileData} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "three"}>
-                              <FinancialProfileForm profileValues={profileData}/>
+                              <FinancialProfileForm profileValues={profileData} />
                             </Box>
 
                           </Box>
-                           {/*ENVIAR INFORMACION*/}
+                          {/*ENVIAR INFORMACION*/}
                           <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
                             fullWidth
 

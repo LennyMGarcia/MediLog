@@ -22,7 +22,7 @@ const ProfileList: React.FC<IProfileList> = ({ dataList }) => {
                         <ListItem sx={{ marginTop: index == 0 ? "-1rem" : "none" }} key={index} id={String(index)}>
                             <Box sx={{ display: 'flex', flexDirection: 'column' }} key={index}>
                                 <Typography variant="subtitle2">{list.name}</Typography >
-                                <Typography variant="body1"><strong>{list.data}</strong></Typography>
+                                <Box><strong>{list.data}</strong></Box>
                             </Box>
                         </ListItem>
                         {index !== dataList.length - 1 && <Divider component="li" />}

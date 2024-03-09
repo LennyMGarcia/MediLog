@@ -7,6 +7,7 @@ import TextField, { TextFieldProps } from '@mui/material/TextField/TextField';
 import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
 import Box from '@mui/material/Box/Box';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 
 //a
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
@@ -16,11 +17,11 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
 }
 
 const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ...rest }) => {
-    //const { setRegisterData } = useDataRegisterStore();
+    const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = (e: ChangeEvent<any>) => {
         const value = e.target.value.trim();
-        //setRegisterData(name, value);
+        setRegisterData(name, value);
     };
 
     const theme = useTheme();
