@@ -1,5 +1,5 @@
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useTheme from '@mui/material/styles/useTheme';
 import { Field, FieldProps, ErrorMessage, FieldArray } from 'formik';
@@ -21,6 +21,7 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
     Values?:any[],
 }
 
+
 const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder, Values ,...rest }) => {
     //const { setRegisterData } = useDataRegisterStore();
 
@@ -29,6 +30,17 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
         //setRegisterData(name, value);
     };
     
+    const [processedValues, setProcessedValues] = useState<boolean>(false);
+    const pushToArray = useRef<(value: any) => void>();
+
+    useEffect(() => {
+        if (Values && Values.length && pushToArray.current && processedValues) {
+            Values.forEach(value => {
+                pushToArray.current && pushToArray.current(value);
+            });
+        }
+        setProcessedValues(true);
+    }, [Values, pushToArray, processedValues]);
     
 
     const theme = useTheme();
@@ -49,9 +61,8 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                             const { push, remove, form } = fieldArrayProps;
                             const { values } = form;
                             const arrayValues = values[name] || [];
-                            
-                             
-                            
+
+                            pushToArray.current = push;
 
                             return (
                                 <Box>
