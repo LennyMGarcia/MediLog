@@ -23,8 +23,10 @@ import Button from "@mui/material/Button/Button";
 import styles from "../Components/style/RegisterStyle/RegisterTheme.module.css";
 import { Fade } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import useUserStore from "../../../Common/Utils/setUserSession";
 import axios from "axios";
 import getBackendConnectionString from "../../../Common/Utils/getBackendString";
+import { useEffect, useState } from "react";
 
 const ImageArray = [
     registerDoctor,
@@ -65,12 +67,26 @@ const initialValues = [
 ];
 
 const Register: React.FC = () => {
-    const { getRegisterData } = useDataRegisterStore()
+    const { authUser } = useUserStore();
+    const { authenticated } = useUserStore();
+    const [logged, setLogged] = useState(false);
     const navigate = useNavigate();
+
+    //Funccion que denega acceso a la pagina de register si el usuario esta loggeado
+    useEffect(() => {
+        setLogged(authenticated());
+        if (logged) {
+            navigate('/');
+            return;
+        }
+        return;
+    }, [logged]);
+
+    const { getRegisterData } = useDataRegisterStore();
 
     async function onSubmit() {
         if (currentStepIndex === steps.length - 2) {
-            const result = await axios.post(getBackendConnectionString('test'), {
+            const result = await axios.post(getBackendConnectionString('register'), {
                 nombre: getRegisterData('nombre'),
                 apellido: getRegisterData('apellido'),
                 fecha_nacimiento: getRegisterData('fecha_nacimiento'),
@@ -99,17 +115,28 @@ const Register: React.FC = () => {
             }).then(response => {
                 //Condicion que verifica si la solicitud fue exitosa
                 if (response.status === 201 || response.status === 200) {
+                    const incomingUser = response.data?.user;
+                    console.log(response)
+                    console.log(incomingUser)
+                    authUser(incomingUser);
                     next();
+                    return { success: true, message: response.statusText };
+
                 } else {
-                    console.log(response.data?.message);
+                    const error_msj = response.data?.message;
+                    console.log(response);
+                    console.log(error_msj);
+                    return { success: false, message: error_msj };
                 }
             }).catch(error => {
+                const error_msj = error?.response?.data?.message;
                 console.log(error);
-                console.log(error?.response?.data?.message);
+                console.log(error_msj);
+                return { success: false, message: error_msj };
             });
             return result;
         } else if (isLastStep) {
-            navigate("/");
+            navigate("/"); // Redirige a esa ruta si el inicio de session fue exitoso
         } else {
             next()
         }
