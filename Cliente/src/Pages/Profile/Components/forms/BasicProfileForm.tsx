@@ -62,10 +62,20 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente", 
                     />
 
                     <ProfileControl
-                        control="input"
+                        control="select"
                         label="Tipo de sangre" //select
                         name="tipo_sangre"
-                        placeholder="Escriba su cedula"
+                        selectObject={[
+                            { key: "A+", value: "A+" },
+                            { key: "O+", value: "O+" },
+                            { key: "B+", value: "B+" },
+                            { key: "AB+", value: "AB+" },
+                            { key: "A-", value: "A-" },
+                            { key: "O-", value: "O-" },
+                            { key: "B-", value: "B-" },
+                            { key: "AB-", value: "AB-" },
+    
+                        ]}
                     />
 
                     <ProfileControl

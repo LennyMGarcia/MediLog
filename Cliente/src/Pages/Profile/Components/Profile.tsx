@@ -44,19 +44,19 @@ const style = {
 interface IPatientProfileData {
   tipo: string,
   nombre: any | null,
-  apellido: string,
-  fecha_nacimiento: string,
-  documento_identidad: string,
-  sexo: string,
-  correo: string,
-  direccion: string,
-  telefono: string,
-  tipo_sangre: string,
+  apellido: any | null,
+  fecha_nacimiento: any | null,
+  documento_identidad: any | null,
+  sexo: any | null,
+  correo: any | null,
+  direccion: any | null,
+  telefono: any | null,
+  tipo_sangre: any | null,
   padecimientos: string[],
   alergias: string[],
   familiares: string[],
   metodo_pago: string,
-  datos_financieros: string,
+  datos_financieros: any | null,
 }
 
 interface ISpecialistProfileData {
@@ -108,35 +108,42 @@ const Profile: React.FC = () => {
       return undefined;
     }
   
-    // Intenta buscar el perfil por el ID proporcionado en idOrName
     if (profiles[idOrName]) {
       return profiles[idOrName];
     }
+
+    if (name === "") {
+      return profiles[idOrName];
+    }
   
-    // Si no se encuentra por ID, intenta buscar por el nombre
     const profileValues = Object.values(profiles);
-    const profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === name);
+    let profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === name);
+
+
+    if (!profile && name === "") {
+      profile = profiles[idOrName];
+    }
   
     return profile;
   }
   
-  const profilesObject = {
+  const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData> = {
     '1': {
       tipo: "Paciente",
-      nombre: getRegisterData("nombre"),
-      apellido: 'Garcia',
-      fecha_nacimiento: '27-05-2001',
-      documento_identidad: '11987654321',
-      sexo: "m",
-      correo: 'lenny@gmail.com',
-      direccion: "La casa de ben",
-      telefono: '18296572014',
+      nombre: getRegisterData("nombre") ,
+      apellido: getRegisterData("apellido"),
+      fecha_nacimiento: getRegisterData("fecha_nacimiento"),
+      documento_identidad: getRegisterData("documento_identidad"),
+      sexo: getRegisterData("sexo"),
+      correo: getRegisterData("correo"),
+      direccion: getRegisterData("direccion"),
+      telefono: getRegisterData("telefono"),
       tipo_sangre: 'O+',
       padecimientos: ["E-Coli", "Disfuncion Erectil"],
       alergias: ["mujeres", "cafe", "Mi prima"],
       familiares: ["BenJunior", "maikol", "jose Jimenez"],
       metodo_pago: "Tarjeta de Debito",
-      datos_financieros: "1234567892222222",
+      datos_financieros: getRegisterData("datos_financieros"),
 
     },
     '3': {
@@ -152,7 +159,9 @@ const Profile: React.FC = () => {
       metodo_pago: "Tarjeta de Credito",
       datos_financieros: "1234567891111111",
     },
-  };
+};
+
+
 
   const { idOrName } = useParams<{ idOrName: string }>();
   const fetchedData: any = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);
@@ -172,6 +181,7 @@ const Profile: React.FC = () => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
+  
 
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
@@ -189,6 +199,11 @@ const Profile: React.FC = () => {
       setProfileData(fetchedProfileData);
 
       const slug = generateSlug(fetchedProfileData);
+      console.log(slug)
+      if(slug == ''){
+        navigate(`/profile/${idOrName}`);
+        return
+      }
       navigate(`/profile/${slug}`);
     }
   }, [idOrName, navigate]);
@@ -211,11 +226,7 @@ const Profile: React.FC = () => {
 
   const userType: string = profileData.tipo;
 
-  console.log("idOrName:", fetchedData?.nombre);
-  console.log("profilesObject keys:", Object.keys(profilesObject));
-  console.log(id)
- 
-  console.log("idOrName:", idOrName);
+ console.log( (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad)
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
@@ -234,23 +245,23 @@ const Profile: React.FC = () => {
               {userType == "Paciente" ?
                 <ProfileList dataList={[
                   { name: "Nombre", data: profilesObject[id as keyof typeof profilesObject]?.nombre || '' },
-                  { name: "Apellido", data: fetchedData?.apellido, },
-                  { name: "Fecha de nacimiento", data: profileData.fecha_nacimiento, },
-                  { name: "Documento de indentidad", data: (profileData as IPatientProfileData).documento_identidad, },
-                  { name: "Sexo", data: profileData.sexo, },
-                  { name: "Correo", data: profileData.correo, },
-                  { name: "Tipo de sangre", data: (profileData as IPatientProfileData).tipo_sangre, },
-                  { name: "Padecimiento", data: <ListFormater formatData={(profileData as IPatientProfileData).padecimientos} /> },
-                  { name: "Alergias", data: <ListFormater formatData={(profileData as IPatientProfileData).alergias} /> },
-                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profileData as IPatientProfileData).familiares} /> },
+                  { name: "Apellido", data: profilesObject[id as keyof typeof profilesObject]?.apellido || '', },
+                  { name: "Fecha de nacimiento", data: profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
+                  { name: "Documento de indentidad", data: (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad, },
+                  { name: "Sexo", data: profilesObject[id as keyof typeof profilesObject]?.sexo, },
+                  { name: "Correo", data: profilesObject[id as keyof typeof profilesObject]?.correo, },
+                  { name: "Tipo de sangre", data: (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).tipo_sangre, },
+                  { name: "Padecimiento", data: <ListFormater formatData={(profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).padecimientos} /> },
+                  { name: "Alergias", data: <ListFormater formatData={(profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).alergias} /> },
+                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).familiares} /> },
                 ]} />
                 :
                 <ProfileList dataList={[
-                  { name: "Nombre", data: profileData.nombre, },
-                  { name: "Apellido", data: profileData.apellido, },
-                  { name: "Fecha de nacimiento", data: profileData.fecha_nacimiento, },
-                  { name: "Sexo", data: profileData.sexo, },
-                  { name: "Especialidad", data: (profileData as ISpecialistProfileData).especialidad },
+                  { name: "Nombre", data: profilesObject[id as keyof typeof profilesObject]?.nombre, },
+                  { name: "Apellido", data: profilesObject[id as keyof typeof profilesObject]?.apellido, },
+                  { name: "Fecha de nacimiento", data: profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
+                  { name: "Sexo", data: profilesObject[id as keyof typeof profilesObject]?.sexo, },
+                  { name: "Especialidad", data: (profilesObject[id as keyof typeof profilesObject] as ISpecialistProfileData).especialidad },
                 ]} />
               }
             </AccordionDetails>
@@ -259,7 +270,6 @@ const Profile: React.FC = () => {
           <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
               id="Informacion_contacto"
             >
               Informacion de contacto
@@ -276,7 +286,6 @@ const Profile: React.FC = () => {
           <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
               id="Informacion_financiera"
             >
               Informacion financiera
@@ -364,15 +373,15 @@ const Profile: React.FC = () => {
                             },
                           }}>
                             <Box hidden={tabValue !== "one"}>
-                              <BasicProfileForm type={userType} profileValues={profilesObject} />
+                              <BasicProfileForm type={userType} profileValues={profilesObject[id as keyof typeof profilesObject] || {}} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "two"}>
-                              <ContactProfileForm profileValues={profileData} />
+                              <ContactProfileForm profileValues={profilesObject[id as keyof typeof profilesObject] || {}} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "three"}>
-                              <FinancialProfileForm profileValues={profileData} />
+                              <FinancialProfileForm profileValues={profilesObject[id as keyof typeof profilesObject] || {}} />
                             </Box>
 
                           </Box>

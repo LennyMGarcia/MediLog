@@ -1,5 +1,4 @@
-
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useTheme from '@mui/material/styles/useTheme';
 import { Field, FieldProps, ErrorMessage, FieldArray } from 'formik';
@@ -13,6 +12,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import profileStyle from "../../style/profileStyle.module.css"
+import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -21,17 +21,20 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
     Values?: any[],
 }
 
-
 const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder, Values, ...rest }) => {
-    //const { setRegisterData } = useDataRegisterStore();
+    const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = (e: ChangeEvent<any>) => {
         const value = e.target.value.trim();
-        //setRegisterData(name, value);
+        setRegisterData(name, value);
     };
 
     const [processedValues, setProcessedValues] = useState<boolean>(false);
     const pushToArray = useRef<(value: any) => void>();
+    const arrayValuesRef = useRef<any[]>();
+
+    const arrayValuesMemoize = useMemo(() => arrayValuesRef.current, [arrayValuesRef.current]);
+
 
     useEffect(() => {
         if (Values && Values.length && pushToArray.current && processedValues) {
@@ -40,11 +43,48 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
             });
         }
         setProcessedValues(true);
-    }, [ processedValues]);
-
+    }, [processedValues]);
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
+    const handleInputChange = (e: ChangeEvent<any>, field: any, index: number) => {
+        field.onChange(e);
+        handleChange(e);
+    };
+
+    const handleRemoveItem = (index: number, remove: any) => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: `Esta acción eliminará este elemento`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#52b69a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminarlo',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                container: profileStyle.sweetAlertContainer,
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+            allowEscapeKey: () => !Swal.isLoading(),
+            allowEnterKey: () => !Swal.isLoading(),
+            stopKeydownPropagation: false,
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+                remove(index);
+                Swal.fire({
+                    title: 'Eliminado',
+                    text: 'El elemento ha sido eliminado.',
+                    icon: 'success',
+                    customClass: {
+                        container: profileStyle.sweetAlertContainer,
+                    }
+                });
+            }
+        });
+    };
 
     return (
         <Box>
@@ -61,14 +101,14 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                             const { push, remove, form } = fieldArrayProps;
                             const { values } = form;
                             const arrayValues = values[name] || [];
-
+                            arrayValuesRef.current = arrayValues
                             pushToArray.current = push;
 
                             return (
                                 <Box>
-                                    {Array.isArray(arrayValues) && arrayValues.map((value: any, index: any) => (
-                                        <Box key={value}>
-                                             <Field name={`${name}[${index}]`}>
+                                    {Array.isArray(arrayValuesMemoize) && arrayValuesMemoize.map((value: any, index: any) => (
+                                        <Box key={index}>
+                                            <Field name={`${name}[${index}]`}>
                                                 {({ field, form }: FieldProps) => (
                                                     <React.Fragment>
                                                         <TextField
@@ -78,11 +118,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                                             color="primary"
                                                             fullWidth
                                                             value={value}
-                                                            onChange={(e) => {
-                                                                field.onChange(e);
-                                                                handleChange(e);
-                                                                { console.log(`arrayValues[${index}]`) }
-                                                            }}
+                                                            onChange={(e) => handleInputChange(e, field, index)}
                                                             error={Boolean(form.errors[name] && form.touched[name])}
                                                             {...rest}
                                                             sx={{
@@ -108,39 +144,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                                 '&:hover': {
                                                     backgroundColor: "#34a0a4"
                                                 }
-                                            }} type='button' onClick={() => {
-                                                Swal.fire({
-                                                    title: '¿Estás seguro?',
-                                                    text: `Esta acción eliminará este elemento`,
-                                                    icon: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: '#52b69a',
-                                                    cancelButtonColor: '#d33',
-                                                    confirmButtonText: 'Sí, eliminarlo',
-                                                    cancelButtonText: 'Cancelar',
-                                                    customClass: {
-                                                        container: profileStyle.sweetAlertContainer,
-                                                    },
-                                                    allowOutsideClick: () => !Swal.isLoading(),
-                                                    allowEscapeKey: () => !Swal.isLoading(),
-                                                    allowEnterKey: () => !Swal.isLoading(),
-                                                    stopKeydownPropagation: false,
-
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        remove(index);
-                                                        Swal.fire({
-                                                            title: 'Eliminado',
-                                                            text: 'El elemento ha sido eliminado.',
-                                                            icon: 'success',
-                                                            customClass: {
-                                                                container: profileStyle.sweetAlertContainer,
-                                                            }
-                                                        }
-                                                        );
-                                                    }
-                                                });
-                                            }}>
+                                            }} type='button' onClick={() => handleRemoveItem(index, remove)}>
                                                 - {/*Simbolo negativo*/}
                                             </Button>
                                         </Box>
@@ -166,6 +170,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
 };
 
 export default ProfileMultiInput;
+
 
 
 

@@ -11,6 +11,7 @@ import { Field, ErrorMessage} from 'formik';
 import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
 import Box from '@mui/material/Box/Box';
 import { useFormikContext } from 'formik';
+import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 
 interface DateProps  {
     label?: React.ReactNode,
@@ -18,7 +19,7 @@ interface DateProps  {
 }
 
 const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) => {
-    //const { setRegisterData } = useDataRegisterStore();
+    const { setRegisterData } = useDataRegisterStore();
     const formik = useFormikContext<any>();
     const [value, setValue] = React.useState<Dayjs | null>(null);
 
@@ -31,7 +32,7 @@ const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) =>
     const handleChange = (date: Dayjs | null) => {
         setValue(date);
         formik.setFieldValue(name, date ? date.format('YYYY-MM-DD') : null); //establecer el valor en el formulario
-        //setRegisterData(name, date ? date.toDate() : null);
+        setRegisterData(name, date ? date.toDate() : null);
     };
     
     const theme = useTheme();

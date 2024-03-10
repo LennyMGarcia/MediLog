@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
-
-//import useDataRegisterStore from "../../ZustandRegisterManagement";
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select/Select';
 import { Field, FieldProps, ErrorMessage  } from 'formik';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 
-//Solo para omitir variant en la seleccion de SelectProps, puede ser usado nuevamente
+
 interface ISelect extends Omit<SelectProps, "variant"> {
     label?: React.ReactNode,
     name?: string,
-    //Ayuda bastante a proporcionar una clave que puede ser el texto de menuItem y un valor que va a la DB
+
     selectObject?: {
         key: string | number,
         value: string | number
@@ -21,20 +20,18 @@ interface ISelect extends Omit<SelectProps, "variant"> {
 
 const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, ...rest }) => {
 
-    //const { setRegisterData, getRegisterData } = useDataRegisterStore();
-    //Para mantener el select cuando se vuelva atras, simplemente revisa name y setRegister data y actualiza
-    /*Tenia useState pero este funciona mejor ya que el useState cuando se desmontaba se reiniciaba
-       y podia agregarla pero seria mucho codigo cuando se usara un useEffect*/
-    /*useEffect(() => {
+    const { setRegisterData, getRegisterData } = useDataRegisterStore();
+
+    useEffect(() => {
         const state = getRegisterData(name);
         if (!state) {
             setRegisterData(name, '');
         }
-    }, [name, setRegisterData]);*/
+    }, [name, setRegisterData]);
 
     const handleChange = (e: SelectChangeEvent<any>) => {
         const newValue = e.target.value;
-       // setRegisterData(name, newValue);
+        setRegisterData(name, newValue);
     };
 
     const theme = useTheme();
