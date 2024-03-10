@@ -48,6 +48,7 @@ export default function Navbar() {
         sx={{
           width: "100%",
           backgroundColor: "#184E77",
+          minHeight: "72px",
         }}
         display={"flex"}
         justifyContent={"space-between"}
@@ -69,6 +70,7 @@ export default function Navbar() {
               fontSize: "25px",
               fontWeight: "600",
               textTransform: "uppercase",
+              cursor: "pointer",
             }}
             // variant="text"
             onClick={() => {

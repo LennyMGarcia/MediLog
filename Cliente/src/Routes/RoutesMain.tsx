@@ -11,6 +11,9 @@ export default function RoutesMain() {
           <Route index element={<LandingPage />} />
           <Route path={"register"} element={<Register />} />
         </Route>
+        {/* <Route path="/" element={<Private />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route> */}
       </Routes>
     </BrowserRouter>
   );
