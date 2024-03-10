@@ -1,7 +1,7 @@
-import { Outlet } from "react-router";
 import Navbar from "../Common/Components/Navbar";
 import { Box } from "@mui/material";
 import Footer from "../Common/Components/Footer";
+import { Outlet } from "react-router-dom";
 
 export default function NoPrivate() {
   return (
