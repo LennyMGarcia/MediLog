@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid/Grid";
 import Typography from "@mui/material/Typography/Typography";
 import Avatar from '@mui/material/Avatar';
 import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import ProfileList from "./ProfileList/ProfileList";
 import ListFormater from "./ProfileList/ListFormater";
@@ -52,7 +52,7 @@ interface IPatientProfileData {
   direccion: any | null,
   telefono: any | null,
   tipo_sangre: any | null,
-  padecimientos: string[],
+  padecimientos: any | any[] | null,
   alergias: string[],
   familiares: string[],
   metodo_pago: string,
@@ -75,18 +75,17 @@ interface ISpecialistProfileData {
 
 
 
-
-function generateSlug(profileData: IPatientProfileData | ISpecialistProfileData) {
-  const { nombre, apellido } = profileData;
-  const slug = `${nombre}${apellido}`;
-  return slug;
-}
-
 const Profile: React.FC = () => {
 
   const { setRegisterData, getRegisterData } = useDataRegisterStore();
 
   const [id, setId] = useState<string | undefined>('0');
+
+  const generateSlug = useCallback((profileData: IPatientProfileData | ISpecialistProfileData) => {
+    const { nombre, apellido } = profileData;
+    const slug = `${nombre}${apellido}`;
+    return slug;
+  }, [])
 
   function getIdFromName(name: string, profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>): string | undefined {
     for (const [id, profile] of Object.entries(profiles)) {
@@ -98,10 +97,10 @@ const Profile: React.FC = () => {
   }
 
 
-  function getFakeProfileData(
+  const getFakeProfileData = useCallback((
     idOrNameObj: { idOrName: string; name: string },
     profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>
-  ): IPatientProfileData | ISpecialistProfileData | undefined {
+  ): IPatientProfileData | ISpecialistProfileData | undefined =>{
     const { idOrName, name } = idOrNameObj;
   
     if (!idOrName) {
@@ -125,7 +124,7 @@ const Profile: React.FC = () => {
     }
   
     return profile;
-  }
+  }, [])
   
   const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData> = {
     '1': {
@@ -139,7 +138,7 @@ const Profile: React.FC = () => {
       direccion: getRegisterData("direccion"),
       telefono: getRegisterData("telefono"),
       tipo_sangre: 'O+',
-      padecimientos: ["E-Coli", "Disfuncion Erectil"],
+      padecimientos: getRegisterData("padecimientos"),
       alergias: ["mujeres", "cafe", "Mi prima"],
       familiares: ["BenJunior", "maikol", "jose Jimenez"],
       metodo_pago: "Tarjeta de Debito",
@@ -160,7 +159,6 @@ const Profile: React.FC = () => {
       datos_financieros: "1234567891111111",
     },
 };
-
 
 
   const { idOrName } = useParams<{ idOrName: string }>();
@@ -199,7 +197,6 @@ const Profile: React.FC = () => {
       setProfileData(fetchedProfileData);
 
       const slug = generateSlug(fetchedProfileData);
-      console.log(slug)
       if(slug == ''){
         navigate(`/profile/${idOrName}`);
         return
@@ -225,8 +222,6 @@ const Profile: React.FC = () => {
   };
 
   const userType: string = profileData.tipo;
-
- console.log( (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad)
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
@@ -276,9 +271,9 @@ const Profile: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <ProfileList dataList={[
-                { name: "Correo", data: profileData.correo, },
-                { name: "Direccion", data: profileData.direccion, },
-                { name: "Telefono", data: profileData.telefono, },
+                { name: "Correo", data: profilesObject[id as keyof typeof profilesObject]?.correo, },
+                { name: "Direccion", data: profilesObject[id as keyof typeof profilesObject]?.direccion, },
+                { name: "Telefono", data: profilesObject[id as keyof typeof profilesObject]?.telefono, },
               ]} />
             </AccordionDetails>
           </Accordion>
@@ -292,8 +287,8 @@ const Profile: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <ProfileList dataList={[
-                { name: "Metodo de pago", data: profileData.metodo_pago, },
-                { name: "Codigo de tarjeta", data: profileData.datos_financieros, },
+                { name: "Metodo de pago", data: profilesObject[id as keyof typeof profilesObject]?.metodo_pago, },
+                { name: "Codigo de tarjeta", data: profilesObject[id as keyof typeof profilesObject]?.datos_financieros, },
               ]} />
             </AccordionDetails>
           </Accordion>

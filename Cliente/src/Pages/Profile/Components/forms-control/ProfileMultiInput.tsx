@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useTheme from '@mui/material/styles/useTheme';
 import { Field, FieldProps, ErrorMessage, FieldArray } from 'formik';
@@ -12,7 +12,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import profileStyle from "../../style/profileStyle.module.css"
-import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
+import useDataRegisterStore, { getAllRegisterData } from '../../../Register/ZustandRegisterManagement';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -24,17 +24,13 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
 const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder, Values, ...rest }) => {
     const { setRegisterData } = useDataRegisterStore();
 
-    const handleChange = (e: ChangeEvent<any>) => {
+    const handleChange = useCallback((e: ChangeEvent<any>, index: number) => {
         const value = e.target.value.trim();
-        setRegisterData(name, value);
-    };
+        setRegisterData(name, value, index);
+    }, []);
 
     const [processedValues, setProcessedValues] = useState<boolean>(false);
     const pushToArray = useRef<(value: any) => void>();
-    const arrayValuesRef = useRef<any[]>();
-
-    const arrayValuesMemoize = useMemo(() => arrayValuesRef.current, [arrayValuesRef.current]);
-
 
     useEffect(() => {
         if (Values && Values.length && pushToArray.current && processedValues) {
@@ -48,12 +44,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
-    const handleInputChange = (e: ChangeEvent<any>, field: any, index: number) => {
-        field.onChange(e);
-        handleChange(e);
-    };
-
-    const handleRemoveItem = (index: number, remove: any) => {
+    const handleRemoveItem = useCallback((index: number, remove: any) => {
         Swal.fire({
             title: '¿Estás seguro?',
             text: `Esta acción eliminará este elemento`,
@@ -74,6 +65,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
         }).then((result) => {
             if (result.isConfirmed) {
                 remove(index);
+                setRegisterData(name, null, index)
                 Swal.fire({
                     title: 'Eliminado',
                     text: 'El elemento ha sido eliminado.',
@@ -84,7 +76,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                 });
             }
         });
-    };
+    }, []);
 
     return (
         <Box>
@@ -99,35 +91,39 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                     <FieldArray name={name}>
                         {fieldArrayProps => {
                             const { push, remove, form } = fieldArrayProps;
-                            const { values } = form;
+                            const { values, setFieldValue } = form;
                             const arrayValues = values[name] || [];
-                            arrayValuesRef.current = arrayValues
                             pushToArray.current = push;
 
                             return (
                                 <Box>
-                                    {Array.isArray(arrayValuesMemoize) && arrayValuesMemoize.map((value: any, index: any) => (
+                                    {Array.isArray(arrayValues) && arrayValues.map((value: any, index: any) => (
                                         <Box key={index}>
-                                            <Field name={`${name}[${index}]`}>
+                                            <Field name={`${name}[${index}]`} value={value || ''}>
                                                 {({ field, form }: FieldProps) => (
                                                     <React.Fragment>
                                                         <TextField
-                                                            id={value}
-                                                            placeholder={placeHolder ? `${placeHolder}` : ""}
+                                                            id={value || ''}
+                                                            name={`${name}[${index}]`} // Asegúrate de proporcionar un name único
+                                                            placeholder={placeHolder || ""}
                                                             variant="outlined"
                                                             color="primary"
                                                             fullWidth
-                                                            value={value}
-                                                            onChange={(e) => handleInputChange(e, field, index)}
+                                                            value={field.value || ''} // Asegúrate de que el valor nunca sea null
+                                                            onChange={(e) => {
+                                                                field.onChange(e);  
+                                                                handleChange(e, index);
+                                                            }}
                                                             error={Boolean(form.errors[name] && form.touched[name])}
                                                             {...rest}
                                                             sx={{
                                                                 '& .MuiInputBase-root': {
                                                                     height: 'auto',
                                                                 },
-                                                                mt: index == 0 ? "-1rem" : "0.5rem "
+                                                                mt: index === 0 ? "-1rem" : "0.5rem "
                                                             }}
                                                         />
+
                                                         <ErrorMessage name={name}>
                                                             {(msg) => (
                                                                 <FormHelperText style={{ color: 'red' }}>{msg}</FormHelperText>

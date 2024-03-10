@@ -9,7 +9,6 @@ import Box from '@mui/material/Box/Box';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 
-//a
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
     name?: string,
