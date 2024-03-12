@@ -26,12 +26,13 @@ import PaidIcon from '@mui/icons-material/Paid';
 import BasicProfileForm from "./forms/BasicProfileForm";
 import ContactProfileForm from "./forms/ContactProfileForm";
 import FinancialProfileForm from "./forms/FinancialProfileForm";
-import useDataRegisterStore from "../../Register/ZustandRegisterManagement";
+import useDataRegisterStore, { getAllRegisterData } from "../../Register/ZustandRegisterManagement";
 
 import profileStyle from "../style/profileStyle.module.css"
 import Swal from "sweetalert2";
 import mergedPatientSchema from "../Utils/yup-schema/yupProfilePatientSchema";
 import dayjs from "dayjs";
+import mergedSpecialistSchema from "../Utils/yup-schema/yupProfileSpecialistSchema";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -62,6 +63,11 @@ interface IPatientProfileData {
   familiares: any | any[] | null,
   metodo_pago: any | null,
   datos_financieros: any | null,
+  cvv: any | null,
+  fecha_expiracion: any | null,
+  descripcion: any | null,
+  categoria: any | null,
+  precio: any | null,
 }
 
 const patientProfileDataObject: IPatientProfileData = {
@@ -80,6 +86,11 @@ const patientProfileDataObject: IPatientProfileData = {
   familiares: [],
   metodo_pago: '',
   datos_financieros: null,
+  cvv: null,
+  fecha_expiracion: null,
+  descripcion: null,
+  categoria: null,
+  precio: null,
 };
 
 interface ISpecialistProfileData {
@@ -94,6 +105,11 @@ interface ISpecialistProfileData {
   especialidad: any | null,
   metodo_pago: any | null,
   datos_financieros: any | null,
+  cvv: any | null,
+  fecha_expiracion: any | null,
+  descripcion: any | null,
+  categoria: any | null,
+  precio: any | null,
 }
 
 const specialistProfileDataObject: ISpecialistProfileData = {
@@ -108,6 +124,11 @@ const specialistProfileDataObject: ISpecialistProfileData = {
   especialidad: null,
   metodo_pago: null,
   datos_financieros: null,
+  cvv: null,
+  fecha_expiracion: null,
+  descripcion: null,
+  categoria: null,
+  precio: null,
 }
 
 const Profile: React.FC = () => {
@@ -159,13 +180,12 @@ const Profile: React.FC = () => {
     return profilesObject;
   }
 
-
   const patientData = {
     id: "1",
     tipo: "Paciente",
     nombre: "Lenny",
     apellido: 'Garcia',
-    fecha_nacimiento: '',
+    fecha_nacimiento: "01-01-2001",
     documento_identidad: "12345678911",
     sexo: "f",
     correo: "Lenny@gmail.com",
@@ -175,11 +195,37 @@ const Profile: React.FC = () => {
     padecimientos: ["Migrana", "Espamos involuntarios", "Apne"],
     alergias: ["Polen", "Agua", "Flores"],
     familiares: ["BenJunior", "maikol", "jose Jimenez"],
-    metodo_pago: "Tarjeta de Debito",
+    metodo_pago: "Tarjeta de debito",
     datos_financieros: "123456789123456",
+    cvv: "1234",
+    fecha_expiracion: "01-01-2014",
+    descripcion: "Buen producto",
+    categoria: "Basico",
+    precio: 0,
   };
 
-  const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(patientData);
+  const specialistData= {
+    id:"2",
+    tipo: "Especialista",
+    nombre: "Ben Junior",
+    apellido: "Dourlouis",
+    fecha_nacimiento: "01-01-2001",
+    sexo: "m",
+    correo: "Ben@gmail.com",
+    direccion: "Villa mella",
+    telefono: "18096572014",
+    especialidad: "ginecologo",
+    metodo_pago: "Tarjeta de debito",
+    datos_financieros: "1234567891234567",
+    cvv: "4358",
+    fecha_expiracion: "01-05-2030",
+    descripcion: "Amor y paz",
+    categoria: "Hospitales",
+    precio: 5000,
+  }
+  
+
+  const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(specialistData);
   console.log(profilesObject);
 
   const generateSlug = useCallback((profileData: IPatientProfileData | ISpecialistProfileData) => {
@@ -298,6 +344,7 @@ const Profile: React.FC = () => {
   };
 
   const userType: string = profileData.tipo;
+  console.log(getAllRegisterData())
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
@@ -405,7 +452,7 @@ const Profile: React.FC = () => {
                   <Box sx={{ width: '100%', height: "100%" }}>
                     <Formik
                       initialValues={{ initialValues }}
-                      validationSchema={mergedPatientSchema}
+                      validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
                       onSubmit={() => console.log("adios")}
                     >
                       {({ handleSubmit, isValid }) => (
@@ -462,7 +509,7 @@ const Profile: React.FC = () => {
                             fullWidth
                             variant="contained"
                             type="submit"
-                            disabled={!isValid}
+                            //disabled={!isValid}
                             onClick={() => {
                               Swal.fire({
                                 title: '¿Estás seguro?',

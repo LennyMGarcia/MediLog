@@ -91,7 +91,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                     <FieldArray name={name}>
                         {fieldArrayProps => {
                             const { push, remove, form } = fieldArrayProps;
-                            const { values, setFieldValue } = form;
+                            const { values } = form;
                             const arrayValues = values[name] || [];
                             pushToArray.current = push;
 

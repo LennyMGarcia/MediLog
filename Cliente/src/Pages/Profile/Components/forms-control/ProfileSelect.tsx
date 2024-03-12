@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select/Select';
-import { Field, FieldProps, ErrorMessage  } from 'formik';
+import { Field, FieldProps, ErrorMessage } from 'formik';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
+import InputLabel from '@mui/material/InputLabel/InputLabel';
 
 
 interface ISelect extends Omit<SelectProps, "variant"> {
     label?: React.ReactNode,
     name?: string,
-    initialValue?:string,
+    initialValue?: string,
     selectObject?: {
         key: string | number,
         value: string | number
     }[]
 }
 
-const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, initialValue="", ...rest }) => {
+const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, initialValue = "", ...rest }) => {
 
     const { setRegisterData, getRegisterData } = useDataRegisterStore();
     const [value, setValue] = useState<string>(initialValue);
@@ -33,7 +34,7 @@ const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, 
     const handleChange = (e: SelectChangeEvent<any>) => {
         const newValue = e.target.value;
         setValue(newValue);
-        setRegisterData(name, newValue);
+        setRegisterData(name, newValue || initialValue);
     };
 
     const theme = useTheme();
@@ -45,14 +46,18 @@ const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, 
             <Field id={name} name={name}>
                 {({ field, form }: FieldProps) => (
                     <React.Fragment>
+                        <InputLabel shrink  sx={{margin:'0.2rem 0 -1rem 0.5rem'}}>
+                            {label}
+                        </InputLabel>
                         <Select
-                            label={label}
+
                             id={name}
                             name={field.name}
                             variant="outlined"
                             fullWidth
                             displayEmpty
                             value={value}
+                            
                             onChange={(e) => {
                                 field.onChange(e);
                                 handleChange(e);
@@ -67,7 +72,7 @@ const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, 
                             <MenuItem key="" value="" disabled defaultValue="sel" >
                                 Seleccione una opcion
                             </MenuItem>
-                            {Array.isArray(selectObject) ? ( //Revisa si hay un array de objetos y lo recorre
+                            {Array.isArray(selectObject) ? (
                                 selectObject.map((option, index) => (
                                     <MenuItem key={index} value={option.value}>
                                         {option.key}

@@ -22,7 +22,10 @@ interface DateProps  {
 const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", initialDateValue, ...rest }) => {
     const { setRegisterData } = useDataRegisterStore();
     const formik = useFormikContext<any>();
-    const [value, setValue] = React.useState<Dayjs | null>(null);
+
+    const initialDate = initialDateValue ? dayjs(initialDateValue, 'DD-MM-YYYY') : null;
+
+    const [value, setValue] = React.useState<Dayjs | null>( initialDate);
 
     useEffect(() => {
         if (formik.values[name]) {
@@ -33,7 +36,7 @@ const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", initialDateVa
     const handleChange = (date: Dayjs | null) => {
         setValue(date);
         formik.setFieldValue(name, date ? date.format('YYYY-MM-DD') : null); //establecer el valor en el formulario
-        setRegisterData(name, date ? date.toDate() : null);
+        setRegisterData(name, date ? date.toDate() : initialDateValue ? null : null);
     };
     
     const theme = useTheme();
@@ -52,7 +55,6 @@ const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", initialDateVa
                         disableFuture
                         color="primary"
                         fullWidth
-                        defaultValue={initialDateValue}
                         value={value}
                         onChange={(date) => handleChange(date)}
                         {...rest}
@@ -60,7 +62,7 @@ const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", initialDateVa
                             '& .MuiInputBase-root': {
                                 height: '3rem',
                             },
-                            display: "block", mt: "0.5rem"
+                            display: "block", mt: "0.8rem"
                         }}
                     />
                     <ErrorMessage name={name}>

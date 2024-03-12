@@ -29,22 +29,9 @@ const basicInfoSchema = Yup.object({
     .max(new Date(), 'La fecha no puede ser posterior a la fecha actual')
     .typeError('Debe ser una fecha válida en formato DD-MM-YYYY como 27-05-2001')
     .notRequired(),
-    tipo_sangre: Yup.string().oneOf(['A+', 'O+', 'B+', 'AB+', 'A-', 'O-', 'B-', 'AB-',]).notRequired(),
-    documento_identidad:Yup.string()
-      .matches(/^[0-9]*$/, 'La documento de indetidad solo puede contener números')
-      .length(11, "Documento de indentidad debe tener exactamente 11 digitos").notRequired(),
-    padecimientos: Yup.array().of(Yup.string()),
-    alergias: Yup.array().of(Yup.string()),
-    familiares: Yup.array().of(Yup.string()),
-    /*especialidad: Yup.string().when('tipo', {
-      is: "Especialista",
-      then: (basicInfoSchema) => basicInfoSchema.required('Especialidad requerida'),
-      otherwise: (basicInfoSchema) => basicInfoSchema.notRequired(),
-    }),*/
+    especialidad: Yup.string(),
     
 })
-
-
 
 const contactSchema = Yup.object({
     telefono: Yup.string()
@@ -75,18 +62,10 @@ const contactSchema = Yup.object({
     descripcion: Yup.string().notRequired(),
   });
 
-    /*const pricingSchema = Yup.object({
-    pricing: Yup.string().required("Plan requerido").when('tipo', {
-      is: "Paciente",
-      then: (basicInfoSchema) => basicInfoSchema.oneOf(['Basico', 'Familiar', "Paciente"], "Debe seleccionar un plan basico, familiar o paciente").required("requerido"),
-      otherwise: (basicInfoSchema) => basicInfoSchema.oneOf(['Independiente', 'Hospitales', "Especialista"], "debe seleccionar un plan independiente, de especialista o hospitalario").required("requerido"),
-    }),
-  });*/
   
-  const mergedPatientSchema = basicInfoSchema.concat(contactSchema).concat(FinancialSchema) //.concat(pricingSchema)
   
-  mergedPatientSchema.describe();
+  const mergedSpecialistSchema = basicInfoSchema.concat(contactSchema).concat(FinancialSchema) //.concat(pricingSchema)
+  
+  mergedSpecialistSchema.describe();
 
-  export default mergedPatientSchema
-  
-  
+  export default mergedSpecialistSchema

@@ -22,9 +22,10 @@ const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ini
     const [value, setValue] = useState<string>(initialValue);
 
     const handleChange = (e: ChangeEvent<any>) => {
-        const newValue = e.target.value.trim();
+        const newValue = e.target.value;
+        const newValueFormatted = newValue.trim();
         setValue(newValue);
-        setRegisterData(name, newValue);
+        setRegisterData(name, newValueFormatted || initialValue); //sin cambio se envia el e.target value, comprobar ese caso
     };
 
     const theme = useTheme();
@@ -42,7 +43,7 @@ const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ini
                         variant="outlined"
                         color="primary"
                         fullWidth
-         
+                        type="text"
                         value={value}
                         onChange={(e) => {
                             field.onChange(e);
@@ -51,7 +52,7 @@ const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ini
                         error={Boolean(form.errors[name] && form.touched[name])}
                         {...rest}
                         sx={{
-                            '& .MuiInputBase-root': { //elementos que tienen textfield le aplica el heigth
+                            '& .MuiInputBase-root': { 
                                 height: 'auto', 
                             },
                             mt: "0.5rem"

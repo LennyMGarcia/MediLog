@@ -12,7 +12,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
         <>
             <BoxRowWrapper>
                 <ProfileControl
-                    initialValue={profileValues["monto"]}
+                    initialValue={profileValues["precio"]}
                     control="input"
                     label="Monto"
                     name="monto"
@@ -34,8 +34,8 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
                     label="Metodo de pago"
                     name="metodo_pago"
                     selectObject={[
-                        { key: "Tarjeta de credito", value: "Tarjeta de Credito" },
-                        { key: "Tarjeta de debito", value: "Tarjeta de Debito" },
+                        { key: "Tarjeta de credito", value: "Tarjeta de credito" },
+                        { key: "Tarjeta de debito", value: "Tarjeta de debito" },
                     ]}
                 />
             </Box>
@@ -43,7 +43,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
                 <ProfileControl
                     initialValue={profileValues["datos_financieros"]}
                     control="input"
-                    label="Tarjeta de credito "
+                    label="Tarjeta"
                     name="datos_financieros"
                     placeholder="Escriba su tarjeta"
                 />
@@ -59,7 +59,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
 
             <Box>
                 <ProfileControl
-                    initialDateValue={profileValues["fecha_nacimiento"]}
+                    initialDateValue={profileValues["fecha_expiracion"]}
                     control="date"
                     label="Fecha de expiracion"
                     name="fecha_expiracion" />
