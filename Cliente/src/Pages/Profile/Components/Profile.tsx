@@ -28,6 +28,10 @@ import ContactProfileForm from "./forms/ContactProfileForm";
 import FinancialProfileForm from "./forms/FinancialProfileForm";
 import useDataRegisterStore from "../../Register/ZustandRegisterManagement";
 
+import profileStyle from "../style/profileStyle.module.css"
+import Swal from "sweetalert2";
+import mergedPatientSchema from "../Utils/yup-schema/yupProfilePatientSchema";
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -73,63 +77,23 @@ interface ISpecialistProfileData {
   datos_financieros: string,
 }
 
-
-
 const Profile: React.FC = () => {
 
-  const { setRegisterData, getRegisterData } = useDataRegisterStore();
-
+  const { getRegisterData } = useDataRegisterStore();
+  const navigate = useNavigate();
+  const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
   const [id, setId] = useState<string | undefined>('0');
+  const { idOrName } = useParams<{ idOrName: string }>();
 
-  const generateSlug = useCallback((profileData: IPatientProfileData | ISpecialistProfileData) => {
-    const { nombre, apellido } = profileData;
-    const slug = `${nombre}${apellido}`;
-    return slug;
-  }, [])
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+  const [tabValue, setTabValue] = useState('one');
 
-  function getIdFromName(name: string, profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>): string | undefined {
-    for (const [id, profile] of Object.entries(profiles)) {
-      if (profile && profile.nombre === name) {
-        return id;
-      }
-    }
-    return undefined; 
-  }
-
-
-  const getFakeProfileData = useCallback((
-    idOrNameObj: { idOrName: string; name: string },
-    profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>
-  ): IPatientProfileData | ISpecialistProfileData | undefined =>{
-    const { idOrName, name } = idOrNameObj;
-  
-    if (!idOrName) {
-      return undefined;
-    }
-  
-    if (profiles[idOrName]) {
-      return profiles[idOrName];
-    }
-
-    if (name === "") {
-      return profiles[idOrName];
-    }
-  
-    const profileValues = Object.values(profiles);
-    let profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === name);
-
-
-    if (!profile && name === "") {
-      profile = profiles[idOrName];
-    }
-  
-    return profile;
-  }, [])
-  
   const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData> = {
     '1': {
       tipo: "Paciente",
-      nombre: getRegisterData("nombre") ,
+      nombre: "lenny",
       apellido: getRegisterData("apellido"),
       fecha_nacimiento: getRegisterData("fecha_nacimiento"),
       documento_identidad: getRegisterData("documento_identidad"),
@@ -158,10 +122,52 @@ const Profile: React.FC = () => {
       metodo_pago: "Tarjeta de Credito",
       datos_financieros: "1234567891111111",
     },
-};
+  };
+
+  const generateSlug = useCallback((profileData: IPatientProfileData | ISpecialistProfileData) => {
+    const { nombre, apellido } = profileData;
+    const slug = `${nombre}${apellido}`;
+    return slug;
+  }, [])
+
+  function getIdFromName(name: string, profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>): string | undefined {
+    for (const [id, profile] of Object.entries(profiles)) {
+      if (profile && profile.nombre === name) {
+        return id;
+      }
+    }
+    return undefined;
+  }
+
+  const getFakeProfileData = useCallback((
+    idOrNameObj: { idOrName: string; name: string },
+    profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>
+  ): IPatientProfileData | ISpecialistProfileData | undefined => {
+    const { idOrName, name } = idOrNameObj;
+
+    if (!idOrName) {
+      return undefined;
+    }
+
+    if (profiles[idOrName]) {
+      return profiles[idOrName];
+    }
+
+    if (name === "") {
+      return profiles[idOrName];
+    }
+
+    const profileValues = Object.values(profiles);
+    let profile = profileValues.find(profile => `${profile?.nombre}${profile?.apellido}` === name);
 
 
-  const { idOrName } = useParams<{ idOrName: string }>();
+    if (!profile && name === "") {
+      profile = profiles[idOrName];
+    }
+
+    return profile;
+  }, [])
+
   const fetchedData: any = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);
 
   useEffect(() => {
@@ -171,18 +177,10 @@ const Profile: React.FC = () => {
     }
   }, []);
 
-  const [modalOpen, setModalOpen] = React.useState(false);
-  const handleModalOpen = () => setModalOpen(true);
-  const handleModalClose = () => setModalOpen(false);
-  const [tabValue, setTabValue] = React.useState('one');
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
   };
-  
-
-  const navigate = useNavigate();
-  const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
 
   useEffect(() => {
     if (idOrName) {
@@ -197,7 +195,7 @@ const Profile: React.FC = () => {
       setProfileData(fetchedProfileData);
 
       const slug = generateSlug(fetchedProfileData);
-      if(slug == ''){
+      if (slug == '') {
         navigate(`/profile/${idOrName}`);
         return
       }
@@ -211,14 +209,25 @@ const Profile: React.FC = () => {
   }
 
   const initialValues = {
-    tabValue: "one", //valores de ej
+    tabValue: "one",
     field1: "",
     field2: "",
     field3: "",
-    padecimientos: [""],
-    alergias: [""],
-    familiares: [""],
-    nombre: "",
+    tipo: "",
+    nombre: '',
+    apellido: '',
+    fecha_nacimiento: '',
+    documento_identidad: '',
+    sexo: '',
+    correo: '',
+    direccion: '',
+    telefono: '',
+    tipo_sangre: '',
+    padecimientos: [''],
+    alergias: [''],
+    familiares: [''],
+    metodo_pago: "Tarjeta de Debito",
+    datos_financieros: '',
   };
 
   const userType: string = profileData.tipo;
@@ -329,9 +338,10 @@ const Profile: React.FC = () => {
                   <Box sx={{ width: '100%', height: "100%" }}>
                     <Formik
                       initialValues={{ initialValues }}
+                      validationSchema={mergedPatientSchema}
                       onSubmit={() => console.log("adios")}
                     >
-                      {({ handleSubmit }) => (
+                      {({ handleSubmit, isValid }) => (
                         <Form onSubmit={handleSubmit}>
                           <Tabs
                             value={tabValue}
@@ -383,11 +393,54 @@ const Profile: React.FC = () => {
                           {/*ENVIAR INFORMACION*/}
                           <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
                             fullWidth
-
                             variant="contained"
                             type="submit"
+                            disabled={!isValid}
+                            onClick={() => {
+                              Swal.fire({
+                                title: '¿Estás seguro?',
+                                text: `Esta acción cambiara todos tus datos`,
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#52b69a',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Aplicar cambios',
+                                cancelButtonText: 'Cancelar',
+                                customClass: {
+                                  container: profileStyle.sweetAlertContainer,
+                                },
+                                allowOutsideClick: () => !Swal.isLoading(),
+                                allowEscapeKey: () => !Swal.isLoading(),
+                                allowEnterKey: () => !Swal.isLoading(),
+                                stopKeydownPropagation: false,
+
+                              }).then((result) => {
+                                if (result.isConfirmed && isValid) {
+                                  //mandame la funcion aqui >:V
+                                  handleModalClose()
+                                  Swal.fire({
+                                    title: 'Aplicado con exito',
+                                    text: 'Todos los datos han sido editados.',
+                                    icon: 'success',
+                                    customClass: {
+                                      container: profileStyle.sweetAlertContainer,
+                                    }
+                                  });
+                                }
+                                else if (!isValid) {
+                                  Swal.fire({
+                                    title: 'No se aplicaron cambios',
+                                    text: 'Hay datos invalidados dentro del formulario',
+                                    icon: 'warning',
+                                    customClass: {
+                                      container: profileStyle.sweetAlertContainer,
+                                    }
+                                  });
+                                }
+                              })
+                            }}
                           >
-                            Miami me lo confirmo
+                            Aplicar cambios
                           </Button>
                         </Form>
                       )}

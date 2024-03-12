@@ -22,14 +22,6 @@ const ContactProfileForm: React.FC<IContactProfileForm> = ({profileValues}) => {
             </Box>
             <Box>
                 <ProfileControl
-                    value={profileValues["correo"]}
-                    control="input"
-                    label="Correo"
-                    name="correo"
-                    placeholder="Escriba su correo" />
-            </Box>
-            <Box>
-                <ProfileControl
                     value={profileValues["direccion"]}
                     control="input"
                     label="Direccion"

@@ -8,7 +8,8 @@ import ProfileMultiInput from "./ProfileMultiInput";
 
 //Interfaces utiles para ayudar a que las propiedades se lean como sus respectivas propiedades de Select, input...
 interface IProfileTexfieldfControl extends Omit<TextFieldProps, 'variant'> { 
-    Values?:[]
+    Values?:[],
+    initialValue?:string
 }
 interface IProfileControl extends Omit<SelectProps | TextFieldProps, 'variant'> {
     control: string,
@@ -16,7 +17,8 @@ interface IProfileControl extends Omit<SelectProps | TextFieldProps, 'variant'> 
         key: string;
         value: string;
     }[],
-    Values?: any[]
+    Values?: any[],
+    initialValue?:string
 }
 interface IProfileSelectfControl extends Omit<SelectProps, 'variant'> {
     selectObject?: {

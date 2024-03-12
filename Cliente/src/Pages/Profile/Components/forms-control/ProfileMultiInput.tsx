@@ -1,18 +1,18 @@
-import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import useTheme from '@mui/material/styles/useTheme';
+//import useTheme from '@mui/material/styles/useTheme';
 import { Field, FieldProps, ErrorMessage, FieldArray } from 'formik';
 import TextField, { TextFieldProps } from '@mui/material/TextField/TextField';
 import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
 import Box from '@mui/material/Box/Box';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+//import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import Accordion from '@mui/material/Accordion/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import profileStyle from "../../style/profileStyle.module.css"
-import useDataRegisterStore, { getAllRegisterData } from '../../../Register/ZustandRegisterManagement';
+import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -41,8 +41,8 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
         setProcessedValues(true);
     }, [processedValues]);
 
-    const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+    //const theme = useTheme();
+    //const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     const handleRemoveItem = useCallback((index: number, remove: any) => {
         Swal.fire({

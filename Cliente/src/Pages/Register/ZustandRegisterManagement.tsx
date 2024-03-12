@@ -45,7 +45,10 @@ const useDataRegisterStore = create<RegisterSchemaValues & RegisterSchemaActions
     producto_id: 0,
     usuario_id: 0,
     descripcion: "",
+    tipo_sangre:'',
     padecimientos:[],
+    alergias:[],
+    familiares:[],
     setRegisterData: (name, value, index?) => {
         try {
             const validatedName = name as keyof RegisterSchemaValues;

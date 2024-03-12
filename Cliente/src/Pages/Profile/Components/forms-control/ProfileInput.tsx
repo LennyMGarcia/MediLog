@@ -12,10 +12,11 @@ import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
     name?: string,
-    placeHolder?:string
+    placeHolder?:string,
+    initialValue?:string,
 }
 
-const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ...rest }) => {
+const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, initialValue = "", ...rest }) => {
     const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = (e: ChangeEvent<any>) => {
@@ -38,7 +39,7 @@ const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ...
                         variant="outlined"
                         color="primary"
                         fullWidth
-                        
+                        defaultValue={initialValue}
                         value={field.value || ""}
                         onChange={(e) => {
                             field.onChange(e);

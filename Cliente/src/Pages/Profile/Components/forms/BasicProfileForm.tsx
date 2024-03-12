@@ -9,12 +9,12 @@ interface IBasicInformationForm {
     profileValues:Record<string, any>;
 }
 
-const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente", profileValues }) => {
+const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", profileValues }) => {
     return (
         <>
             <BoxRowWrapper  >
                 <ProfileControl
-                    value={profileValues["nombre"]}
+                    initialValue={profileValues["nombre"]}
                     control="input"
                     label="Nombre"
                     name="nombre"
@@ -31,7 +31,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente", 
 
             <Box>
                 <ProfileControl
-                    value={profileValues["sexo"]}
+                    defaultValue={profileValues["sexo"]}
                     control="select"
                     label="Sexo"
                     name="sexo"
@@ -62,8 +62,9 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "paciente", 
                     />
 
                     <ProfileControl
+                        value={profileValues["tipo_sangre"]}
                         control="select"
-                        label="Tipo de sangre" //select
+                        label="Tipo de sangre" 
                         name="tipo_sangre"
                         selectObject={[
                             { key: "A+", value: "A+" },
