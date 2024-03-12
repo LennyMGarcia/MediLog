@@ -29,7 +29,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
 
             <Box>
                 <ProfileControl
-                    
+                    initialValue={profileValues["metodo_pago"]}
                     control="select"
                     label="Metodo de pago"
                     name="metodo_pago"
@@ -49,7 +49,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
                 />
 
                 <ProfileControl
-                initialValue={profileValues["cvv"]}
+                    initialValue={profileValues["cvv"]}
                     control="input"
                     label="CVV"
                     name="cvv"
@@ -59,6 +59,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
 
             <Box>
                 <ProfileControl
+                    initialDateValue={profileValues["fecha_nacimiento"]}
                     control="date"
                     label="Fecha de expiracion"
                     name="fecha_expiracion" />

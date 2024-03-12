@@ -1,5 +1,5 @@
 
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import useTheme from '@mui/material/styles/useTheme';
 import { Field, FieldProps, ErrorMessage } from 'formik';
@@ -19,9 +19,12 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
 const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, initialValue = "", ...rest }) => {
     const { setRegisterData } = useDataRegisterStore();
 
+    const [value, setValue] = useState<string>(initialValue);
+
     const handleChange = (e: ChangeEvent<any>) => {
-        const value = e.target.value.trim();
-        setRegisterData(name, value);
+        const newValue = e.target.value.trim();
+        setValue(newValue);
+        setRegisterData(name, newValue);
     };
 
     const theme = useTheme();
@@ -39,8 +42,8 @@ const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ini
                         variant="outlined"
                         color="primary"
                         fullWidth
-                        defaultValue={initialValue}
-                        value={field.value}
+         
+                        value={value}
                         onChange={(e) => {
                             field.onChange(e);
                             handleChange(e);

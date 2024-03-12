@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select/Select';
 import { Field, FieldProps, ErrorMessage  } from 'formik';
 import MenuItem from '@mui/material/MenuItem/MenuItem';
@@ -11,16 +11,17 @@ import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 interface ISelect extends Omit<SelectProps, "variant"> {
     label?: React.ReactNode,
     name?: string,
-
+    initialValue?:string,
     selectObject?: {
         key: string | number,
         value: string | number
     }[]
 }
 
-const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, ...rest }) => {
+const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, initialValue="", ...rest }) => {
 
     const { setRegisterData, getRegisterData } = useDataRegisterStore();
+    const [value, setValue] = useState<string>(initialValue);
 
     useEffect(() => {
         const state = getRegisterData(name);
@@ -31,6 +32,7 @@ const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, 
 
     const handleChange = (e: SelectChangeEvent<any>) => {
         const newValue = e.target.value;
+        setValue(newValue);
         setRegisterData(name, newValue);
     };
 
@@ -50,7 +52,7 @@ const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, 
                             variant="outlined"
                             fullWidth
                             displayEmpty
-                            value={/*getRegisterData(name) ||*/ ''}
+                            value={value}
                             onChange={(e) => {
                                 field.onChange(e);
                                 handleChange(e);

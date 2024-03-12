@@ -16,9 +16,10 @@ import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 interface DateProps  {
     label?: React.ReactNode,
     name?: string,
+    initialDateValue?: Dayjs | null,
 }
 
-const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) => {
+const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", initialDateValue, ...rest }) => {
     const { setRegisterData } = useDataRegisterStore();
     const formik = useFormikContext<any>();
     const [value, setValue] = React.useState<Dayjs | null>(null);
@@ -51,6 +52,7 @@ const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", ...rest }) =>
                         disableFuture
                         color="primary"
                         fullWidth
+                        defaultValue={initialDateValue}
                         value={value}
                         onChange={(date) => handleChange(date)}
                         {...rest}

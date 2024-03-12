@@ -31,7 +31,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
 
             <Box>
                 <ProfileControl
-                    defaultValue={profileValues["sexo"]}
+                    initialValue={profileValues["sexo"]}
                     control="select"
                     label="Sexo"
                     name="sexo"
@@ -45,7 +45,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
 
             <Box>
                 <ProfileControl
-                    
+                    initialDateValue={profileValues["fecha_nacimiento"]}
                     control="date"
                     label="Fecha de nacimiento"
                     name="fecha_nacimiento" />
@@ -62,7 +62,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
                     />
 
                     <ProfileControl
-                        value={profileValues["tipo_sangre"]}
+                        initialValue={profileValues["tipo_sangre"]}
                         control="select"
                         label="Tipo de sangre" 
                         name="tipo_sangre"

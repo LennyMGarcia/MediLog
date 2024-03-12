@@ -5,6 +5,7 @@ import ProfileDateInput from "./ProfileDateInput";
 import { SelectProps } from "@mui/material/Select/Select";
 import { TextFieldProps } from "@mui/material/TextField/TextField";
 import ProfileMultiInput from "./ProfileMultiInput";
+import { Dayjs } from "dayjs";
 
 //Interfaces utiles para ayudar a que las propiedades se lean como sus respectivas propiedades de Select, input...
 interface IProfileTexfieldfControl extends Omit<TextFieldProps, 'variant'> { 
@@ -18,7 +19,8 @@ interface IProfileControl extends Omit<SelectProps | TextFieldProps, 'variant'> 
         value: string;
     }[],
     Values?: any[],
-    initialValue?:string
+    initialValue?:string,
+    initialDateValue?:Dayjs | null,
 }
 interface IProfileSelectfControl extends Omit<SelectProps, 'variant'> {
     selectObject?: {

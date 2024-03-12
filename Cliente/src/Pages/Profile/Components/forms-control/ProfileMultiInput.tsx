@@ -104,12 +104,12 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                                     <React.Fragment>
                                                         <TextField
                                                             id={value || ''}
-                                                            name={`${name}[${index}]`} // Asegúrate de proporcionar un name único
+                                                            name={`${name}[${index}]`} 
                                                             placeholder={placeHolder || ""}
                                                             variant="outlined"
                                                             color="primary"
                                                             fullWidth
-                                                            value={field.value || ''} // Asegúrate de que el valor nunca sea null
+                                                            value={field.value || ''} 
                                                             onChange={(e) => {
                                                                 field.onChange(e);  
                                                                 handleChange(e, index);
