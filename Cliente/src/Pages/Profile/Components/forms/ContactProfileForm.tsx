@@ -13,7 +13,7 @@ const ContactProfileForm: React.FC<IContactProfileForm> = ({profileValues}) => {
 
             <Box>
                 <ProfileControl
-                    value={profileValues["telefono"]}
+                    initialValue={profileValues["telefono"]}
                     control="input"
                     label="Telefono"
                     name="telefono"
@@ -22,7 +22,7 @@ const ContactProfileForm: React.FC<IContactProfileForm> = ({profileValues}) => {
             </Box>
             <Box>
                 <ProfileControl
-                    value={profileValues["direccion"]}
+                    initialValue={profileValues["direccion"]}
                     control="input"
                     label="Direccion"
                     name="direccion"

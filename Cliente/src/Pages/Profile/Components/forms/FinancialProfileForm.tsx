@@ -12,14 +12,14 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
         <>
             <BoxRowWrapper>
                 <ProfileControl
-                    value={profileValues["monto"]}
+                    initialValue={profileValues["monto"]}
                     control="input"
                     label="Monto"
                     name="monto"
                     disabled
                 />
                 <ProfileControl
-                    value={profileValues["categoria"]}
+                    initialValue={profileValues["categoria"]}
                     control="input"
                     label="Categoria"
                     name="categoria"
@@ -41,7 +41,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
             </Box>
             <BoxRowWrapper>
                 <ProfileControl
-                    value={profileValues["datos_financieros"]}
+                    initialValue={profileValues["datos_financieros"]}
                     control="input"
                     label="Tarjeta de credito "
                     name="datos_financieros"
@@ -49,7 +49,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
                 />
 
                 <ProfileControl
-                value={profileValues["cvv"]}
+                initialValue={profileValues["cvv"]}
                     control="input"
                     label="CVV"
                     name="cvv"
@@ -65,7 +65,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
             </Box>
             <Box>
                 <ProfileControl
-                    value={profileValues["descripcion"]}
+                    initialValue={profileValues["descripcion"]}
                     control="input"
                     label="Descripcion"
                     name="descripcion"

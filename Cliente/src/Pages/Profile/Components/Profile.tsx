@@ -57,25 +57,59 @@ interface IPatientProfileData {
   telefono: any | null,
   tipo_sangre: any | null,
   padecimientos: any | any[] | null,
-  alergias: string[],
-  familiares: string[],
-  metodo_pago: string,
+  alergias: any | any[] | null,
+  familiares: any | any[] | null,
+  metodo_pago: any | null,
   datos_financieros: any | null,
 }
 
+const patientProfileDataObject:IPatientProfileData = {
+  tipo: '',
+  nombre: null,
+  apellido: null,
+  fecha_nacimiento: null,
+  documento_identidad: null,
+  sexo: null,
+  correo: null,
+  direccion: null,
+  telefono: null,
+  tipo_sangre: null,
+  padecimientos: null,
+  alergias: [],
+  familiares: [],
+  metodo_pago: '',
+  datos_financieros: null,
+};
+
 interface ISpecialistProfileData {
-  tipo: string,
-  nombre: string,
-  apellido: string,
-  fecha_nacimiento: string,
-  sexo: string,
-  correo: string,
-  direccion: string,
-  telefono: string,
-  especialidad: string,
-  metodo_pago: string,
-  datos_financieros: string,
+  tipo: any | null,
+  nombre: any | null,
+  apellido: any | null,
+  fecha_nacimiento: any | null,
+  sexo: any | null,
+  correo: any | null,
+  direccion: any | null,
+  telefono: any | null,
+  especialidad: any | null,
+  metodo_pago: any | null,
+  datos_financieros: any | null,
 }
+
+const specialistProfileDataObject:ISpecialistProfileData = {
+  tipo: null,
+  nombre: null,
+  apellido: null,
+  fecha_nacimiento: null,
+  sexo: null,
+  correo: null,
+  direccion: null,
+  telefono: null,
+  especialidad: null,
+  metodo_pago: null,
+  datos_financieros: null,
+}
+
+
 
 const Profile: React.FC = () => {
 
@@ -90,7 +124,66 @@ const Profile: React.FC = () => {
   const handleModalClose = () => setModalOpen(false);
   const [tabValue, setTabValue] = useState('one');
 
-  const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData> = {
+  function mapDataToProfileObject(data: any): Record<string, IPatientProfileData | ISpecialistProfileData | undefined > | undefined  {
+    const patientKeys = Object.keys(patientProfileDataObject);
+    const specialistKeys = Object.keys(specialistProfileDataObject);
+
+    const isPatient = patientKeys.every(key => Object.keys(data).includes(key));
+    const isSpecialist = specialistKeys.every(key => Object.keys(data).includes(key));
+
+    if (!isPatient && !isSpecialist) {
+        console.log("El objeto proporcionado no coincide con ninguna estructura conocida.");
+        return undefined;
+    }
+
+    const mappedObject: IPatientProfileData | ISpecialistProfileData | any = {} as IPatientProfileData | ISpecialistProfileData;
+
+    Object.entries(data).forEach(([key, value]) => {
+        mappedObject[key] = value;
+    });
+
+    if (isPatient) {
+        mappedObject.tipo = "Paciente";
+    } else if (isSpecialist) {
+        mappedObject.tipo = "Especialista";
+    }
+
+    const id = data.id;
+    if (!id) {
+        console.log("No se encontró un ID en el objeto proporcionado.");
+        return undefined;
+    }
+
+    const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData> = {};
+    profilesObject[id] = mappedObject;
+
+    return profilesObject;
+}
+
+
+const patientData = {
+  id:"1",
+  tipo: "Paciente",
+  nombre: "lenny",
+  apellido: getRegisterData("apellido"),
+  fecha_nacimiento: getRegisterData("fecha_nacimiento"),
+  documento_identidad: getRegisterData("documento_identidad"),
+  sexo: getRegisterData("sexo"),
+  correo: getRegisterData("correo"),
+  direccion: getRegisterData("direccion"),
+  telefono: getRegisterData("telefono"),
+  tipo_sangre: 'O+',
+  padecimientos: getRegisterData("padecimientos"),
+  alergias: ["mujeres", "cafe", "Mi prima"],
+  familiares: ["BenJunior", "maikol", "jose Jimenez"],
+  metodo_pago: "Tarjeta de Debito",
+  datos_financieros: getRegisterData("datos_financieros"),
+};
+
+const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined > | undefined = mapDataToProfileObject(patientData);
+console.log(profilesObject);
+
+  /*const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData> = {
     '1': {
       tipo: "Paciente",
       nombre: "lenny",
@@ -107,22 +200,12 @@ const Profile: React.FC = () => {
       familiares: ["BenJunior", "maikol", "jose Jimenez"],
       metodo_pago: "Tarjeta de Debito",
       datos_financieros: getRegisterData("datos_financieros"),
-
+      //pasarlo como se veria en la base de datos, se complicaria hacer un algoritmo, buscar datos del mock, o hacer esa estructura con los datos del mock, un mapper para que se vea asi
     },
-    '3': {
-      tipo: "Especialista",
-      nombre: "Ben",
-      apellido: "Junior",
-      fecha_nacimiento: "11-11-2011",
-      sexo: "m",
-      correo: "ben@gmail.com",
-      direccion: "la casa de Julio",
-      telefono: "8295455555",
-      especialidad: "Ginecologo",
-      metodo_pago: "Tarjeta de Credito",
-      datos_financieros: "1234567891111111",
-    },
+    
   };
+
+ console.log(profilesObject)*/
 
   const generateSlug = useCallback((profileData: IPatientProfileData | ISpecialistProfileData) => {
     const { nombre, apellido } = profileData;
@@ -130,7 +213,12 @@ const Profile: React.FC = () => {
     return slug;
   }, [])
 
-  function getIdFromName(name: string, profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>): string | undefined {
+  function getIdFromName(name: string, profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined> | undefined): string | undefined {
+
+    if(profiles == undefined){
+      return undefined
+    }
+
     for (const [id, profile] of Object.entries(profiles)) {
       if (profile && profile.nombre === name) {
         return id;
@@ -141,9 +229,13 @@ const Profile: React.FC = () => {
 
   const getFakeProfileData = useCallback((
     idOrNameObj: { idOrName: string; name: string },
-    profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined>
+    profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined> | undefined
   ): IPatientProfileData | ISpecialistProfileData | undefined => {
     const { idOrName, name } = idOrNameObj;
+
+    if(profiles == undefined){
+      return undefined
+    }
 
     if (!idOrName) {
       return undefined;
@@ -248,24 +340,24 @@ const Profile: React.FC = () => {
             <AccordionDetails>
               {userType == "Paciente" ?
                 <ProfileList dataList={[
-                  { name: "Nombre", data: profilesObject[id as keyof typeof profilesObject]?.nombre || '' },
-                  { name: "Apellido", data: profilesObject[id as keyof typeof profilesObject]?.apellido || '', },
-                  { name: "Fecha de nacimiento", data: profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
-                  { name: "Documento de indentidad", data: (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad, },
-                  { name: "Sexo", data: profilesObject[id as keyof typeof profilesObject]?.sexo, },
-                  { name: "Correo", data: profilesObject[id as keyof typeof profilesObject]?.correo, },
-                  { name: "Tipo de sangre", data: (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).tipo_sangre, },
-                  { name: "Padecimiento", data: <ListFormater formatData={(profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).padecimientos} /> },
-                  { name: "Alergias", data: <ListFormater formatData={(profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).alergias} /> },
-                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).familiares} /> },
+                  { name: "Nombre", data:  profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre || '' },
+                  { name: "Apellido", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.apellido || '', },
+                  { name: "Fecha de nacimiento", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
+                  { name: "Documento de indentidad", data: profilesObject &&  (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad, },
+                  { name: "Sexo", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.sexo, },
+                  { name: "Correo", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.correo, },
+                  { name: "Tipo de sangre", data: profilesObject &&  (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).tipo_sangre, },
+                  { name: "Padecimiento", data: <ListFormater formatData={profilesObject &&  (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).padecimientos} /> },
+                  { name: "Alergias", data: <ListFormater formatData={profilesObject &&  (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).alergias} /> },
+                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={profilesObject &&  (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).familiares} /> },
                 ]} />
                 :
                 <ProfileList dataList={[
-                  { name: "Nombre", data: profilesObject[id as keyof typeof profilesObject]?.nombre, },
-                  { name: "Apellido", data: profilesObject[id as keyof typeof profilesObject]?.apellido, },
-                  { name: "Fecha de nacimiento", data: profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
-                  { name: "Sexo", data: profilesObject[id as keyof typeof profilesObject]?.sexo, },
-                  { name: "Especialidad", data: (profilesObject[id as keyof typeof profilesObject] as ISpecialistProfileData).especialidad },
+                  { name: "Nombre", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.nombre, },
+                  { name: "Apellido", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.apellido, },
+                  { name: "Fecha de nacimiento", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
+                  { name: "Sexo", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.sexo, },
+                  { name: "Especialidad", data: profilesObject &&  (profilesObject[id as keyof typeof profilesObject] as ISpecialistProfileData).especialidad },
                 ]} />
               }
             </AccordionDetails>
@@ -280,9 +372,9 @@ const Profile: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <ProfileList dataList={[
-                { name: "Correo", data: profilesObject[id as keyof typeof profilesObject]?.correo, },
-                { name: "Direccion", data: profilesObject[id as keyof typeof profilesObject]?.direccion, },
-                { name: "Telefono", data: profilesObject[id as keyof typeof profilesObject]?.telefono, },
+                { name: "Correo", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.correo, },
+                { name: "Direccion", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.direccion, },
+                { name: "Telefono", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.telefono, },
               ]} />
             </AccordionDetails>
           </Accordion>
@@ -296,8 +388,8 @@ const Profile: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <ProfileList dataList={[
-                { name: "Metodo de pago", data: profilesObject[id as keyof typeof profilesObject]?.metodo_pago, },
-                { name: "Codigo de tarjeta", data: profilesObject[id as keyof typeof profilesObject]?.datos_financieros, },
+                { name: "Metodo de pago", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.metodo_pago, },
+                { name: "Codigo de tarjeta", data: profilesObject &&  profilesObject[id as keyof typeof profilesObject]?.datos_financieros, },
               ]} />
             </AccordionDetails>
           </Accordion>
@@ -378,15 +470,15 @@ const Profile: React.FC = () => {
                             },
                           }}>
                             <Box hidden={tabValue !== "one"}>
-                              <BasicProfileForm type={userType} profileValues={profilesObject[id as keyof typeof profilesObject] || {}} />
+                              <BasicProfileForm type={userType} profileValues={profilesObject &&  profilesObject[id as keyof typeof profilesObject] || {}} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "two"}>
-                              <ContactProfileForm profileValues={profilesObject[id as keyof typeof profilesObject] || {}} />
+                              <ContactProfileForm profileValues={profilesObject && profilesObject[id as keyof typeof profilesObject] || {}} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "three"}>
-                              <FinancialProfileForm profileValues={profilesObject[id as keyof typeof profilesObject] || {}} />
+                              <FinancialProfileForm profileValues={profilesObject && profilesObject[id as keyof typeof profilesObject] || {}} />
                             </Box>
 
                           </Box>

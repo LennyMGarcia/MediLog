@@ -40,7 +40,7 @@ const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ini
                         color="primary"
                         fullWidth
                         defaultValue={initialValue}
-                        value={field.value || ""}
+                        value={field.value}
                         onChange={(e) => {
                             field.onChange(e);
                             handleChange(e);

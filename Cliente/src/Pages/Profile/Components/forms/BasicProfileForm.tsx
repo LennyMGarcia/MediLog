@@ -21,7 +21,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
                     placeholder=" Escriba su nombre"
                 />
                 <ProfileControl
-                    value={profileValues["apellido"]}
+                    initialValue={profileValues["apellido"]}
                     control="input"
                     label="Apellido"
                     name="apellido"
@@ -54,7 +54,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
             {type == "Paciente" ?
                 <Box>
                     <ProfileControl
-                        value={profileValues["documento_identidad"]}
+                        initialValue={profileValues["documento_identidad"]}
                         control="input"
                         label="Cedula"
                         name="documento_identidad"
@@ -107,7 +107,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
                 : type == "Especialista" ?
                     <Box>
                         <ProfileControl
-                            value={profileValues["especialidad"]}
+                            initialValue={profileValues["especialidad"]}
                             control="input"
                             label="Especialidad"
                             name="especialidad"
