@@ -191,12 +191,12 @@ const Profile: React.FC = () => {
     correo: "Lenny@gmail.com",
     direccion: "Manzan 9",
     telefono: "18096572014",
-    tipo_sangre: 'O+',
+    tipo_sangre: 'A+',
     padecimientos: ["Migrana", "Espamos involuntarios", "Apne"],
     alergias: ["Polen", "Agua", "Flores"],
     familiares: ["BenJunior", "maikol", "jose Jimenez"],
     metodo_pago: "Tarjeta de debito",
-    datos_financieros: "123456789123456",
+    datos_financieros: "1234567891234567",
     cvv: "1234",
     fecha_expiracion: "01-01-2014",
     descripcion: "Buen producto",
@@ -224,8 +224,8 @@ const Profile: React.FC = () => {
     precio: 5000,
   }
   
-
-  const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(specialistData);
+  //cambia a uno de los dos objetos para probar
+  const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(patientData);
   console.log(profilesObject);
 
   const generateSlug = useCallback((profileData: IPatientProfileData | ISpecialistProfileData) => {

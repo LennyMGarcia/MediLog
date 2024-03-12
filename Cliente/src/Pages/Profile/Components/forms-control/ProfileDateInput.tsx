@@ -33,6 +33,10 @@ const ProfileDateInput: React.FC<DateProps> = ({ label, name = "", initialDateVa
         }
     }, [formik.values[name]]);
 
+    useEffect(() => {
+        setRegisterData(name, dayjs(initialDate).toDate());
+    }, []);
+
     const handleChange = (date: Dayjs | null) => {
         setValue(date);
         formik.setFieldValue(name, date ? date.format('YYYY-MM-DD') : null); //establecer el valor en el formulario

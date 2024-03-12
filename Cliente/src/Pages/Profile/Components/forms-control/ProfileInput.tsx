@@ -1,5 +1,5 @@
 
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 import useTheme from '@mui/material/styles/useTheme';
 import { Field, FieldProps, ErrorMessage } from 'formik';
@@ -27,6 +27,10 @@ const ProfileInput: React.FC<InputProps> = ({ label, name = "", placeHolder, ini
         setValue(newValue);
         setRegisterData(name, newValueFormatted || initialValue); //sin cambio se envia el e.target value, comprobar ese caso
     };
+
+    useEffect(() => {
+        setRegisterData(name, initialValue);
+    }, []);
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));

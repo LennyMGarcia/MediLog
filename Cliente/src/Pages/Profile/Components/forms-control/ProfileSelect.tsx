@@ -31,11 +31,17 @@ const ProfileSelect: React.FC<ISelect> = ({ label, name = "name", selectObject, 
         }
     }, [name, setRegisterData]);
 
+    useEffect(() => {
+        setRegisterData(name, initialValue);
+    }, []);
+
     const handleChange = (e: SelectChangeEvent<any>) => {
         const newValue = e.target.value;
         setValue(newValue);
         setRegisterData(name, newValue || initialValue);
     };
+
+    
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));

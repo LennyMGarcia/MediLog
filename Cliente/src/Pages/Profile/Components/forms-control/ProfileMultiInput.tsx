@@ -40,6 +40,14 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
         }
         setProcessedValues(true);
     }, [processedValues]);
+    
+    useEffect(() => {
+        if (Values && Values.length) {
+            Values.forEach((value, index) => {
+               setRegisterData(name, value, index);
+            });
+        }
+    }, []);
 
     //const theme = useTheme();
     //const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
