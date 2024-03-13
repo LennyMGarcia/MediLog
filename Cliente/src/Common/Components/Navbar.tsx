@@ -1,8 +1,16 @@
 import { Button, Grid, Link, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router";
 import useModalLogin from "../Modals/useModalLogin";
+import useUserStore from "../Utils/setUserSession";
 
 export default function Navbar() {
+  const { authenticated } = useUserStore();
+  const { logoutUser } = useUserStore();
+
+  //Funccion que desloguea a un usuario
+  const logout = () => {
+    logoutUser();
+  }
   const navbarLinks = [
     {
       name: "Planes",
@@ -132,8 +140,7 @@ export default function Navbar() {
               })}
             </Grid>
           )}
-
-          <Grid
+          {!authenticated() ? <Grid
             item
             xs={12}
             sm={12}
@@ -171,7 +178,35 @@ export default function Navbar() {
             >
               Registrarte
             </Button>
-          </Grid>
+          </Grid> : <Grid
+            item
+            xs={12}
+            sm={12}
+            md={4}
+            display={"flex"}
+            gap={"10px"}
+            alignItems={"center"}
+            justifyContent={"flex-end"}
+            sx={{
+              justifyContent: {
+                xs: "center",
+                sm: "center",
+                md: "flex-end",
+              },
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#168AAD",
+              }}
+              onClick={() => logout()}
+            >
+              Desconectar
+            </Button>
+          </Grid>}
+
+
         </Grid>
       </Grid>
       <ModalLogin />

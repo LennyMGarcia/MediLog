@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AccordionNormal from "./Components/Accordion";
 import useModalLogin from "../../Common/Modals/useModalLogin";
 import IconAndLabel from "/assets/Pictures/IconAndLabelFix.png";
+import useUserStore from "../../Common/Utils/setUserSession";
 
 export default function LandingPage() {
   // const founder = [
@@ -172,6 +173,7 @@ export default function LandingPage() {
       expand: false,
     },
   ];
+  const { authenticated } = useUserStore();
 
   const navigate = useNavigate();
   const { ModalLogin, handleOpenModal } = useModalLogin();
@@ -245,10 +247,10 @@ export default function LandingPage() {
               // spacing={1}
               gap="20px"
               textAlign={"center"}
-              // padding={"10px"}
+            // padding={"10px"}
             >
               {/* <Grid item xs={3} justifyContent={"flex-end"}> */}
-              <Button
+              {!authenticated() && <Button
                 variant={"contained"}
                 sx={{
                   textTransform: "capitalize",
@@ -260,7 +262,7 @@ export default function LandingPage() {
                 }}
               >
                 Iniciar Sesion
-              </Button>
+              </Button>}
               {/* </Grid> */}
 
               {/* <Grid item xs={5} textAlign={"center"}> */}
@@ -340,8 +342,8 @@ export default function LandingPage() {
             justifyContent={"space-around"}
             direction={"row"}
             gap={2}
-            // rowGap={5}
-            // columnGap={1}
+          // rowGap={5}
+          // columnGap={1}
           >
             {planes.map((plan, idx) => {
               return (
@@ -484,7 +486,7 @@ export default function LandingPage() {
                     flexDirection={"column"}
                     alignItems={"center"}
                     gap={"20px"}
-                    // border={"1px solid #15143966"}
+                  // border={"1px solid #15143966"}
                   >
                     {/* <Grid item xs={12}> */}
                     <Avatar
@@ -790,10 +792,10 @@ export default function LandingPage() {
               item
               container
               xs={12}
-              // height="450"
-              // display={"flex"}
-              // flexDirection={"column"}
-              // justifyContent={"space-around"}
+            // height="450"
+            // display={"flex"}
+            // flexDirection={"column"}
+            // justifyContent={"space-around"}
             >
               <Grid item xs={12} md={6} textAlign={"center"} height={"auto"}>
                 <img

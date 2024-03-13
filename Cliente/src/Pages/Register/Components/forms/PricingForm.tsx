@@ -21,6 +21,7 @@ import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 const tiers = [
   [
     {
+      id: 1,
       title: "Basico",
       price: 0,
       description: [
@@ -29,6 +30,7 @@ const tiers = [
       buttonText: "SELECCIONAR",
     },
     {
+      id: 2,
       title: "Familiar",
       subheader: "Mas popular",
       position: "middle",
@@ -41,6 +43,7 @@ const tiers = [
       buttonText: "SELECCIONAR",
     },
     {
+      id: 3,
       title: "Paciente",
       price: 600,
       description: [
@@ -54,6 +57,7 @@ const tiers = [
 
   [
     {
+      id: 4,
       title: "Independiente",
       price: 3000,
       description: [
@@ -63,6 +67,7 @@ const tiers = [
       buttonText: "SELECCIONAR",
     },
     {
+      id: 5,
       title: "Hospitales",
       subheader: "Mas popular",
       position: "middle",
@@ -75,6 +80,7 @@ const tiers = [
       buttonText: "SELECCIONAR",
     },
     {
+      id: 6,
       title: "Especialista",
       price: 5000,
       description: [
@@ -111,11 +117,11 @@ export default function PricingForm() {
   }, [selectedPlan, setSelectedPlan, getRegisterData]);
 
   const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
     <React.Fragment>
-      <Box sx={{ textAlign: "center", mb:"0.5rem"}}><Typography variant={"h5"}>Selección de Planes</Typography></Box>
+      <Box sx={{ textAlign: "center", mb: "0.5rem" }}><Typography variant={"h5"}>Selección de Planes</Typography></Box>
       <Field
         id={pricing}
         name={pricing}
@@ -131,7 +137,7 @@ export default function PricingForm() {
                   sm={6}
                   md={4}
                 >
-                  <Box sx={{paddingLeft:isMediumScreen ? "0.8rem" : "2.5rem"}}>
+                  <Box sx={{ paddingLeft: isMediumScreen ? "0.8rem" : "2.5rem" }}>
                     <Card sx={{
                       backgroundColor: tier.position === "middle" ? "#52b69a" : "white",
                       boxShadow: tier.position === 'middle' ? "4px 4px" : 3,
@@ -190,6 +196,7 @@ export default function PricingForm() {
                             console.log("Price clicked:", tier.price);
                             formik.setFieldValue(pricing, tier.title);
 
+                            setRegisterData("plan", tier.id);
                             setRegisterData("precio", tier.price);
                             setRegisterData("monto", tier.price);
                             setRegisterData("categoria", tier.title);
