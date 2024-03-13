@@ -350,73 +350,7 @@ const Profile: React.FC = () => {
     <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
       <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem" }} variant="h5">Perfil</Typography>
       <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
-        <Grid item md={9} sx={{ marginLeft: "auto", marginRight: "auto" }}>
-
-          <Accordion defaultExpanded>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              id="Informacion_basica"
-            >
-              Informacion basica
-            </AccordionSummary>
-            <AccordionDetails>
-              {userType == "Paciente" ?
-                <ProfileList dataList={[
-                  { name: "Nombre", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre || '' },
-                  { name: "Apellido", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.apellido || '', },
-                  { name: "Fecha de nacimiento", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
-                  { name: "Documento de indentidad", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad, },
-                  { name: "Sexo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.sexo, },
-                  { name: "Correo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.correo, },
-                  { name: "Tipo de sangre", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).tipo_sangre, },
-                  { name: "Padecimiento", data: <ListFormater formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).padecimientos} /> },
-                  { name: "Alergias", data: <ListFormater formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).alergias} /> },
-                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).familiares} /> },
-                ]} />
-                :
-                <ProfileList dataList={[
-                  { name: "Nombre", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre, },
-                  { name: "Apellido", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.apellido, },
-                  { name: "Fecha de nacimiento", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
-                  { name: "Sexo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.sexo, },
-                  { name: "Especialidad", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as ISpecialistProfileData).especialidad },
-                ]} />
-              }
-            </AccordionDetails>
-          </Accordion>
-
-          <Accordion defaultExpanded>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              id="Informacion_contacto"
-            >
-              Informacion de contacto
-            </AccordionSummary>
-            <AccordionDetails>
-              <ProfileList dataList={[
-                { name: "Correo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.correo, },
-                { name: "Direccion", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.direccion, },
-                { name: "Telefono", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.telefono, },
-              ]} />
-            </AccordionDetails>
-          </Accordion>
-
-          <Accordion defaultExpanded>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              id="Informacion_financiera"
-            >
-              Informacion financiera
-            </AccordionSummary>
-            <AccordionDetails>
-              <ProfileList dataList={[
-                { name: "Metodo de pago", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.metodo_pago, },
-                { name: "Codigo de tarjeta", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.datos_financieros, },
-              ]} />
-            </AccordionDetails>
-          </Accordion>
-        </Grid>
-        <Grid item md={3}>
+      <Grid item md={3} xs={12}>
           <Box sx={{
             backgroundColor: "white",
             width: "15rem",
@@ -430,18 +364,26 @@ const Profile: React.FC = () => {
               justifyContent: "center",
               alignItems: "center"
             }}>
-              <Avatar sx={{ height: "10rem", width: "10rem" }} variant="square" />
+              <Avatar sx={{ 
+                height: "10rem", 
+                width: "10rem", 
+                backgroundColor:"#52b69a", 
+                fontSize:"5rem"
+                }} 
+                variant="square" >
+                  { profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre.charAt(0) || ''}
+              </Avatar>
             </Box>
           </Box>
           <Box sx={{
+            margin:"auto",
             marginTop: "1rem",
-            marginLeft: "-3rem",
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
           }}>
             {/*EDITAR*/}
-            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a" }}>Editar</Button>
+            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin:"auto", marginLeft:"1.7rem" }}>Editar</Button>
             <Modal
               keepMounted
               open={modalOpen}
@@ -565,6 +507,73 @@ const Profile: React.FC = () => {
             </Modal>
           </Box>
         </Grid>
+
+        <Grid item md={9} xs={12} sx={{ marginLeft: "auto", marginRight: "auto" }}>
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              id="Informacion_basica"
+            >
+              Informacion basica
+            </AccordionSummary>
+            <AccordionDetails>
+              {userType == "Paciente" ?
+                <ProfileList dataList={[
+                  { name: "Nombre", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre || '' },
+                  { name: "Apellido", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.apellido || '', },
+                  { name: "Fecha de nacimiento", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
+                  { name: "Documento de indentidad", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad, },
+                  { name: "Sexo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.sexo, },
+                  { name: "Correo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.correo, },
+                  { name: "Tipo de sangre", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).tipo_sangre, },
+                  { name: "Padecimiento", data: <ListFormater formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).padecimientos} /> },
+                  { name: "Alergias", data: <ListFormater formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).alergias} /> },
+                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).familiares} /> },
+                ]} />
+                :
+                <ProfileList dataList={[
+                  { name: "Nombre", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre, },
+                  { name: "Apellido", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.apellido, },
+                  { name: "Fecha de nacimiento", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
+                  { name: "Sexo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.sexo, },
+                  { name: "Especialidad", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as ISpecialistProfileData).especialidad },
+                ]} />
+              }
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              id="Informacion_contacto"
+            >
+              Informacion de contacto
+            </AccordionSummary>
+            <AccordionDetails>
+              <ProfileList dataList={[
+                { name: "Correo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.correo, },
+                { name: "Direccion", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.direccion, },
+                { name: "Telefono", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.telefono, },
+              ]} />
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              id="Informacion_financiera"
+            >
+              Informacion financiera
+            </AccordionSummary>
+            <AccordionDetails>
+              <ProfileList dataList={[
+                { name: "Metodo de pago", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.metodo_pago, },
+                { name: "Codigo de tarjeta", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.datos_financieros, },
+              ]} />
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
+      
       </Grid>
     </Box>
   );

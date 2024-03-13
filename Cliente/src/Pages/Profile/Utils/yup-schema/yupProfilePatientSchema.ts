@@ -15,7 +15,7 @@ const basicInfoSchema = Yup.object({
     .matches(/^[a-zA-Z0-9\s]*$/, 'El apellido no puede contener caracteres especiales')
     .max(35, "El apellido no debe superar los 35 caracteres")
     .notRequired().nonNullable(),
-    sexo: Yup.string().oneOf(['m', 'f']).required("requerido"),
+    sexo: Yup.string().oneOf(['m', 'f']).notRequired(),
     fecha_nacimiento: Yup.date()
     .nonNullable() 
     .transform((value, originalValue) => {
