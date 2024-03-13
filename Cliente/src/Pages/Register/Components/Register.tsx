@@ -156,7 +156,7 @@ const Register: React.FC = () => {
     ]);
 
     return (
-        <Box className={styles.box}>
+        <Box height={isMediumScreen ? "105vh" : "auto"} className={styles.box}>
             <Grid container >
                 {isMediumScreen && (
                     <Grid item xs={12} md={4}>

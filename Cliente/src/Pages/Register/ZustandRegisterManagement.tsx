@@ -17,7 +17,7 @@ const registerSchema = PatientSchema
 export type RegisterSchemaValues = z.infer<typeof registerSchema>;
 
 export type RegisterSchemaActions = {
-    setRegisterData: (name: string | Dayjs, value: RegisterSchemaValues[keyof RegisterSchemaValues]) => void; //simple clave y valor key[value]
+    setRegisterData: (name: string | Dayjs, value: RegisterSchemaValues[keyof RegisterSchemaValues], index?: number) => void; //simple clave y valor key[value]
     getRegisterData: (name: string | Dayjs) => RegisterSchemaValues[keyof RegisterSchemaValues];
 }
 
@@ -40,16 +40,38 @@ const useDataRegisterStore = create<RegisterSchemaValues & RegisterSchemaActions
     fecha_expiracion: null,
     cvv: '',
     precio:0,
-    categoria:"Basico",
+    categoria:"Basico" ,
     monto: 0,
     producto_id: 0,
     usuario_id: 0,
     descripcion: "",
-    setRegisterData: (name, value) => {
+    tipo_sangre:"",
+    padecimientos:[],
+    alergias:[],
+    familiares:[],
+    setRegisterData: (name, value, index?) => {
         try {
             const validatedName = name as keyof RegisterSchemaValues;
             const updatedData = { [validatedName]: value };
-            // validar solo el campo específico con zod antes de subirlo
+
+            if (index !== undefined) {
+                const currentArray = get()[validatedName] || []; 
+                if (Array.isArray(currentArray)) {
+                    const newArray: string[] = [...currentArray]; 
+                    if (typeof value === 'string') { 
+                        newArray[index] = value;
+                        updatedData[validatedName] = newArray;
+                    } else if (value === null) {
+                        newArray.splice(index, 1);
+                        updatedData[validatedName] = newArray;
+                    }
+                } 
+            } else {
+                if (typeof value === 'string') {
+                    updatedData[validatedName] = value;
+                }
+            }
+
             const validatedData = registerSchema.partial().parse(updatedData);
 
             set(validatedData);
