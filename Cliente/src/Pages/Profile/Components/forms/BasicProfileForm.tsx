@@ -6,7 +6,7 @@ import ProfileControl from "../forms-control/ProfileControl";
 
 interface IBasicInformationForm {
     type: string,
-    profileValues:Record<string, any>;
+    profileValues: Record<string, any>;
 }
 
 const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", profileValues }) => {
@@ -36,8 +36,8 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
                     label="Sexo"
                     name="sexo"
                     selectObject={[
-                        { key: "Hombre", value: "m" },
-                        { key: "Mujer", value: "f" },
+                        { key: "Hombre", value: "M" },
+                        { key: "Mujer", value: "F" },
 
                     ]}
                 />
@@ -64,7 +64,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
                     <ProfileControl
                         initialValue={profileValues["tipo_sangre"]}
                         control="select"
-                        label="Tipo de sangre" 
+                        label="Tipo de sangre"
                         name="tipo_sangre"
                         selectObject={[
                             { key: "A+", value: "A+" },
@@ -75,7 +75,7 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
                             { key: "O-", value: "O-" },
                             { key: "B-", value: "B-" },
                             { key: "AB-", value: "AB-" },
-    
+
                         ]}
                     />
 

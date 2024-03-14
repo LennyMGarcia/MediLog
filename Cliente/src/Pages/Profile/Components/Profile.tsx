@@ -33,6 +33,9 @@ import Swal from "sweetalert2";
 import mergedPatientSchema from "../Utils/yup-schema/yupProfilePatientSchema";
 import dayjs from "dayjs";
 import mergedSpecialistSchema from "../Utils/yup-schema/yupProfileSpecialistSchema";
+import axios from "axios";
+import getBackendConnectionString from "../../../Common/Utils/getBackendString";
+import useUserStore from "../../../Common/Utils/setUserSession";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -133,10 +136,16 @@ const specialistProfileDataObject: ISpecialistProfileData = {
 
 const Profile: React.FC = () => {
 
+  const { getUser } = useUserStore();
+  const { authenticated } = useUserStore();
+
   const { getRegisterData } = useDataRegisterStore();
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
   const [id, setId] = useState<string | undefined>('0');
+  //Se deshabilitara los derechos ADMINS temporalmente para permitir acceso a esa ruta -- Intercambiar lineas de comandos al finalizar con la pagina
+  //const [rol, setRol] = useState<string | undefined>('Regular');
+  const [rol, setRol] = useState<string | undefined>('Admin');
   const { idOrName } = useParams<{ idOrName: string }>();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -144,6 +153,7 @@ const Profile: React.FC = () => {
   const handleModalClose = () => setModalOpen(false);
   const [tabValue, setTabValue] = useState('one');
 
+  //Funccion que se encarga del mapper de los datos entrantes para asi crear un objeto uniforme y fiel
   function mapDataToProfileObject(data: any): Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined {
     const patientKeys = Object.keys(patientProfileDataObject);
     const specialistKeys = Object.keys(specialistProfileDataObject);
@@ -180,62 +190,132 @@ const Profile: React.FC = () => {
     return profilesObject;
   }
 
-  const patientData = {
-    id: "1",
-    tipo: "Paciente",
-    nombre: "Lenny",
-    apellido: 'Garcia',
-    fecha_nacimiento: "01-01-2001",
-    documento_identidad: "12345678911",
-    sexo: "f",
-    correo: "Lenny@gmail.com",
-    direccion: "Manzan 9",
-    telefono: "18096572014",
-    tipo_sangre: 'A+',
-    padecimientos: ["Migrana", "Espamos involuntarios", "Apne"],
-    alergias: ["Polen", "Agua", "Flores"],
-    familiares: ["BenJunior", "maikol", "jose Jimenez"],
-    metodo_pago: "Tarjeta de debito",
-    datos_financieros: "1234567891234567",
-    cvv: "1234",
-    fecha_expiracion: "01-01-2014",
-    descripcion: "Buen producto",
-    categoria: "Basico",
-    precio: 0,
-  };
-
-  const specialistData= {
-    id:"2",
-    tipo: "Especialista",
-    nombre: "Ben Junior",
-    apellido: "Dourlouis",
-    fecha_nacimiento: "01-01-2001",
-    sexo: "m",
-    correo: "Ben@gmail.com",
-    direccion: "Villa mella",
-    telefono: "18096572014",
-    especialidad: "ginecologo",
-    metodo_pago: "Tarjeta de debito",
-    datos_financieros: "1234567891234567",
-    cvv: "4358",
-    fecha_expiracion: "01-05-2030",
-    descripcion: "Amor y paz",
-    categoria: "Hospitales",
-    precio: 5000,
+  //Funccion que se encarga de buscar el record en la base de datos
+  const getRecordFromDB = async (id: number | string | any) => {
+    const result = await axios.get(getBackendConnectionString(`pacientes/${id}`)
+    ).then(response => {
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        return response.data;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
   }
-  
-  //cambia a uno de los dos objetos para probar
-  const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(patientData);
-  console.log(profilesObject);
 
+  const editRecordFromDB = async (id: number | string | any, data: any) => {
+    const result = await axios.put(getBackendConnectionString(`pacientes/${id}`), {
+      nombre: data?.nombre,
+      apellido: data?.apellido,
+      fecha_nacimiento: data?.fecha_nacimiento,
+      documento_identidad: data?.documento_identidad,
+      sexo: data?.sexo,
+      direccion: data?.direccion,
+      telefono: data?.telefono,
+      tipo_sangre: data?.tipo_sangre,
+      padecimientos: data?.padecimientos && JSON.stringify(data?.padecimientos),
+      alergias: data?.alergias && JSON.stringify(data?.alergias),
+      familiares_id: data?.familiares && JSON.stringify(data?.familiares),
+    },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(response => {
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        return true;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
+  }
+
+  const editSubmitHandler = async () => {
+
+    const data = getAllRegisterData();
+    const result = await editRecordFromDB(idOrName, data);
+    return result;
+
+  }
+
+  //Funccion que verifica si hay un usuario conectado, en caso de que no hubiera se impide acceso a la ruta -- NO BORRAR
+  useEffect(() => {
+    // if (!authenticated()) return navigate('/');
+    return;
+  });
+
+  useEffect(() => {
+    if (authenticated()) {
+      //Condicion que impide que usuarios no autorizados pueden modificar o accedar a informacione sensibles
+      const tipo = getUser().tipo === 'Paciente' ? 'Regular' : 'Admin';
+      setRol(tipo);
+    } else {
+
+      //Condiccion que verifica si hay un usuario conectado, en caso de que no hubiera se impide acceso a la ruta -- NO BORRAR
+      //return navigate('/')
+    }
+    getRecordFromDB(idOrName).then((result) => {
+      //Condicion que redirige al usuario si occurre un error
+      if (!result) return navigate('/404');
+
+      //Condicion que se encarga de Parsear los records almacenados en formato de ARRAY/JSON en la plataforma
+      result.padecimientos = result.padecimientos ? JSON.parse(result?.padecimientos) : [''];
+      result.alergias = result.alergias ? JSON.parse(result?.alergias) : [''];
+      result.familiares = result.familiares ? JSON.parse(result?.familiares) : [''];
+      result.fecha_nacimiento = result.fecha_nacimiento && dayjs(result.fecha_nacimiento).format('DD-MM-YYYY');
+      result.fecha_expiracion = result.fecha_expiracion && dayjs(result.fecha_expiracion).format('DD-MM-YYYY');
+
+      const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(result);
+
+      const fetchedData: any = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);
+      if (fetchedData) {
+        const profileId = getIdFromName(fetchedData?.nombre, profilesObject);
+        setId(profileId);
+
+      }
+
+      if (idOrName) {
+        const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
+
+        if (!fetchedProfileData) {
+          console.log('No se encontró el perfil');
+          navigate('/404');
+          return id;
+        }
+        setProfileData(fetchedProfileData);
+
+        const slug = generateSlug(fetchedProfileData);
+        const stateObj = { idOrName: idOrName };
+        if (slug == '') {
+          //De esta manera el enlace se actualiza sin mandar otra solicitud a la base de
+          window.history.pushState(stateObj, `${idOrName}`, `/pacientes/${idOrName}`);
+          return id;
+        }
+        window.history.pushState(stateObj, `${slug}`, `/pacientes/${slug}`);
+      }
+    });
+
+  }, [idOrName, navigate]);
+
+  //Funccion que se encarga de generar el Slug del enlace
   const generateSlug = useCallback((profileData: IPatientProfileData | ISpecialistProfileData) => {
     const { nombre, apellido } = profileData;
     const slug = `${nombre}${apellido}`;
     return slug;
   }, [])
 
+  //Funccion que se encarga de coincidir el nombre con el ID
   function getIdFromName(name: string, profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined> | undefined): string | undefined {
-
     if (profiles == undefined) {
       return undefined
     }
@@ -248,6 +328,7 @@ const Profile: React.FC = () => {
     return undefined;
   }
 
+  //Funccion que se encarga de coincidir la informacion entrante con el ID siguiendo el formato del Mapper
   const getFakeProfileData = useCallback((
     idOrNameObj: { idOrName: string; name: string },
     profiles: Record<any, IPatientProfileData | ISpecialistProfileData | undefined> | undefined
@@ -281,42 +362,14 @@ const Profile: React.FC = () => {
     return profile;
   }, [])
 
-  const fetchedData: any = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);
 
-  useEffect(() => {
-    if (fetchedData) {
-      const profileId = getIdFromName(fetchedData?.nombre, profilesObject);
-      setId(profileId);
-    }
-  }, []);
-
-
+  //Funccion que se encarga de la gestion de los cambios que se hacen a la tabla de valores
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
+    return event;
   };
 
-  useEffect(() => {
-    if (idOrName) {
-      const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
-
-      if (!fetchedProfileData) {
-        console.log('No se encontró el perfil');
-        navigate('/404');
-        return;
-      }
-
-      setProfileData(fetchedProfileData);
-
-      const slug = generateSlug(fetchedProfileData);
-      if (slug == '') {
-        navigate(`/profile/${idOrName}`);
-        return
-      }
-      navigate(`/profile/${slug}`);
-    }
-  }, [idOrName, navigate]);
-
-
+  //Funccion que se encarga de la barra de LOADING
   if (!profileData) {
     return <div>Cargando...</div>; //shadow
   }
@@ -344,13 +397,13 @@ const Profile: React.FC = () => {
   };
 
   const userType: string = profileData.tipo;
-  console.log(getAllRegisterData())
+  console.log(getAllRegisterData());
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
       <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem" }} variant="h5">Perfil</Typography>
       <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
-      <Grid item md={3} xs={12}>
+        <Grid item md={3} xs={12}>
           <Box sx={{
             backgroundColor: "white",
             width: "15rem",
@@ -364,26 +417,27 @@ const Profile: React.FC = () => {
               justifyContent: "center",
               alignItems: "center"
             }}>
-              <Avatar sx={{ 
-                height: "10rem", 
-                width: "10rem", 
-                backgroundColor:"#52b69a", 
-                fontSize:"5rem"
-                }} 
+              <Avatar sx={{
+                height: "10rem",
+                width: "10rem",
+                backgroundColor: "#52b69a",
+                fontSize: "5rem"
+              }}
                 variant="square" >
-                  { profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre.charAt(0) || ''}
+                {profileData?.nombre.charAt(0) || ''}
               </Avatar>
             </Box>
           </Box>
           <Box sx={{
-            margin:"auto",
+            margin: "auto",
             marginTop: "1rem",
             display: "flex",
             justifyContent: "center",
             alignItems: "center"
           }}>
             {/*EDITAR*/}
-            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin:"auto", marginLeft:"1.7rem" }}>Editar</Button>
+            {rol === 'Admin' &&
+              <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>}
             <Modal
               keepMounted
               open={modalOpen}
@@ -434,15 +488,15 @@ const Profile: React.FC = () => {
                             },
                           }}>
                             <Box hidden={tabValue !== "one"}>
-                              <BasicProfileForm type={userType} profileValues={profilesObject && profilesObject[id as keyof typeof profilesObject] || {}} />
+                              <BasicProfileForm type={userType} profileValues={profileData || {}} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "two"}>
-                              <ContactProfileForm profileValues={profilesObject && profilesObject[id as keyof typeof profilesObject] || {}} />
+                              <ContactProfileForm profileValues={profileData || {}} />
                             </Box>
 
                             <Box role="tabpanel" hidden={tabValue !== "three"}>
-                              <FinancialProfileForm profileValues={profilesObject && profilesObject[id as keyof typeof profilesObject] || {}} />
+                              <FinancialProfileForm profileValues={profileData || {}} />
                             </Box>
 
                           </Box>
@@ -472,14 +526,28 @@ const Profile: React.FC = () => {
 
                               }).then((result) => {
                                 if (result.isConfirmed && isValid) {
-                                  //mandame la funcion aqui >:V
-                                  handleModalClose()
-                                  Swal.fire({
-                                    title: 'Aplicado con exito',
-                                    text: 'Todos los datos han sido editados.',
-                                    icon: 'success',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
+                                  //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
+                                  editSubmitHandler().then(result => {
+                                    if (result) {
+                                      handleModalClose()
+                                      Swal.fire({
+                                        title: 'Aplicado con exito',
+                                        text: 'Todos los datos han sido editados.',
+                                        icon: 'success',
+                                        customClass: {
+                                          container: profileStyle.sweetAlertContainer,
+                                        }
+                                      });
+                                      window.location.href = `/pacientes/${idOrName}`;
+                                    } else {
+                                      Swal.fire({
+                                        title: 'No se aplicaron cambios',
+                                        text: 'Acceso Denegado',
+                                        icon: 'warning',
+                                        customClass: {
+                                          container: profileStyle.sweetAlertContainer,
+                                        }
+                                      });
                                     }
                                   });
                                 }
@@ -519,24 +587,24 @@ const Profile: React.FC = () => {
             <AccordionDetails>
               {userType == "Paciente" ?
                 <ProfileList dataList={[
-                  { name: "Nombre", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre || '' },
-                  { name: "Apellido", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.apellido || '', },
-                  { name: "Fecha de nacimiento", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
-                  { name: "Documento de indentidad", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).documento_identidad, },
-                  { name: "Sexo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.sexo, },
-                  { name: "Correo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.correo, },
-                  { name: "Tipo de sangre", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).tipo_sangre, },
-                  { name: "Padecimiento", data: <ListFormater formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).padecimientos} /> },
-                  { name: "Alergias", data: <ListFormater formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).alergias} /> },
-                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={profilesObject && (profilesObject[id as keyof typeof profilesObject] as IPatientProfileData).familiares} /> },
+                  { name: "Nombre", data: profileData?.nombre || '' },
+                  { name: "Apellido", data: profileData?.apellido || '', },
+                  { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
+                  { name: "Documento de indentidad", data: (profileData as IPatientProfileData)?.documento_identidad, },
+                  { name: "Sexo", data: profileData?.sexo, },
+                  { name: "Correo", data: profileData?.correo, },
+                  { name: "Tipo de sangre", data: (profileData as IPatientProfileData)?.tipo_sangre, },
+                  { name: "Padecimiento", data: <ListFormater formatData={(profileData as IPatientProfileData)?.padecimientos} /> },
+                  { name: "Alergias", data: <ListFormater formatData={(profileData as IPatientProfileData)?.alergias} /> },
+                  { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profileData as IPatientProfileData)?.familiares} /> },
                 ]} />
                 :
                 <ProfileList dataList={[
-                  { name: "Nombre", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.nombre, },
-                  { name: "Apellido", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.apellido, },
-                  { name: "Fecha de nacimiento", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.fecha_nacimiento, },
-                  { name: "Sexo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.sexo, },
-                  { name: "Especialidad", data: profilesObject && (profilesObject[id as keyof typeof profilesObject] as ISpecialistProfileData).especialidad },
+                  { name: "Nombre", data: profileData?.nombre, },
+                  { name: "Apellido", data: profileData?.apellido, },
+                  { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
+                  { name: "Sexo", data: profileData?.sexo, },
+                  { name: "Especialidad", data: (profileData as ISpecialistProfileData).especialidad },
                 ]} />
               }
             </AccordionDetails>
@@ -551,9 +619,9 @@ const Profile: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <ProfileList dataList={[
-                { name: "Correo", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.correo, },
-                { name: "Direccion", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.direccion, },
-                { name: "Telefono", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.telefono, },
+                { name: "Correo", data: profileData?.correo, },
+                { name: "Direccion", data: profileData?.direccion, },
+                { name: "Telefono", data: profileData?.telefono, },
               ]} />
             </AccordionDetails>
           </Accordion>
@@ -567,13 +635,13 @@ const Profile: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <ProfileList dataList={[
-                { name: "Metodo de pago", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.metodo_pago, },
-                { name: "Codigo de tarjeta", data: profilesObject && profilesObject[id as keyof typeof profilesObject]?.datos_financieros, },
+                { name: "Metodo de pago", data: profileData?.metodo_pago, },
+                { name: "Codigo de tarjeta", data: profileData?.datos_financieros, },
               ]} />
             </AccordionDetails>
           </Accordion>
         </Grid>
-      
+
       </Grid>
     </Box>
   );
@@ -601,7 +669,83 @@ export default Profile;
      datos_financieros: getRegisterData("datos_financieros"),
      //pasarlo como se veria en la base de datos, se complicaria hacer un algoritmo, buscar datos del mock, o hacer esa estructura con los datos del mock, un mapper para que se vea asi
    },
-   
+
  };
 
 console.log(profilesObject)*/
+//const fetchedData: any = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);
+
+/* useEffect(() => {
+   if (fetchedData) {
+     const profileId = getIdFromName(fetchedData?.nombre, profilesObject);
+     setId(profileId);
+   }
+ }, []);*/
+/*const patientData = {
+   id: "1",
+   tipo: "Paciente",
+   nombre: "Lenny",
+   apellido: 'Garcia',
+   fecha_nacimiento: "01-01-2001",
+   documento_identidad: "12345678911",
+   sexo: "f",
+   correo: "Lenny@gmail.com",
+   direccion: "Manzan 9",
+   telefono: "18096572014",
+   tipo_sangre: 'A+',
+   padecimientos: ["Migrana", "Espamos involuntarios", "Apne"],
+   alergias: ["Polen", "Agua", "Flores"],
+   familiares: ["BenJunior", "maikol", "jose Jimenez"],
+   metodo_pago: "Tarjeta de debito",
+   datos_financieros: "1234567891234567",
+   cvv: "1234",
+   fecha_expiracion: "01-01-2014",
+   descripcion: "Buen producto",
+   categoria: "Basico",
+   precio: 0,
+ };
+
+ const specialistData = {
+   id: "2",
+   tipo: "Especialista",
+   nombre: "Ben Junior",
+   apellido: "Dourlouis",
+   fecha_nacimiento: "01-01-2001",
+   sexo: "m",
+   correo: "Ben@gmail.com",
+   direccion: "Villa mella",
+   telefono: "18096572014",
+   especialidad: "ginecologo",
+   metodo_pago: "Tarjeta de debito",
+   datos_financieros: "1234567891234567",
+   cvv: "4358",
+   fecha_expiracion: "01-05-2030",
+   descripcion: "Amor y paz",
+   categoria: "Hospitales",
+   precio: 5000,
+ }*/
+
+//cambia a uno de los dos objetos para probar
+// const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(patientData);
+// console.log(profilesObject);
+
+/* useEffect(() => {
+   if (idOrName) {
+     const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
+ 
+     if (!fetchedProfileData) {
+       console.log('No se encontró el perfil');
+       navigate('/404');
+       return;
+     }
+ 
+     setProfileData(fetchedProfileData);
+ 
+     const slug = generateSlug(fetchedProfileData);
+     if (slug == '') {
+       navigate(`/profile/${idOrName}`);
+       return
+     }
+     navigate(`/profile/${slug}`);
+   }
+ }, [idOrName, navigate]);*/

@@ -52,14 +52,21 @@ class Especialista extends Model {
                 this.data.apellido,
                 this.data.sexo || null,
                 this.data.fecha_nacimiento || null,
-                this.data.correo,
                 this.data.direccion || null,
                 this.data.telefono || null,
                 this.data.especialidad || null,
-                this.data.eliminado || false,
+            ];
+            const update_columns = [
+                'nombre',
+                'apellido',
+                'sexo',
+                'fecha_nacimiento',
+                'direccion',
+                'telefono',
+                'especialidad',
             ];
             const query = new Builder(this.table);
-            const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values)
+            const [results, fields] = await DB.execute(query.update_query(update_columns, this.values, id), this.values)
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];

@@ -71,9 +71,9 @@ const seed_paciente = () => {
         direccion: 'Santo Domingo, RD',
         telefono: `${getRandomTelefono()}`,
         tipo_sangre: `${getRandomData(randomSangre)}`,
-        padecimientos: '{"padecimientos":["Diabetes", "Ulceras", "Colitis"]}',
-        alergias: '{"alergias":["Flores", "Mujeres", "Perfume"]}',
-        familiares_id: '{"familiares": [1, 2]}',
+        padecimientos: '["Diabetes", "Ulceras", "Colitis"]',
+        alergias: '["Flores", "Mujeres", "Perfume"]',
+        familiares_id: '[1, 2]',
         eliminado: false,
     }
     dbmodel.insert(data);
@@ -86,7 +86,7 @@ const seed_consulta = () => {
         motivo: `${getRandomData(randomMotivo)}`,
         estudios: 1,
         observaciones: 'Se Detecto una anomalia causada por otras condiciones medicas',
-        plan_tratamiento: '{"plan_tratamiento":["Tratar Herida Diaria con soluciones topicas", "Seguir Dieta Balanceada"]}',
+        plan_tratamiento: '["Tratar Herida Diaria con soluciones topicas", "Seguir Dieta Balanceada"]',
         visibilidad: true,
         eliminado: false,
     }
@@ -100,9 +100,9 @@ const seed_cirugia = () => {
         especialistas_id: 1,
         categoria: `${getRandomData(randomCategoria)}`,
         motivo: `${getRandomData(randomMotivo)}`,
-        estudios: '{"estudios":["Biopsia", "Rayos-X"]}',
+        estudios: '["Biopsia", "Rayos-X"]',
         observaciones: 'Se Detecto una anomalia causada por otras condiciones medicas',
-        instrucciones: '{"instrucciones":["No Realizar Actividad Fisica", "Hidratarse"]}',
+        instrucciones: '["No Realizar Actividad Fisica", "Hidratarse"]',
         resultado: 'Exito',
         visibilidad: true,
         eliminado: false,

@@ -8,9 +8,9 @@ import ProfileMultiInput from "./ProfileMultiInput";
 import { Dayjs } from "dayjs";
 
 //Interfaces utiles para ayudar a que las propiedades se lean como sus respectivas propiedades de Select, input...
-interface IProfileTexfieldfControl extends Omit<TextFieldProps, 'variant'> { 
-    Values?:[],
-    initialValue?:string
+interface IProfileTexfieldfControl extends Omit<TextFieldProps, 'variant'> {
+    Values?: any[],
+    initialValue?: string
 }
 interface IProfileControl extends Omit<SelectProps | TextFieldProps, 'variant'> {
     control: string,
@@ -19,8 +19,8 @@ interface IProfileControl extends Omit<SelectProps | TextFieldProps, 'variant'> 
         value: string;
     }[],
     Values?: any[],
-    initialValue?:string,
-    initialDateValue?:Dayjs | null,
+    initialValue?: string,
+    initialDateValue?: Dayjs | null,
 }
 interface IProfileSelectfControl extends Omit<SelectProps, 'variant'> {
     selectObject?: {
