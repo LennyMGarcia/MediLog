@@ -12,13 +12,13 @@ interface IDataListaFormater {
 
 
 const ListFormater: React.FC<IDataListaFormater> = ({ formatData, isNavigate = false }) => {
-    
-  const navigate = useNavigate();
 
-  const handleLinkClick = (route:string | number) => {
-    navigate(`/profile/${route}`);
-  };
-  
+    const navigate = useNavigate();
+
+    const handleLinkClick = (route: string | number) => {
+        navigate(`/pacientes/${route}`);
+    };
+
     return (
         <>
             {Array.isArray(formatData) ? (

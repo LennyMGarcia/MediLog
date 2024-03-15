@@ -62,17 +62,28 @@ class Paciente extends Model {
                 this.data.fecha_nacimiento,
                 this.data.documento_identidad || 'X-XXXXXXXXXX-XXX',
                 this.data.sexo || null,
-                this.data.correo,
                 this.data.direccion || null,
                 this.data.telefono || null,
                 this.data.tipo_sangre || null,
                 this.data.padecimientos || null,
                 this.data.alergias || null,
                 this.data.familiares_id || null,
-                this.data.eliminado || false,
+            ];
+            const update_colums = [
+                'nombre',
+                'apellido',
+                'fecha_nacimiento',
+                'documento_identidad',
+                'sexo',
+                'direccion',
+                'telefono',
+                'tipo_sangre',
+                'padecimientos',
+                'alergias',
+                'familiares_id',
             ];
             const query = new Builder(this.table);
-            const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values)
+            const [results, fields] = await DB.execute(query.update_query(update_colums, this.values, id), this.values)
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
