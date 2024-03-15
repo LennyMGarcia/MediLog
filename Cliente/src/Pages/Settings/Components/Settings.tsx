@@ -54,7 +54,7 @@ const Settings: React.FC = () => {
                 <Grid container>
                     <Grid item container md={7}>
 
-                    <Grid item container md={6} sx={{width:"10px", height:"1px", }}>
+                    <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"3rem"}}>
                             <Button onClick={() => navigate("/register")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
@@ -62,7 +62,7 @@ const Settings: React.FC = () => {
                                     <AccountCircleIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
-                                    <Typography variant="subtitle1">Informacion de perfil</Typography>
+                                    <Typography variant="subtitle1"  sx={{ color: "black" }}>Informacion de perfil</Typography>
                                     <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena, seguridad & privacidad</Typography>
                                 </Grid>
                             </Grid>
@@ -70,7 +70,7 @@ const Settings: React.FC = () => {
                             
                         </Grid>
 
-                        <Grid item container md={6} sx={{width:"10px", height:"1px",}}>
+                        <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"3rem"}}>
                             <Button onClick={() => navigate("/register")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
@@ -78,23 +78,7 @@ const Settings: React.FC = () => {
                                     <AccountCircleIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
-                                    <Typography variant="subtitle1">Informacion de perfil</Typography>
-                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena, seguridad & privacidad</Typography>
-                                </Grid>
-                            </Grid>
-                            </Button>
-                            
-                        </Grid>
-
-                        <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"-5rem"}}>
-                            <Button onClick={() => navigate("/register")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
-                                backgroundColor: '#efe'}}}>
-                            <Grid  container >
-                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
-                                    <AccountCircleIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
-                                </Grid>
-                                <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
-                                    <Typography variant="subtitle1">Informacion de perfil</Typography>
+                                    <Typography variant="subtitle1"  sx={{ color: "black" }}>Informacion de perfil</Typography>
                                     <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena, seguridad & privacidad</Typography>
                                 </Grid>
                             </Grid>
@@ -110,7 +94,23 @@ const Settings: React.FC = () => {
                                     <AccountCircleIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
-                                    <Typography variant="subtitle1">Informacion de perfil</Typography>
+                                    <Typography variant="subtitle1"  sx={{ color: "black" }}>Informacion de perfil</Typography>
+                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena, seguridad & privacidad</Typography>
+                                </Grid>
+                            </Grid>
+                            </Button>
+                            
+                        </Grid>
+
+                        <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"-5rem"}}>
+                            <Button onClick={() => navigate("/register")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
+                                backgroundColor: '#efe'}}}>
+                            <Grid  container >
+                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
+                                    <AccountCircleIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
+                                </Grid>
+                                <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
+                                    <Typography variant="subtitle1" sx={{ color: "black" }}>Informacion de perfil</Typography>
                                     <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena, seguridad & privacidad</Typography>
                                 </Grid>
                             </Grid>
