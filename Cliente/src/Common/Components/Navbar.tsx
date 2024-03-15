@@ -10,6 +10,7 @@ export default function Navbar() {
   //Funccion que desloguea a un usuario
   const logout = () => {
     logoutUser();
+    navigate('/');
   }
   const navbarLinks = [
     {

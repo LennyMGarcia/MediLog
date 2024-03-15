@@ -24,7 +24,6 @@ const useUserStore = create((set: any) => ({
     },
     logoutUser: () => set(() => {
         localStorage.removeItem('user');
-        window.location.href = '/';
         return { user: null }
     })
 }));

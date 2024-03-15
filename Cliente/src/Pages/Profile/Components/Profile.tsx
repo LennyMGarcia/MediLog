@@ -260,7 +260,6 @@ const Profile: React.FC = () => {
       const tipo = getUser().tipo === 'Paciente' ? 'Regular' : 'Admin';
       setRol(tipo);
     } else {
-
       //Condiccion que verifica si hay un usuario conectado, en caso de que no hubiera se impide acceso a la ruta -- NO BORRAR
       //return navigate('/')
     }

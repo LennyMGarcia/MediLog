@@ -533,7 +533,6 @@ const MyProfile: React.FC = () => {
                                                                                     container: profileStyle.sweetAlertContainer,
                                                                                 }
                                                                             });
-                                                                            window.location.reload();
                                                                         } else {
                                                                             Swal.fire({
                                                                                 title: 'No se aplicaron cambios',
