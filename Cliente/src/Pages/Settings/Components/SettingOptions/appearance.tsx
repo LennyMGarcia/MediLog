@@ -18,7 +18,7 @@ import Slider from "@mui/material/Slider/Slider";
 
 import * as React from 'react';
 import Swal from "sweetalert2";
-import LinearScaleIcon from '@mui/icons-material/LinearScale';
+import WestIcon from '@mui/icons-material/West';
 
 
 const marks = [
@@ -76,6 +76,7 @@ const HandleResetButtom = () => {
 
 const Appearance: React.FC = () => {
 
+    const navigate = useNavigate();
     const [selectedValue, setSelectedValue] = useState<string>('');
 
     const handleChange = (value: string) => {
@@ -100,7 +101,12 @@ const Appearance: React.FC = () => {
                 alignItems:"center"
 
             }}>
-                <LinearScaleIcon sx={{ margin: "0.7rem", marginLeft: "3rem" }}></LinearScaleIcon>
+                <Button onClick={()=>navigate("/settings")} sx={{color:"#52b69a", "&:hover":{
+                    backgroundColor:"#ffeffe",
+                    color:"#34a0a4"
+                }}}>
+                    <WestIcon sx={{ margin: "0.7rem", marginLeft: "3rem" }}></WestIcon>
+                </Button>
                 <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}>Apariencia</Typography>
             </Box>
 
