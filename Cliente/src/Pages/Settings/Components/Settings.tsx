@@ -1,6 +1,5 @@
 
 import Box from "@mui/material/Box/Box";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import registerDoctor from "/assets/Pictures/registerDoctor.jpg";
 import SettingsIcon from '@mui/icons-material/Settings';
 import Grid from "@mui/material/Grid/Grid";

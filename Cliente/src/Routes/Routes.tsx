@@ -8,6 +8,7 @@ import Appearance from "../Pages/Settings/Components/SettingOptions/appearance";
 import DeleteAccount from "../Pages/Settings/Components/SettingOptions/DeleteAccount";
 import changePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
 import ChangePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
+import ChangePlan from "../Pages/Settings/Components/SettingOptions/ChangePlan";
 
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
           <Route path={"/settings/appearance"} element={<Appearance/>}/>
           <Route path={"/settings/deleteAccount"} element={<DeleteAccount/>}/>
           <Route path={"/settings/changePassword"} element={<ChangePassword/>}/>
+          <Route path={"/settings/changePlan"} element={<ChangePlan/>}/>
         </Route>
       </Routes>
     </Router>
