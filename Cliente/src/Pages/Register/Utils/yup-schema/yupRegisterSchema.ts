@@ -56,7 +56,7 @@ const contactSchema = Yup.object({
     .notRequired(),
     correo: Yup.string().email('Direccion de correo invalida').required('Requerido'),
     contrasena: Yup.string()
-    .min(6, 'La contrasena debe tener al menos 8 caracteres')
+    .min(8, 'La contrasena debe tener al menos 8 caracteres')
     .max(24, "La contrasena no debe superar los 24 caracteres")
     .required('Required'),
     confirmarContrasena: Yup.string()

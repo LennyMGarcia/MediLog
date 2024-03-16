@@ -59,7 +59,7 @@ const SettingsInput: React.FC<InputProps> = ({ label, name = "", placeHolder, in
                             '& .MuiInputBase-root': { 
                                 height: 'auto', 
                             },
-                            mt: "0.5rem"
+                            mt: "1.5rem"
                         }}
                     />
                     <ErrorMessage name={name}>

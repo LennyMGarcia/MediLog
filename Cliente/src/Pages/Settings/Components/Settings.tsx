@@ -9,6 +9,8 @@ import Button from "@mui/material/Button/Button";
 import { useNavigate } from "react-router";
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PasswordIcon from '@mui/icons-material/Password';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 
 
 const Settings: React.FC = () => {
@@ -55,7 +57,7 @@ const Settings: React.FC = () => {
 
                 <Grid container>
                     <Grid item container md={7}>
-
+            
                     <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"3rem"}}>
                             <Button onClick={() => navigate("/settings/appearance")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
@@ -73,15 +75,15 @@ const Settings: React.FC = () => {
                         </Grid>
 
                         <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"3rem"}}>
-                            <Button onClick={() => navigate("/register")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
+                            <Button onClick={() => navigate("/settings/changePlan")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
                                 <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
-                                    <AccountCircleIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
+                                    <ViewCarouselIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
-                                    <Typography variant="subtitle1"  sx={{ color: "black" }}>Informacion de perfil</Typography>
-                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena, seguridad & privacidad</Typography>
+                                    <Typography variant="subtitle1"  sx={{ color: "black" }}>Cambiar Plan</Typography>
+                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar plan y todo lo relacionado a ello </Typography>
                                 </Grid>
                             </Grid>
                             </Button>
@@ -89,15 +91,15 @@ const Settings: React.FC = () => {
                         </Grid>
 
                         <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"-5rem"}}>
-                            <Button onClick={() => navigate("/register")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
+                            <Button onClick={() => navigate("/settings/changePassword")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
                                 <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
-                                    <AccountCircleIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
+                                    <PasswordIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
-                                    <Typography variant="subtitle1"  sx={{ color: "black" }}>Informacion de perfil</Typography>
-                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena, seguridad & privacidad</Typography>
+                                    <Typography variant="subtitle1"  sx={{ color: "black" }}>Cambiar contrasena</Typography>
+                                    <Typography variant="subtitle2" sx={{ color: "gray" }}>Cambiar contrasena por una nueva y mas segura</Typography>
                                 </Grid>
                             </Grid>
                             </Button>

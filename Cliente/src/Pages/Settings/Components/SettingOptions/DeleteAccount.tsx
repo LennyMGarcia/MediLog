@@ -38,7 +38,7 @@ const DeleteAccount: React.FC = () => {
         <Box sx={{
             backgroundColor: "#e9ecef",
             width: "100vw",
-            height: "160vh",
+            height: "130vh",
             padding: "1px"
         }}>
             <Box sx={{
@@ -77,7 +77,7 @@ const DeleteAccount: React.FC = () => {
             <Box sx={{
                 backgroundColor: "#fff",
                 width: "90vw",
-                height: "130vh",
+                height: "100vh",
                 boxShadow: 1,
                 marginLeft: "3rem"
             }}>

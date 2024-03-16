@@ -6,6 +6,8 @@ import Profile from "../Pages/Profile/Components/Profile";
 import Settings from "../Pages/Settings/Components/Settings";
 import Appearance from "../Pages/Settings/Components/SettingOptions/appearance";
 import DeleteAccount from "../Pages/Settings/Components/SettingOptions/DeleteAccount";
+import changePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
+import ChangePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
 
 
 export default function App() {
@@ -19,6 +21,7 @@ export default function App() {
           <Route path={"/settings"} element={<Settings/>}/>
           <Route path={"/settings/appearance"} element={<Appearance/>}/>
           <Route path={"/settings/deleteAccount"} element={<DeleteAccount/>}/>
+          <Route path={"/settings/changePassword"} element={<ChangePassword/>}/>
         </Route>
       </Routes>
     </Router>
