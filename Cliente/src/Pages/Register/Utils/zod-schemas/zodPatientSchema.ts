@@ -12,7 +12,11 @@ const PatientSchema = z.object({
     correo: z.string().email(),
     direccion: z.string().nullable(),
     telefono: z.string().nullable(),
-    documento_identidad: z.string().length(11)
+    documento_identidad: z.string(),
+    tipo_sangre: z.string(),
+    padecimientos: z.array(z.string()),
+    alergias: z.array(z.string()),
+    familiares: z.array(z.string()),
 });
 
 //type Patient = z.infer<typeof PatientSchema>;

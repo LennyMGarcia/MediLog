@@ -2,7 +2,7 @@ import React from "react";
 import RegistrationControl from "../forms-control/RegistratioControl";
 
 import useDataRegisterStore from "../../ZustandRegisterManagement";
-import BoxRowWrapper from "../style/Wrappers/BoxRowWrapper";
+import BoxRowWrapper from "../../../../Common/Wrappers/BoxRowWrapper";
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography/Typography";
 
