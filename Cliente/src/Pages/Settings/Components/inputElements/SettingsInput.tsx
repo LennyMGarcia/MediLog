@@ -7,30 +7,29 @@ import TextField, { TextFieldProps } from '@mui/material/TextField/TextField';
 import FormHelperText from '@mui/material/FormHelperText/FormHelperText';
 import Box from '@mui/material/Box/Box';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
 
-interface InputProps extends Omit<TextFieldProps, 'variant'> {
+interface InputProps<T> extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
     name?: string,
     placeHolder?:string,
-    initialValue?:string,
+    zustandCallback?: (name: string, value: T) => void,
 }
 
-const SettingsInput: React.FC<InputProps> = ({ label, name = "", placeHolder, initialValue = "", ...rest }) => {
-    const { setRegisterData } = useDataRegisterStore();
+const SettingsInput: React.FC<InputProps<any>> = ({ label, name = "", placeHolder, zustandCallback, ...rest }) => {
 
-    const [value, setValue] = useState<string>(initialValue);
+    const [value, setValue] = useState<string>('');
 
     const handleChange = (e: ChangeEvent<any>) => {
         const newValue = e.target.value;
-        const newValueFormatted = newValue.trim();
+        const newValueFormatted:any = newValue.trim();
         setValue(newValue);
-        setRegisterData(name, newValueFormatted || initialValue); //sin cambio se envia el e.target value, comprobar ese caso
+        
+        if(zustandCallback != undefined)
+        {
+            console.log(name)
+            zustandCallback(name, newValueFormatted ); 
+        }
     };
-
-    useEffect(() => {
-        setRegisterData(name, initialValue);
-    }, []);
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));

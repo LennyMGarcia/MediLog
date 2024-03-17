@@ -8,7 +8,10 @@ import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from "@mui/material/Button/Button";
 import Divider from '@mui/material/Divider/Divider';
-
+import { useNavigate } from "react-router";
+import WestIcon from '@mui/icons-material/West';
+import Swal from 'sweetalert2';
+import SweetAlertDAStyle from "../../../Profile/style/profileStyle.module.css"
 
 interface Option {
     value: string,
@@ -24,6 +27,9 @@ interface RadioCardProps {
 
 
 const ChangePlan: React.FC = () => {
+
+    const navigate = useNavigate();
+
     const options: Option[] = [
         { value: 'small', label: 'Plan Basico - $0 - ', subLabel: "Plan con los requerimientos esenciales, sin ventajas anadidas", color: "#52b69a" },
         { value: 'medium', label: 'Plan Familiar - $1000', subLabel: "Plan escalable, costumizable, con opciones avanzadas y para toda la familia", color: "#34a0a4" },
@@ -43,10 +49,21 @@ const ChangePlan: React.FC = () => {
                 width: "100vw",
                 height: "10vh",
                 boxShadow: 1,
-                padding: "1px"
+                padding: "1px",
+                display: "flex",
+                justifyContent: "left",
+                alignItems: "center"
 
             }}>
-                <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>Configuracion de la cuenta</Typography>
+                <Button onClick={() => navigate("/settings")} sx={{
+                    color: "#52b69a", "&:hover": {
+                        backgroundColor: "#ffeffe",
+                        color: "#34a0a4"
+                    }
+                }}>
+                    <WestIcon sx={{ margin: "0.7rem", marginLeft: "3rem" }}></WestIcon>
+                </Button>
+                <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}>Cambiar Plan</Typography>
             </Box>
 
             <Box sx={{
@@ -79,6 +96,58 @@ const ChangePlan: React.FC = () => {
                 <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Cambia la configuracion de tu plan</Typography>
                 <RadioCard options={options} />
 
+                <Button sx={{ mt: "1rem", marginLeft:"5rem", backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
+
+variant="contained"
+type="submit"
+//disabled={!isValid}
+onClick={() => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Si procede con esta accion cambiaras tu plan y los privilegios que ofrecen`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#52b69a',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Acepto',
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        container: SweetAlertDAStyle.sweetAlertContainer,
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+      allowEscapeKey: () => !Swal.isLoading(),
+      allowEnterKey: () => !Swal.isLoading(),
+      stopKeydownPropagation: false,
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+     
+        
+        Swal.fire({
+          title: 'Se ha actualizado el plan',
+          text: 'El plan se ha cambiado de forma exitosa.',
+          icon: 'success',
+          customClass: {
+            container: SweetAlertDAStyle.sweetAlertContainer,
+          }
+        });
+      }
+      else {
+        Swal.fire({
+            title: 'Hubo un problema',
+            text: 'El plan no pudo actualizarse o has elegido el mismo plan que tenias',
+            icon: 'warning',
+            customClass: {
+              container: SweetAlertDAStyle.sweetAlertContainer,
+            }
+          });
+      }
+      
+    })
+  }}
+>
+Confirmar
+</Button>
 
             </Box>
 

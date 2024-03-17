@@ -4,37 +4,46 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Typography from "@mui/material/Typography/Typography";
 import Button from "@mui/material/Button/Button";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+
 import * as React from 'react';
 import Swal from "sweetalert2";
 import { Form, Formik } from 'formik'
-import WarningIcon from '@mui/icons-material/Warning';
 import SweetAlertDAStyle from "../../../Profile/style/profileStyle.module.css"
 import WestIcon from '@mui/icons-material/West';
-import Modal from "@mui/material/Modal/Modal";
 import SettingsInput from "../inputElements/SettingsInput";
 import Grid from "@mui/material/Grid/Grid";
+import * as Yup from 'yup'
+import usePasswordStore, { getAllPasswordData } from "../../stateManagement/passwordStateManagement";
 
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "auto",
-    height: "auto",
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
+
+const getPasswordSchema = (contrasenaFromDatabase: string) => {
+    return Yup.object({
+        contrasenaActual: Yup.string()
+            .test('password-match', 'La contraseña actual es incorrecta', value => value === contrasenaFromDatabase)
+            .required('Required'),
+        contrasenaNueva: Yup.string()
+            .min(8, 'La nueva  contraseña debe tener al menos 8 caracteres')
+            .max(24, 'La contraseña no debe superar los 24 caracteres')
+            .required('Required'),
+        confirmarNuevaContrasena: Yup.string()
+            .oneOf([Yup.ref('contrasenaNueva'), undefined], 'La nueva contraseña debe coincidir')
+            .required('Required'),
+    });
 };
+
+
+
+
+const contrasenaFromDatabase = 'zxc123456789';
+
+const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
 
 const ChangePassword: React.FC = () => {
 
+    const {setPasswordData} = usePasswordStore()
+
     const navigate = useNavigate();
 
-    const [modalOpen, setModalOpen] = useState(false);
-    const handleModalOpen = () => setModalOpen(true);
-    const handleModalClose = () => setModalOpen(false);
     return (
         <Box sx={{
             backgroundColor: "#e9ecef",
@@ -87,47 +96,91 @@ const ChangePassword: React.FC = () => {
                 <Box>
                     <Formik
                         initialValues={{}}
-                        //validationSchema={}
+                        validationSchema={passwordSchema}
                         onSubmit={() => console.log("adios")}
                     >
-                        {({ handleSubmit }) => (
+                        {({ handleSubmit, isValid }) => (
                             <Form onSubmit={handleSubmit}>
                                 <Typography variant="h6" sx={{ padding: "3rem 0 0 5rem" }}>Cambiar contrasena</Typography>
                                 <Typography variant="subtitle1" sx={{ color: "gray", margin: "1px 0 0 5rem" }}>Su nueva contrasena debe ser diferente a la contrasena actual</Typography>
                                 <Grid container>
                                     <Grid item md={6}>
-                                        <Box sx={{ marginLeft:"5rem"}}>
-                                            <SettingsInput label="Contrasena actual" name="contrasenaActual" placeHolder="Escriba su contrasena actual" />
-                                            <SettingsInput label="Nueva contrasena" name="contrasenaNueva" placeHolder="Escriba su nueva contrasena" />
-                                            <SettingsInput label="Confirmar nueva contrasena" name="confirmarContrasenaNueva" placeHolder="coonfirme su nueva contrasena" />
+                                        <Box sx={{ marginLeft: "5rem" }}>
+                                            <SettingsInput  label="Contrasena actual" name="contrasenaActual" placeHolder="Escriba su contrasena actual" />
+                                            <SettingsInput zustandCallback={setPasswordData} label="Nueva contrasena" name="contrasenaNueva" placeHolder="Escriba su nueva contrasena" />
+                                            <SettingsInput label="Confirmar nueva contrasena" name="confirmarNuevaContrasena" placeHolder="coonfirme su nueva contrasena" />
                                         </Box>
                                     </Grid>
                                     <Grid item md={6} >
-                                    <Box sx={{marginRight:"6rem", color:"gray"}}>
-                                    <Typography variant="subtitle1">La nueva contrasena debe seguir los siguientes parametros de nuestra politica de contrasena</Typography>
-                                        <ul>
-                                            <li><Typography variant="subtitle1">La contrasena debe tener minimo 8 caracteres</Typography></li>
-                                            <li><Typography variant="subtitle1">La contrasena debe tener maximo 24 caracteres</Typography></li>
-                                            <li><Typography variant="subtitle1">Se prefiera que no se utilice una cuenta del 1 hasta el 9 
-                                                                                y que se eviten claves como fecha de nacimiento sin anadir algo
-                                                                                para que la contrasena sea mas segura</Typography></li>
-                                        </ul>
-                                    </Box>
-                                       
+                                        <Box sx={{ marginRight: "6rem", color: "gray" }}>
+                                            <Typography variant="subtitle1">La nueva contrasena debe seguir los siguientes parametros de nuestra politica de contrasena</Typography>
+                                            <ul>
+                                                <li><Typography variant="subtitle1">La contrasena debe tener minimo 8 caracteres</Typography></li>
+                                                <li><Typography variant="subtitle1">La contrasena debe tener maximo 24 caracteres</Typography></li>
+                                                <li><Typography variant="subtitle1">Se prefiera que no se utilice una cuenta del 1 hasta el 9
+                                                    y que se eviten claves como fecha de nacimiento sin anadir algo
+                                                    para que la contrasena sea mas segura</Typography></li>
+                                            </ul>
+                                        </Box>
+
                                     </Grid>
                                 </Grid>
 
-                                <Button sx={{ mt: "1rem", marginLeft:"5rem", backgroundColor: "#52b69a" }}
+                                <Button sx={{ mt: "1rem", marginLeft: "5rem", backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
 
                                     variant="contained"
                                     type="submit"
                                     //disabled={!isValid}
                                     onClick={() => {
-                                        console.log("submited")
+                                        
+                                        console.log(getAllPasswordData());
+                                        Swal.fire({
+                                            title: '¿Estás seguro?',
+                                            text: `Si procede con esta accion modificaras tu contrasena`,
+                                            icon: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#52b69a',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Acepto',
+                                            cancelButtonText: 'Cancelar',
+                                            customClass: {
+                                                container: SweetAlertDAStyle.sweetAlertContainer,
+                                            },
+                                            allowOutsideClick: () => !Swal.isLoading(),
+                                            allowEscapeKey: () => !Swal.isLoading(),
+                                            allowEnterKey: () => !Swal.isLoading(),
+                                            stopKeydownPropagation: false,
+
+                                        }).then((result) => {
+                                            if (result.isConfirmed && isValid) {
+
+
+                                                Swal.fire({
+                                                    title: 'Se ha actualizado la contrasena',
+                                                    text: 'La contrasena se ha cambiado de forma exitosa.',
+                                                    icon: 'success',
+                                                    customClass: {
+                                                        container: SweetAlertDAStyle.sweetAlertContainer,
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                Swal.fire({
+                                                    title: 'Hubo un problema',
+                                                    text: 'Las nuevas contrasenas no siguen los parametros establecidos y tu contrasena actual es incorrecta',
+                                                    icon: 'warning',
+                                                    customClass: {
+                                                        container: SweetAlertDAStyle.sweetAlertContainer,
+                                                    }
+                                                });
+                                            }
+
+                                        })
                                     }}
                                 >
                                     Confirmar
                                 </Button>
+
                             </Form>
                         )}
                     </Formik>
