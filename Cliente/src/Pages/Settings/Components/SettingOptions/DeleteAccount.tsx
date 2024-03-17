@@ -13,6 +13,7 @@ import SweetAlertDAStyle from "../../../Profile/style/profileStyle.module.css"
 import WestIcon from '@mui/icons-material/West';
 import Modal from "@mui/material/Modal/Modal";
 import SettingsInput from "../inputElements/SettingsInput";
+import * as Yup from 'yup'
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -26,6 +27,18 @@ const style = {
     boxShadow: 24,
     p: 4,
   };
+
+  const getPasswordSchema = (contrasenaFromDatabase: string) => {
+    return Yup.object({
+        contrasena: Yup.string()
+            .test('password-match', 'La contraseña actual es incorrecta', value => value === contrasenaFromDatabase)
+            .required('Required'),
+    });
+};
+
+const contrasenaFromDatabase = 'zxc123456789';
+
+const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
 
 const DeleteAccount: React.FC = () => {
 
@@ -106,10 +119,10 @@ const DeleteAccount: React.FC = () => {
                   <Box sx={{ width: '100%', height: "100%" }}>
                     <Formik
                       initialValues={{  }}
-                      //validationSchema={}
+                      validationSchema={passwordSchema}
                       onSubmit={() => console.log("adios")}
                     >
-                      {({ handleSubmit }) => (
+                      {({ handleSubmit, isValid, dirty }) => (
                         <Form onSubmit={handleSubmit}>
                             <Box sx={{display:"flex", justifyContent:"center", alignItems:"center"}}>
                                 <WarningIcon sx={{color:"red", width:"2rem", height:"2rem"}}></WarningIcon>
@@ -142,7 +155,7 @@ const DeleteAccount: React.FC = () => {
                                 stopKeydownPropagation: false,
 
                               }).then((result) => {
-                                if (result.isConfirmed) {
+                                if (result.isConfirmed && isValid && dirty) {
                                
                                   handleModalClose()
                                   Swal.fire({
@@ -153,6 +166,15 @@ const DeleteAccount: React.FC = () => {
                                       container: SweetAlertDAStyle.sweetAlertContainer,
                                     }
                                   }).finally(() => navigate("/"));
+                                } else {
+                                  Swal.fire({
+                                    title: 'Ha ocurrido un error',
+                                    text: 'La contrasena es incorrecta',
+                                    icon: 'warning',
+                                    customClass: {
+                                      container: SweetAlertDAStyle.sweetAlertContainer,
+                                    }
+                                  })
                                 }
                                 
                               })

@@ -31,9 +31,6 @@ const getPasswordSchema = (contrasenaFromDatabase: string) => {
     });
 };
 
-
-
-
 const contrasenaFromDatabase = 'zxc123456789';
 
 const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
@@ -99,7 +96,7 @@ const ChangePassword: React.FC = () => {
                         validationSchema={passwordSchema}
                         onSubmit={() => console.log("adios")}
                     >
-                        {({ handleSubmit, isValid }) => (
+                        {({ handleSubmit, isValid, dirty }) => (
                             <Form onSubmit={handleSubmit}>
                                 <Typography variant="h6" sx={{ padding: "3rem 0 0 5rem" }}>Cambiar contrasena</Typography>
                                 <Typography variant="subtitle1" sx={{ color: "gray", margin: "1px 0 0 5rem" }}>Su nueva contrasena debe ser diferente a la contrasena actual</Typography>
@@ -152,7 +149,7 @@ const ChangePassword: React.FC = () => {
                                             stopKeydownPropagation: false,
 
                                         }).then((result) => {
-                                            if (result.isConfirmed && isValid) {
+                                            if (result.isConfirmed && isValid && dirty) {
 
 
                                                 Swal.fire({
