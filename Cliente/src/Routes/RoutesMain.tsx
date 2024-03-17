@@ -6,6 +6,7 @@ import Private from "../Layout/Private";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import MyProfile from "../Pages/Profile/Components/MyProfile";
 import Profile from "../Pages/Profile/Components/Profile";
+import Casos from "../Pages/Casos/Casos";
 
 export default function RoutesMain() {
   return (
@@ -19,6 +20,7 @@ export default function RoutesMain() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path={"/profile"} element={<MyProfile />} />
           <Route path={"/pacientes/:idOrName"} element={<Profile />} />
+          <Route path={"/cases"} element={<Casos />} />
         </Route>
       </Routes>
     </BrowserRouter>

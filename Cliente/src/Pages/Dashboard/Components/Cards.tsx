@@ -46,6 +46,7 @@ export default function Cards({ type, number }: IProps) {
         // width: "100%",
         display: "flex",
         flexDirection: "row",
+        minWidth: "245px",
         // height: "110px",
       }}
     >

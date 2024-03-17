@@ -19,6 +19,7 @@ type IPropsDoctor = {
   time: string;
   estado: string;
   categoria: number;
+  // rol: "Doctor" | "Patient";
 };
 
 type IPropsPatient = {
@@ -29,15 +30,21 @@ type IPropsPatient = {
   estado: string;
   categoria: number;
 };
-
-type IData = IPropsDoctor | IPropsPatient;
-
+type IPropsData = {
+  id: number;
+  descripcion: string;
+  person: string;
+  time: string;
+  estado: string;
+  categoria: number;
+};
 interface IArray {
   isDoctor: Boolean;
-  data: IData[];
+  // data: (IPropsDoctor | IPropsPatient)[];
+  data: IPropsData[];
 }
 
-export default function ShortTable({ data }: IArray) {
+export default function ShortTable({ isDoctor, data }: IArray) {
   const rows = data.slice(0, 5);
 
   const badgetStatus: Record<string, any> = {
@@ -96,13 +103,17 @@ export default function ShortTable({ data }: IArray) {
       sx={{
         boxShadow: "none",
         padding: "5px 20px",
-        maxHeight: "320px",
+        // maxHeight: "363px",
       }}
     >
       <Table
         // sx={{ minWidth: 650 }}
         aria-label="simple table"
-        sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
+        sx={{
+          borderCollapse: "separate",
+          borderSpacing: "0 8px",
+          // height: "100%",
+        }}
       >
         <TableHead
           sx={{
@@ -140,7 +151,7 @@ export default function ShortTable({ data }: IArray) {
               }}
               align="left"
             >
-              Doctor
+              {isDoctor ? "Doctor" : "Paciente"}
             </TableCell>
             <TableCell
               sx={{
@@ -209,7 +220,8 @@ export default function ShortTable({ data }: IArray) {
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#070708",
-                  padding: "24px 16px",
+                  // padding: "24px 16px",
+                  padding: "5px 16px",
                 }}
               >
                 {row.id}
@@ -221,7 +233,8 @@ export default function ShortTable({ data }: IArray) {
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#070708",
-                  padding: "24px 16px",
+                  // padding: "24px 16px",
+                  padding: "5px 16px",
                 }}
               >
                 {row.descripcion}
@@ -233,11 +246,11 @@ export default function ShortTable({ data }: IArray) {
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#070708",
-                  padding: "24px 16px",
+                  // padding: "24px 16px",
+                  padding: "5px 16px",
                 }}
               >
-                {/* {row.paciente} */}
-                boo
+                {row.person}
               </TableCell>
               <TableCell
                 align="left"
@@ -246,7 +259,8 @@ export default function ShortTable({ data }: IArray) {
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#070708",
-                  padding: "24px 16px",
+                  // padding: "24px 16px",
+                  padding: "5px 16px",
                 }}
               >
                 {row.time}
@@ -258,7 +272,8 @@ export default function ShortTable({ data }: IArray) {
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#070708",
-                  padding: "24px 16px",
+                  // padding: "24px 16px",
+                  padding: "5px 16px",
                 }}
               >
                 <Badge
@@ -274,7 +289,8 @@ export default function ShortTable({ data }: IArray) {
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#070708",
-                  padding: "24px 16px",
+                  // padding: "24px 16px",
+                  padding: "5px 16px",
                 }}
               >
                 {row.categoria}

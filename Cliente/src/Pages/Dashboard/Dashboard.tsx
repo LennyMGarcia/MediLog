@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Cards from "./Components/Cards";
 import { PieChart } from "@mui/x-charts";
 import ShortTable from "./Components/ShortTable";
@@ -8,7 +8,7 @@ function Dashboard() {
     {
       id: 1,
       descripcion: "Consulta de rutina",
-      paciente: "Juan Pérez",
+      person: "Juan Pérez",
       time: "2024-03-11T09:00:00",
       estado: "open",
       categoria: 2,
@@ -16,7 +16,7 @@ function Dashboard() {
     {
       id: 2,
       descripcion: "Examen de sangre",
-      paciente: "María Rodríguez",
+      person: "María Rodríguez",
       time: "2024-03-12T10:30:00",
       estado: "close",
       categoria: 1,
@@ -24,7 +24,7 @@ function Dashboard() {
     {
       id: 3,
       descripcion: "Consulta de seguimiento",
-      paciente: "Luis García",
+      person: "Luis García",
       time: "2024-03-13T11:15:00",
       estado: "pending",
       categoria: 3,
@@ -32,7 +32,7 @@ function Dashboard() {
     {
       id: 4,
       descripcion: "Revisión de presión arterial",
-      paciente: "Ana Martínez",
+      person: "Ana Martínez",
       time: "2024-03-14T15:45:00",
       estado: "suspend",
       categoria: 2,
@@ -40,7 +40,7 @@ function Dashboard() {
     {
       id: 5,
       descripcion: "Vacunación contra la gripe",
-      paciente: "Carlos Sánchez",
+      person: "Carlos Sánchez",
       time: "2024-03-15T08:20:00",
       estado: "open",
       categoria: 1,
@@ -50,13 +50,18 @@ function Dashboard() {
   return (
     <Grid
       container
-      padding={"5px 24px"}
+      // padding={"30px 24px"}
+      padding={"10px 24px"}
       // rowSpacing={2}
-      gap={"12px"}
+      gap={4}
+      // spacing={2}
       direction={"column"}
+      sx={{
+        height: "100%",
+      }}
     >
-      <Grid item xs={12}>
-        <Typography variant="h6"></Typography>
+      <Grid item xs={12} lg={12}>
+        {/* <Typography variant="h6">Resumen</Typography> */}
 
         <Typography
           sx={{
@@ -79,32 +84,60 @@ function Dashboard() {
           12 de enero del 2024
         </Typography>
       </Grid>
-      <Grid item container xs={12} gap={1} justifyContent={"space-between"}>
-        <Grid item xs={2.9}>
+
+      <Grid
+        item
+        container
+        xs={12}
+        lg={12}
+        gap={1}
+        justifyContent={"space-between"}
+        wrap="wrap"
+      >
+        <Grid item xs={12} sm={5.9} lg={2.9}>
           <Cards type="open" number={50} />
         </Grid>
-        <Grid item xs={2.9}>
+        <Grid item xs={12} sm={5.9} lg={2.9}>
           <Cards type="close" number={50} />
         </Grid>
-        <Grid item xs={2.9}>
+        <Grid item xs={12} sm={5.9} lg={2.9}>
           <Cards type="suspend" number={50} />
         </Grid>
         {/* <Grid item xs={2.4}>
             <Cards type="delete" number={50} />
           </Grid> */}
-        <Grid item xs={2.9}>
+        <Grid item xs={12} sm={5.9} lg={2.9}>
           <Cards type="onProcess" number={50} />
         </Grid>
       </Grid>
 
-      <Grid item container xs={12} columnGap={"5px"}>
+      <Grid
+        item
+        container
+        xs={12}
+        lg={12}
+        gap={3}
+        sx={
+          {
+            // height: "100%",
+            // maxHeight: "100px",
+          }
+        }
+      >
         <Grid
           item
-          xs={4}
+          xs={12}
+          md={12}
+          lg={5.2}
+          // justifyContent={"center"}
+          alignItems={"center"}
+          padding={"30px 0px"}
           sx={{
             backgroundColor: "#FFFFFF",
+
             // padding: "24px",
             borderRadius: "8px",
+            // padding: "70px 0px",
             // width: "100%",
             display: "flex",
             // height: "110px",
@@ -113,6 +146,7 @@ function Dashboard() {
           }}
         >
           <PieChart
+            labelPosition="bottom"
             series={[
               {
                 data: [
@@ -125,12 +159,15 @@ function Dashboard() {
               },
             ]}
             width={600}
-            height={299}
+            height={350}
           />
         </Grid>
         <Grid
           item
-          xs={7.95}
+          xs={12}
+          md={12}
+          lg={6.5}
+          // xs={7}
           sx={{
             backgroundColor: "#FFFFFF",
             // padding: "24px",
@@ -139,7 +176,6 @@ function Dashboard() {
             // width: "100%",
             display: "flex",
             flexDirection: "row",
-            // height: "110px",
           }}
         >
           <ShortTable isDoctor={true} data={data} />

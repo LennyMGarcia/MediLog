@@ -17,15 +17,15 @@ import { Collapse } from "@mui/material";
 
 const pagesPatients = [
   { name: "Dashboard", link: "/dashboard" },
-  { name: "Casos", link: "/" },
+  { name: "Casos", link: "/cases" },
   { name: "Casos Terceros", link: "/" },
-  { name: "Perfil", link: "/" },
+  { name: "Perfil", link: "/profile" },
 ];
 const pagesDoctors = [
   { name: "Dashboard", link: "/dashboard" },
-  { name: "Casos", link: "/" },
-  { name: "Pacietes", link: "/" },
-  { name: "Perfil", link: "/" },
+  { name: "Casos", link: "/cases" },
+  { name: "Pacientes", link: "/" },
+  { name: "Perfil", link: "/profile" },
 ];
 const settings = ["Ajustes", "Cerrar Sesion"];
 
@@ -54,7 +54,7 @@ function Appbar() {
       position="static"
       sx={{
         backgroundColor: "#184E77",
-        height: "72px",
+        minHeight: "72px",
       }}
     >
       <Container
@@ -243,13 +243,14 @@ function Appbar() {
           </Box>
         </Toolbar>
       </Container>
+
       <Collapse
         in={checked}
         sx={{
           bgcolor: "#168AAD",
           display: {
-            // xs: "flex",
-            // md: "none",
+            xs: "block",
+            md: "none",
           },
         }}
       >
@@ -261,7 +262,7 @@ function Appbar() {
             onClick={handleChange}
             style={({ isActive }) => {
               return {
-                padding: "5px 10px",
+                padding: "10px 10px",
                 color: "white",
                 fontSize: "18px",
                 display: "block",

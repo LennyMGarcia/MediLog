@@ -5,8 +5,7 @@ import Footer from "../Common/Components/Footer";
 
 export default function Private() {
   return (
-    <Grid
-      container
+    <Box
       // xs={12}
       sx={{
         width: "100%",
@@ -18,13 +17,13 @@ export default function Private() {
       <Box
         sx={{
           width: "100%",
-          minHeight: "84.6vh",
+          minHeight: "90vh",
           bgcolor: "#E9ECEF",
         }}
       >
         <Outlet />
       </Box>
       <Footer />
-    </Grid>
+    </Box>
   );
 }
