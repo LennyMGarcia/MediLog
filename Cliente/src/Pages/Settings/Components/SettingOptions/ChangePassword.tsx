@@ -15,7 +15,7 @@ import Grid from "@mui/material/Grid/Grid";
 import * as Yup from 'yup'
 import usePasswordStore, { getAllPasswordData } from "../../stateManagement/passwordStateManagement";
 
-
+//Si necesitas cambiar un valor seria en la parte donde dice value, solo retorna un objeto yup esto, lo unico que cambia es el test
 const getPasswordSchema = (contrasenaFromDatabase: string) => {
     return Yup.object({
         contrasenaActual: Yup.string()
@@ -31,12 +31,14 @@ const getPasswordSchema = (contrasenaFromDatabase: string) => {
     });
 };
 
+//Aqui es donde tienes que sacar la contrasena, para pasarla el getPassword esquema
 const contrasenaFromDatabase = 'zxc123456789';
 
 const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
 
 const ChangePassword: React.FC = () => {
 
+    //Lo mismo que los objetos zustand de siempre
     const {setPasswordData} = usePasswordStore()
 
     const navigate = useNavigate();
@@ -104,6 +106,8 @@ const ChangePassword: React.FC = () => {
                                     <Grid item md={6}>
                                         <Box sx={{ marginLeft: "5rem" }}>
                                             <SettingsInput  label="Contrasena actual" name="contrasenaActual" placeHolder="Escriba su contrasena actual" />
+                                            {/*Ojo con este, aqui hay un zustandCallback, si quieres cambiar algo 
+                                            en el state management siempre sera correcto por la tipificacion*/}
                                             <SettingsInput zustandCallback={setPasswordData} label="Nueva contrasena" name="contrasenaNueva" placeHolder="Escriba su nueva contrasena" />
                                             <SettingsInput label="Confirmar nueva contrasena" name="confirmarNuevaContrasena" placeHolder="coonfirme su nueva contrasena" />
                                         </Box>
@@ -129,7 +133,7 @@ const ChangePassword: React.FC = () => {
                                     type="submit"
                                     //disabled={!isValid}
                                     onClick={() => {
-                                        
+                                        //AQUI EL CONSOLE LOG SI LO QUIERES ELIMINAR
                                         console.log(getAllPasswordData());
                                         Swal.fire({
                                             title: '¿Estás seguro?',

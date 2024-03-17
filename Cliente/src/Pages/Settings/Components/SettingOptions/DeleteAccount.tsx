@@ -27,7 +27,7 @@ const style = {
     boxShadow: 24,
     p: 4,
   };
-
+  //Devuelve un objeto yup
   const getPasswordSchema = (contrasenaFromDatabase: string) => {
     return Yup.object({
         contrasena: Yup.string()
@@ -37,7 +37,7 @@ const style = {
 };
 
 const contrasenaFromDatabase = 'zxc123456789';
-
+//Aqui pasas la contrasena de la base datos y se crea un esquema
 const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
 
 const DeleteAccount: React.FC = () => {
@@ -120,6 +120,7 @@ const DeleteAccount: React.FC = () => {
                     <Formik
                       initialValues={{  }}
                       validationSchema={passwordSchema}
+                      //Aqui el onsubmit
                       onSubmit={() => console.log("adios")}
                     >
                       {({ handleSubmit, isValid, dirty }) => (

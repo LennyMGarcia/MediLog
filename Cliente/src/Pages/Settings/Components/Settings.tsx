@@ -10,10 +10,17 @@ import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PasswordIcon from '@mui/icons-material/Password';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 const Settings: React.FC = () => {
     const navigate = useNavigate();
+    
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
+
 
     return (
         <Box sx={{
@@ -35,10 +42,10 @@ const Settings: React.FC = () => {
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: "15vw",
+                width: isMediumScreen ?"15vw" :"50vw",
                 height: "5vh",
                 boxShadow: 1,
-                margin: "3rem 0 0 3rem",
+                margin: isMediumScreen? "3rem 0 0 3rem" : "3rem 0 0 0",
                 display: "flex", justifyContent: "center", alignItems: "center",
                 borderStartStartRadius: "1rem",
                 borderTopRightRadius: "1rem"
@@ -48,21 +55,21 @@ const Settings: React.FC = () => {
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: "90vw",
-                height: "70vh",
+                width: isMediumScreen ?"90vw" : "100vw",
+                height:  "70vh" ,
                 boxShadow: 1,
-                marginLeft: "3rem"
+                marginLeft: isMediumScreen? "3rem" : 0
             }}>
 
                 <Grid container>
-                    <Grid item container md={7}>
+                    <Grid item container md={7} xs={12}>
             
-                    <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"3rem"}}>
+                    <Grid item container md={6} xs={12} sx={{width:"10px", height:"1px", marginTop:"3rem"}}>
                             <Button onClick={() => navigate("/settings/appearance")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
-                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
-                                    <SettingsBrightnessIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
+                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: isMediumScreen?  "5vw" :"26vw", height: "10vh", borderRadius: "0.5rem",}}>
+                                    <SettingsBrightnessIcon sx={{ width: isMediumScreen ? "3.5vw" : "10vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
                                     <Typography variant="subtitle1"  sx={{ color: "black" }}>Apariencia y fuente</Typography>
@@ -73,12 +80,12 @@ const Settings: React.FC = () => {
                             
                         </Grid>
 
-                        <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"3rem"}}>
+                        <Grid item container md={6} xs={12} sx={{width:"10px", height:"1px", marginTop: isMediumScreen? "3rem":"7rem"}}>
                             <Button onClick={() => navigate("/settings/changePlan")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
-                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
-                                    <ViewCarouselIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
+                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: isMediumScreen?  "5vw" :"26vw", height: "10vh", borderRadius: "0.5rem",}}>
+                                    <ViewCarouselIcon sx={{ width: isMediumScreen ? "3.5vw" : "10vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
                                     <Typography variant="subtitle1"  sx={{ color: "black" }}>Cambiar Plan</Typography>
@@ -89,12 +96,12 @@ const Settings: React.FC = () => {
                             
                         </Grid>
 
-                        <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"-5rem"}}>
+                        <Grid item container md={6} xs={12} sx={{width:"10px", height:"1px",marginTop: isMediumScreen? "3rem":"7rem"}}>
                             <Button onClick={() => navigate("/settings/changePassword")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
-                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
-                                    <PasswordIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
+                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: isMediumScreen?  "5vw" :"26vw", height: "10vh", borderRadius: "0.5rem",}}>
+                                    <PasswordIcon sx={{ width: isMediumScreen ? "3.5vw" : "10vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
                                     <Typography variant="subtitle1"  sx={{ color: "black" }}>Cambiar contrasena</Typography>
@@ -104,13 +111,13 @@ const Settings: React.FC = () => {
                             </Button>
                             
                         </Grid>
-
-                        <Grid item container md={6} sx={{width:"10px", height:"1px", marginTop:"-5rem"}}>
+ 
+                        <Grid item container md={6} xs={12} sx={{width:"10px", height:"1px", marginTop:isMediumScreen? "3rem":"7rem"}}>
                             <Button onClick={() => navigate("/settings/deleteAccount")}  sx={{margin:"1rem",padding:"1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                 backgroundColor: '#efe'}}}>
                             <Grid  container >
-                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef", width: "5vw", height: "10vh", borderRadius: "0.5rem",}}>
-                                    <DeleteIcon sx={{ width: "3.5vw", height: "7vh", color: "#52b69a" }} />
+                                <Grid item sx={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#e9ecef",  width: isMediumScreen?  "5vw" :"26vw", height: "10vh", borderRadius: "0.5rem",}}>
+                                    <DeleteIcon sx={{ width: isMediumScreen ? "3.5vw" : "10vw", height: "7vh", color: "#52b69a" }} />
                                 </Grid>
                                 <Grid item sx={{  width: "13rem", paddingLeft:"1rem", textAlign:"left" }}>
                                     <Typography variant="subtitle1" sx={{ color: "black" }}>Eliminar cuenta</Typography>
@@ -119,7 +126,7 @@ const Settings: React.FC = () => {
                             </Grid>
                             </Button>
                             
-                        </Grid>
+                            </Grid>
 
                         
 
@@ -128,12 +135,12 @@ const Settings: React.FC = () => {
                         
 
                     </Grid>
-                    <Grid item md={5} >
+                    {isMediumScreen && <Grid item md={5} xs={12}>
                         <Box>
                             <img src={registerDoctor} style={{ width: "28rem", height: "22rem", padding: "2rem" }} ></img>
                         </Box>
 
-                    </Grid>
+                    </Grid>}
 
                 </Grid>
 

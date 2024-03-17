@@ -8,9 +8,6 @@ const zodPasswordSchema = z.object({
    
 });
 
-// Merge de los distintos tipos, los zods separados ayudan a saber de donde vienen 
-
-
  type passwordSchemaValues = z.infer<typeof zodPasswordSchema>;
 
 export type passwordSchemaActions = {
