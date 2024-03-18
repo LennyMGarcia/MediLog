@@ -196,7 +196,9 @@ const ChangePassword: React.FC = () => {
             </Box>
         </Box>
     );
+    
 };
 
+//un cambio
 
 export default ChangePassword;
