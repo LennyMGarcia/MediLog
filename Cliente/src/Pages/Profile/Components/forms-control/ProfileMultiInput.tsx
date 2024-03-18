@@ -21,7 +21,7 @@ interface InputProps extends Omit<TextFieldProps, 'variant'> {
     Values?: any[],
 }
 
-const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder, Values, ...rest }) => {
+const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder, Values = [], ...rest }) => {
     const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = useCallback((e: ChangeEvent<any>, index: number) => {
@@ -40,11 +40,11 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
         }
         setProcessedValues(true);
     }, [processedValues]);
-    
+
     useEffect(() => {
         if (Values && Values.length) {
             Values.forEach((value, index) => {
-               setRegisterData(name, value, index);
+                setRegisterData(name, value, index);
             });
         }
     }, []);
@@ -112,14 +112,14 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                                     <React.Fragment>
                                                         <TextField
                                                             id={value || ''}
-                                                            name={`${name}[${index}]`} 
+                                                            name={`${name}[${index}]`}
                                                             placeholder={placeHolder || ""}
                                                             variant="outlined"
                                                             color="primary"
                                                             fullWidth
-                                                            value={field.value || ''} 
+                                                            value={field.value || ''}
                                                             onChange={(e) => {
-                                                                field.onChange(e);  
+                                                                field.onChange(e);
                                                                 handleChange(e, index);
                                                             }}
                                                             error={Boolean(form.errors[name] && form.touched[name])}

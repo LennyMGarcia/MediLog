@@ -4,10 +4,10 @@ import ProfileControl from "../forms-control/ProfileControl";
 import BoxRowWrapper from "../../../../Common/Wrappers/BoxRowWrapper";
 
 interface IFinancialProfileForm {
-    profileValues:Record<string, any>;
+    profileValues: Record<string, any>;
 }
 
-const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) => {
+const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({ profileValues }) => {
     return (
         <>
             <BoxRowWrapper>
@@ -34,8 +34,8 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
                     label="Metodo de pago"
                     name="metodo_pago"
                     selectObject={[
-                        { key: "Tarjeta de crédito", value: "Tarjeta de credito" },
-                        { key: "Tarjeta de débito", value: "Tarjeta de debito" },
+                        { key: "Tarjeta de Credito", value: "Tarjeta de Credito" },
+                        { key: "Tarjeta de Debito", value: "Tarjeta de Debito" },
                     ]}
                 />
             </Box>

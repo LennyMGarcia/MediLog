@@ -50,6 +50,23 @@ class Usuario extends Model {
         }
 
     }
+    async getMember(member_id) {
+        if (!member_id) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
+
+        try {
+            const query = new Builder(this.table);
+            const [result, fields] = await DB.query(query.select_query('*', 'member_id'), [member_id]);
+            this.id = result[0]?.id;
+            this.member_id = result[0]?.member_id;
+            this.tipo = result[0]?.tipo;
+            this.plan = result[0]?.plan;
+            return result[0];
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
+    }
     async insert(data = null) {
         if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
 
