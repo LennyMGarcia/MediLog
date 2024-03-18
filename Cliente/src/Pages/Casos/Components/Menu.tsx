@@ -5,7 +5,8 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import ModalAlert from "../Modals/ModalAlert";
+import { Visibility } from "@mui/icons-material";
 
 export default function TableMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -17,8 +18,10 @@ export default function TableMenu() {
     setAnchorEl(null);
   };
 
+  const [openModal, setOpenModal] = React.useState(false);
+
   return (
-    <div>
+    <>
       <IconButton
         id="basic-button"
         aria-controls={open ? "basic-menu" : undefined}
@@ -43,11 +46,14 @@ export default function TableMenu() {
             gap: 1,
           }}
         >
-          <EditIcon />
-          Editar
+          <Visibility />
+          Ver Detalles
         </MenuItem>
         <MenuItem
-          onClick={handleClose}
+          onClick={() => {
+            handleClose();
+            setOpenModal(true);
+          }}
           sx={{
             gap: 1,
           }}
@@ -56,6 +62,15 @@ export default function TableMenu() {
           Eliminar
         </MenuItem>
       </Menu>
-    </div>
+      <ModalAlert
+        title="¿Esta seguro que quiere borrar este caso?"
+        description="Al pulsar aceptar, este carro sera borrado de manera permanente, y no podra ser recuperado a futuro, ¿Deseas continuar a futuro?"
+        type="warning"
+        open={openModal}
+        handleClose={() => {
+          setOpenModal(false);
+        }}
+      />
+    </>
   );
 }
