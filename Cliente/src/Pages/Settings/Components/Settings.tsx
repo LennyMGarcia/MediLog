@@ -1,6 +1,6 @@
 
 import Box from "@mui/material/Box/Box";
-import registerDoctor from "/assets/Pictures/registerDoctor.jpg";
+import medilogConfig from "/assets/Pictures/medilogConfig.png";
 import SettingsIcon from '@mui/icons-material/Settings';
 import Grid from "@mui/material/Grid/Grid";
 import Typography from "@mui/material/Typography/Typography";
@@ -14,13 +14,13 @@ import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
 
 
+
+
 const Settings: React.FC = () => {
     const navigate = useNavigate();
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
-
-
 
     return (
         <Box sx={{
@@ -102,7 +102,7 @@ const Settings: React.FC = () => {
 
                         </Grid>
 
-                        <Grid item container md={6} xs={12} sx={{ width: "10px", height: "1px", marginTop: isMediumScreen ? "-3rem" : "7rem" }}>
+                        <Grid item container md={6} xs={12} sx={{ width: "10px", height: "1px", marginTop: isMediumScreen ? "1rem" : "7rem" }}>
                             <Button onClick={() => navigate("/settings/changePassword")} sx={{
                                 margin: "1rem", padding: "1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                     backgroundColor: '#efe'
@@ -121,7 +121,7 @@ const Settings: React.FC = () => {
 
                         </Grid>
 
-                        <Grid item container md={6} xs={12} sx={{ width: "10px", height: "1px", marginTop: isMediumScreen ? "-3rem" : "7rem" }}>
+                        <Grid item container md={6} xs={12} sx={{ width: "10px", height: "1px", marginTop: isMediumScreen ? "1rem" : "7rem" }}>
                             <Button onClick={() => navigate("/settings/deleteAccount")} sx={{
                                 margin: "1rem", padding: "1rem", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "0.5rem", "&:hover": {
                                     backgroundColor: '#efe'
@@ -142,8 +142,8 @@ const Settings: React.FC = () => {
 
                     </Grid>
                     {isMediumScreen && <Grid item md={5} xs={12}>
-                        <Box>
-                            <img src={registerDoctor} style={{ width: "28rem", height: "22rem", padding: "2rem" }} ></img>
+                        <Box sx={{display:"flex", justifyContent:"center", justifyItems:"center", paddingTop:"5rem"}}>
+                            <img src={medilogConfig} style={{ width: "15rem", height: "15rem", }} ></img>
                         </Box>
 
                     </Grid>}

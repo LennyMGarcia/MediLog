@@ -6,7 +6,6 @@ import Profile from "../Pages/Profile/Components/Profile";
 import Settings from "../Pages/Settings/Components/Settings";
 import Appearance from "../Pages/Settings/Components/SettingOptions/appearance";
 import DeleteAccount from "../Pages/Settings/Components/SettingOptions/DeleteAccount";
-import changePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
 import ChangePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
 import ChangePlan from "../Pages/Settings/Components/SettingOptions/ChangePlan";
 
