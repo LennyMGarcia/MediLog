@@ -21,7 +21,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({ profileValues }
                 <ProfileControl
                     initialValue={profileValues["categoria"]}
                     control="input"
-                    label="Categoria"
+                    label="Categoría"
                     name="categoria"
                     disabled
                 />

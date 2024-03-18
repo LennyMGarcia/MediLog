@@ -14,7 +14,7 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
     return (
         <>
             <Box>
-                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Informacion Basica</Typography></Box>
+                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Información Basica</Typography></Box>
                 <BoxRowWrapper  >
                     <RegistrationControl
                         control="input"
@@ -66,7 +66,7 @@ const BasicInformationForm: React.FC<IBasicInformationForm> = ({ type = "pacient
                     <Box>
                         <RegistrationControl
                             control="input"
-                            label="Cedula"
+                            label="Cédula"
                             name="documento_identidad"
                             placeholder="Escriba su cedula"
                         />

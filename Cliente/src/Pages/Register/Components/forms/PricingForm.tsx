@@ -25,13 +25,13 @@ const tiers = [
       id: 1,
       title: "Basico",
       price: 0,
-      description: ["Acceso basico a informacion personal"],
+      description: ["Acceso básico a información personal"],
       buttonText: "SELECCIONAR",
     },
     {
       id: 2,
       title: "Familiar",
-      subheader: "Mas popular",
+      subheader: "Más popular",
       position: "middle",
       price: 1000,
       description: [
@@ -60,7 +60,7 @@ const tiers = [
       title: "Independiente",
       price: 3000,
       description: [
-        "Acceso basico a aplicaciones Web, Movil y Escritorio",
+        "Acceso básico a aplicaciones Web, Movil y Escritorio",
         " Acceso a 50TB de memoria",
       ],
       buttonText: "SELECCIONAR",
@@ -68,7 +68,7 @@ const tiers = [
     {
       id: 5,
       title: "Hospitales",
-      subheader: "Mas popular",
+      subheader: "Más popular",
       position: "middle",
       price: 7000,
       description: [
