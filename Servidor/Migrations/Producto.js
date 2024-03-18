@@ -20,7 +20,6 @@ class Producto extends Model {
             return results[0];
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
@@ -39,7 +38,6 @@ class Producto extends Model {
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
@@ -58,7 +56,6 @@ class Producto extends Model {
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }

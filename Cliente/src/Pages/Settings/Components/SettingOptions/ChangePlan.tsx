@@ -254,7 +254,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
                                     } else {
                                         Swal.fire({
                                             title: 'Hubo un problema',
-                                            text: 'El plan no pudo actualizarse o has elegido el mismo plan que tenias',
+                                            text: 'El plan no pudo actualizarse.',
                                             icon: 'warning',
                                             customClass: {
                                                 container: SweetAlertDAStyle.sweetAlertContainer,

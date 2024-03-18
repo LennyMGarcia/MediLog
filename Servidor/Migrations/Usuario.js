@@ -42,6 +42,7 @@ class Usuario extends Model {
             const rows = {
                 id: result.id,
                 member_id: result.member_id,
+                correo: result.correo,
                 tipo: result.tipo,
                 plan: productos_results[0]?.nombre || 'Basico'
             }
@@ -92,7 +93,7 @@ class Usuario extends Model {
             //Funccion que encripta la contrasena
             const salt = await bcrypt.genSalt(salt_level);
             const hashed_password = await bcrypt.hash(this.data.contrasena, salt);
-            if (!hashed_password) res.json({ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña', 'status': 400 });
+            if (!hashed_password) return [{ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña', 'status': 500 }];
 
             this.values[2] = hashed_password;
 
@@ -211,6 +212,33 @@ class Usuario extends Model {
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
             // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
+    }
+    async update_password(data = null, id = null) {
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+
+        try {
+            this.data = data;
+            this.values = [
+                this.data || null,
+            ];
+            this.editable_columns = [
+                'contrasena',
+            ];
+            //Funccion que encripta la contrasena
+            const salt = await bcrypt.genSalt(salt_level);
+            const hashed_password = await bcrypt.hash(this.data, salt);
+            if (!hashed_password) return [{ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña', 'status': 500 }];
+
+            this.values[0] = hashed_password;
+
+            const query = new Builder(this.table);
+            const [results, fields] = await DB.execute('UPDATE usuarios SET contrasena = ? where id=?', [hashed_password, id])
+            return results;
+
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
         }
 
     }

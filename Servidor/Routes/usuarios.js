@@ -20,6 +20,11 @@ const validaciones = [
 const edit_validaciones = [
     body('plan').escape().trim().isString().notEmpty().withMessage('Numero Identificacion Invalido.'),
 ];
+const password_validaciones = [
+    body('correo').escape().trim().isEmail().notEmpty().withMessage('Correo Invalido.'),
+    body('currentPass').escape().trim().isAlphanumeric().isLength({ max: 12, min: 8 }).notEmpty().withMessage('Contraseña Obligatoria.'),
+    body('newPass').escape().trim().isAlphanumeric().isLength({ max: 12, min: 8 }).notEmpty().withMessage('Contraseña Obligatoria.'),
+];
 const id_validation = [
     param('id').escape().trim().notEmpty().isInt().withMessage('Numero de Identificacion Invalido.')
 ];
@@ -46,7 +51,7 @@ router.get('/:id', id_validation, async (req, res) => {
     }
 
     const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.post('/', async (req, res) => {
     const data = req.body;
@@ -64,7 +69,40 @@ router.post('/', async (req, res) => {
     }
 
     const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
+});
+router.put('/password/:id', id_validation, password_validaciones, async (req, res) => {
+    const id = req.params.id;
+    const validated = validationResult(req);
+
+    //Condicion que verifica si los campos obligatorios estan incluidos
+    if (validated.isEmpty()) {
+        const correo = req.body.correo;
+        const current_password = req.body.currentPass;
+        const new_password = req.body.newPass;
+        console.log(current_password);
+        console.log(new_password);
+
+        const model = new Usuario();
+        const result = await model.authenticate(correo);
+        const hashed_password = result[0]?.contrasena;
+
+        if (hashed_password) {
+            //Funcion que verifica si la contrasena introducida coincide con la contrasena del usuario.
+            const authenticated = bcrypt.compareSync(current_password, hashed_password);
+            if (!authenticated) return res.status(401).json({ 'message': 'Credenciales Incorrectas.' });
+            const user = new Usuario();
+            const change_password = await user.update_password(new_password, id);
+            console.log(change_password);
+            return res.status(200).json({ 'message': 'Contrasena Cambiada Exitosamente.' });
+        }
+
+        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        return res.status(401).json({ 'message': 'Acceso Denegado.' });
+    }
+
+    const error_msg = validated.errors[0].msg;
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
     const id = req.params.id;
@@ -86,7 +124,7 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
     }
 
     const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 /*router.put('/:id', id_validation, async (req, res) => {
     const id = req.params.id;
@@ -120,7 +158,7 @@ router.delete('/:id', id_validation, async (req, res) => {
     }
 
     const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 
 module.exports = router;

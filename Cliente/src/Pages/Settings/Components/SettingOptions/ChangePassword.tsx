@@ -16,12 +16,39 @@ import * as Yup from 'yup'
 import usePasswordStore, { getAllPasswordData } from "../../stateManagement/passwordStateManagement";
 import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
+import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
+import axios from "axios";
+import useUserStore from "../../../../Common/Utils/setUserSession";
 
 //Si necesitas cambiar un valor seria en la parte donde dice value, solo retorna un objeto yup esto, lo unico que cambia es el test
-const getPasswordSchema = (contrasenaFromDatabase: string) => {
+//
+/*const getPasswordSchema = (contrasenaFromDatabase: string) => {
     return Yup.object({
         contrasenaActual: Yup.string()
-            .test('password-match', 'La contraseña actual es incorrecta', value => value === contrasenaFromDatabase)
+        .test('password-match', 'La contraseña actual es incorrecta', value => value === contrasenaFromDatabase)
+            .required('Required'),
+        contrasenaNueva: Yup.string()
+            .min(8, 'La nueva  contraseña debe tener al menos 8 caracteres')
+            .max(24, 'La contraseña no debe superar los 24 caracteres')
+            .required('Required'),
+        confirmarNuevaContrasena: Yup.string()
+            .oneOf([Yup.ref('contrasenaNueva'), undefined], 'La nueva contraseña debe coincidir')
+            .required('Required'),
+    });
+//Aqui es donde tienes que sacar la contrasena, para pasarla el getPassword esquema
+};
+*/
+//const contrasenaFromDatabase = 'password';
+
+//const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
+
+
+// BENJUNIOR DICE -- Comente esa parte porque la contrasena esta hasheada, ese no seria el metodo para verificar si la actual, ese metodo no es tan seguro
+
+
+const getPasswordSchema = () => {
+    return Yup.object({
+        contrasenaActual: Yup.string()
             .required('Required'),
         contrasenaNueva: Yup.string()
             .min(8, 'La nueva  contraseña debe tener al menos 8 caracteres')
@@ -33,26 +60,55 @@ const getPasswordSchema = (contrasenaFromDatabase: string) => {
     });
 };
 
-//Aqui es donde tienes que sacar la contrasena, para pasarla el getPassword esquema
-const contrasenaFromDatabase = 'zxc123456789';
 
-const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
+
+const passwordSchema = getPasswordSchema();
 
 const ChangePassword: React.FC = () => {
+
+    const { authenticated } = useUserStore();
+    const { getUser } = useUserStore();
+
+    const id = authenticated() ? getUser().id : null;
+    const correo = authenticated() ? getUser().correo : null;
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     //Lo mismo que los objetos zustand de siempre
-    const {setPasswordData} = usePasswordStore()
+    const { setPasswordData, getPasswordData } = usePasswordStore()
 
     const navigate = useNavigate();
+
+    const change_password = async (currentPass: string, newPass: string) => {
+        console.log(currentPass);
+        console.log(newPass);
+        const result = await axios.put(getBackendConnectionString(`usuarios/password/${id}`), {
+            correo: correo,
+            currentPass: currentPass,
+            newPass: newPass
+        }).then(response => {
+            console.log(response);
+            if (response.status === 201 || response.status === 200) {
+                return { success: true, message: response.statusText };
+            }
+            return { success: false, message: response.statusText };
+
+        }).catch(error => {
+            const error_msj = error?.response?.data?.message;
+            console.log(error);
+            console.log(error_msj);
+            return { success: false, message: error_msj };
+        });
+
+        return result;
+    }
 
     return (
         <Box sx={{
             backgroundColor: "#e9ecef",
             width: "100vw",
-            height: isMediumScreen ? "110rem"  :"150vh",
+            height: isMediumScreen ? "110rem" : "150vh",
             padding: "1px"
         }}>
             <Box sx={{
@@ -92,8 +148,8 @@ const ChangePassword: React.FC = () => {
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: isMediumScreen ? "90vw": "100vw",
-                height: isMediumScreen ?"90vh" : "115vh",
+                width: isMediumScreen ? "90vw" : "100vw",
+                height: isMediumScreen ? "90vh" : "115vh",
                 boxShadow: 1,
                 marginLeft: isMediumScreen ? "3rem" : 0
             }}>
@@ -106,19 +162,19 @@ const ChangePassword: React.FC = () => {
                         {({ handleSubmit, isValid, dirty }) => (
                             <Form onSubmit={handleSubmit}>
                                 <Typography variant="h6" sx={{ padding: isMediumScreen ? "3rem 0 0 5rem" : "3rem 0 0 2rem" }}>Cambiar contraseña</Typography>
-                                <Typography variant="subtitle1" sx={{ color: "gray", margin: isMediumScreen ?  "1px 0 0 5rem" :"0 3rem 0 3rem" }}>Su nueva contraseña debe ser diferente a la contraseña actual</Typography>
+                                <Typography variant="subtitle1" sx={{ color: "gray", margin: isMediumScreen ? "1px 0 0 5rem" : "0 3rem 0 3rem" }}>Su nueva contraseña debe ser diferente a la contraseña actual</Typography>
                                 <Grid container>
                                     <Grid item md={6} xs={12}>
                                         <Box sx={{ marginLeft: isMediumScreen ? "5rem" : "2rem" }}>
-                                            <SettingsInput  label="Contraseña actual" name="contrasenaActual" placeHolder="Escriba su contrasena actual" />
+                                            <SettingsInput zustandCallback={setPasswordData} label="Contraseña actual" name="contrasenaActual" placeHolder="Escriba su contrasena actual" />
                                             {/*Ojo con este, aqui hay un zustandCallback, si quieres cambiar algo 
                                             en el state management siempre sera correcto por la tipificacion*/}
                                             <SettingsInput zustandCallback={setPasswordData} label="Nueva contrasena" name="contrasenaNueva" placeHolder="Escriba su nueva contrasena" />
                                             <SettingsInput label="Confirmar nueva contraseña" name="confirmarNuevaContrasena" placeHolder="coonfirme su nueva contrasena" />
                                         </Box>
                                     </Grid>
-                                    <Grid item md={6}  xs={12}>
-                                        <Box sx={{ margin: isMediumScreen ? " 0 6rem 0 0" : " 1rem 2rem",color: "gray" }}>
+                                    <Grid item md={6} xs={12}>
+                                        <Box sx={{ margin: isMediumScreen ? " 0 6rem 0 0" : " 1rem 2rem", color: "gray" }}>
                                             <Typography variant="subtitle1">La nueva contraseña debe seguir los siguientes parametros de nuestra politica de contrasena</Typography>
                                             <ul>
                                                 <li><Typography variant="subtitle1">La contraseña debe tener minimo 6 caracteres</Typography></li>
@@ -132,7 +188,7 @@ const ChangePassword: React.FC = () => {
                                     </Grid>
                                 </Grid>
 
-                                <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ?"5rem":'2rem', backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
+                                <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : '2rem', backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
 
                                     variant="contained"
                                     type="submit"
@@ -140,6 +196,7 @@ const ChangePassword: React.FC = () => {
                                     onClick={() => {
                                         //AQUI EL CONSOLE LOG SI LO QUIERES ELIMINAR
                                         console.log(getAllPasswordData());
+
                                         Swal.fire({
                                             title: '¿Estás seguro?',
                                             text: `Si procede con esta accion modificaras tu contraseña`,
@@ -159,16 +216,30 @@ const ChangePassword: React.FC = () => {
 
                                         }).then((result) => {
                                             if (result.isConfirmed && isValid && dirty) {
-
-
-                                                Swal.fire({
-                                                    title: 'Se ha actualizado la contraseña',
-                                                    text: 'La contraseña se ha cambiado de forma exitosa.',
-                                                    icon: 'success',
-                                                    customClass: {
-                                                        container: SweetAlertDAStyle.sweetAlertContainer,
+                                                change_password(getPasswordData('contrasenaActual'), getPasswordData('contrasenaNueva')).then(({ success, message }) => {
+                                                    if (success) {
+                                                        Swal.fire({
+                                                            title: 'Se ha actualizado la contraseña',
+                                                            text: 'La contraseña se ha cambiado de forma exitosa.',
+                                                            icon: 'success',
+                                                            customClass: {
+                                                                container: SweetAlertDAStyle.sweetAlertContainer,
+                                                            }
+                                                        }).then(onsubmit => {
+                                                            navigate('/settings');
+                                                            return onsubmit;
+                                                        });
+                                                    } else {
+                                                        Swal.fire({
+                                                            title: 'Hubo un problema',
+                                                            text: message,
+                                                            icon: 'warning',
+                                                            customClass: {
+                                                                container: SweetAlertDAStyle.sweetAlertContainer,
+                                                            }
+                                                        });
                                                     }
-                                                });
+                                                })
                                             }
                                             else {
                                                 Swal.fire({
@@ -180,7 +251,6 @@ const ChangePassword: React.FC = () => {
                                                     }
                                                 });
                                             }
-
                                         })
                                     }}
                                 >
@@ -194,9 +264,9 @@ const ChangePassword: React.FC = () => {
 
 
             </Box>
-        </Box>
+        </Box >
     );
-    
+
 };
 
 //un cambio
