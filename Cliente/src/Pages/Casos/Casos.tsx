@@ -18,7 +18,9 @@ export default function Casos() {
     >
       <Grid item container xs={12} justifyContent={"space-between"}>
         <Grid item xs={1}>
-          <Typography variant="h5">Casos</Typography>
+          <Typography variant="h5" fontSize={40}>
+            Casos
+          </Typography>
         </Grid>
 
         <Grid

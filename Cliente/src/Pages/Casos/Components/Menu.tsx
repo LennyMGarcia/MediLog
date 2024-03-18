@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ModalAlert from "../Modals/ModalAlert";
+import ModalAlert from "../../../Common/Modals/ModalAlert";
 import { Visibility } from "@mui/icons-material";
 
 export default function TableMenu() {

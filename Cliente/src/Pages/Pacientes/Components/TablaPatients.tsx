@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import {
   Box,
+  Button,
   Chip,
   InputAdornment,
   TablePagination,
@@ -17,102 +18,434 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { Search } from "@mui/icons-material";
-import TableMenu from "./Menu";
+import { Person2, Search } from "@mui/icons-material";
 
-type IPropsDoctor = {
-  id: number;
-  descripcion: string;
-  paciente: string;
-  time: string;
-  estado: string;
-  categoria: number;
+type IProps = {
+  idPatient: number;
+  name: string;
+  lastname: string;
+  sex: "M" | "F";
+  email: string;
+  phone: string;
 };
 
-type IPropsPatient = {
-  id: number;
-  descripcion: string;
-  doctor: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
-
-type IPropsData = {
-  id: number;
-  descripcion: string;
-  person: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
-
-interface IArray {
-  isDoctor: Boolean;
-  // data: IPropsDoctor[] | IPropsPatient[];
-  data: IPropsData[];
-}
-
-interface IProps {
-  type: "all" | "open" | "close" | "process" | "pending";
-}
-
-export default function TablaCasos({ type }: IProps) {
+export default function TablaPatients() {
   // const data = ["1", "2"];
-  const data = [
+  const pacientes: IProps[] = [
     {
-      id: 1,
-      descripcion: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      estado: "open",
-      categoria: 2,
+      idPatient: 1,
+      name: "Juan",
+      lastname: "Pérez",
+      sex: "M",
+      email: "juan@example.com",
+      phone: "123-456-7890",
     },
     {
-      id: 2,
-      descripcion: "Examen de sangre",
-      person: "María Rodríguez",
-      time: "2024-03-12T10:30:00",
-      estado: "close",
-      categoria: 1,
+      idPatient: 2,
+      name: "María",
+      lastname: "García",
+      sex: "F",
+      email: "maria@example.com",
+      phone: "987-654-3210",
     },
     {
-      id: 3,
-      descripcion: "Consulta de seguimiento",
-      person: "Luis García",
-      time: "2024-03-13T11:15:00",
-      estado: "pending",
-      categoria: 3,
+      idPatient: 3,
+      name: "Luis",
+      lastname: "Rodríguez",
+      sex: "M",
+      email: "luis@example.com",
+      phone: "555-555-5555",
     },
     {
-      id: 4,
-      descripcion: "Revisión de presión arterial",
-      person: "Ana Martínez",
-      time: "2024-03-14T15:45:00",
-      estado: "process",
-      categoria: 2,
+      idPatient: 4,
+      name: "Ana",
+      lastname: "Martínez",
+      sex: "F",
+      email: "ana@example.com",
+      phone: "111-222-3333",
     },
     {
-      id: 5,
-      descripcion: "Vacunación contra la gripe",
-      person: "Carlos Sánchez",
-      time: "2024-03-15T08:20:00",
-      estado: "open",
-      categoria: 1,
+      idPatient: 5,
+      name: "Pedro",
+      lastname: "Sánchez",
+      sex: "M",
+      email: "pedro@example.com",
+      phone: "444-555-6666",
+    },
+    {
+      idPatient: 6,
+      name: "Laura",
+      lastname: "López",
+      sex: "F",
+      email: "laura@example.com",
+      phone: "777-888-9999",
+    },
+    {
+      idPatient: 7,
+      name: "Carlos",
+      lastname: "Hernández",
+      sex: "M",
+      email: "carlos@example.com",
+      phone: "999-888-7777",
+    },
+    {
+      idPatient: 8,
+      name: "Sofía",
+      lastname: "Díaz",
+      sex: "F",
+      email: "sofia@example.com",
+      phone: "333-222-1111",
+    },
+    {
+      idPatient: 9,
+      name: "Javier",
+      lastname: "Gutiérrez",
+      sex: "M",
+      email: "javier@example.com",
+      phone: "666-777-8888",
+    },
+    {
+      idPatient: 10,
+      name: "Elena",
+      lastname: "Fernández",
+      sex: "F",
+      email: "elena@example.com",
+      phone: "222-333-4444",
+    },
+    {
+      idPatient: 11,
+      name: "Diego",
+      lastname: "Moreno",
+      sex: "M",
+      email: "diego@example.com",
+      phone: "555-444-3333",
+    },
+    {
+      idPatient: 12,
+      name: "Lucía",
+      lastname: "Torres",
+      sex: "F",
+      email: "lucia@example.com",
+      phone: "888-999-0000",
+    },
+    {
+      idPatient: 13,
+      name: "Miguel",
+      lastname: "Ruiz",
+      sex: "M",
+      email: "miguel@example.com",
+      phone: "111-000-9999",
+    },
+    {
+      idPatient: 14,
+      name: "Paula",
+      lastname: "Santos",
+      sex: "F",
+      email: "paula@example.com",
+      phone: "666-333-9999",
+    },
+    {
+      idPatient: 15,
+      name: "Gabriel",
+      lastname: "Castro",
+      sex: "M",
+      email: "gabriel@example.com",
+      phone: "777-555-3333",
+    },
+    {
+      idPatient: 16,
+      name: "Alejandra",
+      lastname: "Ortega",
+      sex: "F",
+      email: "alejandra@example.com",
+      phone: "222-777-8888",
+    },
+    {
+      idPatient: 17,
+      name: "Mario",
+      lastname: "Flores",
+      sex: "M",
+      email: "mario@example.com",
+      phone: "999-333-4444",
+    },
+    {
+      idPatient: 18,
+      name: "Isabel",
+      lastname: "Vega",
+      sex: "F",
+      email: "isabel@example.com",
+      phone: "111-777-5555",
+    },
+    {
+      idPatient: 19,
+      name: "Francisco",
+      lastname: "Jiménez",
+      sex: "M",
+      email: "francisco@example.com",
+      phone: "888-444-2222",
+    },
+    {
+      idPatient: 20,
+      name: "Carmen",
+      lastname: "Molina",
+      sex: "F",
+      email: "carmen@example.com",
+      phone: "333-999-6666",
+    },
+    {
+      idPatient: 21,
+      name: "Manuel",
+      lastname: "Ramírez",
+      sex: "M",
+      email: "manuel@example.com",
+      phone: "777-888-9999",
+    },
+    {
+      idPatient: 22,
+      name: "Raquel",
+      lastname: "Soto",
+      sex: "F",
+      email: "raquel@example.com",
+      phone: "111-222-3333",
+    },
+    {
+      idPatient: 23,
+      name: "Ricardo",
+      lastname: "Blanco",
+      sex: "M",
+      email: "ricardo@example.com",
+      phone: "444-555-6666",
+    },
+    {
+      idPatient: 24,
+      name: "Sara",
+      lastname: "Herrera",
+      sex: "F",
+      email: "sara@example.com",
+      phone: "999-888-7777",
+    },
+    {
+      idPatient: 25,
+      name: "Daniel",
+      lastname: "Navarro",
+      sex: "M",
+      email: "daniel@example.com",
+      phone: "333-222-1111",
+    },
+    {
+      idPatient: 26,
+      name: "Natalia",
+      lastname: "Gómez",
+      sex: "F",
+      email: "natalia@example.com",
+      phone: "666-777-8888",
+    },
+    {
+      idPatient: 27,
+      name: "Roberto",
+      lastname: "Cruz",
+      sex: "M",
+      email: "roberto@example.com",
+      phone: "222-333-4444",
+    },
+    {
+      idPatient: 28,
+      name: "Cristina",
+      lastname: "Mendoza",
+      sex: "F",
+      email: "cristina@example.com",
+      phone: "555-444-3333",
+    },
+    {
+      idPatient: 29,
+      name: "Juan",
+      lastname: "Garrido",
+      sex: "M",
+      email: "juang@example.com",
+      phone: "888-999-0000",
+    },
+    {
+      idPatient: 30,
+      name: "Marina",
+      lastname: "Alonso",
+      sex: "F",
+      email: "marina@example.com",
+      phone: "111-000-9999",
+    },
+    {
+      idPatient: 31,
+      name: "Héctor",
+      lastname: "Ortiz",
+      sex: "M",
+      email: "hector@example.com",
+      phone: "666-333-9999",
+    },
+    {
+      idPatient: 32,
+      name: "Rosa",
+      lastname: "García",
+      sex: "F",
+      email: "rosa@example.com",
+      phone: "777-555-3333",
+    },
+    {
+      idPatient: 33,
+      name: "Jorge",
+      lastname: "Martínez",
+      sex: "M",
+      email: "jorgem@example.com",
+      phone: "222-777-8888",
+    },
+    {
+      idPatient: 34,
+      name: "María",
+      lastname: "Gómez",
+      sex: "F",
+      email: "mariag@example.com",
+      phone: "999-333-4444",
+    },
+    {
+      idPatient: 35,
+      name: "Pedro",
+      lastname: "Sanz",
+      sex: "M",
+      email: "pedros@example.com",
+      phone: "111-777-5555",
+    },
+    {
+      idPatient: 36,
+      name: "Carmen",
+      lastname: "Vidal",
+      sex: "F",
+      email: "carmenv@example.com",
+      phone: "888-444-2222",
+    },
+    {
+      idPatient: 37,
+      name: "Alberto",
+      lastname: "Romero",
+      sex: "M",
+      email: "alberto@example.com",
+      phone: "333-999-6666",
+    },
+    {
+      idPatient: 38,
+      name: "Eva",
+      lastname: "Fernández",
+      sex: "F",
+      email: "eva@example.com",
+      phone: "777-888-9999",
+    },
+    {
+      idPatient: 39,
+      name: "Carlos",
+      lastname: "López",
+      sex: "M",
+      email: "carlosl@example.com",
+      phone: "111-222-3333",
+    },
+    {
+      idPatient: 40,
+      name: "Ana",
+      lastname: "Martín",
+      sex: "F",
+      email: "anam@example.com",
+      phone: "444-555-6666",
+    },
+    {
+      idPatient: 41,
+      name: "Pablo",
+      lastname: "Gutiérrez",
+      sex: "M",
+      email: "pablog@example.com",
+      phone: "999-888-7777",
+    },
+    {
+      idPatient: 42,
+      name: "Sandra",
+      lastname: "Sánchez",
+      sex: "F",
+      email: "sandras@example.com",
+      phone: "333-222-1111",
+    },
+    {
+      idPatient: 43,
+      name: "Martín",
+      lastname: "López",
+      sex: "M",
+      email: "martinl@example.com",
+      phone: "666-777-8888",
+    },
+    {
+      idPatient: 44,
+      name: "María",
+      lastname: "Hernández",
+      sex: "F",
+      email: "mariah@example.com",
+      phone: "222-333-4444",
+    },
+    {
+      idPatient: 45,
+      name: "Antonio",
+      lastname: "Díaz",
+      sex: "M",
+      email: "antoniod@example.com",
+      phone: "555-444-3333",
+    },
+    {
+      idPatient: 46,
+      name: "Laura",
+      lastname: "Vázquez",
+      sex: "F",
+      email: "laurav@example.com",
+      phone: "888-999-0000",
+    },
+    {
+      idPatient: 47,
+      name: "David",
+      lastname: "García",
+      sex: "M",
+      email: "davidg@example.com",
+      phone: "111-000-9999",
+    },
+    {
+      idPatient: 48,
+      name: "Cristina",
+      lastname: "Sanz",
+      sex: "F",
+      email: "cristinas@example.com",
+      phone: "666-333-9999",
+    },
+    {
+      idPatient: 49,
+      name: "Manuel",
+      lastname: "Pérez",
+      sex: "M",
+      email: "manuelp@example.com",
+      phone: "777-555-3333",
+    },
+    {
+      idPatient: 50,
+      name: "Lucía",
+      lastname: "Hernández",
+      sex: "F",
+      email: "luciah@example.com",
+      phone: "222-777-8888",
     },
   ];
+
   const isDoctor = true;
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [rowsTotal, setRowsTotal] = useState(data.length);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsTotal, setRowsTotal] = useState(pacientes.length);
   const [openInputSearch, setOpenInputSearch] = useState("");
   const [dateStart, setDateStart] = useState<string | null>();
   // dayjs().format("DD/MM/YYYY")
   const [dateEnd, setDateEnd] = useState<string | null>();
   // dayjs().format("DD/MM/YYYY")
 
-  const rows = data;
+  const rows = pacientes;
 
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
@@ -125,48 +458,48 @@ export default function TablaCasos({ type }: IProps) {
     setPage(0);
   };
 
-  const badgetStatus: Record<string, any> = {
-    close: {
-      name: "Cerrados",
-      color: "#8EBF43",
-    },
-    open: {
-      name: "Abierto",
-      color: "#28AAE1",
-    },
-    pending: {
-      name: "Suspendido",
-      color: "#E30000",
-    },
-    process: {
-      name: "En Proceso",
-      color: "#E5D540",
-    },
-  };
+  // const badgetStatus: Record<string, any> = {
+  //   close: {
+  //     name: "Cerrados",
+  //     color: "#8EBF43",
+  //   },
+  //   open: {
+  //     name: "Abierto",
+  //     color: "#28AAE1",
+  //   },
+  //   pending: {
+  //     name: "Suspendido",
+  //     color: "#E30000",
+  //   },
+  //   process: {
+  //     name: "En Proceso",
+  //     color: "#E5D540",
+  //   },
+  // };
 
-  const Badge = ({ bg, tipo }: { bg: string; tipo: string }) => {
-    return (
-      <Chip
-        sx={{
-          //   marginLeft: "8px",
-          height: "24px",
-          width: "93px",
-          color: "#FFFFFF",
-          borderRadius: "6px",
-          backgroundColor: bg,
-          "& .MuiChip-label": {
-            display: "block",
-            whiteSpace: "pre",
-            fontFamily: "Arial",
-            fontSize: "12px",
-            fontWeight: "700",
-            lineHeight: "20px",
-          },
-        }}
-        label={tipo}
-      />
-    );
-  };
+  // const Badge = ({ bg, tipo }: { bg: string; tipo: string }) => {
+  //   return (
+  //     <Chip
+  //       sx={{
+  //         //   marginLeft: "8px",
+  //         height: "24px",
+  //         width: "93px",
+  //         color: "#FFFFFF",
+  //         borderRadius: "6px",
+  //         backgroundColor: bg,
+  //         "& .MuiChip-label": {
+  //           display: "block",
+  //           whiteSpace: "pre",
+  //           fontFamily: "Arial",
+  //           fontSize: "12px",
+  //           fontWeight: "700",
+  //           lineHeight: "20px",
+  //         },
+  //       }}
+  //       label={tipo}
+  //     />
+  //   );
+  // };
 
   function stableSort(array: any[]) {
     const stabilized = array;
@@ -514,7 +847,7 @@ export default function TablaCasos({ type }: IProps) {
                     color: "#939497",
                   }}
                 >
-                  No. de Caso
+                  No. de Paciente
                 </TableCell>
                 <TableCell
                   sx={{
@@ -525,7 +858,7 @@ export default function TablaCasos({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Caso
+                  names
                 </TableCell>
                 <TableCell
                   sx={{
@@ -536,7 +869,7 @@ export default function TablaCasos({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Doctor
+                  lastnames
                 </TableCell>
                 <TableCell
                   sx={{
@@ -547,7 +880,7 @@ export default function TablaCasos({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Fecha
+                  Genero
                 </TableCell>
                 <TableCell
                   sx={{
@@ -558,7 +891,7 @@ export default function TablaCasos({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Estatus
+                  email
                 </TableCell>
                 <TableCell
                   sx={{
@@ -569,7 +902,7 @@ export default function TablaCasos({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Categoria
+                  Numero de contacto
                 </TableCell>
                 <TableCell
                   sx={{
@@ -580,7 +913,7 @@ export default function TablaCasos({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Acciones
+                  Accion
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -620,7 +953,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.id}
+                    {row.idPatient}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -633,7 +966,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.descripcion}
+                    {row.name}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -646,7 +979,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.person}
+                    {row.lastname}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -659,7 +992,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.time}
+                    {row.sex}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -672,11 +1005,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    <Badge
-                      bg={badgetStatus[row.estado].color}
-                      tipo={badgetStatus[row.estado].name}
-                    />
-                    {/* {row.status} */}
+                    {row.email}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -689,7 +1018,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.categoria}
+                    {row.phone}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -702,7 +1031,15 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    <TableMenu />
+                    <Button
+                      variant="contained"
+                      sx={{
+                        bgcolor: "#168AAD",
+                      }}
+                      startIcon={<Person2 />}
+                    >
+                      Ver Perfil
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

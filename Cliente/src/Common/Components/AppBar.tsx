@@ -24,7 +24,7 @@ const pagesPatients = [
 const pagesDoctors = [
   { name: "Dashboard", link: "/dashboard" },
   { name: "Casos", link: "/cases" },
-  { name: "Pacientes", link: "/" },
+  { name: "Pacientes", link: "/pacientes" },
   { name: "Perfil", link: "/profile" },
 ];
 const settings = ["Ajustes", "Cerrar Sesion"];
