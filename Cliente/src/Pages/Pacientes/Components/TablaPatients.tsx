@@ -647,179 +647,92 @@ export default function TablaPatients() {
               gap: "16px",
             }}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Fecha de inicio"
-                sx={{
-                  label: {
-                    marginTop: "3px",
-                    fontFamily: "Arial",
-                    fontWeight: "400",
-                    fontSize: "14px",
-                    color: "#68696B",
-                  },
-                  fieldset: {
-                    borderRadius: "8px",
+            <TextField
+              placeholder="Nombre y Apellido"
+              variant="outlined"
+              sx={{
+                fieldset: {
+                  borderRadius: "8px",
+                  borderColor: "#CDCECF",
+                },
+                backgroundColor: "#FFFFFF",
+
+                fontFamily: "Arial",
+                fontWeight: "400",
+                fontSize: "18px",
+                width: "300px",
+                ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
                     borderColor: "#CDCECF",
                   },
-                  ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
-                  ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
-                }}
-                format="DD/MM/YYYY"
-                onChange={(newValue: any) => {
-                  setDateStart(dayjs(newValue).format("DD/MM/YYYY"));
-                }}
-                disableFuture
-                slotProps={{
-                  day: {
-                    sx: {
-                      "&.Mui-selected": {
-                        backgroundColor: "#8EBF43 !important",
-                      },
-                    },
-                  },
-                  textField: {
-                    sx: {
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#CDCECF", // Color del borde
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                        },
-                        "&:hover": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&:focus": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                          border: "solid 1px #111113",
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                        },
-                        "& legend span": {
-                          paddingLeft: "0px",
-                          paddingRight: "8px",
-                        },
-                        "& legend": {
-                          paddingInlineStar: "0px",
-                          paddingInlineEnd: "0px",
-                        },
-                      },
-                      label: {
-                        "&.Mui-focused": {
-                          color: "#68696B",
-                        },
-                      },
-                    },
-                  },
-                }}
-                disableHighlightToday
-              />
-            </LocalizationProvider>
-
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Fecha final"
-                format="DD/MM/YYYY"
-                sx={{
-                  label: {
-                    marginTop: "3px",
-                    fontFamily: "Arial",
-                    fontWeight: "400",
-                    fontSize: "14px",
+                ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
+                  {
                     color: "#68696B",
                   },
-
-                  fieldset: {
-                    borderRadius: "8px",
-                    borderColor: "#CDCECF",
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#CDCECF", // Color del borde
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
                   },
-                  ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
-                  ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
-                }}
-                disableFuture
-                onChange={(newValue: any) => {
-                  console.log(newValue);
-                  setDateEnd(dayjs(newValue).format("DD/MM/YYYY"));
-                }}
-                slotProps={{
-                  day: {
-                    sx: {
-                      "&.Mui-selected": {
-                        backgroundColor: "#8EBF43 !important",
-                      },
+                  "&:hover": {
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
+                    "& fieldset": {
+                      border: "solid 1px #111113",
                     },
                   },
-                  textField: {
-                    sx: {
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#CDCECF", // Color del borde
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                        },
-                        "&:hover": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&:focus": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                          border: "solid 1px #111113",
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
-                        },
-                        "& legend span": {
-                          paddingLeft: "0px",
-                          paddingRight: "8px",
-                        },
-                        "& legend": {
-                          paddingInlineStar: "0px",
-                          paddingInlineEnd: "0px",
-                        },
-                      },
-                      label: {
-                        "&.Mui-focused": {
-                          color: "#68696B",
-                        },
-                      },
+                  "&:focus": {
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
+                    "& fieldset": {
+                      border: "solid 1px #111113",
                     },
                   },
-                }}
-                disableHighlightToday
-              />
-            </LocalizationProvider>
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#CDCECF", // Color del borde cuando está enfocado
+                    border: "solid 1px #111113",
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
+                  },
+                  "& legend span": {
+                    paddingLeft: "0px",
+                    paddingRight: "4px",
+                  },
+                  "& legend": {
+                    paddingInlineStar: "0px",
+                    paddingInlineEnd: "0px",
+                  },
+                },
+              }}
+              value={openInputSearch}
+              InputProps={{
+                startAdornment: <Search />,
+              }}
+              InputLabelProps={{
+                shrink: !!openInputSearch,
+                margin: "dense",
+                style: {
+                  paddingLeft: openInputSearch ? "0px" : "25px",
+                  color: "#68696B",
+                  fontFamily: "Arial",
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  marginTop: "3px",
+                },
+              }}
+              onChange={(e: any) => {
+                setOpenInputSearch(e.target.value);
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#168AAD",
+              }}
+            >
+              Buscar paciente
+            </Button>
           </Box>
         </Box>
 
