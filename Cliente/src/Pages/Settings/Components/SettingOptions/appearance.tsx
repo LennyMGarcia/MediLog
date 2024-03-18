@@ -19,6 +19,10 @@ import Slider from "@mui/material/Slider/Slider";
 import * as React from 'react';
 import Swal from "sweetalert2";
 import WestIcon from '@mui/icons-material/West';
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
+
+
 
 
 const marks = [
@@ -76,6 +80,9 @@ const HandleResetButtom = () => {
 
 const Appearance: React.FC = () => {
 
+    const theme = useTheme();
+const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
     const navigate = useNavigate();
     const [selectedValue, setSelectedValue] = useState<string>('');
 
@@ -87,7 +94,7 @@ const Appearance: React.FC = () => {
         <Box sx={{
             backgroundColor: "#e9ecef",
             width: "100vw",
-            height: "160vh",
+            height: isMediumScreen ?"160vh" :" 170vh",
             padding: "1px"
         }}>
             <Box sx={{
@@ -112,10 +119,10 @@ const Appearance: React.FC = () => {
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: "16vw",
+                width: isMediumScreen ?"16vw" : "60vw",
                 height: "5vh",
                 boxShadow: 1,
-                margin: "3rem 0 0 3rem",
+                margin: isMediumScreen? "3rem 0 0 3rem" : "3rem 0 0 0",
                 display: "flex", justifyContent: "center", alignItems: "center",
                 borderStartStartRadius: "1rem",
                 borderTopRightRadius: "1rem"
@@ -125,10 +132,10 @@ const Appearance: React.FC = () => {
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: "90vw",
-                height: "130vh",
+                width: isMediumScreen ? "90vw" : "100vw",
+                height: isMediumScreen ? "130vh" : "140vh",
                 boxShadow: 1,
-                marginLeft: "3rem"
+                marginLeft: isMediumScreen ? "3rem" : 0
             }}>
 
                 <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem" }}>Apariencia</Typography>
@@ -163,6 +170,10 @@ const Appearance: React.FC = () => {
 };
 
 const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({ value, src, alt, name, onChange, selectedValue }) => {
+
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
     const imageStyle: React.CSSProperties = {
         width: '20rem',
         height: '15rem',
@@ -178,7 +189,7 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({ value, src, alt, na
     };
 
     return (
-        <Box sx={{ marginLeft: "14rem" }}>
+        <Box sx={{ marginLeft: isMediumScreen ? "14rem" : "12rem" }}>
             <FormControlLabel
                 value={value}
                 control={<Radio checkedIcon={<CheckCircleRoundedIcon sx={{color:"#52b69a"}}/>} sx={{ margin: "2rem" }} />}
@@ -204,7 +215,7 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({ value, src, alt, na
 const FontSizeSlider: React.FC = () => {
     const [value, setValue] = React.useState<number | string | Array<number | string>>(50);
 
-    const handleChange = (event: Event, newValue: number | number[]) => {
+    const handleChange = (_event: Event, newValue: number | number[]) => {
         if (Array.isArray(newValue)) {
             let numericValue: any;
 
@@ -226,7 +237,7 @@ const FontSizeSlider: React.FC = () => {
     };
 
     return (
-        <Box sx={{ width: "50rem" }}>
+        <Box sx={{ width: "60vw" }}>
             <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>Tema</Typography>
             <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Elige el tema de tu preferencia</Typography>
             <Slider

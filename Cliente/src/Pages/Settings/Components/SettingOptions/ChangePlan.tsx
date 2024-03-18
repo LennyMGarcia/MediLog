@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box/Box';
-import WebStoriesIcon from '@mui/icons-material/WebStories';
+//import WebStoriesIcon from '@mui/icons-material/WebStories';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from "@mui/material/Button/Button";
@@ -13,6 +13,8 @@ import WestIcon from '@mui/icons-material/West';
 import Swal from 'sweetalert2';
 import SweetAlertDAStyle from "../../../Profile/style/profileStyle.module.css"
 import usePlanStore from '../../stateManagement/planStateManagement';
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
 
 interface Option {
     value: string,
@@ -30,6 +32,9 @@ interface RadioCardProps {
 
 
 const ChangePlan: React.FC = () => {
+
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     const navigate = useNavigate();
 
@@ -83,23 +88,23 @@ const ChangePlan: React.FC = () => {
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: "15vw",
+                width: isMediumScreen ? "20vw" : "65vw",
                 height: "5vh",
                 boxShadow: 1,
-                margin: "3rem 0 0 3rem",
+                margin: isMediumScreen ? "3rem 0 0 3rem" : "3rem 0 0 0",
                 display: "flex", justifyContent: "center", alignItems: "center",
                 borderStartStartRadius: "1rem",
                 borderTopRightRadius: "1rem"
             }}>
-                <SettingsIcon sx={{ color: "gray", width: "1rem", height: "1rem", paddingRight: "0.5rem" }} /><Typography variant="subtitle1" sx={{ color: "gray" }}>configuracion /</Typography>
+                <SettingsIcon sx={{ color: "gray", width: "1rem", height: "1rem", paddingRight: "0.5rem" }} /><Typography variant="subtitle1" sx={{ color: "gray" }}>configuracion / cambiar plan</Typography>
             </Box>
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: "90vw",
+                width: isMediumScreen? "90vw" :"100vw",
                 height: "100vh",
                 boxShadow: 1,
-                marginLeft: "3rem"
+                marginLeft: isMediumScreen ? "3rem" : 0
             }}>
 
 
@@ -121,8 +126,13 @@ const ChangePlan: React.FC = () => {
 };
 
 const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan  }) => {
+
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+    
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
+    //zustand para plan
     const { getPlanData, setPlanData } = usePlanStore()
 
     const handleOptionChange = (value: string) => {
@@ -142,11 +152,11 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan  }) => {
                         
                     }}
 
-                    sx={{ margin: "1rem 0 0 3rem", paddingLeft: "1rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? '2px solid #52b69a' : '2px solid #e9ecef', width: "40rem", height: "5rem" }}
-                >   <Box sx={{ backgroundColor: option.color != "" ? option.color : "#e9ecef", borderRadius: "50%", width: "3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? '2px solid #52b69a' : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
+                >   <Box sx={{ backgroundColor: option.color != ("" || null || undefined) ? option.color : "#e9ecef", borderRadius: "50%", width: "3.3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <ViewInArIcon></ViewInArIcon>
                     </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', }}>
                         <CardContent sx={{ flex: '1 0 auto' }}>
                             <Typography variant="h6">{option.label == currentPlan ? `Plan ${option.label} - $${option.price} - plan actual` : `Plan ${option.label} - $${option.price} `}</Typography>
                             <Typography variant="subtitle2" color="text.secondary" component="div">
@@ -158,7 +168,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan  }) => {
                 </Card>
             ))}
 
-            <Button sx={{ mt: "1rem", marginLeft: "5rem", backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
+            <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : "2rem", backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
 
                 variant="contained"
                 type="submit"

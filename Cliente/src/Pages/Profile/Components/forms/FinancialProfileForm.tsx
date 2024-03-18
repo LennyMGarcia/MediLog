@@ -21,7 +21,7 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
                 <ProfileControl
                     initialValue={profileValues["categoria"]}
                     control="input"
-                    label="Categoria"
+                    label="Categoría"
                     name="categoria"
                     disabled
                 />
@@ -34,8 +34,8 @@ const FinancialProfileForm: React.FC<IFinancialProfileForm> = ({profileValues}) 
                     label="Metodo de pago"
                     name="metodo_pago"
                     selectObject={[
-                        { key: "Tarjeta de credito", value: "Tarjeta de credito" },
-                        { key: "Tarjeta de debito", value: "Tarjeta de debito" },
+                        { key: "Tarjeta de crédito", value: "Tarjeta de credito" },
+                        { key: "Tarjeta de débito", value: "Tarjeta de debito" },
                     ]}
                 />
             </Box>

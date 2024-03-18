@@ -56,9 +56,9 @@ const BasicProfileForm: React.FC<IBasicInformationForm> = ({ type = "Paciente", 
                     <ProfileControl
                         initialValue={profileValues["documento_identidad"]}
                         control="input"
-                        label="Cedula"
+                        label="Cédula"
                         name="documento_identidad"
-                        placeholder="Escriba su cedula"
+                        placeholder="Escriba su cédula"
                     />
 
                     <ProfileControl
