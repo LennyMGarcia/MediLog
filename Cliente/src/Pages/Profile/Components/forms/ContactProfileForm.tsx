@@ -15,18 +15,18 @@ const ContactProfileForm: React.FC<IContactProfileForm> = ({profileValues}) => {
                 <ProfileControl
                     initialValue={profileValues["telefono"]}
                     control="input"
-                    label="Telefono"
+                    label="Teléfono"
                     name="telefono"
                     type="number"
-                    placeholder="Escriba su telefono" />
+                    placeholder="Escriba su teléfono" />
             </Box>
             <Box>
                 <ProfileControl
                     initialValue={profileValues["direccion"]}
                     control="input"
-                    label="Direccion"
+                    label="Dirección"
                     name="direccion"
-                    placeholder="Escriba su direccion"
+                    placeholder="Escriba su dirección"
                     multiline
                     rows={4} />
             </Box>

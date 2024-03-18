@@ -8,14 +8,14 @@ const ContactInformationForm: React.FC = () => {
     return (
         <>
             <Box>
-            <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Informacion de contacto</Typography></Box>
+            <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>Información de contacto</Typography></Box>
                 <Box>
                     <RegistrationControl
                         control="input"
-                        label="Telefono (opcional)"
+                        label="Teléfono (opcional)"
                         name="telefono"
                         type="number"
-                        placeholder="Escriba su telefono" />
+                        placeholder="Escriba su teléfono" />
                 </Box>
                 <Box>
                     <RegistrationControl
@@ -27,18 +27,18 @@ const ContactInformationForm: React.FC = () => {
                 <Box>
                     <RegistrationControl
                         control="input"
-                        label="Contrasena"
+                        label="Contraseña"
                         name="contrasena" 
                         type="password"
-                        placeholder="Escriba su contrasena"/>
+                        placeholder="Escriba su contraseña"/>
                 </Box>
                 <Box>
                     <RegistrationControl
                         control="input"
-                        label="Confirmar contrasena"
+                        label="Confirmar contraseña"
                         name="confirmarContrasena"
                         type="password"
-                        placeholder="Reescriba su contrasena" />
+                        placeholder="Reescriba su contraseña" />
                 </Box>
 
             </Box>

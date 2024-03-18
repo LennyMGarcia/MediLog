@@ -5,14 +5,20 @@ import useDataRegisterStore from "../../ZustandRegisterManagement";
 import BoxRowWrapper from "../../../../Common/Wrappers/BoxRowWrapper";
 import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
+import useTheme from "@mui/material/styles/useTheme";
 
 const FinancialInformationForm: React.FC = () => {
+
+    const theme = useTheme();
+    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
     const { getRegisterData } = useDataRegisterStore();
 
     return (
         <>
             <Box>
-                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>{"Informacion Financiera (opcional)"}</Typography></Box>
+                <Box sx={{ textAlign: "center" }}><Typography variant={"h5"}>{"Información Financiera (opcional)"}</Typography></Box>
 
                 <BoxRowWrapper>
                     <RegistrationControl
@@ -25,28 +31,28 @@ const FinancialInformationForm: React.FC = () => {
 
                     <RegistrationControl
                         control="input"
-                        label="Categoria"
+                        label="Categoría"
                         name="categoria"
                         disabled
                         value={getRegisterData("categoria")}
                         />
                 </BoxRowWrapper>
 
-                <Box>
+                <Box sx={{marginLeft:isMediumScreen ? "0": "1rem"}}>
                     <RegistrationControl
                         control="select"
                         label="Metodo de pago"
                         name="metodo_pago"
                         selectObject={[
-                            { key: "Tarjeta de credito", value: "Tarjeta de Credito" },
-                            { key: "Tarjeta de debito", value: "Tarjeta de Debito" },
+                            { key: "Tarjeta de crédito", value: "Tarjeta de Credito" },
+                            { key: "Tarjeta de débito", value: "Tarjeta de Debito" },
                         ]}
                     />
                 </Box>
                 <BoxRowWrapper>
                     <RegistrationControl
                         control="input"
-                        label="Tarjeta de credito "
+                        label="Número de tarjeta"
                         name="datos_financieros"
                         placeholder="Escriba su tarjeta" 
                         />
@@ -59,19 +65,19 @@ const FinancialInformationForm: React.FC = () => {
                         />
                 </BoxRowWrapper>
 
-                <Box>
+                <Box sx={{marginLeft:isMediumScreen ? "0": "1rem"}}>
                     <RegistrationControl
                         control="date"
-                        label="Fecha de expiracion"
+                        label="Fecha de expiración"
                         name="fecha_expiracion" />
                 </Box>
-                <Box>
+                <Box sx={{marginLeft:isMediumScreen ? "0": "1rem"}}>
                     <RegistrationControl
                         control="input"
-                        label="Descripcion"
+                        label="Descripción"
                         name="descripcion"
                         type="textarea"
-                        placeholder="Escriba su descripcion" />
+                        placeholder="Escriba su descripción" />
                 </Box>
 
             </Box>
