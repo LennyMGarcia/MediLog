@@ -1,7 +1,7 @@
 import { Box, ThemeProvider } from "@mui/material";
 import "./App.css";
-import RoutesProvider from "./Routes/Routes";
 import { theme } from "./theme/theme";
+import RoutesMain from "./Routes/RoutesMain";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
           height: "100%",
         }}
       >
-        <RoutesProvider />
+        <RoutesMain />
       </Box>
     </ThemeProvider>
   );

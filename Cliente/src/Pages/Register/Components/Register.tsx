@@ -16,12 +16,12 @@ import PricingForm from "./forms/PricingForm";
 import RegisterStepper from "./style/RegisterStyle/RegisterStepper";
 import ThanksForm from "./forms/ThanksForm";
 import useTheme from "@mui/material/styles/useTheme";
-import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
+// import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import Box from "@mui/material/Box/Box";
 import Grid from "@mui/material/Grid/Grid";
 import Button from "@mui/material/Button/Button";
 import styles from "../Components/style/RegisterStyle/RegisterTheme.module.css";
-import { Fade } from "@mui/material";
+import { Fade, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import axios from "axios";
@@ -29,130 +29,137 @@ import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import { useEffect, useState } from "react";
 
 const ImageArray = [
-    registerDoctor,
-    asianDoctor,
-    indianDoctor,
-    registerExample,
-    healthDoctor,
+  registerDoctor,
+  asianDoctor,
+  indianDoctor,
+  registerExample,
+  healthDoctor,
 ];
 
 const initialValues = [
-    {
-        nombre: "",
-        apellido: "",
-        sexo: "",
-        fecha_nacimiento: "",
-        tipo: "",
-        especialidad: undefined,
-        documento_identidad: undefined,
-    },
+  {
+    nombre: "",
+    apellido: "",
+    sexo: "",
+    fecha_nacimiento: "",
+    tipo: "",
+    especialidad: undefined,
+    documento_identidad: undefined,
+  },
 
-    {
-        correo: "",
-        contrasena: "",
-        confirmarContrasena: "",
-    },
+  {
+    correo: "",
+    contrasena: "",
+    confirmarContrasena: "",
+  },
 
-    {
-        pricing: "",
-    },
+  {
+    pricing: "",
+  },
 
-    {
-        metodo_pago: "",
-        datos_financieros: "",
-        cvv: "",
-        fecha_expiracion: "",
-        descripcion: "",
-    },
+  {
+    metodo_pago: "",
+    datos_financieros: "",
+    cvv: "",
+    fecha_expiracion: "",
+    descripcion: "",
+  },
 ];
 
 const Register: React.FC = () => {
-    const { authUser } = useUserStore();
-    const { authenticated } = useUserStore();
-    const [logged, setLogged] = useState(false);
-    const navigate = useNavigate();
+  const { authUser } = useUserStore();
+  const { authenticated } = useUserStore();
+  const [logged, setLogged] = useState(false);
+  const navigate = useNavigate();
 
-    //Funccion que denega acceso a la pagina de register si el usuario esta loggeado
-    useEffect(() => {
-        setLogged(authenticated());
-        if (logged) {
-            navigate('/');
-            return;
-        }
-        return;
-    }, [logged]);
+  //Funccion que denega acceso a la pagina de register si el usuario esta loggeado
+  useEffect(() => {
+    setLogged(authenticated());
+    if (logged) {
+      navigate("/");
+      return;
+    }
+    return;
+  }, [logged]);
 
-    const { getRegisterData } = useDataRegisterStore();
+  const { getRegisterData } = useDataRegisterStore();
 
-    async function onSubmit() {
-        if (currentStepIndex === steps.length - 2) {
-            const result = await axios.post(getBackendConnectionString('register'), {
-                nombre: getRegisterData('nombre'),
-                apellido: getRegisterData('apellido'),
-                fecha_nacimiento: getRegisterData('fecha_nacimiento'),
-                documento_identidad: getRegisterData('documento_identidad'),
-                sexo: getRegisterData('sexo'),
-                correo: getRegisterData('correo'),
-                direccion: getRegisterData('direccion'),
-                telefono: getRegisterData('telefono'),
-                especialidad: getRegisterData('especialidad'),
-                member_id: getRegisterData('member_id'),
-                contrasena: getRegisterData('contrasena'),
-                tipo: getRegisterData('tipo'),
-                plan: getRegisterData('plan'),
-                metodo_pago: getRegisterData('metodo_pago'),
-                datos_financieros: getRegisterData('datos_financieros'),
-                fecha_expiracion: getRegisterData('fecha_expiracion'),
-                cvv: getRegisterData('cvv'),
-                precio: getRegisterData('precio'),
-                categoria: getRegisterData('categoria'),
-                monto: getRegisterData('monto'),
-                producto_id: getRegisterData('producto_id'),
-                usuario_id: getRegisterData('usuario_id'),
-                descripcion: getRegisterData('descripcion'),
-            }, {
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            }).then(response => {
-                //Condicion que verifica si la solicitud fue exitosa
-                if (response.status === 201 || response.status === 200) {
-                    const incomingUser = response.data?.user;
-                    console.log(response)
-                    console.log(incomingUser)
-                    authUser(incomingUser);
-                    next();
-                    return { success: true, message: response.statusText };
+  async function onSubmit() {
+    if (currentStepIndex === steps.length - 2) {
+      const result = await axios
+        .post(
+          getBackendConnectionString("register"),
+          {
+            nombre: getRegisterData("nombre"),
+            apellido: getRegisterData("apellido"),
+            fecha_nacimiento: getRegisterData("fecha_nacimiento"),
+            documento_identidad: getRegisterData("documento_identidad"),
+            sexo: getRegisterData("sexo"),
+            correo: getRegisterData("correo"),
+            direccion: getRegisterData("direccion"),
+            telefono: getRegisterData("telefono"),
+            especialidad: getRegisterData("especialidad"),
+            member_id: getRegisterData("member_id"),
+            contrasena: getRegisterData("contrasena"),
+            tipo: getRegisterData("tipo"),
+            plan: getRegisterData("plan"),
+            metodo_pago: getRegisterData("metodo_pago"),
+            datos_financieros: getRegisterData("datos_financieros"),
+            fecha_expiracion: getRegisterData("fecha_expiracion"),
+            cvv: getRegisterData("cvv"),
+            precio: getRegisterData("precio"),
+            categoria: getRegisterData("categoria"),
+            monto: getRegisterData("monto"),
+            producto_id: getRegisterData("producto_id"),
+            usuario_id: getRegisterData("usuario_id"),
+            descripcion: getRegisterData("descripcion"),
+          },
+          {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          }
+        )
+        .then((response) => {
+          //Condicion que verifica si la solicitud fue exitosa
+          if (response.status === 201 || response.status === 200) {
+            const incomingUser = response.data?.user;
+            console.log(response);
+            console.log(incomingUser);
+            authUser(incomingUser);
+            next();
+            return { success: true, message: response.statusText };
+          } else {
+            const error_msj = response.data?.message;
+            console.log(response);
+            console.log(error_msj);
+            return { success: false, message: error_msj };
+          }
+        })
+        .catch((error) => {
+          const error_msj = error?.response?.data?.message;
+          console.log(error);
+          console.log(error_msj);
+          return { success: false, message: error_msj };
+        });
+      return result;
+    } else if (isLastStep) {
+      navigate("/"); // Redirige a esa ruta si el inicio de session fue exitoso
+    } else {
+      next();
+    }
+  }
 
-                } else {
-                    const error_msj = response.data?.message;
-                    console.log(response);
-                    console.log(error_msj);
-                    return { success: false, message: error_msj };
-                }
-            }).catch(error => {
-                const error_msj = error?.response?.data?.message;
-                console.log(error);
-                console.log(error_msj);
-                return { success: false, message: error_msj };
-            });
-            return result;
-        } else if (isLastStep) {
-            navigate("/"); // Redirige a esa ruta si el inicio de session fue exitoso
-        } else {
-            next()
-        }
-    };
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
-    const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+  //const { getRegisterData } = useDataRegisterStore();
 
-    //const { getRegisterData } = useDataRegisterStore();
-
-    const { currentStepIndex, step, steps, isFirstStep, isLastStep, next, back } = useMultiForm([
-        <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
-        <ContactInformationForm />,
-        <PricingForm />,
-        <FinancialInformationForm />,
-        <ThanksForm />
+  const { currentStepIndex, step, steps, isFirstStep, isLastStep, next, back } =
+    useMultiForm([
+      <BasicInformationForm type={String(getRegisterData("tipo")) || ""} />,
+      <ContactInformationForm />,
+      <PricingForm />,
+      <FinancialInformationForm />,
+      <ThanksForm />,
     ]);
 
     return (
@@ -208,4 +215,3 @@ const Register: React.FC = () => {
 };
 
 export default Register;
-
