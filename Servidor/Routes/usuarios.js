@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Usuario = require('../Migrations/Usuario');
+const Producto = require('../Migrations/Producto');
 const bcrypt = require('bcrypt');
 const salt_level = 10;
 const { body, param, validationResult } = require('express-validator');
@@ -15,6 +16,9 @@ const validaciones = [
     body('datos_financieros').escape().trim().isString().optional(),
     body('cvv').escape().trim().isString().optional(),
     body('fecha_expiracion').escape().trim().isString().optional(),
+];
+const edit_validaciones = [
+    body('plan').escape().trim().isString().notEmpty().withMessage('Numero Identificacion Invalido.'),
 ];
 const id_validation = [
     param('id').escape().trim().notEmpty().isInt().withMessage('Numero de Identificacion Invalido.')
@@ -62,7 +66,29 @@ router.post('/', async (req, res) => {
     const error_msg = validated.errors[0].msg;
     return res.status(400).json({ 'message': error_msg });
 });
-router.put('/:id', id_validation, async (req, res) => {
+router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
+    const id = req.params.id;
+    const plan = req.body.plan;
+    const validated = validationResult(req);
+
+    //Condicion que verifica si los campos obligatorios estan incluidos
+    if (validated.isEmpty()) {
+        const data = req.body;
+
+        const product_model = new Producto();
+        const producto = await product_model.getIdByName(plan);
+        console.log(producto);
+        const model = new Usuario();
+        const result = await model.update_plan(producto.id, id);
+
+        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        return res.status(201).json(result);
+    }
+
+    const error_msg = validated.errors[0].msg;
+    return res.status(400).json({ 'message': error_msg });
+});
+/*router.put('/:id', id_validation, async (req, res) => {
     const id = req.params.id;
     const validated = validationResult(req);
 
@@ -80,7 +106,7 @@ router.put('/:id', id_validation, async (req, res) => {
 
     const error_msg = validated.errors[0].msg;
     return res.status(400).json({ 'message': error_msg });
-});
+});*/
 router.delete('/:id', id_validation, async (req, res) => {
     const id = req.params.id;
     const validated = validationResult(req);

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const salt_level = 10;
 const Paciente = require('./Paciente');
 const Especialista = require('./Especialista');
+const Producto = require('./Producto');
 
 class Usuario extends Model {
     constructor(id = null) {
@@ -36,10 +37,13 @@ class Usuario extends Model {
             this.member_id = result?.member_id;
             this.tipo = result?.tipo;
             this.plan = result?.plan;
+            const query = new Builder('productos');
+            const [productos_results, fields] = await DB.query(query.select_query('*', 'id'), [this.plan]);
             const rows = {
                 id: result.id,
                 member_id: result.member_id,
-                tipo: result.tipo
+                tipo: result.tipo,
+                plan: productos_results[0]?.nombre || 'Basico'
             }
             return rows;
             return result;
@@ -177,6 +181,28 @@ class Usuario extends Model {
                 'cvv',
                 'fecha_expiracion',
                 'eliminado',
+            ];
+            const query = new Builder(this.table);
+            const [results, fields] = await DB.execute(query.update_query(this.editable_columns, this.values, id), this.values)
+
+            return results;
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
+    }
+    async update_plan(data = null, id = null) {
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+
+        try {
+            this.data = data;
+            this.values = [
+                this.data || null,
+            ];
+
+            this.editable_columns = [
+                'plan',
             ];
             const query = new Builder(this.table);
             const [results, fields] = await DB.execute(query.update_query(this.editable_columns, this.values, id), this.values)

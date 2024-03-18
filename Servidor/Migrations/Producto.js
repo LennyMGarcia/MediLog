@@ -11,6 +11,19 @@ class Producto extends Model {
             'precio',
         ];
     }
+    async getIdByName(name = null) {
+        this.values = name;
+        try {
+            const query = new Builder(this.table);
+            const [results, fields] = await DB.execute(query.select_query('id', 'nombre'), [this.values]);
+            console.log(results);
+            return results[0];
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
+    }
     async insert(data = null) {
         if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
 

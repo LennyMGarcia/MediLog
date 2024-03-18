@@ -142,7 +142,7 @@ const Settings: React.FC = () => {
 
                     </Grid>
                     {isMediumScreen && <Grid item md={5} xs={12}>
-                        <Box sx={{display:"flex", justifyContent:"center", justifyItems:"center", paddingTop:"5rem"}}>
+                        <Box sx={{ display: "flex", justifyContent: "center", justifyItems: "center", paddingTop: "5rem" }}>
                             <img src={medilogConfig} style={{ width: "15rem", height: "15rem", }} ></img>
                         </Box>
 

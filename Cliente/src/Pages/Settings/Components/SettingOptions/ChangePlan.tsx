@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -15,6 +15,9 @@ import SweetAlertDAStyle from "../../../Profile/style/profileStyle.module.css"
 import usePlanStore from '../../stateManagement/planStateManagement';
 import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import useTheme from "@mui/material/styles/useTheme";
+import useUserStore from '../../../../Common/Utils/setUserSession';
+import axios from 'axios';
+import getBackendConnectionString from '../../../../Common/Utils/getBackendString';
 
 interface Option {
     value: string,
@@ -33,15 +36,32 @@ interface RadioCardProps {
 
 const ChangePlan: React.FC = () => {
 
+    const { authenticated } = useUserStore();
+    const { getUser } = useUserStore();
+
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
     const navigate = useNavigate();
 
+    // Condicion que verifica si hay un usuario conectado, en caso de que no, impide acceso a esa ruta
+    useEffect(() => {
+        if (!authenticated()) {
+            navigate('/');
+            return;
+        }
+        return;
+
+    })
+
     //Solo tienes que buscar estos dos valores, uno que indica si es paciente o especilista para cargar el options
-    //Otro para el tipo de plan, asi sale la etiqueta Plan Actual
-    let type: string = "Paciente"
-    let plan: string = "Basico"
+    //Otro para el tipo de plan, asi sale la etiqueta Plan Actual -- GRACIAS XD
+    //  let type: string = "Paciente"
+    //let plan: string = "Basico"
+
+    // Condicion que verifica si hay un usuario conectado para asi saber cual es el plan de este usuario
+    let type: string = authenticated() ? getUser().tipo : 'Paciente';
+    let plan: string = authenticated() ? getUser().plan : 'Basico';
 
     const options: Option[] = type == "Paciente" ?
         [
@@ -101,7 +121,7 @@ const ChangePlan: React.FC = () => {
 
             <Box sx={{
                 backgroundColor: "#fff",
-                width: isMediumScreen? "90vw" :"100vw",
+                width: isMediumScreen ? "90vw" : "100vw",
                 height: "100vh",
                 boxShadow: 1,
                 marginLeft: isMediumScreen ? "3rem" : 0
@@ -125,11 +145,17 @@ const ChangePlan: React.FC = () => {
     );
 };
 
-const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan  }) => {
+const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
+
+    const { authenticated } = useUserStore();
+    const { getUser } = useUserStore();
+    const { updateUser } = useUserStore();
+
+    const id = authenticated() ? getUser().id : null;
 
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
-    
+
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
     //zustand para plan
@@ -137,9 +163,30 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan  }) => {
 
     const handleOptionChange = (value: string) => {
         setSelectedOption(value);
-        setPlanData("plan", value)
+        setPlanData("plan", value);
     };
 
+    const change_product = async (id: number, plan: string) => {
+        if (!id) return;
+
+        const results = await axios.put(getBackendConnectionString(`usuarios/${id}`), {
+            plan: plan,
+        }).then((response) => {
+            console.log(response);
+            if (response.status === 200 || response.status === 201) {
+                updateUser(plan);
+                return true;
+            }
+            return false;
+        }).catch(error => {
+            const error_msj = error?.response?.data?.message;
+            console.log(error);
+            console.log(error_msj);
+            return false;
+        });
+
+        return results;
+    }
     return (
         <div>
             {options.map((option) => (
@@ -149,7 +196,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan  }) => {
                         handleOptionChange(option.value)
                         //AQUI EL CONSOLE LOG
                         console.log(getPlanData("plan"))
-                        
+
                     }}
 
                     sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? '2px solid #52b69a' : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
@@ -194,14 +241,27 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan  }) => {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             if (selectedOption !== currentPlan) {
-                                Swal.fire({
-                                    title: 'Se ha actualizado el plan',
-                                    text: 'El plan se ha cambiado de forma exitosa.',
-                                    icon: 'success',
-                                    customClass: {
-                                        container: SweetAlertDAStyle.sweetAlertContainer,
+                                change_product(id, getPlanData('plan')).then(results => {
+                                    if (results) {
+                                        Swal.fire({
+                                            title: 'Se ha actualizado el plan',
+                                            text: 'El plan se ha cambiado de forma exitosa.',
+                                            icon: 'success',
+                                            customClass: {
+                                                container: SweetAlertDAStyle.sweetAlertContainer,
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Hubo un problema',
+                                            text: 'El plan no pudo actualizarse o has elegido el mismo plan que tenias',
+                                            icon: 'warning',
+                                            customClass: {
+                                                container: SweetAlertDAStyle.sweetAlertContainer,
+                                            }
+                                        });
                                     }
-                                });
+                                })
                             } else {
                                 Swal.fire({
                                     title: 'Hubo un problema',
