@@ -7,6 +7,7 @@ import IconAndLabel from "/assets/Pictures/IconAndLabelFix.png";
 import useUserStore from "../../Common/Utils/setUserSession";
 
 export default function LandingPage() {
+  // Esta comentado para tener una vision de prueba con el otro mientras tanto
   // const founder = [
   //   {
   //     name: "Julio Sierra",
@@ -28,6 +29,7 @@ export default function LandingPage() {
   //   },
   // ];
 
+  // Son los fundadores fake pero dejalo ahi para tenerlo de prueba mientras tanto
   const founder = [
     {
       name: "Julio Sierra",
@@ -49,6 +51,7 @@ export default function LandingPage() {
     },
   ];
 
+  // Los planes disponibles, OBVIO
   const planes = [
     {
       name: "Basico",
@@ -60,17 +63,19 @@ export default function LandingPage() {
       ],
     },
     {
-      name: "Paciente",
+      name: "Premiun",
       costo: "600",
       beneficios: [
+        "Acceso Básico a Información Personal",
         "Informacion acerca de centros medicos",
         "Informacion acerca de servicios cubiertos",
         "Registro de todos los casos medicos",
+        "Acceso a aplicación móvil y web. ",
       ],
     },
     {
       name: "Familiar",
-      costo: "2000",
+      costo: "1000",
       beneficios: [
         "Status de procemientos en tiempo real",
         "Cuenta para hasta 5 personas",
@@ -78,17 +83,18 @@ export default function LandingPage() {
       ],
     },
     {
-      name: "Doctores",
-      costo: "1200",
+      name: "Especialistas",
+      costo: "5000",
       beneficios: [
         "Disponibilidad para creacion de casos",
         "Registro de casos de pacientes",
         "Poder ver historial de casos de pacientes",
+        "Acceso a 250 TB de memoria",
       ],
     },
     {
-      name: "Centro Medicos",
-      costo: "10000",
+      name: "Hospitales",
+      costo: "30000",
       beneficios: [
         "Cuenta para hasta 10 medicos",
         "Reportes Personalizados",

@@ -11,6 +11,7 @@ interface TabPanelProps {
   value: number;
 }
 
+// Este es una funcion de material ui
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -32,6 +33,7 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
+// Este es una funcion de material ui
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -53,30 +55,10 @@ export default function TabsTable() {
     setValue(newValue);
   };
 
-  const Badge = ({ bg, amount }: { bg: string; amount: number }) => {
-    return (
-      <Chip
-        sx={{
-          marginLeft: "8px",
-          height: "16px",
-          color: "#FFFFFF",
-          backgroundColor: bg,
-          "& .MuiChip-label": {
-            display: "block",
-            whiteSpace: "normal",
-            fontFamily: "Arial",
-            fontSize: "10px",
-            fontWeight: "400",
-          },
-        }}
-        label={amount}
-      />
-    );
-  };
-
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        {/* Tabs con las diferetnes opciones de tabla */}
         <Tabs
           value={value}
           onChange={handleChange}
@@ -91,39 +73,15 @@ export default function TabsTable() {
             },
           }}
         >
-          <Tab
-            label="Todos"
-            // icon={<Badge bg={"#111113"} amount={data.length} />}
-            // iconPosition="end"
-            {...a11yProps(0)}
-          />
-          <Tab
-            label="Casos Abiertos"
-            // icon={<Badge bg={"#E5D540"} amount={dataPending.length} />}
-            // iconPosition="end"
-            {...a11yProps(1)}
-          />
-          <Tab
-            label="Casos en Proceso"
-            // icon={<Badge bg={"#28AAE1"} amount={dataProcess.length} />}
-            // iconPosition="end"
-            {...a11yProps(2)}
-          />
-          <Tab
-            label="Casos Cerrados"
-            // icon={<Badge bg={"#8EBF43"} amount={dataComplete.length} />}
-            // iconPosition="end"
-            {...a11yProps(3)}
-          />
-          <Tab
-            label="Casos Suspendidos"
-            // icon={<Badge bg={"#E30000"} amount={dataCanceled.length} />}
-            // iconPosition="end"
-            {...a11yProps(4)}
-          />
+          <Tab label="Todos" {...a11yProps(0)} />
+          <Tab label="Casos Abiertos" {...a11yProps(1)} />
+          <Tab label="Casos en Proceso" {...a11yProps(2)} />
+          <Tab label="Casos Cerrados" {...a11yProps(3)} />
+          <Tab label="Casos Suspendidos" {...a11yProps(4)} />
         </Tabs>
       </Box>
 
+      {/* Aqui las tablas dependiendo la tab seleccionada */}
       <CustomTabPanel value={value} index={0}>
         <TablaCasos type="all" />
       </CustomTabPanel>

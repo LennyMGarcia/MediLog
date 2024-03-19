@@ -10,9 +10,7 @@ export default function Patients() {
     <Grid
       container
       padding={"30px 24px"}
-      // rowSpacing={2}
       gap={4}
-      // spacing={2}
       direction={"column"}
       sx={{
         height: "100%",
@@ -58,19 +56,13 @@ export default function Patients() {
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "#CDCECF", // Color del borde
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                 },
                 "&:hover": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                   "& fieldset": {
                     border: "solid 1px #111113",
                   },
                 },
                 "&:focus": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                   "& fieldset": {
                     border: "solid 1px #111113",
                   },
@@ -78,8 +70,6 @@ export default function Patients() {
                 "&.Mui-focused fieldset": {
                   borderColor: "#CDCECF", // Color del borde cuando está enfocado
                   border: "solid 1px #111113",
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                 },
                 "& legend span": {
                   paddingLeft: "0px",
