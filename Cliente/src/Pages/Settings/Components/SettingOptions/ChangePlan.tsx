@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box/Box';
-=======
-import React, { useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box/Box";
->>>>>>> dev
 //import WebStoriesIcon from '@mui/icons-material/WebStories';
 import ViewInArIcon from "@mui/icons-material/ViewInAr";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -41,104 +33,66 @@ interface RadioCardProps {
 }
 
 const ChangePlan: React.FC = () => {
+
+
+  const { authenticated } = useUserStore();
+  const { getUser } = useUserStore();
+
   const theme = useTheme();
-  const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
-
-<<<<<<< HEAD
-    const { authenticated } = useUserStore();
-    const { getUser } = useUserStore();
-
-    const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
-=======
+  const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
   const navigate = useNavigate();
->>>>>>> dev
+
+  // Condicion que verifica si hay un usuario conectado, en caso de que no, impide acceso a esa ruta
+  useEffect(() => {
+    if (!authenticated()) {
+      navigate('/');
+      return;
+    }
+    return;
+
+  })
 
   //Solo tienes que buscar estos dos valores, uno que indica si es paciente o especilista para cargar el options
-  //Otro para el tipo de plan, asi sale la etiqueta Plan Actual
-  let type: string = "Paciente";
-  let plan: string = "Basico";
+  //Otro para el tipo de plan, asi sale la etiqueta Plan Actual -- GRACIAS XD
+  //  let type: string = "Paciente"
+  //let plan: string = "Basico"
 
-<<<<<<< HEAD
-    // Condicion que verifica si hay un usuario conectado, en caso de que no, impide acceso a esa ruta
-    useEffect(() => {
-        if (!authenticated()) {
-            navigate('/');
-            return;
-        }
-        return;
+  // Condicion que verifica si hay un usuario conectado para asi saber cual es el plan de este usuario
+  let type: string = authenticated() ? getUser().tipo : 'Paciente';
+  let plan: string = authenticated() ? getUser().plan : 'Basico';
 
-    })
-
-    //Solo tienes que buscar estos dos valores, uno que indica si es paciente o especilista para cargar el options
-    //Otro para el tipo de plan, asi sale la etiqueta Plan Actual -- GRACIAS XD
-    //  let type: string = "Paciente"
-    //let plan: string = "Basico"
-
-    // Condicion que verifica si hay un usuario conectado para asi saber cual es el plan de este usuario
-    let type: string = authenticated() ? getUser().tipo : 'Paciente';
-    let plan: string = authenticated() ? getUser().plan : 'Basico';
-
-    const options: Option[] = type == "Paciente" ?
-        [
-            { value: 'Basico', label: 'Basico', price: 0, subLabel: "Plan con los requerimientos esenciales, sin ventajas anadidas", color: "#52b69a" },
-            { value: 'Familiar', label: 'Familiar', price: 1000, subLabel: "Plan escalable, costumizable, con opciones avanzadas y para toda la familia", color: "#34a0a4" },
-            { value: 'Paciente', label: 'Paciente', price: 600, subLabel: "Plan  escalable y costumizable para un solo usuario", color: "#d9ed92" },
-=======
-  const options: Option[] =
-    type == "Paciente"
-      ? [
-          {
-            value: "Basico",
-            label: "Basico",
-            price: 0,
-            subLabel:
-              "Plan con los requerimientos esenciales, sin ventajas anadidas",
-            color: "#52b69a",
-          },
-          {
-            value: "Familiar",
-            label: "Familiar",
-            price: 1000,
-            subLabel:
-              "Plan escalable, costumizable, con opciones avanzadas y para toda la familia",
-            color: "#34a0a4",
-          },
-          {
-            value: "Paciente",
-            label: "Paciente",
-            price: 600,
-            subLabel: "Plan  escalable y costumizable para un solo usuario",
-            color: "#d9ed92",
-          },
->>>>>>> dev
-        ]
-      : [
-          {
-            value: "Independiente",
-            label: "Independiente",
-            price: 3000,
-            subLabel:
-              "Plan con los requerimientos necesarios para un doctor independiente",
-            color: "#52b69a",
-          },
-          {
-            value: "Hospitales",
-            label: "Hospitales",
-            price: 7000,
-            subLabel:
-              "Plan escalable, costumizable, con opciones avanzadas para Hospitales y clinicas",
-            color: "#34a0a4",
-          },
-          {
-            value: "Especialistas",
-            label: "Especialistas",
-            price: 5000,
-            subLabel:
-              "Plan  escalable, costumizable y con muchas ventajas anadidas ideal para los especialistas",
-            color: "#d9ed92",
-          },
-        ];
+  const options: Option[] = type == "Paciente" ?
+    [
+      { value: 'Basico', label: 'Basico', price: 0, subLabel: "Plan con los requerimientos esenciales, sin ventajas anadidas", color: "#52b69a" },
+      { value: 'Familiar', label: 'Familiar', price: 1000, subLabel: "Plan escalable, costumizable, con opciones avanzadas y para toda la familia", color: "#34a0a4" },
+      { value: 'Paciente', label: 'Paciente', price: 600, subLabel: "Plan  escalable y costumizable para un solo usuario", color: "#d9ed92" },
+    ]
+    : [
+      {
+        value: "Independiente",
+        label: "Independiente",
+        price: 3000,
+        subLabel:
+          "Plan con los requerimientos necesarios para un doctor independiente",
+        color: "#52b69a",
+      },
+      {
+        value: "Hospitales",
+        label: "Hospitales",
+        price: 7000,
+        subLabel:
+          "Plan escalable, costumizable, con opciones avanzadas para Hospitales y clinicas",
+        color: "#34a0a4",
+      },
+      {
+        value: "Especialistas",
+        label: "Especialistas",
+        price: 5000,
+        subLabel:
+          "Plan  escalable, costumizable y con muchas ventajas anadidas ideal para los especialistas",
+        color: "#d9ed92",
+      },
+    ];
 
   return (
     <Box
@@ -208,304 +162,113 @@ const ChangePlan: React.FC = () => {
         </Typography>
       </Box>
 
-      <Box
-        sx={{
-          backgroundColor: "#fff",
-          width: isMediumScreen ? "90vw" : "100vw",
-          height: "100vh",
-          boxShadow: 1,
-          marginLeft: isMediumScreen ? "3rem" : 0,
-        }}
-      >
-        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem" }}>
-          Configuracion de Plan
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
-        >
-          Cambia la configuracion y el tipo de plan
-        </Typography>
+      <Box sx={{
+        backgroundColor: "#fff",
+        width: isMediumScreen ? "90vw" : "100vw",
+        height: "100vh",
+        boxShadow: 1,
+        marginLeft: isMediumScreen ? "3rem" : 0
+      }}>
+
+        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem" }}>Configuracion de Plan</Typography>
+        <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Cambia la configuracion y el tipo de plan</Typography>
         <Divider variant="middle" sx={{ margin: "0 2rem" }} />
 
-        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>
-          Plan
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
-        >
-          Cambia la configuracion de tu plan
-        </Typography>
+        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>Plan</Typography>
+        <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Cambia la configuracion de tu plan</Typography>
 
-<<<<<<< HEAD
-            <Box sx={{
-                backgroundColor: "#fff",
-                width: isMediumScreen ? "90vw" : "100vw",
-                height: "100vh",
-                boxShadow: 1,
-                marginLeft: isMediumScreen ? "3rem" : 0
-            }}>
-
-
-                <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem" }}>Configuracion de Plan</Typography>
-                <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Cambia la configuracion y el tipo de plan</Typography>
-                <Divider variant="middle" sx={{ margin: "0 2rem" }} />
-
-                <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>Plan</Typography>
-                <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Cambia la configuracion de tu plan</Typography>
-
-                {/*Componente de Plan*/}
-                <RadioCard options={options} currentPlan={plan} />
-
-
-            </Box>
-
-        </Box>
-    );
-};
-
-const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
-
-    const { authenticated } = useUserStore();
-    const { getUser } = useUserStore();
-    const { updateUser } = useUserStore();
-
-    const id = authenticated() ? getUser().id : null;
-
-    const theme = useTheme();
-    const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
-
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
-=======
         {/*Componente de Plan*/}
         <RadioCard options={options} currentPlan={plan} />
       </Box>
-    </Box>
+    </Box >
   );
 };
 
 const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
+
+  const { authenticated } = useUserStore();
+  const { getUser } = useUserStore();
+  const { updateUser } = useUserStore();
+
+  const id = authenticated() ? getUser().id : null;
+
   const theme = useTheme();
-  const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
->>>>>>> dev
 
   //zustand para plan
   const { getPlanData, setPlanData } = usePlanStore();
 
-<<<<<<< HEAD
-    const handleOptionChange = (value: string) => {
-        setSelectedOption(value);
-        setPlanData("plan", value);
-    };
-
-    const change_product = async (id: number, plan: string) => {
-        if (!id) return;
-
-        const results = await axios.put(getBackendConnectionString(`usuarios/${id}`), {
-            plan: plan,
-        }).then((response) => {
-            console.log(response);
-            if (response.status === 200 || response.status === 201) {
-                updateUser(plan);
-                return true;
-            }
-            return false;
-        }).catch(error => {
-            const error_msj = error?.response?.data?.message;
-            console.log(error);
-            console.log(error_msj);
-            return false;
-        });
-
-        return results;
-    }
-    return (
-        <div>
-            {options.map((option) => (
-                <Card
-                    key={option.value}
-                    onClick={() => {
-                        handleOptionChange(option.value)
-                        //AQUI EL CONSOLE LOG
-                        console.log(getPlanData("plan"))
-
-                    }}
-
-                    sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? '2px solid #52b69a' : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
-                >   <Box sx={{ backgroundColor: option.color != ("" || null || undefined) ? option.color : "#e9ecef", borderRadius: "50%", width: "3.3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <ViewInArIcon></ViewInArIcon>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', }}>
-                        <CardContent sx={{ flex: '1 0 auto' }}>
-                            <Typography variant="h6">{option.label == currentPlan ? `Plan ${option.label} - $${option.price} - plan actual` : `Plan ${option.label} - $${option.price} `}</Typography>
-                            <Typography variant="subtitle2" color="text.secondary" component="div">
-                                {option.subLabel}
-                            </Typography>
-                        </CardContent>
-                    </Box>
-
-                </Card>
-            ))}
-
-            <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : "2rem", backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
-
-                variant="contained"
-                type="submit"
-                //disabled={!isValid}
-                onClick={() => {
-                    Swal.fire({
-                        title: '¿Estás seguro?',
-                        text: `Si procede con esta accion cambiaras tu plan y los privilegios que ofrecen`,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#52b69a',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Acepto',
-                        cancelButtonText: 'Cancelar',
-                        customClass: {
-                            container: SweetAlertDAStyle.sweetAlertContainer,
-                        },
-                        allowOutsideClick: () => !Swal.isLoading(),
-                        allowEscapeKey: () => !Swal.isLoading(),
-                        allowEnterKey: () => !Swal.isLoading(),
-                        stopKeydownPropagation: false,
-
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            if (selectedOption !== currentPlan) {
-                                change_product(id, getPlanData('plan')).then(results => {
-                                    if (results) {
-                                        Swal.fire({
-                                            title: 'Se ha actualizado el plan',
-                                            text: 'El plan se ha cambiado de forma exitosa.',
-                                            icon: 'success',
-                                            customClass: {
-                                                container: SweetAlertDAStyle.sweetAlertContainer,
-                                            }
-                                        });
-                                    } else {
-                                        Swal.fire({
-                                            title: 'Hubo un problema',
-                                            text: 'El plan no pudo actualizarse.',
-                                            icon: 'warning',
-                                            customClass: {
-                                                container: SweetAlertDAStyle.sweetAlertContainer,
-                                            }
-                                        });
-                                    }
-                                })
-                            } else {
-                                Swal.fire({
-                                    title: 'Hubo un problema',
-                                    text: 'El plan no pudo actualizarse o has elegido el mismo plan que tenias',
-                                    icon: 'warning',
-                                    customClass: {
-                                        container: SweetAlertDAStyle.sweetAlertContainer,
-                                    }
-                                });
-                            }
-                        }
-                    })
-                }}
-            >
-                Confirmar
-            </Button>
-
-
-        </div>
-    );
-=======
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
     setPlanData("plan", value);
   };
 
+  const change_product = async (id: number, plan: string) => {
+    if (!id) return;
+
+    const results = await axios.put(getBackendConnectionString(`usuarios/${id}`), {
+      plan: plan,
+    }).then((response) => {
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        updateUser(plan);
+        return true;
+      }
+      return false;
+    }).catch(error => {
+      const error_msj = error?.response?.data?.message;
+      console.log(error);
+      console.log(error_msj);
+      return false;
+    });
+
+    return results;
+  }
   return (
     <div>
       {options.map((option) => (
         <Card
           key={option.value}
           onClick={() => {
-            handleOptionChange(option.value);
+            handleOptionChange(option.value)
             //AQUI EL CONSOLE LOG
-            console.log(getPlanData("plan"));
+            console.log(getPlanData("plan"))
+
           }}
-          sx={{
-            margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem",
-            paddingLeft: "0.5rem",
-            display: "flex",
-            justifyContent: "left",
-            alignItems: "center",
-            cursor: "pointer",
-            marginBottom: 1,
-            borderRadius: "1rem",
-            border:
-              selectedOption === option.value
-                ? "2px solid #52b69a"
-                : "2px solid #e9ecef",
-            width: isMediumScreen ? "60vw" : "88vw",
-            height: "5rem",
-          }}
-        >
-          {" "}
-          <Box
-            sx={{
-              backgroundColor:
-                option.color != ("" || null || undefined)
-                  ? option.color
-                  : "#e9ecef",
-              borderRadius: "50%",
-              width: "3.3rem",
-              height: "3rem",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+
+          sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? '2px solid #52b69a' : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
+        >   <Box sx={{ backgroundColor: option.color != ("" || null || undefined) ? option.color : "#e9ecef", borderRadius: "50%", width: "3.3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
             <ViewInArIcon></ViewInArIcon>
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <CardContent sx={{ flex: "1 0 auto" }}>
-              <Typography variant="h6">
-                {option.label == currentPlan
-                  ? `Plan ${option.label} - $${option.price} - plan actual`
-                  : `Plan ${option.label} - $${option.price} `}
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                color="text.secondary"
-                component="div"
-              >
+          <Box sx={{ display: 'flex', flexDirection: 'column', }}>
+            <CardContent sx={{ flex: '1 0 auto' }}>
+              <Typography variant="h6">{option.label == currentPlan ? `Plan ${option.label} - $${option.price} - plan actual` : `Plan ${option.label} - $${option.price} `}</Typography>
+              <Typography variant="subtitle2" color="text.secondary" component="div">
                 {option.subLabel}
               </Typography>
             </CardContent>
           </Box>
+
         </Card>
       ))}
 
-      <Button
-        sx={{
-          mt: "1rem",
-          marginLeft: isMediumScreen ? "5rem" : "2rem",
-          backgroundColor: "#52b69a",
-          "&:hover": { backgroundColor: "#34a0a4" },
-        }}
+      <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : "2rem", backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
+
         variant="contained"
         type="submit"
         //disabled={!isValid}
         onClick={() => {
           Swal.fire({
-            title: "¿Estás seguro?",
+            title: '¿Estás seguro?',
             text: `Si procede con esta accion cambiaras tu plan y los privilegios que ofrecen`,
-            icon: "warning",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#52b69a",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Acepto",
-            cancelButtonText: "Cancelar",
+            confirmButtonColor: '#52b69a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Acepto',
+            cancelButtonText: 'Cancelar',
             customClass: {
               container: SweetAlertDAStyle.sweetAlertContainer,
             },
@@ -513,36 +276,49 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
             allowEscapeKey: () => !Swal.isLoading(),
             allowEnterKey: () => !Swal.isLoading(),
             stopKeydownPropagation: false,
+
           }).then((result) => {
             if (result.isConfirmed) {
               if (selectedOption !== currentPlan) {
-                Swal.fire({
-                  title: "Se ha actualizado el plan",
-                  text: "El plan se ha cambiado de forma exitosa.",
-                  icon: "success",
-                  customClass: {
-                    container: SweetAlertDAStyle.sweetAlertContainer,
-                  },
-                });
+                change_product(id, getPlanData('plan')).then(results => {
+                  if (results) {
+                    Swal.fire({
+                      title: 'Se ha actualizado el plan',
+                      text: 'El plan se ha cambiado de forma exitosa.',
+                      icon: 'success',
+                      customClass: {
+                        container: SweetAlertDAStyle.sweetAlertContainer,
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      title: 'Hubo un problema',
+                      text: 'El plan no pudo actualizarse.',
+                      icon: 'warning',
+                      customClass: {
+                        container: SweetAlertDAStyle.sweetAlertContainer,
+                      }
+                    });
+                  }
+                })
               } else {
                 Swal.fire({
-                  title: "Hubo un problema",
-                  text: "El plan no pudo actualizarse o has elegido el mismo plan que tenias",
-                  icon: "warning",
+                  title: 'Hubo un problema',
+                  text: 'El plan no pudo actualizarse o has elegido el mismo plan que tenias',
+                  icon: 'warning',
                   customClass: {
                     container: SweetAlertDAStyle.sweetAlertContainer,
-                  },
+                  }
                 });
               }
             }
-          });
+          })
         }}
       >
         Confirmar
       </Button>
     </div>
   );
->>>>>>> dev
 };
 
 export default ChangePlan;
