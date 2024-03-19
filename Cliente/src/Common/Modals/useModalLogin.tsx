@@ -114,7 +114,7 @@ export default function useModalLogin(): IProps {
           } else {
             //Condicion que  cierra el Modal y Redirecciona al Usuario a otra ruta, despues de un inicio de session exitosa
             handleClose();
-            navigate("/profile"); // Redirige a esa ruta en caso de que el usuario se conecte exitosamente. Reemplazar con /dashboard
+            navigate("/dashboard"); // Redirige a esa ruta en caso de que el usuario se conecte exitosamente. Reemplazar con /dashboard
           }
         });
 

@@ -9,6 +9,14 @@ const useUserStore = create((set: any) => ({
         localStorage.setItem('user', JSON.stringify(user));
         return { user: user }
     }),
+    updateUser: (product: any) => set(() => {
+        const query = JSON.parse(localStorage.getItem('user') || '{}');
+        query.plan = product;
+        localStorage.removeItem('user');
+        localStorage.setItem('user', JSON.stringify(query));
+        return { user: query }
+
+    }),
     getUser: () => {
         const query = JSON.parse(localStorage.getItem('user') || '{}');
         const user = query;

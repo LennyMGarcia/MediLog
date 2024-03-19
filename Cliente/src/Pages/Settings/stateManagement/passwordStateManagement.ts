@@ -1,22 +1,24 @@
-import {create}  from 'zustand';
+import { create } from 'zustand';
 import { z } from 'zod';
 
 
 const zodPasswordSchema = z.object({
 
     contrasenaNueva: z.string().min(6).max(24),
-   
+    contrasenaActual: z.string().min(6).max(24),
+
 });
 
- type passwordSchemaValues = z.infer<typeof zodPasswordSchema>;
+type passwordSchemaValues = z.infer<typeof zodPasswordSchema>;
 
 export type passwordSchemaActions = {
-    setPasswordData: (name: string , value: passwordSchemaValues[keyof passwordSchemaValues]) => void;
-    getPasswordData: (name: string ) => passwordSchemaValues[keyof passwordSchemaValues];
+    setPasswordData: (name: string, value: passwordSchemaValues[keyof passwordSchemaValues]) => void;
+    getPasswordData: (name: string) => passwordSchemaValues[keyof passwordSchemaValues];
 }
 
 const usePasswordStore = create<passwordSchemaValues & passwordSchemaActions>((set, get) => ({
     contrasenaNueva: '',
+    contrasenaActual: '',
     setPasswordData: (name, value) => {
         try {
             const validatedName = name as keyof passwordSchemaValues;
