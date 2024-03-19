@@ -18,7 +18,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { Search } from "@mui/icons-material";
-import CaseTableMenu from "./specificCaseMenu";
+import CaseTableMenu from "./ConsultationMenu";
+import ConsultationMenu from "./ConsultationMenu";
 
 
 
@@ -88,6 +89,27 @@ export default function ConsultationTable({ type }: IProps) {
   const data = [
     {
       id: 1,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      
+    },
+    {
+      id: 2,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      
+    },
+    {
+      id: 3,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      
+    },
+    {
+      id: 4,
       motivo: "Consulta de rutina",
       person: "Juan Pérez",
       time: "2024-03-11T09:00:00",
@@ -625,7 +647,7 @@ export default function ConsultationTable({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    <CaseTableMenu />
+                    <ConsultationMenu />
                   </TableCell>
                 </TableRow>
               ))}

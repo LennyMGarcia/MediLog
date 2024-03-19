@@ -8,7 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModalAlert from "../../../../Common/Modals/ModalAlert";
 import { Visibility } from "@mui/icons-material";
 
-export default function CaseTableMenu() {
+export default function ConsultationMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,7 +63,7 @@ export default function CaseTableMenu() {
         </MenuItem>
       </Menu>
       <ModalAlert
-        title="¿Esta seguro que quiere borrar esta consulta?" //o cirugia
+        title="¿Esta seguro que quiere borrar esta consulta?" 
         description="Al pulsar aceptar, este carro sera borrado de manera permanente, y no podra ser recuperado a futuro, ¿Deseas continuar a futuro?"
         type="warning"
         open={openModal}
