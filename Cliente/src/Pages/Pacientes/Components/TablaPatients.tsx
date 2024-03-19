@@ -14,12 +14,10 @@ import {
   TextField,
 } from "@mui/material";
 import { useMemo, useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
 import { Person2, Search } from "@mui/icons-material";
-import pacientes from '../../../Common/Mocks/listaPaciente.json'
+import pacientes from "../../../Common/Mocks/listaPaciente.json";
+
+// Tipos de datos a mostrar en la tabla
 
 type IProps = {
   idPatient: number;
@@ -31,9 +29,6 @@ type IProps = {
 };
 
 export default function TablaPatients() {
-  // const data = ["1", "2"];
- 
-
   const isDoctor = true;
 
   const [page, setPage] = useState(0);
@@ -41,9 +36,7 @@ export default function TablaPatients() {
   const [rowsTotal, setRowsTotal] = useState(pacientes.length);
   const [openInputSearch, setOpenInputSearch] = useState("");
   const [dateStart, setDateStart] = useState<string | null>();
-  // dayjs().format("DD/MM/YYYY")
   const [dateEnd, setDateEnd] = useState<string | null>();
-  // dayjs().format("DD/MM/YYYY")
 
   const rows = pacientes;
 
@@ -57,49 +50,6 @@ export default function TablaPatients() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  // const badgetStatus: Record<string, any> = {
-  //   close: {
-  //     name: "Cerrados",
-  //     color: "#8EBF43",
-  //   },
-  //   open: {
-  //     name: "Abierto",
-  //     color: "#28AAE1",
-  //   },
-  //   pending: {
-  //     name: "Suspendido",
-  //     color: "#E30000",
-  //   },
-  //   process: {
-  //     name: "En Proceso",
-  //     color: "#E5D540",
-  //   },
-  // };
-
-  // const Badge = ({ bg, tipo }: { bg: string; tipo: string }) => {
-  //   return (
-  //     <Chip
-  //       sx={{
-  //         //   marginLeft: "8px",
-  //         height: "24px",
-  //         width: "93px",
-  //         color: "#FFFFFF",
-  //         borderRadius: "6px",
-  //         backgroundColor: bg,
-  //         "& .MuiChip-label": {
-  //           display: "block",
-  //           whiteSpace: "pre",
-  //           fontFamily: "Arial",
-  //           fontSize: "12px",
-  //           fontWeight: "700",
-  //           lineHeight: "20px",
-  //         },
-  //       }}
-  //       label={tipo}
-  //     />
-  //   );
-  // };
 
   function stableSort(array: any[]) {
     const stabilized = array;
@@ -138,6 +88,7 @@ export default function TablaPatients() {
     return stabilized;
   }
 
+  // Esta es una funcion de Material UI para la paginacion
   const visibleRows = useMemo(
     () =>
       stableSort(rows).slice(
@@ -164,7 +115,6 @@ export default function TablaPatients() {
             justifyContent: "space-between",
           }}
         >
-          {/* <Box></Box> */}
           <TextField
             label="Buscar"
             variant="outlined"
@@ -240,8 +190,6 @@ export default function TablaPatients() {
               setOpenInputSearch(e.target.value);
             }}
           />
-
-        
         </Box>
 
         <Box
@@ -250,7 +198,6 @@ export default function TablaPatients() {
           }}
         >
           <Table
-            // sx={{ minWidth: 650 }}
             aria-label="simple table"
             sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
           >
@@ -473,7 +420,6 @@ export default function TablaPatients() {
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={rowsTotal}
-        // count={visibleRows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
