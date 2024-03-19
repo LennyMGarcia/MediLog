@@ -18,7 +18,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { Search } from "@mui/icons-material";
-import TableMenu from "../../../Casos/Components/Menu";
+import CaseTableMenu from "./specificCaseMenu";
+
 
 
 type IPropsDoctor = {
@@ -58,13 +59,13 @@ interface IProps {
   type: "all" | "open" | "close" | "process" | "pending";
 }
 
-export const Badge = ({ bg, tipo }: { bg: string; tipo: string }) => {
+export const Badge = ({ bg, tipo, w, h }: { bg: string; tipo: string, w?:string, h?:string }) => {
     return (
       <Chip
         sx={{
           //   marginLeft: "8px",
-          height: "24px",
-          width: "93px",
+          height: h || "24px",
+          width: w || "93px",
           color: "#FFFFFF",
           borderRadius: "6px",
           backgroundColor: bg,
@@ -87,44 +88,12 @@ export default function ConsultationTable({ type }: IProps) {
   const data = [
     {
       id: 1,
-      descripcion: "Consulta de rutina",
+      motivo: "Consulta de rutina",
       person: "Juan Pérez",
       time: "2024-03-11T09:00:00",
-      estado: "open",
-      categoria: 2,
+      
     },
-    {
-      id: 2,
-      descripcion: "Examen de sangre",
-      person: "María Rodríguez",
-      time: "2024-03-12T10:30:00",
-      estado: "close",
-      categoria: 1,
-    },
-    {
-      id: 3,
-      descripcion: "Consulta de seguimiento",
-      person: "Luis García",
-      time: "2024-03-13T11:15:00",
-      estado: "pending",
-      categoria: 3,
-    },
-    {
-      id: 4,
-      descripcion: "Revisión de presión arterial",
-      person: "Ana Martínez",
-      time: "2024-03-14T15:45:00",
-      estado: "process",
-      categoria: 2,
-    },
-    {
-      id: 5,
-      descripcion: "Vacunación contra la gripe",
-      person: "Carlos Sánchez",
-      time: "2024-03-15T08:20:00",
-      estado: "open",
-      categoria: 1,
-    },
+    
   ];
   const isDoctor = true;
 
@@ -517,7 +486,7 @@ export default function ConsultationTable({ type }: IProps) {
                     color: "#939497",
                   }}
                 >
-                  No. de Caso
+                  # de consulta
                 </TableCell>
                 <TableCell
                   sx={{
@@ -528,7 +497,7 @@ export default function ConsultationTable({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Caso
+                  Motivo
                 </TableCell>
                 <TableCell
                   sx={{
@@ -552,28 +521,8 @@ export default function ConsultationTable({ type }: IProps) {
                 >
                   Fecha
                 </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Estatus
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Categoria
-                </TableCell>
+               
+                
                 <TableCell
                   sx={{
                     fontFamily: "Arial",
@@ -636,7 +585,7 @@ export default function ConsultationTable({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.descripcion}
+                    {row.motivo}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -664,6 +613,7 @@ export default function ConsultationTable({ type }: IProps) {
                   >
                     {row.time}
                   </TableCell>
+                 
                   <TableCell
                     align="left"
                     sx={{
@@ -675,37 +625,7 @@ export default function ConsultationTable({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    <Badge
-                      bg={badgetStatus[row.estado].color}
-                      tipo={badgetStatus[row.estado].name}
-                    />
-                    {/* {row.status} */}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "400",
-                      fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
-                    }}
-                  >
-                    {row.categoria}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "400",
-                      fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
-                    }}
-                  >
-                    <TableMenu />
+                    <CaseTableMenu />
                   </TableCell>
                 </TableRow>
               ))}
