@@ -15,6 +15,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Icon from "/assets/Pictures/IconMediLog.png";
 import { Button, Collapse } from "@mui/material";
 import ModalAlert from "../Modals/ModalAlert";
+import useUserStore from "../Utils/setUserSession";
 
 const pagesPatients = [
   { name: "Dashboard", link: "/dashboard" },
@@ -31,6 +32,14 @@ const pagesDoctors = [
 const settings = [{ name: "Ajustes", link: "/settings", haveModal: false }, { name: "Cerrar Sesion", link: "/", haveModal: true }];
 
 function Appbar() {
+  const { logoutUser } = useUserStore();
+  const { getUser } = useUserStore();
+  const { authenticated } = useUserStore();
+
+  const nombre = authenticated() ? getUser().nombre : null;
+  const apellido = authenticated() ? getUser().apellido : null;
+  const rol = authenticated() ? getUser().tipo : null;
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -210,10 +219,10 @@ function Appbar() {
               }}
             >
               <Typography variant="h5" fontSize={16} textAlign={"center"}>
-                Nombre Apellido
+                {nombre} {apellido}
               </Typography>
               <Typography variant="h6" fontSize={14} textAlign={"center"}>
-                Rol
+                {rol}
               </Typography>
             </Box>
 
@@ -247,12 +256,12 @@ function Appbar() {
                   <Typography textAlign="center">{setting.name}</Typography>
                   </Link> */}
                   <Button variant="text" sx={{
-                    fontSize:"14px",
-                    textTransform:"capitalize",
-                    color:"#000000"
-                  }} onClick={()=>{
+                    fontSize: "14px",
+                    textTransform: "capitalize",
+                    color: "#000000"
+                  }} onClick={() => {
                     {
-                      setting.haveModal? setshowModal(true) :navigate(setting.link)
+                      setting.haveModal ? setshowModal(true) : navigate(setting.link)
                     }
                   }}  >
                     {setting.name}
@@ -302,11 +311,13 @@ function Appbar() {
         ))}
       </Collapse>
 
-      <ModalAlert title="Cerrar Sesion" description="¿Estas seguro que quieres cerrar sesion?" type="warning" open={showModal} handleClose={()=>{
+      <ModalAlert title="Cerrar Sesion" description="¿Estas seguro que quieres cerrar sesion?" type="warning" open={showModal} handleClose={() => {
         setshowModal(false)
-      }} handleOk={()=>{
+      }} handleOk={() => {
+        //Poner Comandos AQUI
+        logoutUser();
         navigate("/")
-      }}  />
+      }} />
 
     </AppBar>
   );

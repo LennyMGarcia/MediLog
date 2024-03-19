@@ -39,14 +39,35 @@ class Usuario extends Model {
             this.plan = result?.plan;
             const query = new Builder('productos');
             const [productos_results, fields] = await DB.query(query.select_query('*', 'id'), [this.plan]);
-            const rows = {
-                id: result.id,
-                member_id: result.member_id,
-                correo: result.correo,
-                tipo: result.tipo,
-                plan: productos_results[0]?.nombre || 'Basico'
+            if (this.tipo === 'Paciente') {
+                const model = new Paciente();
+                const search = await model.find(this.member_id);
+                const rows = {
+                    id: result.id,
+                    member_id: result.member_id,
+                    nombre: search.nombre,
+                    apellido: search.apellido,
+                    correo: result.correo,
+                    tipo: result.tipo,
+                    plan: productos_results[0]?.nombre || 'Basico'
+                }
+                return rows;
+            } else {
+                const model = new Especialista();
+                const search = await model.find(this.member_id);
+                console.log(search);
+                const rows = {
+                    id: result.id,
+                    member_id: result.member_id,
+                    nombre: search.nombre,
+                    apellido: search.apellido,
+                    correo: result.correo,
+                    tipo: result.tipo,
+                    plan: productos_results[0]?.nombre || 'Basico'
+                }
+                return rows;
             }
-            return rows;
+
             return result;
 
         } catch (error) {
