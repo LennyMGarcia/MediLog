@@ -207,7 +207,7 @@ export default function LandingPage() {
               display={"flex"}
               alignItems={"flex-end"}
               justifyContent={"flex-end"}
-              direction={"column"}
+              flexDirection={"column"}
             >
               <Typography
                 variant="h4"
@@ -247,22 +247,24 @@ export default function LandingPage() {
               // spacing={1}
               gap="20px"
               textAlign={"center"}
-            // padding={"10px"}
+              // padding={"10px"}
             >
               {/* <Grid item xs={3} justifyContent={"flex-end"}> */}
-              {!authenticated() && <Button
-                variant={"contained"}
-                sx={{
-                  textTransform: "capitalize",
-                  color: "#E9ECEF",
-                  bgcolor: "#168AAD",
-                }}
-                onClick={() => {
-                  handleOpenModal();
-                }}
-              >
-                Iniciar Sesion
-              </Button>}
+              {!authenticated() && (
+                <Button
+                  variant={"contained"}
+                  sx={{
+                    textTransform: "capitalize",
+                    color: "#E9ECEF",
+                    bgcolor: "#168AAD",
+                  }}
+                  onClick={() => {
+                    handleOpenModal();
+                  }}
+                >
+                  Iniciar Sesion
+                </Button>
+              )}
               {/* </Grid> */}
 
               {/* <Grid item xs={5} textAlign={"center"}> */}
@@ -342,8 +344,8 @@ export default function LandingPage() {
             justifyContent={"space-around"}
             direction={"row"}
             gap={2}
-          // rowGap={5}
-          // columnGap={1}
+            // rowGap={5}
+            // columnGap={1}
           >
             {planes.map((plan, idx) => {
               return (
@@ -385,7 +387,7 @@ export default function LandingPage() {
                     </Typography>
                   </Grid>
 
-                  <Grid item xs={12} spacing={"12px"}>
+                  <Grid item xs={12} gap={"12px"}>
                     <ul
                       style={{
                         // listStyleType: "none",
@@ -433,7 +435,7 @@ export default function LandingPage() {
           gap={1}
           bgcolor={"#184E77"}
         >
-          <Grid item xs={12} direction={"column"}>
+          <Grid item xs={12} flexDirection={"column"}>
             <Typography
               variant="h5"
               textAlign={"center"}
@@ -480,13 +482,15 @@ export default function LandingPage() {
                 return (
                   <Grid
                     key={idx}
+                    item
+                    // container
                     xs={12}
                     sm={4}
                     display={"flex"}
                     flexDirection={"column"}
                     alignItems={"center"}
                     gap={"20px"}
-                  // border={"1px solid #15143966"}
+                    // border={"1px solid #15143966"}
                   >
                     {/* <Grid item xs={12}> */}
                     <Avatar
@@ -496,7 +500,7 @@ export default function LandingPage() {
                         height: "90px",
                       }}
                     />
-                    <Grid xs={12}>
+                    <Grid item xs={12}>
                       <Typography
                         textAlign={"center"}
                         fontSize={22}
@@ -792,10 +796,10 @@ export default function LandingPage() {
               item
               container
               xs={12}
-            // height="450"
-            // display={"flex"}
-            // flexDirection={"column"}
-            // justifyContent={"space-around"}
+              // height="450"
+              // display={"flex"}
+              // flexDirection={"column"}
+              // justifyContent={"space-around"}
             >
               <Grid item xs={12} md={6} textAlign={"center"} height={"auto"}>
                 <img

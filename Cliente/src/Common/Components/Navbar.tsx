@@ -1,5 +1,5 @@
 import { Button, Grid, Link, Typography } from "@mui/material";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import useModalLogin from "../Modals/useModalLogin";
 import useUserStore from "../Utils/setUserSession";
 
@@ -11,7 +11,7 @@ export default function Navbar() {
   const logout = () => {
     logoutUser();
     navigate('/');
-  }
+  };
   const navbarLinks = [
     {
       name: "Planes",
@@ -45,10 +45,11 @@ export default function Navbar() {
     <>
       <Grid
         container
-        xs={12}
+        // xs={12}
         sx={{
           width: "100%",
           backgroundColor: "#184E77",
+          minHeight: "72px",
         }}
         display={"flex"}
         justifyContent={"space-between"}
@@ -70,6 +71,7 @@ export default function Navbar() {
               fontSize: "25px",
               fontWeight: "600",
               textTransform: "uppercase",
+              cursor: "pointer",
             }}
             // variant="text"
             onClick={() => {
@@ -141,73 +143,75 @@ export default function Navbar() {
               })}
             </Grid>
           )}
-          {!authenticated() ? <Grid
-            item
-            xs={12}
-            sm={12}
-            md={4}
-            display={"flex"}
-            gap={"10px"}
-            alignItems={"center"}
-            justifyContent={"flex-end"}
-            sx={{
-              justifyContent: {
-                xs: "center",
-                sm: "center",
-                md: "flex-end",
-              },
-            }}
-          >
-            <Button
+          {!authenticated() ? (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={4}
+              display={"flex"}
+              gap={"10px"}
+              alignItems={"center"}
+              justifyContent={"flex-end"}
               sx={{
-                color: "#FFF",
-                fontSize: "16px",
-              }}
-              variant="text"
-              onClick={() => {
-                handleOpenModal();
+                justifyContent: {
+                  xs: "center",
+                  sm: "center",
+                  md: "flex-end",
+                },
               }}
             >
-              Iniciar Sesion
-            </Button>
-            <Button
-              variant="contained"
+              <Button
+                sx={{
+                  color: "#FFF",
+                  fontSize: "16px",
+                }}
+                variant="text"
+                onClick={() => {
+                  handleOpenModal();
+                }}
+              >
+                Iniciar Sesion
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  bgcolor: "#168AAD",
+                }}
+                onClick={() => navigate("/register")}
+              >
+                Registrarte
+              </Button>
+            </Grid>
+          ) : (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={4}
+              display={"flex"}
+              gap={"10px"}
+              alignItems={"center"}
+              justifyContent={"flex-end"}
               sx={{
-                bgcolor: "#168AAD",
+                justifyContent: {
+                  xs: "center",
+                  sm: "center",
+                  md: "flex-end",
+                },
               }}
-              onClick={() => navigate("/register")}
             >
-              Registrarte
-            </Button>
-          </Grid> : <Grid
-            item
-            xs={12}
-            sm={12}
-            md={4}
-            display={"flex"}
-            gap={"10px"}
-            alignItems={"center"}
-            justifyContent={"flex-end"}
-            sx={{
-              justifyContent: {
-                xs: "center",
-                sm: "center",
-                md: "flex-end",
-              },
-            }}
-          >
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: "#168AAD",
-              }}
-              onClick={() => logout()}
-            >
-              Desconectar
-            </Button>
-          </Grid>}
-
-
+              <Button
+                variant="contained"
+                sx={{
+                  bgcolor: "#168AAD",
+                }}
+                onClick={() => logout()}
+              >
+                Desconectar
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <ModalLogin />
