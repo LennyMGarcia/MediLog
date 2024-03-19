@@ -11,9 +11,10 @@ import Avatar from "@mui/material/Avatar";
 // import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Icon from "/assets/Pictures/IconMediLog.png";
-import { Collapse } from "@mui/material";
+import { Button, Collapse } from "@mui/material";
+import ModalAlert from "../Modals/ModalAlert";
 
 const pagesPatients = [
   { name: "Dashboard", link: "/dashboard" },
@@ -27,13 +28,16 @@ const pagesDoctors = [
   { name: "Pacientes", link: "/pacientes" },
   { name: "Perfil", link: "/profile" },
 ];
-const settings = ["Ajustes", "Cerrar Sesion"];
+const settings = [{ name: "Ajustes", link: "/settings", haveModal: false }, { name: "Cerrar Sesion", link: "/", haveModal: true }];
 
 function Appbar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
   const [checked, setChecked] = React.useState(false);
+
+  const [showModal, setshowModal] = React.useState(false)
+  const navigate = useNavigate()
 
   const handleChange = () => {
     console.log(checked);
@@ -234,9 +238,25 @@ function Appbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, idx) => (
+                <MenuItem key={idx} onClick={handleCloseUserMenu}>
+                  {/* <Link to={setting.link} style={{
+                    textDecoration:"none",
+                    color:"#000000"
+                  }}>
+                  <Typography textAlign="center">{setting.name}</Typography>
+                  </Link> */}
+                  <Button variant="text" sx={{
+                    fontSize:"14px",
+                    textTransform:"capitalize",
+                    color:"#000000"
+                  }} onClick={()=>{
+                    {
+                      setting.haveModal? setshowModal(true) :navigate(setting.link)
+                    }
+                  }}  >
+                    {setting.name}
+                  </Button>
                 </MenuItem>
               ))}
             </Menu>
@@ -281,6 +301,13 @@ function Appbar() {
           </NavLink>
         ))}
       </Collapse>
+
+      <ModalAlert title="Cerrar Sesion" description="¿Estas seguro que quieres cerrar sesion?" type="warning" open={showModal} handleClose={()=>{
+        setshowModal(false)
+      }} handleOk={()=>{
+        navigate("/")
+      }}  />
+
     </AppBar>
   );
 }

@@ -13,6 +13,7 @@ import Appearance from "../Pages/Settings/Components/SettingOptions/appearance";
 import DeleteAccount from "../Pages/Settings/Components/SettingOptions/DeleteAccount";
 import ChangePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
 import ChangePlan from "../Pages/Settings/Components/SettingOptions/ChangePlan";
+import NotFoundPage from "../Pages/Error404";
 
 export default function RoutesMain() {
   return (
@@ -37,6 +38,8 @@ export default function RoutesMain() {
           />
           <Route path={"/settings/changePlan"} element={<ChangePlan />} />
         </Route>
+        <Route path="*" element={<NotFoundPage/>}/>
+
       </Routes>
     </BrowserRouter>
   );
