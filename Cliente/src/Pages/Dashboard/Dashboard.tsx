@@ -2,8 +2,18 @@ import { Box, Grid, Typography } from "@mui/material";
 import Cards from "./Components/Cards";
 import { PieChart } from "@mui/x-charts";
 import ShortTable from "./Components/ShortTable";
+import useUserStore from "../../Common/Utils/setUserSession";
+import getBackendConnectionString from "../../Common/Utils/getBackendString";
+import axios from "axios";
 
 function Dashboard() {
+  const { getUser } = useUserStore();
+  const { authenticated } = useUserStore();
+
+  const nombre = authenticated() ? getUser().nombre : null;
+  const apellido = authenticated() ? getUser().apellido : null;
+  const rol = authenticated() ? getUser().tipo : null;
+
   const data = [
     {
       id: 1,
@@ -71,7 +81,7 @@ function Dashboard() {
             color: "#070708",
           }}
         >
-          Bienvenido, Nombre Apellido
+          Bienvenido, {nombre} {apellido}
         </Typography>
         <Typography
           sx={{
