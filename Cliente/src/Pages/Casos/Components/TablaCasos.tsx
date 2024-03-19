@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 import { Search } from "@mui/icons-material";
 import TableMenu from "./Menu";
 
-type IPropsDoctor = {
+/*type IPropsDoctor = {
   id: number;
   descripcion: string;
   paciente: string;
@@ -36,7 +36,7 @@ type IPropsPatient = {
   time: string;
   estado: string;
   categoria: number;
-};
+};*/
 
 type IPropsData = {
   id: number;
@@ -245,9 +245,9 @@ export default function TablaCasos({ type }: IProps) {
               fontSize: "14px",
               width: "300px",
               ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#CDCECF",
-                },
+              {
+                borderColor: "#CDCECF",
+              },
               ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
                 color: "#68696B",
               },
@@ -330,13 +330,13 @@ export default function TablaCasos({ type }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 format="DD/MM/YYYY"
                 onChange={(newValue: any) => {
@@ -418,13 +418,13 @@ export default function TablaCasos({ type }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 disableFuture
                 onChange={(newValue: any) => {
