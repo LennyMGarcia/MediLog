@@ -13,11 +13,14 @@ import {
   TablePagination,
   TextField,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 import { Person2, Search } from "@mui/icons-material";
-import pacientes from "../../../Common/Mocks/listaPaciente.json";
-
-// Tipos de datos a mostrar en la tabla
+//import pacientes from '../../../Common/Mocks/listaPaciente.json'
+import useUserStore from "../../../Common/Utils/setUserSession";
 
 type IProps = {
   idPatient: number;
@@ -29,16 +32,30 @@ type IProps = {
 };
 
 export default function TablaPatients() {
-  const isDoctor = true;
+    const { autopopulate } = useUserStore();
+  const pacientes = useUserStore((state) => state.pacientes);
 
-  const [page, setPage] = useState(0);
+  const [data, setData] = useState(pacientes);
+  const [logged, setLogged] = useState(true);
+
+
+  useEffect(() => {
+    autopopulate().then(result => {
+      setData(result.pacientes)
+    });
+    return;
+
+  }, [logged]);
+
+  //const isDoctor = getUser().tipo === 'Paciente' ? false : true;
+    const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [rowsTotal, setRowsTotal] = useState(pacientes.length);
+  const [rowsTotal, setRowsTotal] = useState(data.length);
   const [openInputSearch, setOpenInputSearch] = useState("");
   const [dateStart, setDateStart] = useState<string | null>();
   const [dateEnd, setDateEnd] = useState<string | null>();
 
-  const rows = pacientes;
+  const rows = data;
 
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
@@ -128,9 +145,9 @@ export default function TablaPatients() {
               fontSize: "14px",
               width: "300px",
               ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#CDCECF",
-                },
+              {
+                borderColor: "#CDCECF",
+              },
               ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
                 color: "#68696B",
               },
@@ -226,7 +243,7 @@ export default function TablaPatients() {
                   }}
                   align="left"
                 >
-                  names
+                  Nombre
                 </TableCell>
                 <TableCell
                   sx={{
@@ -237,7 +254,7 @@ export default function TablaPatients() {
                   }}
                   align="left"
                 >
-                  lastnames
+                  Apellido
                 </TableCell>
                 <TableCell
                   sx={{
@@ -259,7 +276,7 @@ export default function TablaPatients() {
                   }}
                   align="left"
                 >
-                  email
+                  Correo
                 </TableCell>
                 <TableCell
                   sx={{
@@ -270,7 +287,7 @@ export default function TablaPatients() {
                   }}
                   align="left"
                 >
-                  Numero de contacto
+                  Telefono
                 </TableCell>
                 <TableCell
                   sx={{
@@ -321,7 +338,7 @@ export default function TablaPatients() {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.idPatient}
+                    {row.id}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -334,7 +351,7 @@ export default function TablaPatients() {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.name}
+                    {row.nombre}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -347,7 +364,7 @@ export default function TablaPatients() {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.lastname}
+                    {row.apellido}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -360,7 +377,7 @@ export default function TablaPatients() {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.sex}
+                    {row.sexo}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -373,7 +390,7 @@ export default function TablaPatients() {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.email}
+                    {row.correo}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -386,7 +403,7 @@ export default function TablaPatients() {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.phone}
+                    {row.telefono}
                   </TableCell>
                   <TableCell
                     align="left"

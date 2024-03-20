@@ -427,9 +427,9 @@ class Usuario extends Model {
         if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado o Registro No Existe.', 'status': 400 }];
         const casos_columns = [
             'pacientes_id',
-            'especialistas_id',
         ];
 
+        //'especialistas_id',
         if (this.tipo !== 'Paciente') {
             try {
                 const pacientes_ids = [];
@@ -465,6 +465,7 @@ class Usuario extends Model {
         if (!ids) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
 
         const pacientes_columns = [
+            'id',
             'nombre',
             'apellido',
             'fecha_nacimiento',
@@ -486,7 +487,7 @@ class Usuario extends Model {
             try {
                 const query = new Builder('pacientes');
                 const [results, fields] = await DB.execute(query.select_query(pacientes_columns, 'id'), [id]);
-                pacientes.push(results);
+                pacientes.push(...results);
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
                 // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
