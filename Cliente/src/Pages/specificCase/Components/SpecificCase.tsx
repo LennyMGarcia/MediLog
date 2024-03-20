@@ -33,6 +33,8 @@ import Swal from "sweetalert2";
 
 import dayjs from "dayjs";
 import ConsultationTable, { Badge } from "./Tables/consultationTable";
+import ConsultationForm from "./forms/ConsultationForm";
+import ChageCaseForm from "./forms/ChangeCaseForm";
 
 
 const style = {
@@ -150,7 +152,7 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
                             },
                           }}>
                             <Box>
-                              
+                              <ChageCaseForm/>
                             </Box>
 
                             
@@ -287,7 +289,7 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
                             },
                           }}>
                             <Box>
-                              
+                              <ConsultationForm/>
                             </Box>
 
                             
