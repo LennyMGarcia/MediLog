@@ -44,17 +44,18 @@ function Appbar() {
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!authenticated()) {
       navigate('/')
       return;
     }
     return;
-  });
+  });*/
 
   const nombre = authenticated() ? getUser().nombre : null;
   const apellido = authenticated() ? getUser().apellido : null;
   const rol = authenticated() ? getUser().tipo : null;
+  const pages = rol === 'Paciente' ? pagesPatients : pagesDoctors;
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -166,7 +167,7 @@ function Appbar() {
             }}
           >
             {/* Si quieres probar las diferentes opciones que aparecen puedes poder pageDoctors o pagesPatients */}
-            {pagesDoctors.map((page, idx) => (
+            {pages.map((page, idx) => (
               <NavLink
                 key={idx}
                 to={page.link}
@@ -282,7 +283,7 @@ function Appbar() {
           },
         }}
       >
-        {pagesDoctors.map((page, idx) => (
+        {pages.map((page, idx) => (
           <NavLink
             key={idx}
             // onClick={handleCloseNavMenu}

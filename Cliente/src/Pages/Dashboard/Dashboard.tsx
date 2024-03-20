@@ -6,26 +6,66 @@ import useUserStore from "../../Common/Utils/setUserSession";
 import getBackendConnectionString from "../../Common/Utils/getBackendString";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Dashboard() {
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
+  const { autopopulate } = useUserStore();
+  const casos = useUserStore((state) => state.casos);
+
 
   const nombre = authenticated() ? getUser().nombre : null;
   const apellido = authenticated() ? getUser().apellido : null;
   const rol = authenticated() ? getUser().tipo : null;
+  const [logged, setLogged] = useState(true);
 
   // Este es el estado que debes cambiar para modificar la informacion de las cards y de los graficos,
   // ahora puse 50 como valor inicial pero colocale 0 cuando lo vayas a integrar
   const [casesInfo, setCasesInfo] = useState({
-    open: 50,
-    closed: 50,
-    suspend: 50,
-    onProcess: 50,
+    open: 0,
+    closed: 0,
+    suspend: 0,
+    onProcess: 0,
   });
 
-  // Mock
+  useEffect(() => {
+    autopopulate().then(result => {
+      const casos = result.casos;
+      if (casos) {
+        //Funcciones que divide que los registros segun el estado
+        const casos_abiertos = casos.filter((cases: any) => cases.estado === 'Activo');
+        const casos_cerrados = casos.filter((cases: any) => cases.estado === 'Inactivo');
+        const casos_proceso = casos.filter((cases: any) => cases.estado === 'Proceso');
+        const casos_suspendidos = casos.filter((cases: any) => cases.estado === 'Suspendido');
+
+        //Funcciones que aumenta la cantidad de casos en base a los casos existentes
+        if (casos_abiertos.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, open: casos_abiertos.length };
+          })
+        }
+        if (casos_cerrados.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, closed: casos_cerrados.length };
+          })
+        }
+        if (casos_proceso.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, onProcess: casos_cerrados.length };
+          })
+        }
+        if (casos_suspendidos.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, suspend: casos_suspendidos.length };
+          })
+        }
+        return;
+      }
+    });
+    return;
+
+  }, [logged]);
 
   return (
     <Grid

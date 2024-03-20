@@ -54,6 +54,8 @@ const useUserStore = create((set: any, get: any) => ({
             const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
                 const data = response.data;
                 if (response.status === 200 || response.status === 201) {
+                    console.log(data);
+
                     return data;
                 }
                 return null;
@@ -67,6 +69,8 @@ const useUserStore = create((set: any, get: any) => ({
         const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
             const data = response.data;
             if (response.status === 200 || response.status === 201) {
+                console.log(data);
+
                 return data;
             }
             return null;

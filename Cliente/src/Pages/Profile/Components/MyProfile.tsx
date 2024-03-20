@@ -280,14 +280,14 @@ const MyProfile: React.FC = () => {
     }
 
     //Funccion que impide acceso al perfil si no hay usuario conectado
-    useEffect(() => {
-        if (!authenticated()) return navigate('/');
-        return;
-    });
+    /*  useEffect(() => {
+          if (!authenticated()) return navigate('/');
+          return;
+      });*/
 
     //Funccion que envia solicitud a base de datos para conseguir infomaciones del usuario conectado cada vez que se cambia el ID
     useEffect(() => {
-        if (!userType) return navigate('/');
+        //  if (!userType) return navigate('/');
         if (userType === 'Paciente') {
             setRuta('pacientes');
         } else {
@@ -295,7 +295,7 @@ const MyProfile: React.FC = () => {
         }
         getRecordFromDB(idOrName).then((result) => {
             //Condicion que redirige al usuario si occurre un error
-            if (!result) return navigate('/404');
+            //  if (!result) return navigate('/404');
 
             //Condicion que se encarga de Parsear los records almacenados en formato de ARRAY/JSON en la plataforma
             result.padecimientos = result.padecimientos ? JSON.parse(result?.padecimientos) : [''];
@@ -313,7 +313,7 @@ const MyProfile: React.FC = () => {
 
                 if (!fetchedProfileData) {
                     console.log('No se encontró el perfil');
-                    navigate('/404');
+                    //        navigate('/404');
                     return;
                 }
                 setProfileData(fetchedProfileData);

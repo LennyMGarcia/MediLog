@@ -284,6 +284,7 @@ class Usuario extends Model {
         if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
 
         const columns = [
+            'id',
             'descripcion',
             'pacientes_id',
             'especialistas_id',
@@ -293,6 +294,7 @@ class Usuario extends Model {
             'categoria',
             'seguimiento',
             'visibilidad',
+            'fecha',
             'eliminado',
         ];
 
