@@ -32,14 +32,14 @@ type IProps = {
 };
 
 export default function TablaPatients() {
-    const { autopopulate } = useUserStore();
+  const { autopopulate } = useUserStore();
   const pacientes = useUserStore((state) => state.pacientes);
 
   const [data, setData] = useState(pacientes);
   const [logged, setLogged] = useState(true);
 
-
   useEffect(() => {
+    //Zustand que permite la consulta de pacientes relacionados con el usuario
     autopopulate().then(result => {
       setData(result.pacientes)
     });
@@ -48,7 +48,8 @@ export default function TablaPatients() {
   }, [logged]);
 
   //const isDoctor = getUser().tipo === 'Paciente' ? false : true;
-    const [page, setPage] = useState(0);
+
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rowsTotal, setRowsTotal] = useState(data.length);
   const [openInputSearch, setOpenInputSearch] = useState("");
