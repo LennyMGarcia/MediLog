@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Usuario = require('../Migrations/Usuario');
 const Producto = require('../Migrations/Producto');
+const Paciente = require('../Migrations/Paciente');
+const Especialista = require('../Migrations/Especialista');
 const bcrypt = require('bcrypt');
 const salt_level = 10;
 const { body, param, validationResult } = require('express-validator');
@@ -43,11 +45,37 @@ router.get('/:id', id_validation, async (req, res) => {
 
     //Condicion que verifica si los campos obligatorios estan incluidos
     if (validated.isEmpty()) {
-        const model = new Usuario();
-        const data = await model.find(id);
+        const model = new Usuario(id);
+        const user = await model.getUser();
+        const casos = await model.casos();
+        const cirugias = await model.cirugias();
+        const consultas = await model.consultas();
+        const transacciones = await model.transacciones();
 
-        if (!data) return res.status(404).json({ 'message': 'Registro No Existe.' });
-        return res.status(200).json(data);
+        if (user.tipo === "Paciente") {
+            const payload =
+            {
+                casos: casos[0]?.success === false ? [] : casos,
+                cirugias: cirugias[0]?.success === false ? [] : cirugias,
+                consultas: consultas[0]?.success === false ? [] : consultas,
+                transacciones: transacciones[0]?.success === false ? [] : transacciones
+            }
+            return res.status(200).json(payload);
+        }
+        const pacientes = await model.pacientes();
+
+        const payload =
+        {
+            casos: casos[0]?.success === false ? [] : casos,
+            cirugias: cirugias[0]?.success === false ? [] : cirugias,
+            consultas: consultas[0]?.success === false ? [] : consultas,
+            transacciones: transacciones[0]?.success === false ? [] : transacciones,
+            pacientes: pacientes[0]?.success === false ? [] : pacientes
+        }
+        //   console.log(payload);
+        return res.status(200).json(payload);
+        // if (!user) return res.status(404).json({ 'message': 'Registro No Existe.' });
+        // return res.status(200).json(user);
     }
 
     const error_msg = validated.errors[0].msg;
