@@ -37,6 +37,7 @@ import ConsultationForm from "./forms/ConsultationForm";
 import ChageCaseForm from "./forms/ChangeCaseForm";
 import useDataCaseStore, { getAllCaseData } from "../StateManagement/ZustandSpecificCaseManagement";
 import useDataConsultationStore, { getAllConsultationData } from "../StateManagement/ZustandConsultationManagement";
+import { CasesTwoTone } from "@mui/icons-material";
 
 
 const style = {
@@ -70,10 +71,7 @@ const handleConsultationModalOpen = () => setConsultationModalOpen(true);
 const handleConsultationModalClose = () => setConsultationModalOpen(false);
 
   const initialValues = {
-    tabValue: "one",
-    field1: "",
-    field2: "",
-    field3: "",
+    
     tipo: "",
     nombre: '',
     apellido: '',
@@ -90,6 +88,50 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
     metodo_pago: "Tarjeta de Debito",
     datos_financieros: '',
   };
+
+  //Si es cirugia es otra tablita, tener en cuenta esta parte cuando vaya con los tipos
+  const tableData = [
+    {
+      id: 1,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      
+    },
+    {
+      id: 2,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      
+    },
+    {
+      id: 3,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      
+    },
+    {
+      id: 4,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      
+    },
+    
+  ];
+
+  const CaseObj = {
+    descripcion: "es un muchacho muy pero muy grande y de buen corazom",
+    pacientes: ["Michael", "Alejandro"],
+    especialistas: ["Coraline", "Stephany"],
+    consultas: [],
+    cirugias: [],
+    estado: "Activo",
+    categoria: "Sida",
+    seguimiento: "no hay seguimiento",
+  }
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding:"0 0 10rem 0", width: "100vw" }}>
@@ -110,7 +152,8 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
             Nombre del caso
         </Typography>
         <Box sx={{marginRight:"3rem"}}>
-          <Badge bg={"#28AAE1"} tipo={"open"} w={"8rem"} h={"2.5rem"}/>
+          {/*Cambia el color de la etiqueta, esta en consultaation table si se necesita edicion de este */}
+          <Badge  tipo={CaseObj.estado} w={"8rem"} h={"2.5rem"}/>
         </Box>
         
       </Box>
@@ -156,8 +199,9 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
                               borderRadius: '4px',
                             },
                           }}>
+                            {/*AQUI EL FORM DE CASE */}
                             <Box>
-                              <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData}/>
+                              <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData} caseValues={CaseObj}/>
                             </Box>
 
                             
@@ -240,15 +284,12 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
             </Modal>
           </Box>
             <ProfileList dataList={[
-                  { name: "Paciente", data:  'Lenny' },
-                  { name: "Especialista", data: 'Ben Junior', },
-                  { name: "Estado", data: "activo", },
-                  { name: "Categoria", data: "consulta", },
-                  { name: "Descripcion", data: "Se metio algo en el, ese pana e raro bi, la creta", },
-                  { name: "Seguimiento", data: "no pudimos sacarlo, ay dio", },
-                  { name: "Tipo de sangre", data: "a", },
-                  { name: "Padecimiento", data: <ListFormater formatData={["a", "a"]} /> },
-                  
+                  { name: "Descripcion", data:  CaseObj.descripcion },
+                  { name: "categoria", data: CaseObj.categoria, },
+                  { name: "estado", data: CaseObj.estado, },
+                  { name: "Pacientes", data: <ListFormater formatData={CaseObj.pacientes} /> },
+                  { name: "Especialistas", data: <ListFormater formatData={CaseObj.especialistas} /> },
+                  { name: "Seguimiento", data: CaseObj.seguimiento, },
                 ]} />
             
        </Box>
@@ -377,7 +418,7 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
             </Modal>
           </Box>
        
-            <ConsultationTable type={"all"}/>
+            <ConsultationTable type={"all"} dataObject={tableData}/>
        </Box>
           
         

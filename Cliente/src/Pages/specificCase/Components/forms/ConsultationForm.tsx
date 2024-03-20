@@ -8,12 +8,12 @@ import { Typography } from "@mui/material";
 import { Dayjs } from "dayjs";
 
 interface ConsultationForm<T> {
-    profileValues?: Record<string, any>;
+    //profileValues?: {};
     setOfZustandCallback?: (name: string, value: T) => void;
     getOfZustandCallback?: (name: string | Dayjs) => T;
 }
 
-const ConsultationForm: React.FC<ConsultationForm<any>> = ({ profileValues, setOfZustandCallback, getOfZustandCallback }) => {
+const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallback, getOfZustandCallback }) => {
     return (
         <>
             <Typography variant="h6">Registre su consulta</Typography>

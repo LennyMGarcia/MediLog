@@ -9,18 +9,27 @@ import SPCaseSelect from "../forms-control/SpecificCaseSelect";
 import { Dayjs } from "dayjs";
 
 interface ChangeCaseForm<T> {
-    profileValues?: object;
-    setOfZustandCallback?: (name: string, value: T) => void;
-    getOfZustandCallback?: (name: string | Dayjs) => T;
+    caseValues?: {
+        descripcion: string,
+        pacientes: string[],
+        especialistas: string[],
+        consultas: string[],
+        cirugias: string[],
+        estado: string,
+        categoria: string,
+        seguimiento: string,
+    };
+setOfZustandCallback ?: (name: string, value: T) => void;
+getOfZustandCallback ?: (name: string | Dayjs) => T;
 }
 
-const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ profileValues, setOfZustandCallback, getOfZustandCallback }) => {
+const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ caseValues, setOfZustandCallback, getOfZustandCallback }) => {
     return (
         <>
             <Typography variant="h6">Edite su caso</Typography>
             <Box>
                 <SPCaseInput
-                    initialValue= {"Hola"}
+                    initialValue={caseValues?.descripcion}
                     zustandCallback={setOfZustandCallback}
                     label="Descripcion"
                     name="descripcion"
@@ -32,6 +41,7 @@ const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ profileValues, setOfZust
 
             <Box>
                 <SPCaseSelect
+                    initialValue={caseValues?.estado}
                     setOfZustandCallback={setOfZustandCallback}
                     getOfZustandCallback={getOfZustandCallback}
                     label="Estado"
@@ -48,16 +58,18 @@ const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ profileValues, setOfZust
 
             <Box>
                 <SPCaseInput
-                     zustandCallback={setOfZustandCallback}
+                    initialValue={caseValues?.seguimiento}
+                    zustandCallback={setOfZustandCallback}
                     label="Seguimiento"
                     name="seguimiento"
                     placeholder="Escriba su seguimiento"
-                    
+
                 />
             </Box>
 
             <Box>
                 <SPCaseMultiInput
+                    Values={caseValues?.pacientes}
                     zustandCallback={setOfZustandCallback}
                     label="Pacientes"
                     name="pacientes"
@@ -67,6 +79,7 @@ const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ profileValues, setOfZust
 
             <Box>
                 <SPCaseMultiInput
+                    Values={caseValues?.pacientes}
                     zustandCallback={setOfZustandCallback}
                     label="Especialistas"
                     name="especialistas"

@@ -16,7 +16,7 @@ import { useMemo, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { Search } from "@mui/icons-material";
 import CaseTableMenu from "./ConsultationMenu";
 import ConsultationMenu from "./ConsultationMenu";
@@ -58,9 +58,16 @@ interface IArray {
 
 interface IProps {
   type: "all" | "open" | "close" | "process" | "pending";
+  dataObject:{
+    id: number,
+    motivo: string,
+    person: string,
+    time:string | Date | Dayjs,
+  }[]
 }
 
-export const Badge = ({ bg, tipo, w, h }: { bg: string; tipo: string, w?:string, h?:string }) => {
+//AQUI EL BADGE 
+export const Badge = ({tipo, w, h }: { tipo: string, w?:string, h?:string }) => {
     return (
       <Chip
         sx={{
@@ -69,7 +76,11 @@ export const Badge = ({ bg, tipo, w, h }: { bg: string; tipo: string, w?:string,
           width: w || "93px",
           color: "#FFFFFF",
           borderRadius: "6px",
-          backgroundColor: bg,
+          backgroundColor: tipo == "Activo"? "#28AAE1" 
+                          : tipo == "Inactivo" ? "#8EBF43"
+                          : tipo == "Suspendido" ? "#E30000"
+                          : tipo == "En proceso" ? "#E5D540"
+                          : "none",
           "& .MuiChip-label": {
             display: "block",
             whiteSpace: "pre",
@@ -84,39 +95,9 @@ export const Badge = ({ bg, tipo, w, h }: { bg: string; tipo: string, w?:string,
     );
   };
 
-export default function ConsultationTable({ type }: IProps) {
+export default function ConsultationTable({ type, dataObject }: IProps) {
   // const data = ["1", "2"];
-  const data = [
-    {
-      id: 1,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      
-    },
-    {
-      id: 2,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      
-    },
-    {
-      id: 3,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      
-    },
-    {
-      id: 4,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      
-    },
-    
-  ];
+  const data =  dataObject
   const isDoctor = true;
 
   const [page, setPage] = useState(0);
