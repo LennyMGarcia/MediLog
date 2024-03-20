@@ -6,17 +6,22 @@ import SPCaseMultiInput from "../forms-control/SpecificCaseMultiInput";
 import SPCaseInput from "../forms-control/SpecificCaseInput";
 import { Typography } from "@mui/material";
 import SPCaseSelect from "../forms-control/SpecificCaseSelect";
+import { Dayjs } from "dayjs";
 
-interface ChangeCaseForm {
-    profileValues?: Record<string, any>;
+interface ChangeCaseForm<T> {
+    profileValues?: object;
+    setOfZustandCallback?: (name: string, value: T) => void;
+    getOfZustandCallback?: (name: string | Dayjs) => T;
 }
 
-const ChageCaseForm: React.FC<ChangeCaseForm> = ({ profileValues }) => {
+const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ profileValues, setOfZustandCallback, getOfZustandCallback }) => {
     return (
         <>
             <Typography variant="h6">Edite su caso</Typography>
             <Box>
                 <SPCaseInput
+                    initialValue= {"Hola"}
+                    zustandCallback={setOfZustandCallback}
                     label="Descripcion"
                     name="descripcion"
                     placeholder="Escriba su dirección"
@@ -27,6 +32,8 @@ const ChageCaseForm: React.FC<ChangeCaseForm> = ({ profileValues }) => {
 
             <Box>
                 <SPCaseSelect
+                    setOfZustandCallback={setOfZustandCallback}
+                    getOfZustandCallback={getOfZustandCallback}
                     label="Estado"
                     name="estado"
                     selectObject={[
@@ -41,6 +48,7 @@ const ChageCaseForm: React.FC<ChangeCaseForm> = ({ profileValues }) => {
 
             <Box>
                 <SPCaseInput
+                     zustandCallback={setOfZustandCallback}
                     label="Seguimiento"
                     name="seguimiento"
                     placeholder="Escriba su seguimiento"
@@ -50,16 +58,18 @@ const ChageCaseForm: React.FC<ChangeCaseForm> = ({ profileValues }) => {
 
             <Box>
                 <SPCaseMultiInput
+                    zustandCallback={setOfZustandCallback}
                     label="Pacientes"
-                    name="pacientes_id"
+                    name="pacientes"
                     placeholder="Escriba su paciente"
                 />
             </Box>
 
             <Box>
                 <SPCaseMultiInput
+                    zustandCallback={setOfZustandCallback}
                     label="Especialistas"
-                    name="especialistas_id"
+                    name="especialistas"
                     placeholder="Escriba su especialista"
                 />
             </Box>

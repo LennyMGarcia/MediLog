@@ -19,19 +19,17 @@ interface InputProps<T> extends Omit<TextFieldProps, 'variant'> {
     name?: string,
     placeHolder?: string,
     Values?: any[],
-    zustandCallback?: (name: string, value: T) => void;
+    zustandCallback?: (name: string, value: T, index?: number) => void;
 }
 
 const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHolder, Values = [], zustandCallback, ...rest }) => {
-    const { setRegisterData } = useDataRegisterStore();
 
     const handleChange = useCallback((e: ChangeEvent<any>, index: number) => {
         const value = e.target.value.trim();
-        setRegisterData(name, value, index);
-
+       
         if (zustandCallback != undefined) {
             console.log(name);
-            //zustandCallback(name, newValueFormatted);
+            zustandCallback(name, value, index);
           }
     }, []);
 
@@ -50,7 +48,10 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
     useEffect(() => {
         if (Values && Values.length) {
             Values.forEach((value, index) => {
-                setRegisterData(name, value, index);
+                if (zustandCallback != undefined) {
+                    console.log(name);
+                    zustandCallback(name, value, index);
+                  }
             });
         }
     }, []);
@@ -79,7 +80,10 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
         }).then((result) => {
             if (result.isConfirmed) {
                 remove(index);
-                setRegisterData(name, null, index)
+                if (zustandCallback != undefined) {
+                    console.log(name);
+                    zustandCallback(name, null, index);
+                  }
                 Swal.fire({
                     title: 'Eliminado',
                     text: 'El elemento ha sido eliminado.',

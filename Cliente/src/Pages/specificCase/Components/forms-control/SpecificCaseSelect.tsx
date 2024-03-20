@@ -11,6 +11,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import useDataRegisterStore from "../../../Register/ZustandRegisterManagement";
 import InputLabel from "@mui/material/InputLabel/InputLabel";
 import { useMediaQuery } from "@mui/material";
+import { Dayjs } from "dayjs";
 
 interface ISelect<T> extends Omit<SelectProps, "variant"> {
   label?: React.ReactNode;
@@ -20,7 +21,8 @@ interface ISelect<T> extends Omit<SelectProps, "variant"> {
     key: string | number;
     value: string | number;
   }[],
-  zustandCallback?: (name: string, value: T) => void;
+  setOfZustandCallback?: (name: string, value: T) => void;
+  getOfZustandCallback?: (name: string | Dayjs) => T;
 }
 
 const SPCaseSelect: React.FC<ISelect<any>> = ({
@@ -28,27 +30,40 @@ const SPCaseSelect: React.FC<ISelect<any>> = ({
   name = "name",
   selectObject,
   initialValue = "",
-  zustandCallback,
+  setOfZustandCallback,
+  getOfZustandCallback,
   ...rest
 }) => {
-  const { setRegisterData, getRegisterData } = useDataRegisterStore();
+
   const [value, setValue] = useState<string>(initialValue);
 
   useEffect(() => {
-    const state = getRegisterData(name);
+    let state;
+    if (getOfZustandCallback != undefined) {
+        state = getOfZustandCallback(name)
+      }
+    
     if (!state) {
-      setRegisterData(name, "");
+        if(setOfZustandCallback != undefined){
+         setOfZustandCallback(name, "");
+        }
     }
-  }, [name, setRegisterData]);
+  }, [name, setOfZustandCallback]);
 
   useEffect(() => {
-    setRegisterData(name, initialValue);
+    if(setOfZustandCallback != undefined)
+    {
+        setOfZustandCallback(name, initialValue);
+    }
   }, []);
 
   const handleChange = (e: SelectChangeEvent<any>) => {
     const newValue = e.target.value;
     setValue(newValue);
-    setRegisterData(name, newValue || initialValue);
+    if(setOfZustandCallback != undefined)
+    {
+        setOfZustandCallback(name, newValue || initialValue)
+    }
   };
 
   const theme = useTheme();

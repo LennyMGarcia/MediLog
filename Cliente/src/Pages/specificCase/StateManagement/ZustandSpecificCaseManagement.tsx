@@ -4,8 +4,6 @@ import { z } from 'zod';
 import { Dayjs } from 'dayjs';
 import CaseSchema from '../Utils/zod-schemas/zodCaseSchema';
 
-
-
 // Merge de los distintos tipos, los zods separados ayudan a saber de donde vienen 
 const caseSchema = CaseSchema
 

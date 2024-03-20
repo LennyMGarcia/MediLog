@@ -35,6 +35,8 @@ import dayjs from "dayjs";
 import ConsultationTable, { Badge } from "./Tables/consultationTable";
 import ConsultationForm from "./forms/ConsultationForm";
 import ChageCaseForm from "./forms/ChangeCaseForm";
+import useDataCaseStore, { getAllCaseData } from "../StateManagement/ZustandSpecificCaseManagement";
+import useDataConsultationStore, { getAllConsultationData } from "../StateManagement/ZustandConsultationManagement";
 
 
 const style = {
@@ -53,6 +55,9 @@ const style = {
 
 
 const SpecificCase: React.FC = () => {
+
+  const {setCaseData, getCaseData} = useDataCaseStore()
+  const {setConsultationData, getConsultationData} = useDataConsultationStore()
 
   const navigate = useNavigate();
 
@@ -152,7 +157,7 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
                             },
                           }}>
                             <Box>
-                              <ChageCaseForm/>
+                              <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData}/>
                             </Box>
 
                             
@@ -289,7 +294,7 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
                             },
                           }}>
                             <Box>
-                              <ConsultationForm/>
+                              <ConsultationForm setOfZustandCallback={setConsultationData} getOfZustandCallback={getConsultationData}/>
                             </Box>
 
                             

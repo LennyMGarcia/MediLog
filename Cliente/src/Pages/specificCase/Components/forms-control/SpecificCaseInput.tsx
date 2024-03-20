@@ -6,27 +6,33 @@ import TextField, { TextFieldProps } from "@mui/material/TextField/TextField";
 import FormHelperText from "@mui/material/FormHelperText/FormHelperText";
 import Box from "@mui/material/Box/Box";
 import { useMediaQuery } from "@mui/material";
+import { getAllCaseData } from "../../StateManagement/ZustandSpecificCaseManagement";
+import { getAllConsultationData } from "../../StateManagement/ZustandConsultationManagement";
 
 interface InputProps<T> extends Omit<TextFieldProps, "variant"> {
   label?: React.ReactNode;
   name?: string;
   placeHolder?: string;
+  initialValue?: string;
   zustandCallback?: (name: string, value: T) => void;
 }
 
 const SPCaseInput: React.FC<InputProps<any>> = ({
   label,
   name = "",
+  initialValue = "",
   placeHolder,
   zustandCallback,
   ...rest
 }) => {
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>(initialValue);
 
   const handleChange = (e: ChangeEvent<any>) => {
     const newValue = e.target.value;
     const newValueFormatted: any = newValue.trim();
     setValue(newValue);
+    //console.log(getAllCaseData());
+    console.log(getAllConsultationData())
 
     if (zustandCallback != undefined) {
       console.log(name);

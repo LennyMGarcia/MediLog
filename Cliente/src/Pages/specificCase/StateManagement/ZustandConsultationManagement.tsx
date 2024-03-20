@@ -5,8 +5,6 @@ import { Dayjs } from 'dayjs';
 
 import ConsultationSchema from '../Utils/zod-schemas/zodConsultationSchema';
 
-
-
 // Merge de los distintos tipos, los zods separados ayudan a saber de donde vienen 
 const consultationSchema = ConsultationSchema
 

@@ -4,10 +4,6 @@ import { z } from 'zod';
 import { Dayjs } from 'dayjs';
 import SurgerySchema from '../Utils/zod-schemas/ZodSurgerySchema';
 
-
-
-
-
 // Merge de los distintos tipos, los zods separados ayudan a saber de donde vienen 
 const surgerySchema = SurgerySchema
 
