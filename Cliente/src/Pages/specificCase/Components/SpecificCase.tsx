@@ -57,21 +57,43 @@ const style = {
 
 const SpecificCase: React.FC = () => {
 
-  const {setCaseData, getCaseData} = useDataCaseStore()
-  const {setConsultationData, getConsultationData} = useDataConsultationStore()
+  const { id } = useParams(); 
+
+  const { setCaseData, getCaseData } = useDataCaseStore()
+  const { setConsultationData, getConsultationData } = useDataConsultationStore()
 
   const navigate = useNavigate();
 
-const [caseInfoModalOpen, setCaseInfoModalOpen] = useState(false);
-const handleCaseInfoModalOpen = () => setCaseInfoModalOpen(true);
-const handleCaseInfoModalClose = () => setCaseInfoModalOpen(false);
+  const [caseInfoModalOpen, setCaseInfoModalOpen] = useState(false);
+  const handleCaseInfoModalOpen = () => setCaseInfoModalOpen(true);
+  const handleCaseInfoModalClose = () => setCaseInfoModalOpen(false);
 
-const [consultationModalOpen, setConsultationModalOpen] = useState(false);
-const handleConsultationModalOpen = () => setConsultationModalOpen(true);
-const handleConsultationModalClose = () => setConsultationModalOpen(false);
+  const [consultationModalOpen, setConsultationModalOpen] = useState(false);
+  const handleConsultationModalOpen = () => setConsultationModalOpen(true);
+  const handleConsultationModalClose = () => setConsultationModalOpen(false);
+
+  const Case = {
+    id:1,
+    descripcion: "es un muchacho muy pero muy grande y de buen corazom",
+    pacientes: ["Michael", "Alejandro"],
+    especialistas: ["Coraline", "Stephany"],
+    consultas: [],
+    cirugias: [],
+    estado: "Activo",
+    categoria: "Sida",
+    seguimiento: "no hay seguimiento",
+  }
+
+  
+  const caseId = Number(id); 
+  const CaseObj = Case.id === caseId ? Case : null;
+
+  if (!CaseObj) {
+    return <div>No se encontró el caso.</div>;
+  }
 
   const initialValues = {
-    
+
     tipo: "",
     nombre: '',
     apellido: '',
@@ -96,45 +118,36 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
       motivo: "Consulta de rutina",
       person: "Juan Pérez",
       time: "2024-03-11T09:00:00",
-      
+
     },
     {
       id: 2,
       motivo: "Consulta de rutina",
       person: "Juan Pérez",
       time: "2024-03-11T09:00:00",
-      
+
     },
     {
       id: 3,
       motivo: "Consulta de rutina",
       person: "Juan Pérez",
       time: "2024-03-11T09:00:00",
-      
+
     },
     {
       id: 4,
       motivo: "Consulta de rutina",
       person: "Juan Pérez",
       time: "2024-03-11T09:00:00",
-      
+
     },
-    
+
   ];
 
-  const CaseObj = {
-    descripcion: "es un muchacho muy pero muy grande y de buen corazom",
-    pacientes: ["Michael", "Alejandro"],
-    especialistas: ["Coraline", "Stephany"],
-    consultas: [],
-    cirugias: [],
-    estado: "Activo",
-    categoria: "Sida",
-    seguimiento: "no hay seguimiento",
-  }
+
 
   return (
-    <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding:"0 0 10rem 0", width: "100vw" }}>
+    <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
       <Box
         sx={{
           backgroundColor: "#fff",
@@ -142,286 +155,286 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
           height: "10vh",
           boxShadow: 1,
           padding: "1px",
-          display:'flex',
-          justifyContent:"space-between",
-          alignItems:"center",
-          
+          display: 'flex',
+          justifyContent: "space-between",
+          alignItems: "center",
+
         }}
       >
         <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-            Nombre del caso
+          Nombre del caso
         </Typography>
-        <Box sx={{marginRight:"3rem"}}>
+        <Box sx={{ marginRight: "3rem" }}>
           {/*Cambia el color de la etiqueta, esta en consultaation table si se necesita edicion de este */}
-          <Badge  tipo={CaseObj.estado} w={"8rem"} h={"2.5rem"}/>
+          <Badge tipo={CaseObj.estado} w={"8rem"} h={"2.5rem"} />
         </Box>
-        
+
       </Box>
-     
-       <Box sx={{width:"90vw", height:"auto",background:"white", margin:"4rem 4rem 0 4rem", padding:"2rem 0 2rem", boxShadow:1}}>
-        
+
+      <Box sx={{ width: "90vw", height: "auto", background: "white", margin: "4rem 4rem 0 4rem", padding: "2rem 0 2rem", boxShadow: 1 }}>
+
         <Box sx={{
-            width:"100%",
-            marginTop: "1rem",
-            display: "flex",
-            justifyContent:"space-between",
-            
-          }}>
-            <Typography variant="h6" sx={{padding:"0 2rem 2rem 2rem"}}>Informacion del caso</Typography>
-            {/*EDITAR*/}
-            {/*{rol === 'Admin' &&*/}
-              <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height:"2rem", backgroundColor: "#52b69a", marginRight:"2rem"  }}>Editar</Button>
-              {/*}*/}
-            <Modal
-              keepMounted
-              open={caseInfoModalOpen}
-              onClose={handleCaseInfoModalClose}
-            >
-              <Box sx={style} >
-                <Box sx={{ width: '100%', typography: 'body1' }}>
-                  <Box sx={{ width: '100%', height: "100%" }}>
-                    <Formik
-                      initialValues={{ initialValues }}
-                      //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
-                      onSubmit={() => console.log("adios")}
-                    >
-                      {({ handleSubmit, isValid }) => (
-                        <Form onSubmit={handleSubmit}>
-                         
-                          <Box sx={{
-                            maxHeight: '60vh',
-                            overflowY: 'scroll',
-                            '&::-webkit-scrollbar': {
-                              width: '0.5em',
-                            },
-                            '&::-webkit-scrollbar-thumb': {
-                              backgroundColor: '#52b69a',
-                              borderRadius: '4px',
-                            },
-                          }}>
-                            {/*AQUI EL FORM DE CASE */}
-                            <Box>
-                              <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData} caseValues={CaseObj}/>
-                            </Box>
+          width: "100%",
+          marginTop: "1rem",
+          display: "flex",
+          justifyContent: "space-between",
 
-                            
+        }}>
+          <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion del caso</Typography>
+          {/*EDITAR*/}
+          {/*{rol === 'Admin' &&*/}
+          <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Editar</Button>
+          {/*}*/}
+          <Modal
+            keepMounted
+            open={caseInfoModalOpen}
+            onClose={handleCaseInfoModalClose}
+          >
+            <Box sx={style} >
+              <Box sx={{ width: '100%', typography: 'body1' }}>
+                <Box sx={{ width: '100%', height: "100%" }}>
+                  <Formik
+                    initialValues={{ initialValues }}
+                    //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
+                    onSubmit={() => console.log("adios")}
+                  >
+                    {({ handleSubmit, isValid }) => (
+                      <Form onSubmit={handleSubmit}>
 
+                        <Box sx={{
+                          maxHeight: '60vh',
+                          overflowY: 'scroll',
+                          '&::-webkit-scrollbar': {
+                            width: '0.5em',
+                          },
+                          '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: '#52b69a',
+                            borderRadius: '4px',
+                          },
+                        }}>
+                          {/*AQUI EL FORM DE CASE */}
+                          <Box>
+                            <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData} caseValues={CaseObj} />
                           </Box>
-                          {/*ENVIAR INFORMACION*/}
-                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
-                            fullWidth
-                            variant="contained"
-                            type="submit"
-                            //disabled={!isValid}
-                            onClick={() => {
-                              Swal.fire({
-                                title: '¿Estás seguro?',
-                                text: `Esta acción cambiara todos tus datos`,
-                                icon: 'question',
-                                showCancelButton: true,
-                                confirmButtonColor: '#52b69a',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Aplicar cambios',
-                                cancelButtonText: 'Cancelar',
-                                customClass: {
-                                  container: profileStyle.sweetAlertContainer,
-                                },
-                                allowOutsideClick: () => !Swal.isLoading(),
-                                allowEscapeKey: () => !Swal.isLoading(),
-                                allowEnterKey: () => !Swal.isLoading(),
-                                stopKeydownPropagation: false,
 
-                              }).then((result) => {
-                                if (result.isConfirmed && isValid) {
-                                  //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
-                                  //no se si necesitaras esto asi que lo deje asi
-                                  //editSubmitHandler().then(result => {
-                                    if (result) {
-                                      handleCaseInfoModalClose()
-                                      Swal.fire({
-                                        title: 'Aplicado con exito',
-                                        text: 'Todos los datos han sido editados.',
-                                        icon: 'success',
-                                        customClass: {
-                                          container: profileStyle.sweetAlertContainer,
-                                        }
-                                      });
-                                      //window.location.href = `/pacientes/${idOrName}`;
-                                    } else {
-                                      Swal.fire({
-                                        title: 'No se aplicaron cambios',
-                                        text: 'Acceso Denegado',
-                                        icon: 'warning',
-                                        customClass: {
-                                          container: profileStyle.sweetAlertContainer,
-                                        }
-                                      });
+
+                        </Box>
+                        {/*ENVIAR INFORMACION*/}
+                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                          fullWidth
+                          variant="contained"
+                          type="submit"
+                          //disabled={!isValid}
+                          onClick={() => {
+                            Swal.fire({
+                              title: '¿Estás seguro?',
+                              text: `Esta acción cambiara todos tus datos`,
+                              icon: 'question',
+                              showCancelButton: true,
+                              confirmButtonColor: '#52b69a',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Aplicar cambios',
+                              cancelButtonText: 'Cancelar',
+                              customClass: {
+                                container: profileStyle.sweetAlertContainer,
+                              },
+                              allowOutsideClick: () => !Swal.isLoading(),
+                              allowEscapeKey: () => !Swal.isLoading(),
+                              allowEnterKey: () => !Swal.isLoading(),
+                              stopKeydownPropagation: false,
+
+                            }).then((result) => {
+                              if (result.isConfirmed && isValid) {
+                                //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
+
+                                //no se si necesitaras esto asi que lo deje asi
+                                //editSubmitHandler().then(result => {
+                                if (result) {
+                                  handleCaseInfoModalClose()
+                                  Swal.fire({
+                                    title: 'Aplicado con exito',
+                                    text: 'Todos los datos han sido editados.',
+                                    icon: 'success',
+                                    customClass: {
+                                      container: profileStyle.sweetAlertContainer,
                                     }
-                                  //});
-                                }
-                                else if (!isValid) {
+                                  });
+                                  //window.location.href = `/pacientes/${idOrName}`;
+                                } else {
                                   Swal.fire({
                                     title: 'No se aplicaron cambios',
-                                    text: 'Hay datos invalidados dentro del formulario',
+                                    text: 'Acceso Denegado',
                                     icon: 'warning',
                                     customClass: {
                                       container: profileStyle.sweetAlertContainer,
                                     }
                                   });
                                 }
-                              })
-                            }}
-                          >
-                            Aplicar cambios
-                          </Button>
-                        </Form>
-                      )}
-                    </Formik>
-                  </Box>
+                                //});
+                              }
+                              else if (!isValid) {
+                                Swal.fire({
+                                  title: 'No se aplicaron cambios',
+                                  text: 'Hay datos invalidados dentro del formulario',
+                                  icon: 'warning',
+                                  customClass: {
+                                    container: profileStyle.sweetAlertContainer,
+                                  }
+                                });
+                              }
+                            })
+                          }}
+                        >
+                          Aplicar cambios
+                        </Button>
+                      </Form>
+                    )}
+                  </Formik>
                 </Box>
               </Box>
-            </Modal>
-          </Box>
-            <ProfileList dataList={[
-                  { name: "Descripcion", data:  CaseObj.descripcion },
-                  { name: "categoria", data: CaseObj.categoria, },
-                  { name: "estado", data: CaseObj.estado, },
-                  { name: "Pacientes", data: <ListFormater formatData={CaseObj.pacientes} /> },
-                  { name: "Especialistas", data: <ListFormater formatData={CaseObj.especialistas} /> },
-                  { name: "Seguimiento", data: CaseObj.seguimiento, },
-                ]} />
-            
-       </Box>
+            </Box>
+          </Modal>
+        </Box>
+        <ProfileList dataList={[
+          { name: "Descripcion", data: CaseObj.descripcion },
+          { name: "categoria", data: CaseObj.categoria, },
+          { name: "estado", data: CaseObj.estado, },
+          { name: "Pacientes", data: <ListFormater formatData={CaseObj.pacientes} /> },
+          { name: "Especialistas", data: <ListFormater formatData={CaseObj.especialistas} /> },
+          { name: "Seguimiento", data: CaseObj.seguimiento, },
+        ]} />
 
-       <Box sx={{width:"90vw",height: "auto", padding:"2rem 0 10rem 0",background:"white", margin:"1rem 4rem 0 4rem", boxShadow:1}}>
-       <Box sx={{
-            width:"100%",
-            marginTop: "1rem",
-            display: "flex",
-            justifyContent:"space-between",
-            
-          }}>
-            <Typography variant="h6" sx={{padding:"0 2rem 2rem 1rem"}}>Consultas</Typography>
-            {/*EDITAR*/}
-            {/*{rol === 'Admin' &&*/}
-              <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height:"2rem", backgroundColor: "#52b69a", marginRight:"2rem"  }}>Agregar consulta</Button>
-              {/*}*/}
-            <Modal
-              keepMounted
-              open={consultationModalOpen}
-              onClose={handleConsultationModalClose}
-            >
-              <Box sx={style} >
-                <Box sx={{ width: '100%', typography: 'body1' }}>
-                  <Box sx={{ width: '100%', height: "100%" }}>
-                    <Formik
-                      initialValues={{ initialValues }}
-                      //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
-                      onSubmit={() => console.log("adios")}
-                    >
-                      {({ handleSubmit, isValid }) => (
-                        <Form onSubmit={handleSubmit}>
-                         
-                          <Box sx={{
-                            maxHeight: '60vh',
-                            overflowY: 'scroll',
-                            '&::-webkit-scrollbar': {
-                              width: '0.5em',
-                            },
-                            '&::-webkit-scrollbar-thumb': {
-                              backgroundColor: '#52b69a',
-                              borderRadius: '4px',
-                            },
-                          }}>
-                            <Box>
-                              <ConsultationForm setOfZustandCallback={setConsultationData} getOfZustandCallback={getConsultationData}/>
-                            </Box>
+      </Box>
 
-                            
+      <Box sx={{ width: "90vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: "1rem 4rem 0 4rem", boxShadow: 1 }}>
+        <Box sx={{
+          width: "100%",
+          marginTop: "1rem",
+          display: "flex",
+          justifyContent: "space-between",
 
+        }}>
+          <Typography variant="h6" sx={{ padding: "0 2rem 2rem 1rem" }}>Consultas</Typography>
+          {/*EDITAR*/}
+          {/*{rol === 'Admin' &&*/}
+          <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Agregar consulta</Button>
+          {/*}*/}
+          <Modal
+            keepMounted
+            open={consultationModalOpen}
+            onClose={handleConsultationModalClose}
+          >
+            <Box sx={style} >
+              <Box sx={{ width: '100%', typography: 'body1' }}>
+                <Box sx={{ width: '100%', height: "100%" }}>
+                  <Formik
+                    initialValues={{ initialValues }}
+                    //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
+                    onSubmit={() => console.log("adios")}
+                  >
+                    {({ handleSubmit, isValid }) => (
+                      <Form onSubmit={handleSubmit}>
+
+                        <Box sx={{
+                          maxHeight: '60vh',
+                          overflowY: 'scroll',
+                          '&::-webkit-scrollbar': {
+                            width: '0.5em',
+                          },
+                          '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: '#52b69a',
+                            borderRadius: '4px',
+                          },
+                        }}>
+                          <Box>
+                            <ConsultationForm setOfZustandCallback={setConsultationData} getOfZustandCallback={getConsultationData} />
                           </Box>
-                          {/*ENVIAR INFORMACION*/}
-                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
-                            fullWidth
-                            variant="contained"
-                            type="submit"
-                            //disabled={!isValid}
-                            onClick={() => {
-                              Swal.fire({
-                                title: '¿Estás seguro?',
-                                text: `Esta acción cambiara todos tus datos`,
-                                icon: 'question',
-                                showCancelButton: true,
-                                confirmButtonColor: '#52b69a',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Aplicar cambios',
-                                cancelButtonText: 'Cancelar',
-                                customClass: {
-                                  container: profileStyle.sweetAlertContainer,
-                                },
-                                allowOutsideClick: () => !Swal.isLoading(),
-                                allowEscapeKey: () => !Swal.isLoading(),
-                                allowEnterKey: () => !Swal.isLoading(),
-                                stopKeydownPropagation: false,
 
-                              }).then((result) => {
-                                if (result.isConfirmed && isValid) {
-                                  //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
-                                  //no se si necesitaras esto asi que lo deje asi
-                                  //editSubmitHandler().then(result => {
-                                    if (result) {
-                                      handleConsultationModalClose()
-                                      Swal.fire({
-                                        title: 'Aplicado con exito',
-                                        text: 'Todos los datos han sido editados.',
-                                        icon: 'success',
-                                        customClass: {
-                                          container: profileStyle.sweetAlertContainer,
-                                        }
-                                      });
-                                      //window.location.href = `/pacientes/${idOrName}`;
-                                    } else {
-                                      Swal.fire({
-                                        title: 'No se aplicaron cambios',
-                                        text: 'Acceso Denegado',
-                                        icon: 'warning',
-                                        customClass: {
-                                          container: profileStyle.sweetAlertContainer,
-                                        }
-                                      });
+
+                        </Box>
+                        {/*ENVIAR INFORMACION*/}
+                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                          fullWidth
+                          variant="contained"
+                          type="submit"
+                          //disabled={!isValid}
+                          onClick={() => {
+                            Swal.fire({
+                              title: '¿Estás seguro?',
+                              text: `Esta acción cambiara todos tus datos`,
+                              icon: 'question',
+                              showCancelButton: true,
+                              confirmButtonColor: '#52b69a',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Aplicar cambios',
+                              cancelButtonText: 'Cancelar',
+                              customClass: {
+                                container: profileStyle.sweetAlertContainer,
+                              },
+                              allowOutsideClick: () => !Swal.isLoading(),
+                              allowEscapeKey: () => !Swal.isLoading(),
+                              allowEnterKey: () => !Swal.isLoading(),
+                              stopKeydownPropagation: false,
+
+                            }).then((result) => {
+                              if (result.isConfirmed && isValid) {
+                                //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
+
+                                //no se si necesitaras esto asi que lo deje asi
+                                //editSubmitHandler().then(result => {
+                                if (result) {
+                                  handleConsultationModalClose()
+                                  Swal.fire({
+                                    title: 'Aplicado con exito',
+                                    text: 'Todos los datos han sido editados.',
+                                    icon: 'success',
+                                    customClass: {
+                                      container: profileStyle.sweetAlertContainer,
                                     }
-                                  //});
-                                }
-                                else if (!isValid) {
+                                  });
+                                  //window.location.href = `/pacientes/${idOrName}`;
+                                } else {
                                   Swal.fire({
                                     title: 'No se aplicaron cambios',
-                                    text: 'Hay datos invalidados dentro del formulario',
+                                    text: 'Acceso Denegado',
                                     icon: 'warning',
                                     customClass: {
                                       container: profileStyle.sweetAlertContainer,
                                     }
                                   });
                                 }
-                              })
-                            }}
-                          >
-                            Aplicar cambios
-                          </Button>
-                        </Form>
-                      )}
-                    </Formik>
-                  </Box>
+                                //});
+                              }
+                              else if (!isValid) {
+                                Swal.fire({
+                                  title: 'No se aplicaron cambios',
+                                  text: 'Hay datos invalidados dentro del formulario',
+                                  icon: 'warning',
+                                  customClass: {
+                                    container: profileStyle.sweetAlertContainer,
+                                  }
+                                });
+                              }
+                            })
+                          }}
+                        >
+                          Aplicar cambios
+                        </Button>
+                      </Form>
+                    )}
+                  </Formik>
                 </Box>
               </Box>
-            </Modal>
-          </Box>
-       
-            <ConsultationTable type={"all"} dataObject={tableData}/>
-       </Box>
-          
-        
+            </Box>
+          </Modal>
+        </Box>
+
+        <ConsultationTable type={"all"} dataObject={tableData} />
+      </Box>
+
+
     </Box>
   );
 

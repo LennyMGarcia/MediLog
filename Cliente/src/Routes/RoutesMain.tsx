@@ -40,7 +40,7 @@ export default function RoutesMain() {
             element={<ChangePassword />}
           />
           <Route path={"/settings/changePlan"} element={<ChangePlan />} />
-          <Route path={"/cases/case"} element={<SpecificCase/>}/>
+          <Route path={"/cases/:id"} element={<SpecificCase/>}/>
           <Route path={"/cases/case/consultation"} element={<Consultation/>}/>
           <Route path={"/cases/case/surgery"} element={<Surgery/>}/>
         </Route>
