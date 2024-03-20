@@ -2,9 +2,20 @@ import { Grid, Typography, Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { Search } from "@mui/icons-material";
 import TablaPatients from "./Components/TablaPatients";
+import { useNavigate } from "react-router";
 
 export default function Patients() {
-  const [openInputSearch, setOpenInputSearch] = useState("");
+  const [openInputSearch, setOpenInputSearch] = useState<string>('');
+
+  const navigate = useNavigate();
+
+  const search_patient = (search: string) => {
+    const id = parseInt(search);
+    if (typeof (id) === 'number') {
+      navigate('/pacientes/' + search);
+    }
+    return;
+  }
 
   return (
     <Grid
@@ -49,9 +60,9 @@ export default function Patients() {
               fontSize: "18px",
               width: "300px",
               ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#CDCECF",
-                },
+              {
+                borderColor: "#CDCECF",
+              },
               ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
                 color: "#68696B",
               },
@@ -115,6 +126,9 @@ export default function Patients() {
             variant="contained"
             sx={{
               bgcolor: "#168AAD",
+            }}
+            onClick={() => {
+              search_patient(openInputSearch);
             }}
           >
             Buscar paciente

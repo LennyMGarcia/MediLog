@@ -40,6 +40,7 @@ type IProps = {
 export default function useModalLogin(): IProps {
   const { authUser } = useUserStore();
   const { authenticated } = useUserStore();
+  const { autopopulate } = useUserStore();
   const [logged, setLogged] = useState(false);
 
   const [open, setOpen] = useState(false);
@@ -161,12 +162,13 @@ export default function useModalLogin(): IProps {
         password: password,
       }, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }).then(response => {
+      }).then(async (response) => {
         if (response.status === 200 || response.status === 201) {
           const incomingUser = response.data?.user;
           console.log(response)
           console.log(incomingUser)
           authUser(incomingUser);
+          await autopopulate();
           return { logged: true, message: response.statusText };
         } else {
           const error_msj = response.data?.message;

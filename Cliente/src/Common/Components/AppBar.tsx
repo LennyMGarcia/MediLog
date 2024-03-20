@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -35,6 +36,14 @@ function Appbar() {
   const { logoutUser } = useUserStore();
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
+
+  useEffect(() => {
+    if (!authenticated()) {
+      navigate('/')
+      return;
+    }
+    return;
+  });
 
   const nombre = authenticated() ? getUser().nombre : null;
   const apellido = authenticated() ? getUser().apellido : null;

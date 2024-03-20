@@ -3,8 +3,6 @@ import Cards from "./Components/Cards";
 import { PieChart } from "@mui/x-charts";
 import ShortTable from "./Components/ShortTable";
 import useUserStore from "../../Common/Utils/setUserSession";
-import getBackendConnectionString from "../../Common/Utils/getBackendString";
-import axios from "axios";
 
 function Dashboard() {
   const { getUser } = useUserStore();
