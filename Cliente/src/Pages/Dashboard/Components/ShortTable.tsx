@@ -1,5 +1,4 @@
 // OrderTable
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,27 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, Chip, TablePagination } from "@mui/material";
 import { useMemo, useState } from "react";
-// import searchIcon from "/assets/icons/search-md.svg";
-// import calendarIcon from "/assets/icons/calendar.svg";
 
-type IPropsDoctor = {
-  id: number;
-  descripcion: string;
-  paciente: string;
-  time: string;
-  estado: string;
-  categoria: number;
-  // rol: "Doctor" | "Patient";
-};
-
-type IPropsPatient = {
-  id: number;
-  descripcion: string;
-  doctor: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
 type IPropsData = {
   id: number;
   descripcion: string;
@@ -38,13 +17,53 @@ type IPropsData = {
   estado: string;
   categoria: number;
 };
-interface IArray {
-  isDoctor: Boolean;
-  // data: (IPropsDoctor | IPropsPatient)[];
-  data: IPropsData[];
-}
 
-export default function ShortTable({ isDoctor, data }: IArray) {
+export default function ShortTable() {
+  // Este campo de son los datos de casos, dependiendo si es un doctor o un paciente
+  const data: IPropsData[] = [
+    {
+      id: 1,
+      descripcion: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      estado: "open",
+      categoria: 2,
+    },
+    {
+      id: 2,
+      descripcion: "Examen de sangre",
+      person: "María Rodríguez",
+      time: "2024-03-12T10:30:00",
+      estado: "close",
+      categoria: 1,
+    },
+    {
+      id: 3,
+      descripcion: "Consulta de seguimiento",
+      person: "Luis García",
+      time: "2024-03-13T11:15:00",
+      estado: "pending",
+      categoria: 3,
+    },
+    {
+      id: 4,
+      descripcion: "Revisión de presión arterial",
+      person: "Ana Martínez",
+      time: "2024-03-14T15:45:00",
+      estado: "suspend",
+      categoria: 2,
+    },
+    {
+      id: 5,
+      descripcion: "Vacunación contra la gripe",
+      person: "Carlos Sánchez",
+      time: "2024-03-15T08:20:00",
+      estado: "open",
+      categoria: 1,
+    },
+  ];
+
+  // Esto es para que la data que entra, solo se tomen 5
   const rows = data.slice(0, 5);
 
   const badgetStatus: Record<string, any> = {
@@ -66,6 +85,10 @@ export default function ShortTable({ isDoctor, data }: IArray) {
     },
   };
 
+  // Esta variable debe cambiar en base a si es un especialista o un paciente, asi los campos de la tabla cambian
+  const isDoctor = true;
+
+  // Esto es para las medallas de estado
   const Badge = ({ bg, tipo }: { bg: string; tipo: string }) => {
     return (
       <Chip
@@ -89,14 +112,6 @@ export default function ShortTable({ isDoctor, data }: IArray) {
     );
   };
 
-  //   const Calendar = () => {
-  //     return (
-  //       <>
-  //         <img src={calendarIcon} />
-  //       </>
-  //     );
-  //   };
-
   return (
     <TableContainer
       component={Paper}
@@ -107,7 +122,6 @@ export default function ShortTable({ isDoctor, data }: IArray) {
       }}
     >
       <Table
-        // sx={{ minWidth: 650 }}
         aria-label="simple table"
         sx={{
           borderCollapse: "separate",
@@ -188,15 +202,9 @@ export default function ShortTable({ isDoctor, data }: IArray) {
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody
-          sx={
-            {
-              // "& > *": {
-              //   borderBottom: "none", // elimina la línea divisoria en las celdas
-              // },
-            }
-          }
-        >
+
+        <TableBody>
+          {/* Map para mostrar las diferetes filas en base de los datos del array */}
           {rows.map((row) => (
             <TableRow
               key={row.id}

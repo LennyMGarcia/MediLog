@@ -10,7 +10,7 @@ export default function Navbar() {
   //Funccion que desloguea a un usuario
   const logout = () => {
     logoutUser();
-    navigate('/');
+    navigate("/");
   };
   const navbarLinks = [
     {
@@ -45,7 +45,6 @@ export default function Navbar() {
     <>
       <Grid
         container
-        // xs={12}
         sx={{
           width: "100%",
           backgroundColor: "#184E77",
