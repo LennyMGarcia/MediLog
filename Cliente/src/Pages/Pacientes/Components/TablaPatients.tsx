@@ -12,6 +12,7 @@ import {
   InputAdornment,
   TablePagination,
   TextField,
+  LinearProgress
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -34,9 +35,9 @@ type IProps = {
 export default function TablaPatients() {
   const { autopopulate } = useUserStore();
   const pacientes = useUserStore((state) => state.pacientes);
+  const loading = useUserStore(state => state.loading);
 
   const [data, setData] = useState(pacientes);
-  const [logged, setLogged] = useState(true);
 
   useEffect(() => {
     //Zustand que permite la consulta de pacientes relacionados con el usuario
@@ -45,7 +46,7 @@ export default function TablaPatients() {
     });
     return;
 
-  }, [logged]);
+  }, []);
 
   //const isDoctor = getUser().tipo === 'Paciente' ? false : true;
 
@@ -118,340 +119,342 @@ export default function TablaPatients() {
 
   return (
     <>
-      <TableContainer
-        component={Paper}
-        sx={{
-          boxShadow: "none",
-          paddding: "0px 24px",
-        }}
-      >
-        <Box
+      {loading ? <LinearProgress /> :
+        <TableContainer
+          component={Paper}
           sx={{
-            padding: "24px",
-            // width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
+            boxShadow: "none",
+            paddding: "0px 24px",
           }}
         >
-          <TextField
-            label="Buscar"
-            variant="outlined"
+          <Box
             sx={{
-              fieldset: {
-                borderRadius: "8px",
-                borderColor: "#CDCECF",
-              },
-              fontFamily: "Arial",
-              fontWeight: "400",
-              fontSize: "14px",
-              width: "300px",
-              ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-              {
-                borderColor: "#CDCECF",
-              },
-              ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
-                color: "#68696B",
-              },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "#CDCECF", // Color del borde
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
-                },
-                "&:hover": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
-                  "& fieldset": {
-                    border: "solid 1px #111113",
-                  },
-                },
-                "&:focus": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
-                  "& fieldset": {
-                    border: "solid 1px #111113",
-                  },
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                  border: "solid 1px #111113",
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
-                },
-                "& legend span": {
-                  paddingLeft: "0px",
-                  paddingRight: "4px",
-                },
-                "& legend": {
-                  paddingInlineStar: "0px",
-                  paddingInlineEnd: "0px",
-                },
-              },
+              padding: "24px",
+              // width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
             }}
-            value={openInputSearch}
-            InputProps={{
-              startAdornment: <Search />,
-            }}
-            InputLabelProps={{
-              shrink: !!openInputSearch,
-              margin: "dense",
-              style: {
-                paddingLeft: openInputSearch ? "0px" : "25px",
-                color: "#68696B",
+          >
+            <TextField
+              label="Buscar"
+              variant="outlined"
+              sx={{
+                fieldset: {
+                  borderRadius: "8px",
+                  borderColor: "#CDCECF",
+                },
                 fontFamily: "Arial",
                 fontWeight: "400",
                 fontSize: "14px",
-                marginTop: "3px",
-              },
-            }}
-            onChange={(e) => {
-              setOpenInputSearch(e.target.value);
-            }}
-          />
-        </Box>
-
-        <Box
-          sx={{
-            padding: "0px 24px",
-          }}
-        >
-          <Table
-            aria-label="simple table"
-            sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
-          >
-            <TableHead
-              sx={{
-                backgroundColor: "#F4F4F5",
-              }}
-            >
-              <TableRow>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                >
-                  No. de Paciente
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Nombre
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Apellido
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Genero
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Correo
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Telefono
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Accion
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody
-              sx={
+                width: "300px",
+                ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
                 {
-                  // "& > *": {
-                  //   borderBottom: "none", // elimina la línea divisoria en las celdas
-                  // },
-                }
-              }
-            >
-              {visibleRows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    borderRadius: "8px",
-                    "& > *": { borderBottom: "none" },
-                    ".css-1qanp6x-MuiTableCell-root": {
-                      borderBottom: "none",
+                  borderColor: "#CDCECF",
+                },
+                ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
+                  color: "#68696B",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#CDCECF", // Color del borde
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
+                  },
+                  "&:hover": {
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
+                    "& fieldset": {
+                      border: "solid 1px #111113",
                     },
+                  },
+                  "&:focus": {
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
+                    "& fieldset": {
+                      border: "solid 1px #111113",
+                    },
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#CDCECF", // Color del borde cuando está enfocado
+                    border: "solid 1px #111113",
+                    // outline: "solid",
+                    // outlineColor: "#DEDEDF",
+                  },
+                  "& legend span": {
+                    paddingLeft: "0px",
+                    paddingRight: "4px",
+                  },
+                  "& legend": {
+                    paddingInlineStar: "0px",
+                    paddingInlineEnd: "0px",
+                  },
+                },
+              }}
+              value={openInputSearch}
+              InputProps={{
+                startAdornment: <Search />,
+              }}
+              InputLabelProps={{
+                shrink: !!openInputSearch,
+                margin: "dense",
+                style: {
+                  paddingLeft: openInputSearch ? "0px" : "25px",
+                  color: "#68696B",
+                  fontFamily: "Arial",
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  marginTop: "3px",
+                },
+              }}
+              onChange={(e) => {
+                setOpenInputSearch(e.target.value);
+              }}
+            />
+          </Box>
 
-                    //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
-                    // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
-                  }}
-                >
+          <Box
+            sx={{
+              padding: "0px 24px",
+            }}
+          >
+            <Table
+              aria-label="simple table"
+              sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
+            >
+              <TableHead
+                sx={{
+                  backgroundColor: "#F4F4F5",
+                }}
+              >
+                <TableRow>
                   <TableCell
-                    component="th"
-                    scope="row"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
                   >
-                    {row.id}
+                    No. de Paciente
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {row.nombre}
+                    Nombre
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {row.apellido}
+                    Apellido
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {row.sexo}
+                    Genero
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {row.correo}
+                    Correo
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {row.telefono}
+                    Telefono
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      // padding: "24px 16px",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    <Button
-                      variant="contained"
-                      sx={{
-                        bgcolor: "#168AAD",
-                      }}
-                      startIcon={<Person2 />}
-                    >
-                      Ver Perfil
-                    </Button>
+                    Accion
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </TableContainer>
+              </TableHead>
+              <TableBody
+                sx={
+                  {
+                    // "& > *": {
+                    //   borderBottom: "none", // elimina la línea divisoria en las celdas
+                    // },
+                  }
+                }
+              >
+                {visibleRows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                      borderRadius: "8px",
+                      "& > *": { borderBottom: "none" },
+                      ".css-1qanp6x-MuiTableCell-root": {
+                        borderBottom: "none",
+                      },
 
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
-        component="div"
-        count={rowsTotal}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage={"Filas por página:"}
-        sx={{
-          typography: {
-            color: "#070708",
-            lineHeight: "22px",
-            fontWeight: "400",
-            fontSize: "14px",
-          },
-        }}
-      />
+                      //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
+                      // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
+                    }}
+                  >
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        // padding: "24px 16px",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {row.id}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        // padding: "24px 16px",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {row.nombre}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        // padding: "24px 16px",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {row.apellido}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        // padding: "24px 16px",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {row.sexo}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        // padding: "24px 16px",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {row.correo}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        // padding: "24px 16px",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {row.telefono}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        // padding: "24px 16px",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          bgcolor: "#168AAD",
+                        }}
+                        startIcon={<Person2 />}
+                      >
+                        Ver Perfil
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </TableContainer>
+      }
+      {!loading &&
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50]}
+          component="div"
+          count={rowsTotal}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"Filas por página:"}
+          sx={{
+            typography: {
+              color: "#070708",
+              lineHeight: "22px",
+              fontWeight: "400",
+              fontSize: "14px",
+            },
+          }}
+        />}
     </>
   );
 }
