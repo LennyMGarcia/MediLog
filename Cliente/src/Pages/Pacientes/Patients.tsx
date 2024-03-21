@@ -5,6 +5,7 @@ import TablaPatients from "./Components/TablaPatients";
 import { useNavigate } from "react-router";
 
 export default function Patients() {
+
   const [openInputSearch, setOpenInputSearch] = useState<string>('');
 
   const navigate = useNavigate();
@@ -137,6 +138,7 @@ export default function Patients() {
       >
         <TablaPatients />
       </Grid>
+
     </Grid>
   );
 }

@@ -13,6 +13,7 @@ const useUserStore = create((set: any, get: any) => ({
     transacciones: [],
     pacientes: [],
     paciente: [],
+    loading: true,
     authUser: (user: any) => set(() => {
         localStorage.setItem('user', JSON.stringify(user));
         return { user: user }
@@ -55,29 +56,46 @@ const useUserStore = create((set: any, get: any) => ({
                 const data = response.data;
                 if (response.status === 200 || response.status === 201) {
                     console.log(data);
-
                     return data;
                 }
+                set({ loading: true })
                 return null;
             }).catch(error => {
                 console.log(error);
-            })
+                set({ loading: true })
+                return null;
 
-            set({ casos: result.casos, cirugias: result.cirugias, consultas: result.consultas, transacciones: result.transacciones })
+            })
+            if (result) {
+                set({ casos: result.casos, cirugias: result.cirugias, consultas: result.consultas, transacciones: result.transacciones, pacientes: result.pacientes })
+                set({ loading: false })
+                return result;
+            }
+            //  set({ casos: result.casos, cirugias: result.cirugias, consultas: result.consultas, transacciones: result.transacciones })
+            set({ loading: true })
             return result;
         }
         const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
             const data = response.data;
             if (response.status === 200 || response.status === 201) {
                 console.log(data);
-
                 return data;
             }
+            set({ loading: true })
             return null;
         }).catch(error => {
             console.log(error);
+            set({ loading: true })
+            return null;
+
         })
-        set({ casos: result.casos, cirugias: result.cirugias, consultas: result.consultas, transacciones: result.transacciones, pacientes: result.pacientes })
+        if (result) {
+            set({ casos: result.casos, cirugias: result.cirugias, consultas: result.consultas, transacciones: result.transacciones, pacientes: result.pacientes })
+            set({ loading: false })
+            return result;
+        }
+        // set({ casos: result.casos, cirugias: result.cirugias, consultas: result.consultas, transacciones: result.transacciones, pacientes: result.pacientes })
+        set({ loading: true })
         return result;
     },
     authenticated: () => {
