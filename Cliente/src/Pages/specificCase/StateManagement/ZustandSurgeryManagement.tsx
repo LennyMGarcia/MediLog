@@ -16,7 +16,7 @@ export type surgerySchemaActions = {
 
 const useDataSurgeryStore = create<surgerySchemaValues & surgerySchemaActions>((set, get) => ({
     motivo: "",
-    pacientes: [""],
+    pacientes: "",
     especialistas: [""],
     observaciones: [""],
     estudios: [""],

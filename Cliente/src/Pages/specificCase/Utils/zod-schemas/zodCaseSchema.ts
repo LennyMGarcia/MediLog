@@ -2,7 +2,7 @@ import {z} from 'zod';
 
 const CaseSchema = z.object({
     descripcion: z.string(),
-    pacientes: z.array(z.string()),
+    pacientes: z.string(),
     especialistas: z.array(z.string()),
     consultas: z.array(z.string()),
     cirugias: z.array(z.string()),

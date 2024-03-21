@@ -31,8 +31,8 @@ const SPCaseInput: React.FC<InputProps<any>> = ({
     const newValue = e.target.value;
     const newValueFormatted: any = newValue.trim();
     setValue(newValue);
-    //console.log(getAllCaseData());
-    console.log(getAllConsultationData())
+    console.log(getAllCaseData());
+    //console.log(getAllConsultationData())
 
     if (zustandCallback != undefined) {
       console.log(name);

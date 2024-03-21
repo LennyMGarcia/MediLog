@@ -20,9 +20,10 @@ interface InputProps<T> extends Omit<TextFieldProps, 'variant'> {
     placeHolder?: string,
     Values?: any[],
     zustandCallback?: (name: string, value: T, index?: number) => void;
+    canFistElementDelete?: boolean,
 }
 
-const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHolder, Values = [], zustandCallback, ...rest }) => {
+const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHolder, Values = [], zustandCallback, canFistElementDelete = true, ...rest }) => {
 
     const handleChange = useCallback((e: ChangeEvent<any>, index: number) => {
         const value = e.target.value.trim();
@@ -151,7 +152,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                                 )}
                                             </Field>
 
-                                            <Button variant="contained" sx={{
+                                           { !(!canFistElementDelete && index == 0) && <Button variant="contained" sx={{
                                                 backgroundColor: " #52b69a",
                                                 height: "1rem",
                                                 width: '1rem',
@@ -160,7 +161,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                                 }
                                             }} type='button' onClick={() => handleRemoveItem(index, remove)}>
                                                 - {/*Simbolo negativo*/}
-                                            </Button>
+                                            </Button> }
                                         </Box>
                                     ))}
                                     <Button sx={{

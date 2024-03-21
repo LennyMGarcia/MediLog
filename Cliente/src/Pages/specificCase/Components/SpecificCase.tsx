@@ -38,6 +38,7 @@ import ChageCaseForm from "./forms/ChangeCaseForm";
 import useDataCaseStore, { getAllCaseData } from "../StateManagement/ZustandSpecificCaseManagement";
 import useDataConsultationStore, { getAllConsultationData } from "../StateManagement/ZustandConsultationManagement";
 import { CasesTwoTone } from "@mui/icons-material";
+import yupCaseSchema from "../Utils/yup-schema/yupCaseSchema";
 
 
 const style = {
@@ -57,7 +58,7 @@ const style = {
 
 const SpecificCase: React.FC = () => {
 
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   const { setCaseData, getCaseData } = useDataCaseStore()
   const { setConsultationData, getConsultationData } = useDataConsultationStore()
@@ -73,9 +74,9 @@ const SpecificCase: React.FC = () => {
   const handleConsultationModalClose = () => setConsultationModalOpen(false);
 
   const Case = {
-    id:1,
+    id: 1,
     descripcion: "es un muchacho muy pero muy grande y de buen corazom",
-    pacientes: ["Michael", "Alejandro"],
+    pacientes: "Lenny",
     especialistas: ["Coraline", "Stephany"],
     consultas: [],
     cirugias: [],
@@ -84,31 +85,49 @@ const SpecificCase: React.FC = () => {
     seguimiento: "no hay seguimiento",
   }
 
-  
-  const caseId = Number(id); 
-  const CaseObj = Case.id === caseId ? Case : null;
-
-  if (!CaseObj) {
-    return <div>No se encontró el caso.</div>;
+  interface IfoundCase {
+    id: number;
+    descripcion: string;
+    pacientes: string;
+    especialistas: string[];
+    consultas: string[];
+    cirugias: string[];
+    estado: string;
+    categoria: string;
+    seguimiento: string;
   }
 
-  const initialValues = {
+  const [CaseObj, setCaseObj] = useState<IfoundCase | undefined>(); // Estado para almacenar el objeto de caso
 
-    tipo: "",
-    nombre: '',
-    apellido: '',
-    fecha_nacimiento: '',
-    documento_identidad: '',
-    sexo: '',
-    correo: '',
-    direccion: '',
-    telefono: '',
-    tipo_sangre: '',
-    padecimientos: [''],
-    alergias: [''],
-    familiares: [''],
-    metodo_pago: "Tarjeta de Debito",
-    datos_financieros: '',
+  useEffect(() => {
+    const caseId = Number(id); // Convertir ID a número
+
+    const foundCase: IfoundCase | undefined = Case.id === caseId ? Case : undefined;
+    console.log(foundCase)
+    setCaseObj(foundCase);
+
+    if (!foundCase) {
+      navigate('/404');
+    }
+  }, [id]);
+
+
+
+
+  /*if (!CaseObj) {
+    return <div>cargando</div>;
+  }*/
+
+  const caseInitialValues = {
+    
+    descripcion: "",
+    pacientes: "",
+    especialistas: [""],
+    consultas: [""],
+    cirugias: [""],
+    estado: "",
+    categoria: "",
+    seguimiento: "",
   };
 
   //Si es cirugia es otra tablita, tener en cuenta esta parte cuando vaya con los tipos
@@ -162,11 +181,11 @@ const SpecificCase: React.FC = () => {
         }}
       >
         <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-          Nombre del caso
+          {CaseObj && CaseObj.descripcion}
         </Typography>
         <Box sx={{ marginRight: "3rem" }}>
           {/*Cambia el color de la etiqueta, esta en consultaation table si se necesita edicion de este */}
-          <Badge tipo={CaseObj.estado} w={"8rem"} h={"2.5rem"} />
+          <Badge tipo={CaseObj ? CaseObj.estado : ""} w={"8rem"} h={"2.5rem"} />
         </Box>
 
       </Box>
@@ -193,9 +212,10 @@ const SpecificCase: React.FC = () => {
             <Box sx={style} >
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
+                  {/*CASE */}
                   <Formik
-                    initialValues={{ initialValues }}
-                    //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
+                    initialValues={{ caseInitialValues }}
+                    validationSchema={yupCaseSchema}
                     onSubmit={() => console.log("adios")}
                   >
                     {({ handleSubmit, isValid }) => (
@@ -214,7 +234,9 @@ const SpecificCase: React.FC = () => {
                         }}>
                           {/*AQUI EL FORM DE CASE */}
                           <Box>
-                            <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData} caseValues={CaseObj} />
+                            {
+                              CaseObj && <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData} caseValues={CaseObj} />
+                            }
                           </Box>
 
 
@@ -297,12 +319,12 @@ const SpecificCase: React.FC = () => {
           </Modal>
         </Box>
         <ProfileList dataList={[
-          { name: "Descripcion", data: CaseObj.descripcion },
-          { name: "categoria", data: CaseObj.categoria, },
-          { name: "estado", data: CaseObj.estado, },
-          { name: "Pacientes", data: <ListFormater formatData={CaseObj.pacientes} /> },
-          { name: "Especialistas", data: <ListFormater formatData={CaseObj.especialistas} /> },
-          { name: "Seguimiento", data: CaseObj.seguimiento, },
+          { name: "Descripcion", data: CaseObj && CaseObj.descripcion },
+          { name: "categoria", data: CaseObj && CaseObj.categoria, },
+          { name: "estado", data: CaseObj && CaseObj.estado, },
+          { name: "Pacientes", data: CaseObj && CaseObj.pacientes },
+          { name: "Especialistas", data: <ListFormater formatData={CaseObj ? CaseObj.especialistas : []} /> },
+          { name: "Seguimiento", data: CaseObj && CaseObj.seguimiento, },
         ]} />
 
       </Box>
@@ -329,7 +351,7 @@ const SpecificCase: React.FC = () => {
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
-                    initialValues={{ initialValues }}
+                    initialValues={caseInitialValues}
                     //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
                     onSubmit={() => console.log("adios")}
                   >

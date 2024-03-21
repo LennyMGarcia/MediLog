@@ -16,7 +16,7 @@ export type CaseSchemaActions = {
 
 const useDataCaseStore = create<CaseSchemaValues & CaseSchemaActions>((set, get) => ({
     descripcion: "",
-    pacientes: [""],
+    pacientes: "",
     especialistas: [""],
     consultas: [""],
     cirugias: [""],

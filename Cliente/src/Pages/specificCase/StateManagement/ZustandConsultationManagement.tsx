@@ -17,7 +17,7 @@ export type consultationSchemaActions = {
 
 const useDataConsultationStore = create<consultationSchemaValues & consultationSchemaActions>((set, get) => ({
     motivo: "",
-    pacientes: [""],
+    pacientes: "",
     especialistas: [""],
     observaciones: [""],
     estudios: [""],

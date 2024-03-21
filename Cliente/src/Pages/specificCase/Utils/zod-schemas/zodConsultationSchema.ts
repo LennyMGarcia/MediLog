@@ -4,7 +4,7 @@ import {z} from 'zod';
 //transform() para formato ISO 8601 antes de ser almacenada en la base de datos. 
 const ConsultationSchema = z.object({
     motivo: z.string(),
-    pacientes: z.array(z.string()),
+    pacientes: z.string(),
     especialistas: z.array(z.string()),
     observaciones: z.array(z.string()),
     estudios: z.array(z.string()),

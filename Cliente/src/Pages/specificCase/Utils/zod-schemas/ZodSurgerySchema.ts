@@ -2,7 +2,7 @@ import {z} from 'zod';
 
 const SurgerySchema = z.object({
   motivo: z.string(),
-  pacientes: z.array(z.string()),
+  pacientes: z.string(),
   especialistas: z.array(z.string()),
   observaciones: z.array(z.string()),
   estudios: z.array(z.string()),
