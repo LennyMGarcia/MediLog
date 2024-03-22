@@ -8,9 +8,7 @@ export default function Casos() {
     <Grid
       container
       padding={"30px 24px"}
-      // rowSpacing={2}
       gap={4}
-      // spacing={2}
       direction={"column"}
       sx={{
         height: "100%",
@@ -51,8 +49,8 @@ export default function Casos() {
           width: "100%",
         }}
       >
+        {/* Componente de tablas y tabs */}
         <TabsTable />
-        {/* <TablaCasos isDoctor={true} data={[]} /> */}
       </Grid>
     </Grid>
   );

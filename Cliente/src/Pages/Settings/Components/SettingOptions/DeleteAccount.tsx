@@ -3,7 +3,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Typography from "@mui/material/Typography/Typography";
 import Button from "@mui/material/Button/Button";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as React from "react";
 import Swal from "sweetalert2";
 import { Form, Formik } from "formik";
@@ -15,6 +15,9 @@ import SettingsInput from "../inputElements/SettingsInput";
 import * as Yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
+import axios from "axios";
+import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
+import useUserStore from "../../../../Common/Utils/setUserSession";
 
 const style = {
   position: "absolute" as "absolute",
@@ -41,19 +44,66 @@ const getPasswordSchema = (contrasenaFromDatabase: string) => {
   });
 };
 
-const contrasenaFromDatabase = "zxc123456789";
+const contrasenaFromDatabase = "password";
 //Aqui pasas la contrasena de la base datos y se crea un esquema
 const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
 
+
+/*const getPasswordSchema = () => {
+  return Yup.object({
+    contrasena: Yup.string()
+      .required("Required"),
+  });
+};*/
+
+//Aqui pasas la contrasena de la base datos y se crea un esquema
+//const passwordSchema = getPasswordSchema();
+
 const DeleteAccount: React.FC = () => {
+  const { getUser } = useUserStore();
+  const { authenticated } = useUserStore();
+  const { logoutUser } = useUserStore();
+
+  const id = authenticated() ? getUser().id : null;
+
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const navigate = useNavigate();
 
+  // Condicion que verifica si hay un usuario conectado, en caso de que no, impide acceso a esa ruta
+  useEffect(() => {
+    if (!authenticated()) {
+      navigate('/');
+      return;
+    }
+    return;
+
+  })
+
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
+
+  const destroy_account = async (id: number) => {
+    const result = await axios.delete(getBackendConnectionString(`usuarios/${id}`))
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200 || response.status === 201) {
+          return { success: true, message: response.statusText };
+        }
+        return { success: false, message: response.statusText };
+      }).catch(error => {
+        const error_msj = error?.response?.data?.message;
+        console.log(error);
+        console.log(error_msj);
+        return { success: false, message: error_msj };
+      }).finally(() => {
+        logoutUser();
+      });
+    return result;
+  }
+
   return (
     <Box
       sx={{
@@ -245,26 +295,30 @@ const DeleteAccount: React.FC = () => {
                             stopKeydownPropagation: false,
                           }).then((result) => {
                             if (result.isConfirmed && isValid && dirty) {
-                              handleModalClose();
-                              Swal.fire({
-                                title: "Se ha elimando",
-                                text: "Tu cuenta se ha eliminado de forma sastifactoria.",
-                                icon: "success",
-                                customClass: {
-                                  container:
-                                    SweetAlertDAStyle.sweetAlertContainer,
-                                },
-                              }).finally(() => navigate("/"));
-                            } else {
-                              Swal.fire({
-                                title: "Ha ocurrido un error",
-                                text: "La contrasena es incorrecta",
-                                icon: "warning",
-                                customClass: {
-                                  container:
-                                    SweetAlertDAStyle.sweetAlertContainer,
-                                },
-                              });
+                              destroy_account(id).then(({ success, message }) => {
+                                if (success) {
+                                  handleModalClose();
+                                  Swal.fire({
+                                    title: "Se ha elimando",
+                                    text: "Tu cuenta se ha eliminado de forma sastifactoria.",
+                                    icon: "success",
+                                    customClass: {
+                                      container:
+                                        SweetAlertDAStyle.sweetAlertContainer,
+                                    },
+                                  }).finally(() => navigate("/"));
+                                } else {
+                                  Swal.fire({
+                                    title: "Ha ocurrido un error",
+                                    text: "La contrasena es incorrecta",
+                                    icon: "warning",
+                                    customClass: {
+                                      container:
+                                        SweetAlertDAStyle.sweetAlertContainer,
+                                    },
+                                  });
+                                }
+                              })
                             }
                           });
                         }}

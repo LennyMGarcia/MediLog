@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,40 +9,64 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-// import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Icon from "/assets/Pictures/IconMediLog.png";
 import { Button, Collapse } from "@mui/material";
 import ModalAlert from "../Modals/ModalAlert";
+import useUserStore from "../Utils/setUserSession";
 
+// Paginas para los pacientes
 const pagesPatients = [
   { name: "Dashboard", link: "/dashboard" },
   { name: "Casos", link: "/cases" },
   { name: "Casos Terceros", link: "/" },
   { name: "Perfil", link: "/profile" },
 ];
+
+// Paginas para los doctores
 const pagesDoctors = [
   { name: "Dashboard", link: "/dashboard" },
   { name: "Casos", link: "/cases" },
   { name: "Pacientes", link: "/pacientes" },
   { name: "Perfil", link: "/profile" },
 ];
-const settings = [{ name: "Ajustes", link: "/settings", haveModal: false }, { name: "Cerrar Sesion", link: "/", haveModal: true }];
+
+// Ajustes que aparecen al dar click en el logo de usuario, si quieres agregar alguno, pongo aqui
+const settings = [
+  { name: "Ajustes", link: "/settings", haveModal: false },
+  { name: "Cerrar Sesion", link: "/", haveModal: true },
+];
 
 function Appbar() {
+  const { logoutUser } = useUserStore();
+  const { getUser } = useUserStore();
+  const { authenticated } = useUserStore();
+
+  /*useEffect(() => {
+    if (!authenticated()) {
+      navigate('/')
+      return;
+    }
+    return;
+  });*/
+
+  const nombre = authenticated() ? getUser().nombre : null;
+  const apellido = authenticated() ? getUser().apellido : null;
+  const rol = authenticated() ? getUser().tipo : null;
+  const pages = rol === 'Paciente' ? pagesPatients : pagesDoctors;
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
   const [checked, setChecked] = React.useState(false);
 
-  const [showModal, setshowModal] = React.useState(false)
-  const navigate = useNavigate()
+  // Para indicar debe aparecer o no el modal
+  const [showModal, setshowModal] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleChange = () => {
-    console.log(checked);
-
     setChecked((prev) => !prev);
   };
 
@@ -70,10 +95,12 @@ function Appbar() {
         }
       >
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
+          {/* Icono que se muestra cuando la pantalla esta grande */}
           <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
             <img src={Icon} />
           </Box>
+
+          {/* Letra que se muestra cuando la pantalla esta grande */}
           <Typography
             variant="h6"
             noWrap
@@ -92,6 +119,7 @@ function Appbar() {
             MEDILOG
           </Typography>
 
+          {/* Icono del boton que aparece cuando la pantalla esta pequeña */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -103,36 +131,14 @@ function Appbar() {
             >
               <MenuIcon />
             </IconButton>
-            {/* <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pagesDoctors.map((page, idx) => (
-                <MenuItem key={idx} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu> */}
           </Box>
 
+          {/* Imagen que aparece cuando la pantalla esta pequeña */}
           <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}>
             <img src={Icon} />
           </Box>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
+
+          {/* Letra que se muestra cuando la pantalla esta pequeña */}
           <Typography
             variant="h5"
             noWrap
@@ -152,6 +158,7 @@ function Appbar() {
             MEDILOG
           </Typography>
 
+          {/* Links  de las diferentes paginas que aparecen en el navbar */}
           <Box
             sx={{
               flexGrow: 1,
@@ -159,17 +166,10 @@ function Appbar() {
               height: "34px",
             }}
           >
-            {pagesDoctors.map((page, idx) => (
-              // <Button
-              //   key={idx}
-              //   onClick={handleCloseNavMenu}
-              //   sx={{ my: 2, color: "white", display: "block" }}
-              // >
-              //   {page.name}
-              // </Button>
+            {/* Si quieres probar las diferentes opciones que aparecen puedes poder pageDoctors o pagesPatients */}
+            {pages.map((page, idx) => (
               <NavLink
                 key={idx}
-                // onClick={handleCloseNavMenu}
                 to={page.link}
                 style={({ isActive }) => {
                   return {
@@ -190,6 +190,7 @@ function Appbar() {
             ))}
           </Box>
 
+          {/* Nombre y Rol de usuario */}
           <Box
             sx={{
               flexGrow: 0,
@@ -210,10 +211,10 @@ function Appbar() {
               }}
             >
               <Typography variant="h5" fontSize={16} textAlign={"center"}>
-                Nombre Apellido
+                {nombre} {apellido}
               </Typography>
               <Typography variant="h6" fontSize={14} textAlign={"center"}>
-                Rol
+                {rol}
               </Typography>
             </Box>
 
@@ -222,6 +223,7 @@ function Appbar() {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
+            {/* Opciones que aparecen al dar click en el boton de usuario */}
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
@@ -246,15 +248,21 @@ function Appbar() {
                   }}>
                   <Typography textAlign="center">{setting.name}</Typography>
                   </Link> */}
-                  <Button variant="text" sx={{
-                    fontSize:"14px",
-                    textTransform:"capitalize",
-                    color:"#000000"
-                  }} onClick={()=>{
-                    {
-                      setting.haveModal? setshowModal(true) :navigate(setting.link)
-                    }
-                  }}  >
+                  <Button
+                    variant="text"
+                    sx={{
+                      fontSize: "14px",
+                      textTransform: "capitalize",
+                      color: "#000000",
+                    }}
+                    onClick={() => {
+                      {
+                        setting.haveModal
+                          ? setshowModal(true)
+                          : navigate(setting.link);
+                      }
+                    }}
+                  >
                     {setting.name}
                   </Button>
                 </MenuItem>
@@ -264,6 +272,7 @@ function Appbar() {
         </Toolbar>
       </Container>
 
+      {/* Menu que aparece cuando el ancho de la pantalla es menor y presionan las barras de la esquina */}
       <Collapse
         in={checked}
         sx={{
@@ -274,7 +283,7 @@ function Appbar() {
           },
         }}
       >
-        {pagesDoctors.map((page, idx) => (
+        {pages.map((page, idx) => (
           <NavLink
             key={idx}
             // onClick={handleCloseNavMenu}
@@ -302,12 +311,21 @@ function Appbar() {
         ))}
       </Collapse>
 
-      <ModalAlert title="Cerrar Sesion" description="¿Estas seguro que quieres cerrar sesion?" type="warning" open={showModal} handleClose={()=>{
-        setshowModal(false)
-      }} handleOk={()=>{
-        navigate("/")
-      }}  />
-
+      {/* Modal para las alertas */}
+      <ModalAlert
+        title="Cerrar Sesion"
+        description="¿Estas seguro que quieres cerrar sesion?"
+        type="warning"
+        open={showModal}
+        handleClose={() => {
+          setshowModal(false);
+        }}
+        handleOk={() => {
+          //Poner Comandos AQUI
+          logoutUser();
+          navigate("/");
+        }}
+      />
     </AppBar>
   );
 }

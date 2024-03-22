@@ -142,7 +142,7 @@ const Register: React.FC = () => {
         });
       return result;
     } else if (isLastStep) {
-      navigate("/"); // Redirige a esa ruta si el inicio de session fue exitoso
+      navigate("/dashboard"); // Redirige a esa ruta si el inicio de session fue exitoso
     } else {
       next();
     }
@@ -162,55 +162,55 @@ const Register: React.FC = () => {
       <ThanksForm />,
     ]);
 
-    return (
-        <Box height={isMediumScreen ? "105vh" : "auto"} className={styles.box}>
-            <Grid container >
-                {isMediumScreen && (
-                    <Grid item xs={12} md={4}>
-                        <Fade
-                            in={true}
-                            key={currentStepIndex}
-                            timeout={1000}
-                        >
-                            <img className={styles.image} src={ImageArray[currentStepIndex]} alt="" />
-                        </Fade>
-                    </Grid>
-                )}
-                <Grid sx={{ paddingTop: "2rem" }} item xs={12} md={isMediumScreen ? 8 : 12}>
-                    {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
-                    <Box className={styles.formContainer}>
-                        <Formik
-                            initialValues={initialValues[currentStepIndex]}
-                            onSubmit={onSubmit}
-                            validationSchema={registerValidationSchema[currentStepIndex]}>
-                            {() => (
-                                <Form>
-                                    {step}
-                                    <Box className={styles.buttonContainer}>
-                                        {!isLastStep && <Button
-                                            fullWidth
-                                            disabled={isFirstStep ? true : false}
-                                            className={styles.backButton}
-                                            variant="outlined" type="button"
-                                            onClick={back}>
-                                            Regresar
-                                        </Button>}
-                                        <Button
-                                            fullWidth
-                                            className={styles.nextButton}
-                                            variant="contained"
-                                            type="submit">
-                                            {!isLastStep ? "Siguiente" : "Finalizar"}
-                                        </Button>
-                                    </Box>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
-                </Grid>
-            </Grid>
-        </Box>
-    );
+  return (
+    <Box height={isMediumScreen ? "105vh" : "auto"} className={styles.box}>
+      <Grid container >
+        {isMediumScreen && (
+          <Grid item xs={12} md={4}>
+            <Fade
+              in={true}
+              key={currentStepIndex}
+              timeout={1000}
+            >
+              <img className={styles.image} src={ImageArray[currentStepIndex]} alt="" />
+            </Fade>
+          </Grid>
+        )}
+        <Grid sx={{ paddingTop: "2rem" }} item xs={12} md={isMediumScreen ? 8 : 12}>
+          {!isLastStep && <RegisterStepper activeStep={currentStepIndex} />}
+          <Box className={styles.formContainer}>
+            <Formik
+              initialValues={initialValues[currentStepIndex]}
+              onSubmit={onSubmit}
+              validationSchema={registerValidationSchema[currentStepIndex]}>
+              {() => (
+                <Form>
+                  {step}
+                  <Box className={styles.buttonContainer}>
+                    {!isLastStep && <Button
+                      fullWidth
+                      disabled={isFirstStep ? true : false}
+                      className={styles.backButton}
+                      variant="outlined" type="button"
+                      onClick={back}>
+                      Regresar
+                    </Button>}
+                    <Button
+                      fullWidth
+                      className={styles.nextButton}
+                      variant="contained"
+                      type="submit">
+                      {!isLastStep ? "Siguiente" : "Finalizar"}
+                    </Button>
+                  </Box>
+                </Form>
+              )}
+            </Formik>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  );
 
 };
 

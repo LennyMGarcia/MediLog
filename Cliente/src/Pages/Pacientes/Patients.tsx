@@ -2,17 +2,27 @@ import { Grid, Typography, Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { Search } from "@mui/icons-material";
 import TablaPatients from "./Components/TablaPatients";
+import { useNavigate } from "react-router";
 
 export default function Patients() {
-  const [openInputSearch, setOpenInputSearch] = useState("");
+
+  const [openInputSearch, setOpenInputSearch] = useState<string>('');
+
+  const navigate = useNavigate();
+
+  const search_patient = (search: string) => {
+    const id = parseInt(search);
+    if (typeof (id) === 'number') {
+      navigate('/pacientes/' + search);
+    }
+    return;
+  }
 
   return (
     <Grid
       container
       padding={"30px 24px"}
-      // rowSpacing={2}
       gap={4}
-      // spacing={2}
       direction={"column"}
       sx={{
         height: "100%",
@@ -49,28 +59,22 @@ export default function Patients() {
               fontSize: "18px",
               width: "300px",
               ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#CDCECF",
-                },
+              {
+                borderColor: "#CDCECF",
+              },
               ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
                 color: "#68696B",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "#CDCECF", // Color del borde
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                 },
                 "&:hover": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                   "& fieldset": {
                     border: "solid 1px #111113",
                   },
                 },
                 "&:focus": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                   "& fieldset": {
                     border: "solid 1px #111113",
                   },
@@ -78,8 +82,6 @@ export default function Patients() {
                 "&.Mui-focused fieldset": {
                   borderColor: "#CDCECF", // Color del borde cuando está enfocado
                   border: "solid 1px #111113",
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                 },
                 "& legend span": {
                   paddingLeft: "0px",
@@ -116,6 +118,9 @@ export default function Patients() {
             sx={{
               bgcolor: "#168AAD",
             }}
+            onClick={() => {
+              search_patient(openInputSearch);
+            }}
           >
             Buscar paciente
           </Button>
@@ -133,6 +138,7 @@ export default function Patients() {
       >
         <TablaPatients />
       </Grid>
+
     </Grid>
   );
 }

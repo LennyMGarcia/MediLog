@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const salt_level = 10;
 const Paciente = require('./Paciente');
 const Especialista = require('./Especialista');
+const Producto = require('./Producto');
 
 class Usuario extends Model {
     constructor(id = null) {
@@ -36,12 +37,37 @@ class Usuario extends Model {
             this.member_id = result?.member_id;
             this.tipo = result?.tipo;
             this.plan = result?.plan;
-            const rows = {
-                id: result.id,
-                member_id: result.member_id,
-                tipo: result.tipo
+            const query = new Builder('productos');
+            const [productos_results, fields] = await DB.query(query.select_query('*', 'id'), [this.plan]);
+            if (this.tipo === 'Paciente') {
+                const model = new Paciente();
+                const search = await model.find(this.member_id);
+                const rows = {
+                    id: result.id,
+                    member_id: result.member_id,
+                    nombre: search.nombre,
+                    apellido: search.apellido,
+                    correo: result.correo,
+                    tipo: result.tipo,
+                    plan: productos_results[0]?.nombre || 'Basico'
+                }
+                return rows;
+            } else {
+                const model = new Especialista();
+                const search = await model.find(this.member_id);
+                console.log(search);
+                const rows = {
+                    id: result.id,
+                    member_id: result.member_id,
+                    nombre: search.nombre,
+                    apellido: search.apellido,
+                    correo: result.correo,
+                    tipo: result.tipo,
+                    plan: productos_results[0]?.nombre || 'Basico'
+                }
+                return rows;
             }
-            return rows;
+
             return result;
 
         } catch (error) {
@@ -88,7 +114,7 @@ class Usuario extends Model {
             //Funccion que encripta la contrasena
             const salt = await bcrypt.genSalt(salt_level);
             const hashed_password = await bcrypt.hash(this.data.contrasena, salt);
-            if (!hashed_password) res.json({ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña', 'status': 400 });
+            if (!hashed_password) return [{ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña', 'status': 500 }];
 
             this.values[2] = hashed_password;
 
@@ -188,6 +214,55 @@ class Usuario extends Model {
         }
 
     }
+    async update_plan(data = null, id = null) {
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+
+        try {
+            this.data = data;
+            this.values = [
+                this.data || null,
+            ];
+
+            this.editable_columns = [
+                'plan',
+            ];
+            const query = new Builder(this.table);
+            const [results, fields] = await DB.execute(query.update_query(this.editable_columns, this.values, id), this.values)
+
+            return results;
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
+    }
+    async update_password(data = null, id = null) {
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+
+        try {
+            this.data = data;
+            this.values = [
+                this.data || null,
+            ];
+            this.editable_columns = [
+                'contrasena',
+            ];
+            //Funccion que encripta la contrasena
+            const salt = await bcrypt.genSalt(salt_level);
+            const hashed_password = await bcrypt.hash(this.data, salt);
+            if (!hashed_password) return [{ 'success': false, 'error': 'Por favor, Intentar Otra Contraseña', 'status': 500 }];
+
+            this.values[0] = hashed_password;
+
+            const query = new Builder(this.table);
+            const [results, fields] = await DB.execute('UPDATE usuarios SET contrasena = ? where id=?', [hashed_password, id])
+            return results;
+
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+        }
+
+    }
     async authenticate(correo = null) {
         if (!correo) return [{ 'success': false, 'error': 'Correo de Usuario Obligatorio.', 'status': 400 }];
 
@@ -209,6 +284,7 @@ class Usuario extends Model {
         if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
 
         const columns = [
+            'id',
             'descripcion',
             'pacientes_id',
             'especialistas_id',
@@ -218,6 +294,7 @@ class Usuario extends Model {
             'categoria',
             'seguimiento',
             'visibilidad',
+            'fecha',
             'eliminado',
         ];
 
@@ -352,9 +429,9 @@ class Usuario extends Model {
         if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado o Registro No Existe.', 'status': 400 }];
         const casos_columns = [
             'pacientes_id',
-            'especialistas_id',
         ];
 
+        //'especialistas_id',
         if (this.tipo !== 'Paciente') {
             try {
                 const pacientes_ids = [];
@@ -390,6 +467,7 @@ class Usuario extends Model {
         if (!ids) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
 
         const pacientes_columns = [
+            'id',
             'nombre',
             'apellido',
             'fecha_nacimiento',
@@ -411,7 +489,7 @@ class Usuario extends Model {
             try {
                 const query = new Builder('pacientes');
                 const [results, fields] = await DB.execute(query.select_query(pacientes_columns, 'id'), [id]);
-                pacientes.push(results);
+                pacientes.push(...results);
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
                 // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];

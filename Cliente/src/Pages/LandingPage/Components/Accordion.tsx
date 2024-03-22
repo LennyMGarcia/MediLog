@@ -67,8 +67,6 @@ export default function AccordionNormal({
         <Typography
           sx={{
             color: "#A0A0A0",
-            // textAlign: "center",
-            // fontFamily: "Open Sans",
             fontSize: "16px",
             fontStyle: "normal",
             fontWeight: "400",

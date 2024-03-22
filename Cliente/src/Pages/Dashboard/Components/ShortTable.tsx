@@ -1,5 +1,4 @@
 // OrderTable
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,28 +7,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, Chip, TablePagination } from "@mui/material";
-import { useMemo, useState } from "react";
-// import searchIcon from "/assets/icons/search-md.svg";
-// import calendarIcon from "/assets/icons/calendar.svg";
+import { useMemo, useState, useEffect } from "react";
+import useUserStore from "../../../Common/Utils/setUserSession";
 
-type IPropsDoctor = {
-  id: number;
-  descripcion: string;
-  paciente: string;
-  time: string;
-  estado: string;
-  categoria: number;
-  // rol: "Doctor" | "Patient";
-};
-
-type IPropsPatient = {
-  id: number;
-  descripcion: string;
-  doctor: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
 type IPropsData = {
   id: number;
   descripcion: string;
@@ -38,34 +18,49 @@ type IPropsData = {
   estado: string;
   categoria: number;
 };
-interface IArray {
-  isDoctor: Boolean;
-  // data: (IPropsDoctor | IPropsPatient)[];
-  data: IPropsData[];
-}
 
-export default function ShortTable({ isDoctor, data }: IArray) {
+export default function ShortTable() {
+  const casos = useUserStore((state) => state.casos);
+  const { autopopulate } = useUserStore();
+  const { getUser } = useUserStore();
+
+  const [data, setData] = useState(casos);
+  const [logged, setLogged] = useState(true);
+
+  useEffect(() => {
+    //Zustand que permite la consulta de casos relacionados con el usuario
+    autopopulate().then(result => {
+      setData(result.casos)
+    });
+    return;
+  }, [logged]);
+
+  // Esto es para que la data que entra, solo se tomen 5
   const rows = data.slice(0, 5);
 
   const badgetStatus: Record<string, any> = {
-    close: {
-      name: "Cerrados",
+    Inactivo: {
+      name: "Inactivo",
       color: "#8EBF43",
     },
-    open: {
-      name: "En proceso",
+    Activo: {
+      name: "Activo",
       color: "#28AAE1",
     },
-    pending: {
-      name: "Pendiente",
+    Proceso: {
+      name: "En Proceso",
       color: "#E5D540",
     },
-    suspend: {
-      name: "Cancelada",
+    Suspendido: {
+      name: "Suspendido",
       color: "#E30000",
     },
   };
 
+  // Esta variable debe cambiar en base a si es un especialista o un paciente, asi los campos de la tabla cambian
+  const isDoctor = getUser().tipo === 'Paciente' ? false : true;
+
+  // Esto es para las medallas de estado
   const Badge = ({ bg, tipo }: { bg: string; tipo: string }) => {
     return (
       <Chip
@@ -89,14 +84,6 @@ export default function ShortTable({ isDoctor, data }: IArray) {
     );
   };
 
-  //   const Calendar = () => {
-  //     return (
-  //       <>
-  //         <img src={calendarIcon} />
-  //       </>
-  //     );
-  //   };
-
   return (
     <TableContainer
       component={Paper}
@@ -107,7 +94,6 @@ export default function ShortTable({ isDoctor, data }: IArray) {
       }}
     >
       <Table
-        // sx={{ minWidth: 650 }}
         aria-label="simple table"
         sx={{
           borderCollapse: "separate",
@@ -151,7 +137,7 @@ export default function ShortTable({ isDoctor, data }: IArray) {
               }}
               align="left"
             >
-              {isDoctor ? "Doctor" : "Paciente"}
+              {isDoctor ? "Paciente" : "Doctor"}
             </TableCell>
             <TableCell
               sx={{
@@ -188,18 +174,12 @@ export default function ShortTable({ isDoctor, data }: IArray) {
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody
-          sx={
-            {
-              // "& > *": {
-              //   borderBottom: "none", // elimina la línea divisoria en las celdas
-              // },
-            }
-          }
-        >
+
+        <TableBody>
+          {/* Map para mostrar las diferetes filas en base de los datos del array */}
           {rows.map((row) => (
             <TableRow
-              key={row.id}
+              key={row?.id}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
                 borderRadius: "8px",
@@ -224,7 +204,7 @@ export default function ShortTable({ isDoctor, data }: IArray) {
                   padding: "5px 16px",
                 }}
               >
-                {row.id}
+                {row?.id}
               </TableCell>
               <TableCell
                 align="left"
@@ -237,7 +217,7 @@ export default function ShortTable({ isDoctor, data }: IArray) {
                   padding: "5px 16px",
                 }}
               >
-                {row.descripcion}
+                {row?.descripcion}
               </TableCell>
               <TableCell
                 align="left"
@@ -250,7 +230,7 @@ export default function ShortTable({ isDoctor, data }: IArray) {
                   padding: "5px 16px",
                 }}
               >
-                {row.person}
+                {isDoctor ? row?.pacientes_id : row?.especialistas_id}
               </TableCell>
               <TableCell
                 align="left"
@@ -263,7 +243,7 @@ export default function ShortTable({ isDoctor, data }: IArray) {
                   padding: "5px 16px",
                 }}
               >
-                {row.time}
+                {row?.fecha}
               </TableCell>
               <TableCell
                 align="left"
@@ -277,8 +257,8 @@ export default function ShortTable({ isDoctor, data }: IArray) {
                 }}
               >
                 <Badge
-                  bg={badgetStatus[row.estado].color}
-                  tipo={badgetStatus[row.estado].name}
+                  bg={badgetStatus[row?.estado]?.color}
+                  tipo={badgetStatus[row?.estado]?.name}
                 />
                 {/* {row.status} */}
               </TableCell>
@@ -293,7 +273,7 @@ export default function ShortTable({ isDoctor, data }: IArray) {
                   padding: "5px 16px",
                 }}
               >
-                {row.categoria}
+                {row?.categoria}
               </TableCell>
             </TableRow>
           ))}
@@ -302,3 +282,47 @@ export default function ShortTable({ isDoctor, data }: IArray) {
     </TableContainer>
   );
 }
+
+// Este campo de son los datos de casos, dependiendo si es un doctor o un paciente
+/*const data: IPropsData[] = [
+  {
+    id: 1,
+    descripcion: "Consulta de rutina",
+    person: "Juan Pérez",
+    time: "2024-03-11T09:00:00",
+    estado: "open",
+    categoria: 2,
+  },
+  {
+    id: 2,
+    descripcion: "Examen de sangre",
+    person: "María Rodríguez",
+    time: "2024-03-12T10:30:00",
+    estado: "close",
+    categoria: 1,
+  },
+  {
+    id: 3,
+    descripcion: "Consulta de seguimiento",
+    person: "Luis García",
+    time: "2024-03-13T11:15:00",
+    estado: "pending",
+    categoria: 3,
+  },
+  {
+    id: 4,
+    descripcion: "Revisión de presión arterial",
+    person: "Ana Martínez",
+    time: "2024-03-14T15:45:00",
+    estado: "suspend",
+    categoria: 2,
+  },
+  {
+    id: 5,
+    descripcion: "Vacunación contra la gripe",
+    person: "Carlos Sánchez",
+    time: "2024-03-15T08:20:00",
+    estado: "open",
+    categoria: 1,
+  },
+];*/

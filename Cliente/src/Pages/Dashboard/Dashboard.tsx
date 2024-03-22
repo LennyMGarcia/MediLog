@@ -1,68 +1,80 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, CircularProgress } from "@mui/material";
 import Cards from "./Components/Cards";
 import { PieChart } from "@mui/x-charts";
 import ShortTable from "./Components/ShortTable";
+import useUserStore from "../../Common/Utils/setUserSession";
+import dayjs from "dayjs";
+import { useState, useEffect } from "react";
 
 function Dashboard() {
-  const data = [
-    {
-      id: 1,
-      descripcion: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      estado: "open",
-      categoria: 2,
-    },
-    {
-      id: 2,
-      descripcion: "Examen de sangre",
-      person: "María Rodríguez",
-      time: "2024-03-12T10:30:00",
-      estado: "close",
-      categoria: 1,
-    },
-    {
-      id: 3,
-      descripcion: "Consulta de seguimiento",
-      person: "Luis García",
-      time: "2024-03-13T11:15:00",
-      estado: "pending",
-      categoria: 3,
-    },
-    {
-      id: 4,
-      descripcion: "Revisión de presión arterial",
-      person: "Ana Martínez",
-      time: "2024-03-14T15:45:00",
-      estado: "suspend",
-      categoria: 2,
-    },
-    {
-      id: 5,
-      descripcion: "Vacunación contra la gripe",
-      person: "Carlos Sánchez",
-      time: "2024-03-15T08:20:00",
-      estado: "open",
-      categoria: 1,
-    },
-  ];
+  const { getUser } = useUserStore();
+  const { authenticated } = useUserStore();
+  const { autopopulate } = useUserStore();
+  const loading = useUserStore(state => state.loading);
+
+  const nombre = authenticated() ? getUser().nombre : null;
+  const apellido = authenticated() ? getUser().apellido : null;
+  const rol = authenticated() ? getUser().tipo : null;
+
+  // Este es el estado que debes cambiar para modificar la informacion de las cards y de los graficos,
+  // ahora puse 50 como valor inicial pero colocale 0 cuando lo vayas a integrar
+  const [casesInfo, setCasesInfo] = useState({
+    open: 0,
+    closed: 0,
+    suspend: 0,
+    onProcess: 0,
+  });
+
+  useEffect(() => {
+    autopopulate().then(result => {
+      const casos = result.casos;
+      if (casos) {
+        //Funcciones que divide que los registros segun el estado
+        const casos_abiertos = casos.filter((cases: any) => cases.estado === 'Activo');
+        const casos_cerrados = casos.filter((cases: any) => cases.estado === 'Inactivo');
+        const casos_proceso = casos.filter((cases: any) => cases.estado === 'Proceso');
+        const casos_suspendidos = casos.filter((cases: any) => cases.estado === 'Suspendido');
+
+        //Funcciones que aumenta la cantidad de casos en base a los casos existentes
+        if (casos_abiertos.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, open: casos_abiertos.length };
+          })
+        }
+        if (casos_cerrados.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, closed: casos_cerrados.length };
+          })
+        }
+        if (casos_proceso.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, onProcess: casos_cerrados.length };
+          })
+        }
+        if (casos_suspendidos.length >= 1) {
+          setCasesInfo((curr) => {
+            return { ...curr, suspend: casos_suspendidos.length };
+          })
+        }
+        return;
+      }
+    });
+    return;
+  }, []);
 
   return (
+
     <Grid
       container
-      // padding={"30px 24px"}
       padding={"10px 24px"}
-      // rowSpacing={2}
       gap={4}
-      // spacing={2}
       direction={"column"}
       sx={{
         height: "100%",
       }}
     >
+      {/* Titulo e fecha */}
       <Grid item xs={12} lg={12}>
-        {/* <Typography variant="h6">Resumen</Typography> */}
-
         <Typography
           sx={{
             fontFamily: "Arial",
@@ -71,7 +83,7 @@ function Dashboard() {
             color: "#070708",
           }}
         >
-          Bienvenido, Nombre Apellido
+          Bienvenido, {nombre} {apellido}
         </Typography>
         <Typography
           sx={{
@@ -81,10 +93,12 @@ function Dashboard() {
             color: "#939497",
           }}
         >
-          12 de enero del 2024
+          {dayjs().format("D [de] MMMM [del] YYYY'")}
+          {/* 12 de enero del 2024 */}
         </Typography>
       </Grid>
 
+      {/* Tarjetas */}
       <Grid
         item
         container
@@ -95,93 +109,84 @@ function Dashboard() {
         wrap="wrap"
       >
         <Grid item xs={12} sm={5.9} lg={2.9}>
-          <Cards type="open" number={50} />
+          <Cards type="open" number={casesInfo.open} />
         </Grid>
         <Grid item xs={12} sm={5.9} lg={2.9}>
-          <Cards type="close" number={50} />
+          <Cards type="close" number={casesInfo.closed} />
         </Grid>
         <Grid item xs={12} sm={5.9} lg={2.9}>
-          <Cards type="suspend" number={50} />
+          <Cards type="suspend" number={casesInfo.suspend} />
         </Grid>
-        {/* <Grid item xs={2.4}>
-            <Cards type="delete" number={50} />
-          </Grid> */}
+
         <Grid item xs={12} sm={5.9} lg={2.9}>
-          <Cards type="onProcess" number={50} />
+          <Cards type="onProcess" number={casesInfo.onProcess} />
         </Grid>
       </Grid>
-
-      <Grid
-        item
-        container
-        xs={12}
-        lg={12}
-        gap={3}
-        sx={
-          {
-            // height: "100%",
-            // maxHeight: "100px",
-          }
-        }
-      >
+      {/* Grafico de Pie */}
+      <Grid item container xs={12} lg={12} gap={3}>
         <Grid
           item
           xs={12}
           md={12}
           lg={5.2}
-          // justifyContent={"center"}
           alignItems={"center"}
           padding={"30px 0px"}
           sx={{
             backgroundColor: "#FFFFFF",
-
-            // padding: "24px",
             borderRadius: "8px",
-            // padding: "70px 0px",
-            // width: "100%",
             display: "flex",
-            // height: "110px",
             alignItem: "center",
             justifyContent: "center",
           }}
         >
-          <PieChart
-            labelPosition="bottom"
-            series={[
-              {
-                data: [
-                  { id: 0, value: 50, label: "Casos Abiertos" },
-                  { id: 1, value: 50, label: "Casos Cerrados" },
-                  { id: 2, value: 50, label: "Casos Suspendidos" },
-                  { id: 3, value: 50, label: "Casos Eliminados" },
-                  { id: 4, value: 50, label: "Casos En Proceso" },
-                ],
-              },
-            ]}
-            width={600}
-            height={350}
-          />
+          {/* Componente del PieChart */}
+
+          {loading ? <CircularProgress /> :
+            < PieChart
+              labelPosition="bottom"
+              series={[
+                {
+                  data: [
+                    { id: 0, value: casesInfo.open, label: "Casos Abiertos" },
+                    { id: 1, value: casesInfo.closed, label: "Casos Cerrados" },
+                    {
+                      id: 2,
+                      value: casesInfo.suspend,
+                      label: "Casos Suspendidos",
+                    },
+                    {
+                      id: 3,
+                      value: casesInfo.onProcess,
+                      label: "Casos En Proceso",
+                    },
+                  ],
+                },
+              ]}
+              width={600}
+              height={350}
+            />}
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={12}
-          lg={6.5}
-          // xs={7}
-          sx={{
-            backgroundColor: "#FFFFFF",
-            // padding: "24px",
-            // gap: "24px",
-            borderRadius: "8px",
-            // width: "100%",
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <ShortTable isDoctor={true} data={data} />
-        </Grid>
+
+        {/* MiniTabla, mi objetivo con esta es que aparezcan los ultimos 5 casos agregados */}
+        {loading ? <CircularProgress /> :
+
+          <Grid
+            item
+            xs={12}
+            md={12}
+            lg={6.5}
+            sx={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: "8px",
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <ShortTable />
+          </Grid>}
       </Grid>
     </Grid>
+
   );
 }
 

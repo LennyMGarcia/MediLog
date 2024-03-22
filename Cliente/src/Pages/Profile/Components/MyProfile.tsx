@@ -5,6 +5,7 @@ import AccordionSummary from "@mui/material/AccordionSummary/AccordionSummary";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from "@mui/material/Box/Box";
 import Grid from "@mui/material/Grid/Grid";
+import { LinearProgress, CircularProgress } from "@mui/material";
 
 import Typography from "@mui/material/Typography/Typography";
 import Avatar from '@mui/material/Avatar';
@@ -137,6 +138,7 @@ const MyProfile: React.FC = () => {
 
     const { getUser } = useUserStore();
     const { authenticated } = useUserStore();
+    const loading = useUserStore(state => state.loading);
 
     const { getRegisterData } = useDataRegisterStore();
     const navigate = useNavigate();
@@ -280,14 +282,14 @@ const MyProfile: React.FC = () => {
     }
 
     //Funccion que impide acceso al perfil si no hay usuario conectado
-    useEffect(() => {
-        if (!authenticated()) return navigate('/');
-        return;
-    });
+    /*  useEffect(() => {
+          if (!authenticated()) return navigate('/');
+          return;
+      });*/
 
     //Funccion que envia solicitud a base de datos para conseguir infomaciones del usuario conectado cada vez que se cambia el ID
     useEffect(() => {
-        if (!userType) return navigate('/');
+        //  if (!userType) return navigate('/');
         if (userType === 'Paciente') {
             setRuta('pacientes');
         } else {
@@ -295,7 +297,7 @@ const MyProfile: React.FC = () => {
         }
         getRecordFromDB(idOrName).then((result) => {
             //Condicion que redirige al usuario si occurre un error
-            if (!result) return navigate('/404');
+            //  if (!result) return navigate('/404');
 
             //Condicion que se encarga de Parsear los records almacenados en formato de ARRAY/JSON en la plataforma
             result.padecimientos = result.padecimientos ? JSON.parse(result?.padecimientos) : [''];
@@ -313,7 +315,7 @@ const MyProfile: React.FC = () => {
 
                 if (!fetchedProfileData) {
                     console.log('No se encontró el perfil');
-                    navigate('/404');
+                    //        navigate('/404');
                     return;
                 }
                 setProfileData(fetchedProfileData);
@@ -368,7 +370,7 @@ const MyProfile: React.FC = () => {
 
     //Funccion que se encarga de la barra de LOADING
     if (!profileData) {
-        return <div>Cargando...</div>; //shadow
+        return <CircularProgress />; //shadow
     }
 
     const initialValues = {
@@ -396,248 +398,250 @@ const MyProfile: React.FC = () => {
     console.log(getAllRegisterData());
 
     return (
+
         <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
             <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem" }} variant="h5">Perfil</Typography>
-            <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
-                <Grid item md={3} xs={12}>
-                    <Box sx={{
-                        backgroundColor: "white",
-                        width: "15rem",
-                        height: "16rem",
-                        boxShadow: 1,
-                        borderRadius: "1rem",
-                    }}>
-                        <Typography sx={{ padding: "1rem" }} variant="body1">Foto de perfil</Typography>
+            {loading ? <LinearProgress /> :
+                <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
+                    <Grid item md={3} xs={12}>
                         <Box sx={{
+                            backgroundColor: "white",
+                            width: "15rem",
+                            height: "16rem",
+                            boxShadow: 1,
+                            borderRadius: "1rem",
+                        }}>
+                            <Typography sx={{ padding: "1rem" }} variant="body1">Foto de perfil</Typography>
+                            <Box sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                                <Avatar sx={{
+                                    height: "10rem",
+                                    width: "10rem",
+                                    backgroundColor: "#52b69a",
+                                    fontSize: "5rem"
+                                }}
+                                    variant="square" >
+                                    {profileData?.nombre.charAt(0) || ''}
+                                </Avatar>
+                            </Box>
+                        </Box>
+                        <Box sx={{
+                            margin: "auto",
+                            marginTop: "1rem",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center"
                         }}>
-                            <Avatar sx={{
-                                height: "10rem",
-                                width: "10rem",
-                                backgroundColor: "#52b69a",
-                                fontSize: "5rem"
-                            }}
-                                variant="square" >
-                                {profileData?.nombre.charAt(0) || ''}
-                            </Avatar>
-                        </Box>
-                    </Box>
-                    <Box sx={{
-                        margin: "auto",
-                        marginTop: "1rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}>
-                        {/*EDITAR*/}
-                        <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>
-                        <Modal
-                            keepMounted
-                            open={modalOpen}
-                            onClose={handleModalClose}
-                        >
-                            <Box sx={style} >
-                                <Box sx={{ width: '100%', typography: 'body1' }}>
-                                    <Box sx={{ width: '100%', height: "100%" }}>
-                                        <Formik
-                                            initialValues={{ initialValues }}
-                                            validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
-                                            onSubmit={() => console.log("adios")}
-                                        >
-                                            {({ handleSubmit, isValid }) => (
-                                                <Form onSubmit={handleSubmit}>
-                                                    <Tabs
-                                                        value={tabValue}
-                                                        onChange={handleTabChange}
-                                                        variant="fullWidth"
-                                                        sx={{
-                                                            '& .MuiTabs-indicator': {
-                                                                backgroundColor: ' #52b69a',
+                            {/*EDITAR*/}
+                            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>
+                            <Modal
+                                keepMounted
+                                open={modalOpen}
+                                onClose={handleModalClose}
+                            >
+                                <Box sx={style} >
+                                    <Box sx={{ width: '100%', typography: 'body1' }}>
+                                        <Box sx={{ width: '100%', height: "100%" }}>
+                                            <Formik
+                                                initialValues={{ initialValues }}
+                                                validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
+                                                onSubmit={() => console.log("adios")}
+                                            >
+                                                {({ handleSubmit, isValid }) => (
+                                                    <Form onSubmit={handleSubmit}>
+                                                        <Tabs
+                                                            value={tabValue}
+                                                            onChange={handleTabChange}
+                                                            variant="fullWidth"
+                                                            sx={{
+                                                                '& .MuiTabs-indicator': {
+                                                                    backgroundColor: ' #52b69a',
+                                                                },
+                                                                '& .MuiTab-root': {
+                                                                    color: '#168aad',
+                                                                    '&.Mui-selected': {
+                                                                        color: ' #52b69a',
+                                                                    },
+                                                                    '&:hover': {
+                                                                        color: '#34a0a4',
+                                                                    },
+                                                                },
+                                                            }}
+                                                        >
+                                                            <Tab icon={<PersonPinIcon />} value="one" label="basico" />
+                                                            <Tab icon={<PhoneIcon />} value="two" label="Contacto" />
+                                                            <Tab icon={<PaidIcon />} value="three" label="MonetariO" />
+                                                        </Tabs>
+                                                        <Box sx={{
+                                                            maxHeight: '60vh',
+                                                            overflowY: 'scroll',
+                                                            '&::-webkit-scrollbar': {
+                                                                width: '0.5em',
                                                             },
-                                                            '& .MuiTab-root': {
-                                                                color: '#168aad',
-                                                                '&.Mui-selected': {
-                                                                    color: ' #52b69a',
-                                                                },
-                                                                '&:hover': {
-                                                                    color: '#34a0a4',
-                                                                },
+                                                            '&::-webkit-scrollbar-thumb': {
+                                                                backgroundColor: '#52b69a',
+                                                                borderRadius: '4px',
                                                             },
-                                                        }}
-                                                    >
-                                                        <Tab icon={<PersonPinIcon />} value="one" label="basico" />
-                                                        <Tab icon={<PhoneIcon />} value="two" label="Contacto" />
-                                                        <Tab icon={<PaidIcon />} value="three" label="MonetariO" />
-                                                    </Tabs>
-                                                    <Box sx={{
-                                                        maxHeight: '60vh',
-                                                        overflowY: 'scroll',
-                                                        '&::-webkit-scrollbar': {
-                                                            width: '0.5em',
-                                                        },
-                                                        '&::-webkit-scrollbar-thumb': {
-                                                            backgroundColor: '#52b69a',
-                                                            borderRadius: '4px',
-                                                        },
-                                                    }}>
-                                                        <Box hidden={tabValue !== "one"}>
-                                                            <BasicProfileForm type={userType} profileValues={profileData || {}} />
+                                                        }}>
+                                                            <Box hidden={tabValue !== "one"}>
+                                                                <BasicProfileForm type={userType} profileValues={profileData || {}} />
+                                                            </Box>
+
+                                                            <Box role="tabpanel" hidden={tabValue !== "two"}>
+                                                                <ContactProfileForm profileValues={profileData || {}} />
+                                                            </Box>
+
+                                                            <Box role="tabpanel" hidden={tabValue !== "three"}>
+                                                                <FinancialProfileForm profileValues={profileData || {}} />
+                                                            </Box>
+
                                                         </Box>
+                                                        {/*ENVIAR INFORMACION*/}
+                                                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                                                            fullWidth
+                                                            variant="contained"
+                                                            type="submit"
+                                                            //disabled={!isValid}
+                                                            onClick={() => {
+                                                                Swal.fire({
+                                                                    title: '¿Estás seguro?',
+                                                                    text: `Esta acción cambiara todos tus datos`,
+                                                                    icon: 'question',
+                                                                    showCancelButton: true,
+                                                                    confirmButtonColor: '#52b69a',
+                                                                    cancelButtonColor: '#d33',
+                                                                    confirmButtonText: 'Aplicar cambios',
+                                                                    cancelButtonText: 'Cancelar',
+                                                                    customClass: {
+                                                                        container: profileStyle.sweetAlertContainer,
+                                                                    },
+                                                                    allowOutsideClick: () => !Swal.isLoading(),
+                                                                    allowEscapeKey: () => !Swal.isLoading(),
+                                                                    allowEnterKey: () => !Swal.isLoading(),
+                                                                    stopKeydownPropagation: false,
 
-                                                        <Box role="tabpanel" hidden={tabValue !== "two"}>
-                                                            <ContactProfileForm profileValues={profileData || {}} />
-                                                        </Box>
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed && isValid) {
+                                                                        //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
+                                                                        editSubmitHandler().then(result => {
+                                                                            if (result) {
+                                                                                handleModalClose()
+                                                                                Swal.fire({
+                                                                                    title: 'Aplicado con exito',
+                                                                                    text: 'Todos los datos han sido editados.',
+                                                                                    icon: 'success',
+                                                                                    customClass: {
+                                                                                        container: profileStyle.sweetAlertContainer,
+                                                                                    }
+                                                                                });
+                                                                            } else {
+                                                                                Swal.fire({
+                                                                                    title: 'No se aplicaron cambios',
+                                                                                    text: 'Acceso Denegado',
+                                                                                    icon: 'warning',
+                                                                                    customClass: {
+                                                                                        container: profileStyle.sweetAlertContainer,
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        });
 
-                                                        <Box role="tabpanel" hidden={tabValue !== "three"}>
-                                                            <FinancialProfileForm profileValues={profileData || {}} />
-                                                        </Box>
-
-                                                    </Box>
-                                                    {/*ENVIAR INFORMACION*/}
-                                                    <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
-                                                        fullWidth
-                                                        variant="contained"
-                                                        type="submit"
-                                                        //disabled={!isValid}
-                                                        onClick={() => {
-                                                            Swal.fire({
-                                                                title: '¿Estás seguro?',
-                                                                text: `Esta acción cambiara todos tus datos`,
-                                                                icon: 'question',
-                                                                showCancelButton: true,
-                                                                confirmButtonColor: '#52b69a',
-                                                                cancelButtonColor: '#d33',
-                                                                confirmButtonText: 'Aplicar cambios',
-                                                                cancelButtonText: 'Cancelar',
-                                                                customClass: {
-                                                                    container: profileStyle.sweetAlertContainer,
-                                                                },
-                                                                allowOutsideClick: () => !Swal.isLoading(),
-                                                                allowEscapeKey: () => !Swal.isLoading(),
-                                                                allowEnterKey: () => !Swal.isLoading(),
-                                                                stopKeydownPropagation: false,
-
-                                                            }).then((result) => {
-                                                                if (result.isConfirmed && isValid) {
-                                                                    //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
-                                                                    editSubmitHandler().then(result => {
-                                                                        if (result) {
-                                                                            handleModalClose()
-                                                                            Swal.fire({
-                                                                                title: 'Aplicado con exito',
-                                                                                text: 'Todos los datos han sido editados.',
-                                                                                icon: 'success',
-                                                                                customClass: {
-                                                                                    container: profileStyle.sweetAlertContainer,
-                                                                                }
-                                                                            });
-                                                                        } else {
-                                                                            Swal.fire({
-                                                                                title: 'No se aplicaron cambios',
-                                                                                text: 'Acceso Denegado',
-                                                                                icon: 'warning',
-                                                                                customClass: {
-                                                                                    container: profileStyle.sweetAlertContainer,
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    });
-
-                                                                }
-                                                                else if (!isValid) {
-                                                                    Swal.fire({
-                                                                        title: 'No se aplicaron cambios',
-                                                                        text: 'Hay datos invalidados dentro del formulario',
-                                                                        icon: 'warning',
-                                                                        customClass: {
-                                                                            container: profileStyle.sweetAlertContainer,
-                                                                        }
-                                                                    });
-                                                                }
-                                                            })
-                                                        }}
-                                                    >
-                                                        Aplicar cambios
-                                                    </Button>
-                                                </Form>
-                                            )}
-                                        </Formik>
+                                                                    }
+                                                                    else if (!isValid) {
+                                                                        Swal.fire({
+                                                                            title: 'No se aplicaron cambios',
+                                                                            text: 'Hay datos invalidados dentro del formulario',
+                                                                            icon: 'warning',
+                                                                            customClass: {
+                                                                                container: profileStyle.sweetAlertContainer,
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                })
+                                                            }}
+                                                        >
+                                                            Aplicar cambios
+                                                        </Button>
+                                                    </Form>
+                                                )}
+                                            </Formik>
+                                        </Box>
                                     </Box>
                                 </Box>
-                            </Box>
-                        </Modal>
-                    </Box>
-                </Grid>
+                            </Modal>
+                        </Box>
+                    </Grid>
 
-                <Grid item md={9} xs={12} sx={{ marginLeft: "auto", marginRight: "auto" }}>
-                    <Accordion defaultExpanded>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            id="Informacion_basica"
-                        >
-                            Informacion basica
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            {userType == "Paciente" ?
+                    <Grid item md={9} xs={12} sx={{ marginLeft: "auto", marginRight: "auto" }}>
+                        <Accordion defaultExpanded>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                id="Informacion_basica"
+                            >
+                                Informacion basica
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                {userType == "Paciente" ?
+                                    <ProfileList dataList={[
+                                        { name: "Nombre", data: profileData?.nombre || '' },
+                                        { name: "Apellido", data: profileData?.apellido || '', },
+                                        { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
+                                        { name: "Documento de indentidad", data: (profileData as IPatientProfileData)?.documento_identidad, },
+                                        { name: "Sexo", data: profileData?.sexo, },
+                                        { name: "Correo", data: profileData?.correo, },
+                                        { name: "Tipo de sangre", data: (profileData as IPatientProfileData)?.tipo_sangre, },
+                                        { name: "Padecimiento", data: <ListFormater formatData={(profileData as IPatientProfileData)?.padecimientos} /> },
+                                        { name: "Alergias", data: <ListFormater formatData={(profileData as IPatientProfileData)?.alergias} /> },
+                                        { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profileData as IPatientProfileData)?.familiares} /> },
+                                    ]} />
+                                    :
+                                    <ProfileList dataList={[
+                                        { name: "Nombre", data: profileData?.nombre, },
+                                        { name: "Apellido", data: profileData?.apellido, },
+                                        { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
+                                        { name: "Sexo", data: profileData?.sexo, },
+                                        { name: "Especialidad", data: (profileData as ISpecialistProfileData).especialidad },
+                                    ]} />
+                                }
+                            </AccordionDetails>
+                        </Accordion>
+
+                        <Accordion defaultExpanded>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                id="Informacion_contacto"
+                            >
+                                Informacion de contacto
+                            </AccordionSummary>
+                            <AccordionDetails>
                                 <ProfileList dataList={[
-                                    { name: "Nombre", data: profileData?.nombre || '' },
-                                    { name: "Apellido", data: profileData?.apellido || '', },
-                                    { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
-                                    { name: "Documento de indentidad", data: (profileData as IPatientProfileData)?.documento_identidad, },
-                                    { name: "Sexo", data: profileData?.sexo, },
                                     { name: "Correo", data: profileData?.correo, },
-                                    { name: "Tipo de sangre", data: (profileData as IPatientProfileData)?.tipo_sangre, },
-                                    { name: "Padecimiento", data: <ListFormater formatData={(profileData as IPatientProfileData)?.padecimientos} /> },
-                                    { name: "Alergias", data: <ListFormater formatData={(profileData as IPatientProfileData)?.alergias} /> },
-                                    { name: "Familiares", data: <ListFormater isNavigate={true} formatData={(profileData as IPatientProfileData)?.familiares} /> },
+                                    { name: "Direccion", data: profileData?.direccion, },
+                                    { name: "Telefono", data: profileData?.telefono, },
                                 ]} />
-                                :
+                            </AccordionDetails>
+                        </Accordion>
+
+                        <Accordion defaultExpanded>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                id="Informacion_financiera"
+                            >
+                                Informacion financiera
+                            </AccordionSummary>
+                            <AccordionDetails>
                                 <ProfileList dataList={[
-                                    { name: "Nombre", data: profileData?.nombre, },
-                                    { name: "Apellido", data: profileData?.apellido, },
-                                    { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
-                                    { name: "Sexo", data: profileData?.sexo, },
-                                    { name: "Especialidad", data: (profileData as ISpecialistProfileData).especialidad },
+                                    { name: "Metodo de pago", data: profileData?.metodo_pago, },
+                                    { name: "Codigo de tarjeta", data: profileData?.datos_financieros, },
                                 ]} />
-                            }
-                        </AccordionDetails>
-                    </Accordion>
+                            </AccordionDetails>
+                        </Accordion>
+                    </Grid>
 
-                    <Accordion defaultExpanded>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            id="Informacion_contacto"
-                        >
-                            Informacion de contacto
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <ProfileList dataList={[
-                                { name: "Correo", data: profileData?.correo, },
-                                { name: "Direccion", data: profileData?.direccion, },
-                                { name: "Telefono", data: profileData?.telefono, },
-                            ]} />
-                        </AccordionDetails>
-                    </Accordion>
-
-                    <Accordion defaultExpanded>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            id="Informacion_financiera"
-                        >
-                            Informacion financiera
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <ProfileList dataList={[
-                                { name: "Metodo de pago", data: profileData?.metodo_pago, },
-                                { name: "Codigo de tarjeta", data: profileData?.datos_financieros, },
-                            ]} />
-                        </AccordionDetails>
-                    </Accordion>
-                </Grid>
-
-            </Grid>
+                </Grid>}
         </Box>
     );
 

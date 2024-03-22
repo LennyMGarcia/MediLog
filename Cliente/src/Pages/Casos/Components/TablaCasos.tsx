@@ -13,30 +13,15 @@ import {
   TextField,
 } from "@mui/material";
 import { useMemo, useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  LocalizationProvider,
+  pickersFadeTransitionGroupClasses,
+} from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { Search } from "@mui/icons-material";
+import { PendingActionsOutlined, Search } from "@mui/icons-material";
 import TableMenu from "./Menu";
-
-type IPropsDoctor = {
-  id: number;
-  descripcion: string;
-  paciente: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
-
-type IPropsPatient = {
-  id: number;
-  descripcion: string;
-  doctor: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
 
 type IPropsData = {
   id: number;
@@ -49,16 +34,16 @@ type IPropsData = {
 
 interface IArray {
   isDoctor: Boolean;
-  // data: IPropsDoctor[] | IPropsPatient[];
   data: IPropsData[];
 }
 
+// Tipos de datos a mostrar en la tabla
 interface IProps {
   type: "all" | "open" | "close" | "process" | "pending";
 }
 
 export default function TablaCasos({ type }: IProps) {
-  // const data = ["1", "2"];
+  // Data que debe cambiar en base al tipo que se paso
   const data = [
     {
       id: 1,
@@ -101,6 +86,8 @@ export default function TablaCasos({ type }: IProps) {
       categoria: 1,
     },
   ];
+
+  // Booleano que debe indicar el rol del usuario, ahora que lo pienso, se puede validar con el zustand
   const isDoctor = true;
 
   const [page, setPage] = useState(0);
@@ -108,9 +95,7 @@ export default function TablaCasos({ type }: IProps) {
   const [rowsTotal, setRowsTotal] = useState(data.length);
   const [openInputSearch, setOpenInputSearch] = useState("");
   const [dateStart, setDateStart] = useState<string | null>();
-  // dayjs().format("DD/MM/YYYY")
   const [dateEnd, setDateEnd] = useState<string | null>();
-  // dayjs().format("DD/MM/YYYY")
 
   const rows = data;
 
@@ -148,7 +133,6 @@ export default function TablaCasos({ type }: IProps) {
     return (
       <Chip
         sx={{
-          //   marginLeft: "8px",
           height: "24px",
           width: "93px",
           color: "#FFFFFF",
@@ -205,6 +189,7 @@ export default function TablaCasos({ type }: IProps) {
     return stabilized;
   }
 
+  // Esta es una funcion de Material UI para la paginacion
   const visibleRows = useMemo(
     () =>
       stableSort(rows).slice(
@@ -254,28 +239,19 @@ export default function TablaCasos({ type }: IProps) {
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "#CDCECF", // Color del borde
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                 },
                 "&:hover": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                   "& fieldset": {
                     border: "solid 1px #111113",
                   },
                 },
                 "&:focus": {
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                   "& fieldset": {
                     border: "solid 1px #111113",
                   },
                 },
                 "&.Mui-focused fieldset": {
                   borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                  border: "solid 1px #111113",
-                  // outline: "solid",
-                  // outlineColor: "#DEDEDF",
                 },
                 "& legend span": {
                   paddingLeft: "0px",
@@ -356,19 +332,13 @@ export default function TablaCasos({ type }: IProps) {
                       "& .MuiOutlinedInput-root": {
                         "& fieldset": {
                           borderColor: "#CDCECF", // Color del borde
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                         },
                         "&:hover": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                           "& fieldset": {
                             border: "solid 1px #111113",
                           },
                         },
                         "&:focus": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                           "& fieldset": {
                             border: "solid 1px #111113",
                           },
@@ -376,8 +346,6 @@ export default function TablaCasos({ type }: IProps) {
                         "&.Mui-focused fieldset": {
                           borderColor: "#CDCECF", // Color del borde cuando está enfocado
                           border: "solid 1px #111113",
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                         },
                         "& legend span": {
                           paddingLeft: "0px",
@@ -444,19 +412,13 @@ export default function TablaCasos({ type }: IProps) {
                       "& .MuiOutlinedInput-root": {
                         "& fieldset": {
                           borderColor: "#CDCECF", // Color del borde
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                         },
                         "&:hover": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                           "& fieldset": {
                             border: "solid 1px #111113",
                           },
                         },
                         "&:focus": {
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                           "& fieldset": {
                             border: "solid 1px #111113",
                           },
@@ -464,8 +426,6 @@ export default function TablaCasos({ type }: IProps) {
                         "&.Mui-focused fieldset": {
                           borderColor: "#CDCECF", // Color del borde cuando está enfocado
                           border: "solid 1px #111113",
-                          // outline: "solid",
-                          // outlineColor: "#DEDEDF",
                         },
                         "& legend span": {
                           paddingLeft: "0px",
@@ -496,7 +456,6 @@ export default function TablaCasos({ type }: IProps) {
           }}
         >
           <Table
-            // sx={{ minWidth: 650 }}
             aria-label="simple table"
             sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
           >
@@ -584,15 +543,7 @@ export default function TablaCasos({ type }: IProps) {
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody
-              sx={
-                {
-                  // "& > *": {
-                  //   borderBottom: "none", // elimina la línea divisoria en las celdas
-                  // },
-                }
-              }
-            >
+            <TableBody>
               {visibleRows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -603,9 +554,6 @@ export default function TablaCasos({ type }: IProps) {
                     ".css-1qanp6x-MuiTableCell-root": {
                       borderBottom: "none",
                     },
-
-                    //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
-                    // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
                   }}
                 >
                   <TableCell
@@ -616,7 +564,6 @@ export default function TablaCasos({ type }: IProps) {
                       fontWeight: "400",
                       fontSize: "14px",
                       color: "#070708",
-                      // padding: "24px 16px",
                       padding: "5px 16px",
                     }}
                   >
@@ -629,7 +576,6 @@ export default function TablaCasos({ type }: IProps) {
                       fontWeight: "400",
                       fontSize: "14px",
                       color: "#070708",
-                      // padding: "24px 16px",
                       padding: "5px 16px",
                     }}
                   >
@@ -642,7 +588,6 @@ export default function TablaCasos({ type }: IProps) {
                       fontWeight: "400",
                       fontSize: "14px",
                       color: "#070708",
-                      // padding: "24px 16px",
                       padding: "5px 16px",
                     }}
                   >
@@ -655,7 +600,6 @@ export default function TablaCasos({ type }: IProps) {
                       fontWeight: "400",
                       fontSize: "14px",
                       color: "#070708",
-                      // padding: "24px 16px",
                       padding: "5px 16px",
                     }}
                   >
@@ -668,7 +612,6 @@ export default function TablaCasos({ type }: IProps) {
                       fontWeight: "400",
                       fontSize: "14px",
                       color: "#070708",
-                      // padding: "24px 16px",
                       padding: "5px 16px",
                     }}
                   >
@@ -676,7 +619,6 @@ export default function TablaCasos({ type }: IProps) {
                       bg={badgetStatus[row.estado].color}
                       tipo={badgetStatus[row.estado].name}
                     />
-                    {/* {row.status} */}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -685,7 +627,6 @@ export default function TablaCasos({ type }: IProps) {
                       fontWeight: "400",
                       fontSize: "14px",
                       color: "#070708",
-                      // padding: "24px 16px",
                       padding: "5px 16px",
                     }}
                   >
@@ -698,7 +639,6 @@ export default function TablaCasos({ type }: IProps) {
                       fontWeight: "400",
                       fontSize: "14px",
                       color: "#070708",
-                      // padding: "24px 16px",
                       padding: "5px 16px",
                     }}
                   >
@@ -715,7 +655,6 @@ export default function TablaCasos({ type }: IProps) {
         rowsPerPageOptions={[10, 25, 50]}
         component="div"
         count={rowsTotal}
-        // count={visibleRows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
