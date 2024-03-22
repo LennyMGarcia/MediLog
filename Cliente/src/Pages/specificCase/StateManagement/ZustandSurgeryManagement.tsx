@@ -18,7 +18,7 @@ const useDataSurgeryStore = create<surgerySchemaValues & surgerySchemaActions>((
     motivo: "",
     pacientes: "",
     especialistas: [""],
-    observaciones: [""],
+    observaciones: "",
     estudios: [""],
     instrucciones: [""],
     categoria: "",

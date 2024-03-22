@@ -29,6 +29,9 @@ import profileStyle from "../../../Profile/style/profileStyle.module.css"
 import Swal from "sweetalert2";
 
 import dayjs from "dayjs";
+import SurgeryForm from "../forms/SurgeryForm";
+import useDataSurgeryStore from "../../StateManagement/ZustandSurgeryManagement";
+import yupSurgerySchema from "../../Utils/yup-schema/yupSurgerySchema";
 
 
 
@@ -51,38 +54,65 @@ const Surgery: React.FC = () => {
 
   const navigate = useNavigate();
 
-const [caseInfoModalOpen, setCaseInfoModalOpen] = useState(false);
-const handleCaseInfoModalOpen = () => setCaseInfoModalOpen(true);
-const handleCaseInfoModalClose = () => setCaseInfoModalOpen(false);
+  const { id } = useParams();
 
-const [consultationModalOpen, setConsultationModalOpen] = useState(false);
-const handleConsultationModalOpen = () => setConsultationModalOpen(true);
-const handleConsultationModalClose = () => setConsultationModalOpen(false);
+  const { setSurgeryData, getSurgeryData } = useDataSurgeryStore()
 
-  const initialValues = {
-    tabValue: "one",
-    field1: "",
-    field2: "",
-    field3: "",
-    tipo: "",
-    nombre: '',
-    apellido: '',
-    fecha_nacimiento: '',
-    documento_identidad: '',
-    sexo: '',
-    correo: '',
-    direccion: '',
-    telefono: '',
-    tipo_sangre: '',
-    padecimientos: [''],
-    alergias: [''],
-    familiares: [''],
-    metodo_pago: "Tarjeta de Debito",
-    datos_financieros: '',
+  const [SurgeryModalOpen, setSurgeryModalOpen] = useState(false);
+  const handleSurgeryModalOpen = () => setSurgeryModalOpen(true);
+  const handleSurgeryModalClose = () => setSurgeryModalOpen(false);
+
+  const Surgery= {
+    id: 1,
+    motivo: "Decir hola",
+    pacientes: "Lenny",
+    especialistas: ["Jolge", "Lenny"],
+    observaciones: "Dijo lenny la bestaia",
+    estudios: ["ver si es jhonny", "decir hola"],
+    instrucciones: ["comprar camisa de fuerza", "usarla"],
+    categoria: "Perro",
+    resultado: "Fracaso",
+  }
+
+  interface IfoundSurgery{
+    id: number,
+    motivo: string,
+    pacientes: string,
+    especialistas: string[],
+    observaciones: string,
+    estudios: string[],
+    instrucciones: string[],
+    categoria: string,
+    resultado: string,
+  }
+
+  const [surgeryObj, setsurgeryObj] = useState<IfoundSurgery| undefined>(); // Estado para almacenar el objeto de caso
+
+  useEffect(() => {
+    const SugeryId = Number(id); 
+
+    const foundSurgery: IfoundSurgery| undefined = Surgery.id === SugeryId ? Surgery: undefined;
+    console.log(foundSurgery)
+    setsurgeryObj(foundSurgery);
+
+    if (!foundSurgery) {
+      navigate('/404');
+    }
+  }, [id]);
+
+  const surgeryInitialValues = {
+    motivo: "",
+    pacientes: "",
+    especialistas: [""],
+    observaciones: "",
+    estudios: [""],
+    instrucciones: [""],
+    categoria: "",
+    resultado: "",
   };
 
   return (
-    <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding:"0 0 10rem 0", width: "100vw" }}>
+    <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
       <Box
         sx={{
           backgroundColor: "#fff",
@@ -90,157 +120,158 @@ const handleConsultationModalClose = () => setConsultationModalOpen(false);
           height: "10vh",
           boxShadow: 1,
           padding: "1px",
-          display:'flex',
-          justifyContent:"space-between",
-          alignItems:"center",
-          
+          display: 'flex',
+          justifyContent: "space-between",
+          alignItems: "center",
+
         }}
       >
         <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-            Nombre de la cirugia
+          {surgeryObj && surgeryObj.motivo}
         </Typography>
-        
-        
+
+
       </Box>
-     
-       <Box sx={{width:"90vw", height:"auto",background:"white", margin:"4rem 4rem 0 4rem", padding:"2rem 0 2rem", boxShadow:1}}>
-        
+
+      <Box sx={{ width: "90vw", height: "auto", background: "white", margin: "4rem 4rem 0 4rem", padding: "2rem 0 2rem", boxShadow: 1 }}>
+
         <Box sx={{
-            width:"100%",
-            marginTop: "1rem",
-            display: "flex",
-            justifyContent:"space-between",
-            
-          }}>
-            <Typography variant="h6" sx={{padding:"0 2rem 2rem 2rem"}}>Informacion de la cirugia</Typography>
-            {/*EDITAR*/}
-            {/*{rol === 'Admin' &&*/}
-              <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height:"2rem", backgroundColor: "#52b69a", marginRight:"2rem"  }}>Editar</Button>
-              {/*}*/}
-            <Modal
-              keepMounted
-              open={caseInfoModalOpen}
-              onClose={handleCaseInfoModalClose}
-            >
-              <Box sx={style} >
-                <Box sx={{ width: '100%', typography: 'body1' }}>
-                  <Box sx={{ width: '100%', height: "100%" }}>
-                    <Formik
-                      initialValues={{ initialValues }}
-                      //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
-                      onSubmit={() => console.log("adios")}
-                    >
-                      {({ handleSubmit, isValid }) => (
-                        <Form onSubmit={handleSubmit}>
-                         
-                          <Box sx={{
-                            maxHeight: '60vh',
-                            overflowY: 'scroll',
-                            '&::-webkit-scrollbar': {
-                              width: '0.5em',
-                            },
-                            '&::-webkit-scrollbar-thumb': {
-                              backgroundColor: '#52b69a',
-                              borderRadius: '4px',
-                            },
-                          }}>
-                            <Box>
-                              
-                            </Box>
+          width: "100%",
+          marginTop: "1rem",
+          display: "flex",
+          justifyContent: "space-between",
 
-                            
+        }}>
+          <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion de la consulta</Typography>
+          {/*EDITAR*/}
+          {/*{rol === 'Admin' &&*/}
+          <Button variant="contained" onClick={handleSurgeryModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Editar</Button>
+          {/*}*/}
+          <Modal
+            keepMounted
+            open={SurgeryModalOpen}
+            onClose={handleSurgeryModalClose}
+          >
+            <Box sx={style} >
+              <Box sx={{ width: '100%', typography: 'body1' }}>
+                <Box sx={{ width: '100%', height: "100%" }}>
+                  <Formik
+                    initialValues={{ surgeryInitialValues }}
+                    validationSchema={yupSurgerySchema}
+                    onSubmit={() => console.log("adios")}
+                  >
+                    {({ handleSubmit, isValid }) => (
+                      <Form onSubmit={handleSubmit}>
 
+                        <Box sx={{
+                          maxHeight: '60vh',
+                          overflowY: 'scroll',
+                          '&::-webkit-scrollbar': {
+                            width: '0.5em',
+                          },
+                          '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: '#52b69a',
+                            borderRadius: '4px',
+                          },
+                        }}>
+                          <Box>
+                            {
+                              surgeryObj && <SurgeryForm setOfZustandCallback={setSurgeryData} getOfZustandCallback={getSurgeryData} SurgeryValues={surgeryObj} />
+                            }
                           </Box>
-                          {/*ENVIAR INFORMACION*/}
-                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
-                            fullWidth
-                            variant="contained"
-                            type="submit"
-                            //disabled={!isValid}
-                            onClick={() => {
-                              Swal.fire({
-                                title: '¿Estás seguro?',
-                                text: `Esta acción cambiara todos tus datos`,
-                                icon: 'question',
-                                showCancelButton: true,
-                                confirmButtonColor: '#52b69a',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Aplicar cambios',
-                                cancelButtonText: 'Cancelar',
-                                customClass: {
-                                  container: profileStyle.sweetAlertContainer,
-                                },
-                                allowOutsideClick: () => !Swal.isLoading(),
-                                allowEscapeKey: () => !Swal.isLoading(),
-                                allowEnterKey: () => !Swal.isLoading(),
-                                stopKeydownPropagation: false,
 
-                              }).then((result) => {
-                                if (result.isConfirmed && isValid) {
-                                  //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
-                                  //no se si necesitaras esto asi que lo deje asi
-                                  //editSubmitHandler().then(result => {
-                                    if (result) {
-                                      handleCaseInfoModalClose()
-                                      Swal.fire({
-                                        title: 'Aplicado con exito',
-                                        text: 'Todos los datos han sido editados.',
-                                        icon: 'success',
-                                        customClass: {
-                                          container: profileStyle.sweetAlertContainer,
-                                        }
-                                      });
-                                      //window.location.href = `/pacientes/${idOrName}`;
-                                    } else {
-                                      Swal.fire({
-                                        title: 'No se aplicaron cambios',
-                                        text: 'Acceso Denegado',
-                                        icon: 'warning',
-                                        customClass: {
-                                          container: profileStyle.sweetAlertContainer,
-                                        }
-                                      });
+
+                        </Box>
+                        {/*ENVIAR INFORMACION*/}
+                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                          fullWidth
+                          variant="contained"
+                          type="submit"
+                          //disabled={!isValid}
+                          onClick={() => {
+                            Swal.fire({
+                              title: '¿Estás seguro?',
+                              text: `Esta acción cambiara todos tus datos`,
+                              icon: 'question',
+                              showCancelButton: true,
+                              confirmButtonColor: '#52b69a',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Aplicar cambios',
+                              cancelButtonText: 'Cancelar',
+                              customClass: {
+                                container: profileStyle.sweetAlertContainer,
+                              },
+                              allowOutsideClick: () => !Swal.isLoading(),
+                              allowEscapeKey: () => !Swal.isLoading(),
+                              allowEnterKey: () => !Swal.isLoading(),
+                              stopKeydownPropagation: false,
+
+                            }).then((result) => {
+                              if (result.isConfirmed && isValid) {
+                                //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
+
+                                //no se si necesitaras esto asi que lo deje asi
+                                //editSubmitHandler().then(result => {
+                                if (result) {
+                                  handleSurgeryModalClose()
+                                  Swal.fire({
+                                    title: 'Aplicado con exito',
+                                    text: 'Todos los datos han sido editados.',
+                                    icon: 'success',
+                                    customClass: {
+                                      container: profileStyle.sweetAlertContainer,
                                     }
-                                  //});
-                                }
-                                else if (!isValid) {
+                                  });
+                                  //window.location.href = `/pacientes/${idOrName}`;
+                                } else {
                                   Swal.fire({
                                     title: 'No se aplicaron cambios',
-                                    text: 'Hay datos invalidados dentro del formulario',
+                                    text: 'Acceso Denegado',
                                     icon: 'warning',
                                     customClass: {
                                       container: profileStyle.sweetAlertContainer,
                                     }
                                   });
                                 }
-                              })
-                            }}
-                          >
-                            Aplicar cambios
-                          </Button>
-                        </Form>
-                      )}
-                    </Formik>
-                  </Box>
+                                //});
+                              }
+                              else if (!isValid) {
+                                Swal.fire({
+                                  title: 'No se aplicaron cambios',
+                                  text: 'Hay datos invalidados dentro del formulario',
+                                  icon: 'warning',
+                                  customClass: {
+                                    container: profileStyle.sweetAlertContainer,
+                                  }
+                                });
+                              }
+                            })
+                          }}
+                        >
+                          Aplicar cambios
+                        </Button>
+                      </Form>
+                    )}
+                  </Formik>
                 </Box>
               </Box>
-            </Modal>
-          </Box>
-            <ProfileList dataList={[
-                  { name: "Paciente", data:  'Lenny' },
-                  { name: "Especialista", data: 'Ben Junior', },
-                  { name: "Categoria", data: "activo", },
-                  { name: "Motivo", data: "activo", },
-                  { name: "Estudios", data: <ListFormater formatData={["a", "a"]} /> },
-                  { name: "Observaciones", data: <ListFormater formatData={["a", "a"]} /> },
-                  { name: "Instrucciones", data: <ListFormater formatData={["a", "a"]} /> },
-                  { name: "Resultado", data: "activo", },
-                  
-                ]} />
-            
-       </Box>
-        
+            </Box>
+          </Modal>
+        </Box>
+        <ProfileList dataList={[
+          { name: "Paciente", data: surgeryObj && surgeryObj.pacientes },
+          { name: "Especialista", data: <ListFormater formatData={surgeryObj ? surgeryObj.especialistas : []} />, },
+          { name: "Motivo", data: surgeryObj && surgeryObj.motivo, },
+          { name: "Categoria", data: surgeryObj && surgeryObj.categoria, },
+          { name: "Estudios", data: <ListFormater formatData={surgeryObj ? surgeryObj.estudios : []} />  },
+          { name: "Observaciones", data: surgeryObj && surgeryObj.observaciones },
+          { name: "Instrucciones", data: <ListFormater formatData={surgeryObj ? surgeryObj.instrucciones : []} /> },
+          { name: "Resultado", data: surgeryObj && surgeryObj.resultado, },
+        ]} />
+
+      </Box>
+
     </Box>
   );
 

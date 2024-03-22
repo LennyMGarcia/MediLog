@@ -39,6 +39,8 @@ import useDataCaseStore, { getAllCaseData } from "../StateManagement/ZustandSpec
 import useDataConsultationStore, { getAllConsultationData } from "../StateManagement/ZustandConsultationManagement";
 import { CasesTwoTone } from "@mui/icons-material";
 import yupCaseSchema from "../Utils/yup-schema/yupCaseSchema";
+import yupConsultationSchema from "../Utils/yup-schema/yupConsultatioEschema";
+import yupSurgerySchema from "../Utils/yup-schema/yupSurgerySchema";
 
 
 const style = {
@@ -119,7 +121,6 @@ const SpecificCase: React.FC = () => {
   }*/
 
   const caseInitialValues = {
-    
     descripcion: "",
     pacientes: "",
     especialistas: [""],
@@ -128,6 +129,15 @@ const SpecificCase: React.FC = () => {
     estado: "",
     categoria: "",
     seguimiento: "",
+  };
+
+  const consultationInitialValues = {
+    motivo: '',
+    pacientes: "",
+    especialistas: [""],
+    observaciones:[""],
+    estudios: [""],
+    plan_tratamiento: [""],
   };
 
   //Si es cirugia es otra tablita, tener en cuenta esta parte cuando vaya con los tipos
@@ -351,8 +361,8 @@ const SpecificCase: React.FC = () => {
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
-                    initialValues={caseInitialValues}
-                    //validationSchema={userType == "Paciente" ? mergedPatientSchema : mergedSpecialistSchema}
+                    initialValues={consultationInitialValues}
+                    validationSchema={yupSurgerySchema}
                     onSubmit={() => console.log("adios")}
                   >
                     {({ handleSubmit, isValid }) => (
@@ -369,6 +379,7 @@ const SpecificCase: React.FC = () => {
                             borderRadius: '4px',
                           },
                         }}>
+                          {/**CONSULTATION */}
                           <Box>
                             <ConsultationForm setOfZustandCallback={setConsultationData} getOfZustandCallback={getConsultationData} />
                           </Box>

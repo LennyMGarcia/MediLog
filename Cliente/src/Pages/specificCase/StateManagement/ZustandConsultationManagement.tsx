@@ -19,7 +19,7 @@ const useDataConsultationStore = create<consultationSchemaValues & consultationS
     motivo: "",
     pacientes: "",
     especialistas: [""],
-    observaciones: [""],
+    observaciones: "",
     estudios: [""],
     plan_tratamiento: [""],
     setConsultationData: (name, value, index?) => {

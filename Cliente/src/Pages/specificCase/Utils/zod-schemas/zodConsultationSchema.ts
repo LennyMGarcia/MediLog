@@ -6,7 +6,7 @@ const ConsultationSchema = z.object({
     motivo: z.string(),
     pacientes: z.string(),
     especialistas: z.array(z.string()),
-    observaciones: z.array(z.string()),
+    observaciones: z.string(),
     estudios: z.array(z.string()),
     plan_tratamiento: z.array(z.string()),
 });

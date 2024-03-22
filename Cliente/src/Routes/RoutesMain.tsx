@@ -41,8 +41,8 @@ export default function RoutesMain() {
           />
           <Route path={"/settings/changePlan"} element={<ChangePlan />} />
           <Route path={"/cases/:id"} element={<SpecificCase/>}/>
-          <Route path={"/cases/case/consultation"} element={<Consultation/>}/>
-          <Route path={"/cases/case/surgery"} element={<Surgery/>}/>
+          <Route path={"/cases/consultation/:id"} element={<Consultation/>}/>
+          <Route path={"/cases/surgery/:id"} element={<Surgery/>}/>
         </Route>
         <Route path="*" element={<NotFoundPage/>}/>
 

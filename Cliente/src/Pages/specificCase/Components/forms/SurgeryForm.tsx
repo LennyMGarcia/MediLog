@@ -6,27 +6,30 @@ import SPCaseMultiInput from "../forms-control/SpecificCaseMultiInput";
 import SPCaseInput from "../forms-control/SpecificCaseInput";
 import { Typography } from "@mui/material";
 import { Dayjs } from "dayjs";
+import SPCaseSelect from "../forms-control/SpecificCaseSelect";
 
-interface ConsultationForm<T> {
-    consultationValues?: {
+interface ISurgeryForm<T> {
+    SurgeryValues?: {
         motivo: string,
         pacientes: string,
         especialistas: string[],
         observaciones: string,
         estudios: string[],
-        plan_tratamiento: string[]
+        instrucciones: string[],
+        categoria: string,
+        resultado: string,
     };
     setOfZustandCallback?: (name: string, value: T) => void;
     getOfZustandCallback?: (name: string | Dayjs) => T;
 }
 
-const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallback, getOfZustandCallback, consultationValues }) => {
+const SurgeryForm: React.FC<ISurgeryForm<any>> = ({ setOfZustandCallback, getOfZustandCallback, SurgeryValues }) => {
     return (
         <>
-            <Typography variant="h6">Gestione su consulta</Typography>
+            <Typography variant="h6">Gestione su Cirugia</Typography>
             <Box>
                 <SPCaseInput
-                    initialValue={consultationValues?.motivo}
+                    initialValue={SurgeryValues?.motivo}
                     zustandCallback={setOfZustandCallback}
                     label="Motivo"
                     name="motivo"
@@ -36,7 +39,7 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
 
             <Box>
                 <SPCaseInput
-                    initialValue={consultationValues?.pacientes}
+                    initialValue={SurgeryValues?.pacientes}
                     zustandCallback={setOfZustandCallback}
                     label="Pacientes"
                     name="pacientes"
@@ -46,7 +49,17 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
 
             <Box>
                 <SPCaseInput
-                    initialValue={consultationValues?.observaciones}
+                    initialValue={SurgeryValues?.categoria}
+                    zustandCallback={setOfZustandCallback}
+                    label="Categoria"
+                    name="categoria"
+                    placeholder="Escriba su categoria"
+                />
+            </Box>
+
+            <Box>
+                <SPCaseInput
+                    initialValue={SurgeryValues?.observaciones}
                     zustandCallback={setOfZustandCallback}
                     label="Observaciones"
                     name="observaciones"
@@ -55,8 +68,23 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
             </Box>
 
             <Box>
+                <SPCaseSelect
+                    initialValue={SurgeryValues?.resultado}
+                    setOfZustandCallback={setOfZustandCallback}
+                    getOfZustandCallback={getOfZustandCallback}
+                    label="Resultado"
+                    name="resultado"
+                    selectObject={[
+                        { key: "Exito", value: "Exito" },
+                        { key: "Fracaso", value: "Fracaso" },
+                        { key: "Incompleto", value: "Incompleto" },
+                    ]}
+                />
+            </Box>
+
+            <Box>
                 <SPCaseMultiInput
-                    Values={consultationValues?.especialistas}
+                    Values={SurgeryValues?.especialistas}
                     zustandCallback={setOfZustandCallback}
                     label="Especialistas"
                     name="especialistas"
@@ -67,7 +95,7 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
 
             <Box>
                 <SPCaseMultiInput
-                    Values={consultationValues?.estudios}
+                    Values={SurgeryValues?.estudios}
                     zustandCallback={setOfZustandCallback}
                     label="Estudios"
                     name="estudios"
@@ -77,15 +105,15 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
 
             <Box>
                 <SPCaseMultiInput
-                    Values={consultationValues?.plan_tratamiento}
+                    Values={SurgeryValues?.instrucciones}
                     zustandCallback={setOfZustandCallback}
-                    label="Plan de tratamiento"
-                    name="plan_tratamiento"
-                    placeholder="Escriba su tratamiento"
+                    label="Instruccioness"
+                    name="instrucciones"
+                    placeholder="Escriba su instruccionn"
                 />
             </Box>
         </>
     )
 }
 
-export default ConsultationForm;
+export default SurgeryForm;
