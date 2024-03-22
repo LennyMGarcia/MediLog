@@ -14,6 +14,9 @@ import DeleteAccount from "../Pages/Settings/Components/SettingOptions/DeleteAcc
 import ChangePassword from "../Pages/Settings/Components/SettingOptions/ChangePassword";
 import ChangePlan from "../Pages/Settings/Components/SettingOptions/ChangePlan";
 import NotFoundPage from "../Pages/Error404";
+import SpecificCase from "../Pages/specificCase/Components/SpecificCase";
+import Consultation from "../Pages/specificCase/Components/pages/Consultattion";
+import Surgery from "../Pages/specificCase/Components/pages/surgery";
 
 export default function RoutesMain() {
   return (
@@ -37,6 +40,9 @@ export default function RoutesMain() {
             element={<ChangePassword />}
           />
           <Route path={"/settings/changePlan"} element={<ChangePlan />} />
+          <Route path={"/cases/:id"} element={<SpecificCase/>}/>
+          <Route path={"/cases/consultation/:id"} element={<Consultation/>}/>
+          <Route path={"/cases/surgery/:id"} element={<Surgery/>}/>
         </Route>
         <Route path="*" element={<NotFoundPage/>}/>
 
