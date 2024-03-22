@@ -105,7 +105,6 @@ const SpecificCase: React.FC = () => {
     const caseId = Number(id); // Convertir ID a número
 
     const foundCase: IfoundCase | undefined = Case.id === caseId ? Case : undefined;
-    console.log(foundCase)
     setCaseObj(foundCase);
 
     if (!foundCase) {
@@ -135,7 +134,7 @@ const SpecificCase: React.FC = () => {
     motivo: '',
     pacientes: "",
     especialistas: [""],
-    observaciones:[""],
+    observaciones: [""],
     estudios: [""],
     plan_tratamiento: [""],
   };
@@ -224,6 +223,8 @@ const SpecificCase: React.FC = () => {
                 <Box sx={{ width: '100%', height: "100%" }}>
                   {/*CASE */}
                   <Formik
+                    validateOnMount={false}
+                    validateOnChange={false}
                     initialValues={{ caseInitialValues }}
                     validationSchema={yupCaseSchema}
                     onSubmit={() => console.log("adios")}

@@ -63,7 +63,7 @@ const Consultation: React.FC = () => {
   const handleConsultationModalClose = () => setConsultationModalOpen(false);
 
   const Consultation = {
-    id:1,
+    id: 1,
     motivo: "No comer",
     pacientes: "Lenny",
     especialistas: ["jhon", "josefina"],
@@ -73,7 +73,7 @@ const Consultation: React.FC = () => {
   }
 
   interface IfoundConsultation {
-    id:number,
+    id: number,
     motivo: string,
     pacientes: string,
     especialistas: string[],
@@ -88,7 +88,6 @@ const Consultation: React.FC = () => {
     const consultatioId = Number(id); // Convertir ID a número
 
     const foundConsultation: IfoundConsultation | undefined = Consultation.id === consultatioId ? Consultation : undefined;
-    console.log(foundConsultation)
     setConsultationObj(foundConsultation);
 
     if (!foundConsultation) {
@@ -100,7 +99,7 @@ const Consultation: React.FC = () => {
     motivo: "",
     pacientes: "",
     especialistas: [""],
-    observaciones:"",
+    observaciones: "",
     estudios: [""],
     plan_tratamiento: [""],
   };
@@ -121,7 +120,7 @@ const Consultation: React.FC = () => {
         }}
       >
         <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-        {ConsultationObj && ConsultationObj.motivo}
+          {ConsultationObj && ConsultationObj.motivo}
         </Typography>
 
 
@@ -150,6 +149,8 @@ const Consultation: React.FC = () => {
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
+                    validateOnMount={false}
+                    validateOnChange={false}
                     initialValues={{ consultationInitialValues }}
                     validationSchema={yupConsultationSchema}
                     onSubmit={() => console.log("adios")}
@@ -170,7 +171,7 @@ const Consultation: React.FC = () => {
                         }}>
                           <Box>
                             {
-                            ConsultationObj && <ConsultationForm setOfZustandCallback={setConsultationData} getOfZustandCallback={getConsultationData} consultationValues={ConsultationObj}/>
+                              ConsultationObj && <ConsultationForm setOfZustandCallback={setConsultationData} getOfZustandCallback={getConsultationData} consultationValues={ConsultationObj} />
                             }
                           </Box>
 
@@ -255,9 +256,9 @@ const Consultation: React.FC = () => {
         </Box>
         <ProfileList dataList={[
           { name: "Paciente", data: ConsultationObj && ConsultationObj.pacientes },
-          { name: "Especialista", data: <ListFormater formatData={ConsultationObj ? ConsultationObj.especialistas : []} /> , },
+          { name: "Especialista", data: <ListFormater formatData={ConsultationObj ? ConsultationObj.especialistas : []} />, },
           { name: "Motivo", data: ConsultationObj && ConsultationObj.motivo, },
-          { name: "Estudios", data: <ListFormater formatData={ConsultationObj ? ConsultationObj.estudios : []} />  },
+          { name: "Estudios", data: <ListFormater formatData={ConsultationObj ? ConsultationObj.estudios : []} /> },
           { name: "Observaciones", data: ConsultationObj && ConsultationObj.observaciones },
           { name: "Plan de tratamiento", data: <ListFormater formatData={ConsultationObj ? ConsultationObj.plan_tratamiento : []} /> },
 

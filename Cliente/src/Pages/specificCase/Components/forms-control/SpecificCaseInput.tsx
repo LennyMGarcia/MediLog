@@ -8,6 +8,7 @@ import Box from "@mui/material/Box/Box";
 import { useMediaQuery } from "@mui/material";
 import { getAllCaseData } from "../../StateManagement/ZustandSpecificCaseManagement";
 import { getAllConsultationData } from "../../StateManagement/ZustandConsultationManagement";
+import { getAllSurgeryData } from "../../StateManagement/ZustandSurgeryManagement";
 
 interface InputProps<T> extends Omit<TextFieldProps, "variant"> {
   label?: React.ReactNode;
@@ -31,14 +32,22 @@ const SPCaseInput: React.FC<InputProps<any>> = ({
     const newValue = e.target.value;
     const newValueFormatted: any = newValue.trim();
     setValue(newValue);
-    console.log(getAllCaseData());
+    //console.log(getAllCaseData());
     //console.log(getAllConsultationData())
+    console.log(getAllSurgeryData())
 
     if (zustandCallback != undefined) {
       console.log(name);
       zustandCallback(name, newValueFormatted);
     }
   };
+
+  useEffect(() => {
+    if(zustandCallback != undefined)
+    {
+        zustandCallback(name, initialValue);
+    }
+  }, []);
 
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));

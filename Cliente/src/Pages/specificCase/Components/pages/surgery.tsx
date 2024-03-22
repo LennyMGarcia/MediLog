@@ -92,7 +92,7 @@ const Surgery: React.FC = () => {
     const SugeryId = Number(id); 
 
     const foundSurgery: IfoundSurgery| undefined = Surgery.id === SugeryId ? Surgery: undefined;
-    console.log(foundSurgery)
+
     setsurgeryObj(foundSurgery);
 
     if (!foundSurgery) {
@@ -156,13 +156,15 @@ const Surgery: React.FC = () => {
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
+                    validateOnMount = {false}
+                    validateOnChange = {false}
                     initialValues={{ surgeryInitialValues }}
                     validationSchema={yupSurgerySchema}
                     onSubmit={() => console.log("adios")}
                   >
-                    {({ handleSubmit, isValid }) => (
+                    {({ handleSubmit, isValid  }) => (
                       <Form onSubmit={handleSubmit}>
-
+                        
                         <Box sx={{
                           maxHeight: '60vh',
                           overflowY: 'scroll',
