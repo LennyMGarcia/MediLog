@@ -22,9 +22,6 @@ import { Form, Formik } from "formik";
 import PhoneIcon from '@mui/icons-material/Phone';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
 import PaidIcon from '@mui/icons-material/Paid';
-
-
-
 import profileStyle from "../../../Profile/style/profileStyle.module.css"
 import Swal from "sweetalert2";
 
@@ -32,8 +29,9 @@ import dayjs from "dayjs";
 import ConsultationForm from "../forms/ConsultationForm";
 import useDataConsultationStore from "../../StateManagement/ZustandConsultationManagement";
 import yupConsultationSchema from "../../Utils/yup-schema/yupConsultatioEschema";
+import { useMediaQuery, useTheme } from "@mui/material";
 
-
+//NO QUIERO QUE TE LA PASES LEYENDO COMENTARIOS CUALQUIER COSA VE A SPECIFICASE
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -55,6 +53,9 @@ const Consultation: React.FC = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
+
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
   const { setConsultationData, getConsultationData } = useDataConsultationStore()
 
@@ -110,7 +111,7 @@ const Consultation: React.FC = () => {
         sx={{
           backgroundColor: "#fff",
           width: "100vw",
-          height: "10vh",
+          height: isMediumScreen ? "10vh" : "auto",
           boxShadow: 1,
           padding: "1px",
           display: 'flex',
@@ -119,14 +120,19 @@ const Consultation: React.FC = () => {
 
         }}
       >
-        <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+         {isMediumScreen ? 
+        <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+          {ConsultationObj && ConsultationObj?.motivo}
+        </Typography> 
+        :
+        <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
           {ConsultationObj && ConsultationObj.motivo}
-        </Typography>
+        </Typography> }
 
 
       </Box>
 
-      <Box sx={{ width: "90vw", height: "auto", background: "white", margin: "4rem 4rem 0 4rem", padding: "2rem 0 2rem", boxShadow: 1 }}>
+      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
 
         <Box sx={{
           width: "100%",

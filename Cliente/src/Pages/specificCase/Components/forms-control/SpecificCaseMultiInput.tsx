@@ -29,7 +29,6 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
         const value = e.target.value.trim();
        
         if (zustandCallback != undefined) {
-            console.log(name);
             zustandCallback(name, value, index);
           }
     }, []);

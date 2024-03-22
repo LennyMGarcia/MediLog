@@ -63,39 +63,12 @@ interface IProps {
     motivo: string,
     person: string,
     time:string | Date | Dayjs,
+    categoria:string,
   }[]
 }
 
-//AQUI EL BADGE 
-export const Badge = ({tipo, w, h }: { tipo: string, w?:string, h?:string }) => {
-    return (
-      <Chip
-        sx={{
-          //   marginLeft: "8px",
-          height: h || "24px",
-          width: w || "93px",
-          color: "#FFFFFF",
-          borderRadius: "6px",
-          backgroundColor: tipo == "Activo"? "#28AAE1" 
-                          : tipo == "Inactivo" ? "#8EBF43"
-                          : tipo == "Suspendido" ? "#E30000"
-                          : tipo == "En proceso" ? "#E5D540"
-                          : "none",
-          "& .MuiChip-label": {
-            display: "block",
-            whiteSpace: "pre",
-            fontFamily: "Arial",
-            fontSize: "12px",
-            fontWeight: "700",
-            lineHeight: "20px",
-          },
-        }}
-        label={tipo}
-      />
-    );
-  };
 
-export default function ConsultationTable({ type, dataObject }: IProps) {
+export default function SurgeryTable({ type, dataObject }: IProps) {
   // const data = ["1", "2"];
   const data =  dataObject
   const isDoctor = true;
@@ -525,6 +498,17 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                   Fecha
                 </TableCell>
                
+                <TableCell
+                  sx={{
+                    fontFamily: "Arial",
+                    fontWeight: "700",
+                    fontSize: "14px",
+                    color: "#939497",
+                  }}
+                  align="left"
+                >
+                  categoria
+                </TableCell>
                 
                 <TableCell
                   sx={{
@@ -615,6 +599,20 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                     }}
                   >
                     {row.time}
+                  </TableCell>
+
+                  <TableCell
+                    align="left"
+                    sx={{
+                      fontFamily: "Arial",
+                      fontWeight: "400",
+                      fontSize: "14px",
+                      color: "#070708",
+                      // padding: "24px 16px",
+                      padding: "5px 16px",
+                    }}
+                  >
+                    {row.categoria}
                   </TableCell>
                  
                   <TableCell

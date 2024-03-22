@@ -34,7 +34,7 @@ const SPCaseInput: React.FC<InputProps<any>> = ({
     setValue(newValue);
     //console.log(getAllCaseData());
     //console.log(getAllConsultationData())
-    console.log(getAllSurgeryData())
+    //console.log(getAllSurgeryData())
 
     if (zustandCallback != undefined) {
       console.log(name);

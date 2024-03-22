@@ -41,6 +41,8 @@ import { CasesTwoTone } from "@mui/icons-material";
 import yupCaseSchema from "../Utils/yup-schema/yupCaseSchema";
 import yupConsultationSchema from "../Utils/yup-schema/yupConsultatioEschema";
 import yupSurgerySchema from "../Utils/yup-schema/yupSurgerySchema";
+import SurgeryTable from "./Tables/SurgeryTable";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 
 const style = {
@@ -57,10 +59,20 @@ const style = {
 };
 
 
+//NO SE SI IBAS  A REUTILIZAR CODIGO ASI QUE NO BORRE MUCHAS COSAS
 
+//  LOS CONSOLE LOGS ESTAN EL FORMS-CONTROL EN EL INPUT, ASI LO VES MIENTRAS ESCRIBES SI LO QUIERES ASI
+
+//LOS ZUSTANDS CALLBACKS SON EN ESENCIA TODOS LOS MISMOS Y TE ACEPTAN CUALQUIER COSA
+//SI VES QUE SE PASA UN OBJETO A UN FORMS ES PARA LOS VALORES INICIALES
+
+//VERAS QUE TODO ESTO ES ALGO QUE YA HAS VISTO, LO DE JULIO NO LO HE TOCADO MUCHO, SOLO PASE EL OBJETO HACIA ACA Y CAMBIE CAMPOS
 const SpecificCase: React.FC = () => {
 
   const { id } = useParams();
+
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
   const { setCaseData, getCaseData } = useDataCaseStore()
   const { setConsultationData, getConsultationData } = useDataConsultationStore()
@@ -83,7 +95,7 @@ const SpecificCase: React.FC = () => {
     consultas: [],
     cirugias: [],
     estado: "Activo",
-    categoria: "Sida",
+    categoria: "Cirugia",
     seguimiento: "no hay seguimiento",
   }
 
@@ -98,11 +110,12 @@ const SpecificCase: React.FC = () => {
     categoria: string;
     seguimiento: string;
   }
+  // Estado para almacenar el objeto de caso
+  const [CaseObj, setCaseObj] = useState<IfoundCase | undefined>(); 
 
-  const [CaseObj, setCaseObj] = useState<IfoundCase | undefined>(); // Estado para almacenar el objeto de caso
-
+  //Sirve para encontrar el objeto a traves el id puesto en la url
   useEffect(() => {
-    const caseId = Number(id); // Convertir ID a número
+    const caseId = Number(id); // 
 
     const foundCase: IfoundCase | undefined = Case.id === caseId ? Case : undefined;
     setCaseObj(foundCase);
@@ -112,13 +125,7 @@ const SpecificCase: React.FC = () => {
     }
   }, [id]);
 
-
-
-
-  /*if (!CaseObj) {
-    return <div>cargando</div>;
-  }*/
-
+  
   const caseInitialValues = {
     descripcion: "",
     pacientes: "",
@@ -139,8 +146,10 @@ const SpecificCase: React.FC = () => {
     plan_tratamiento: [""],
   };
 
-  //Si es cirugia es otra tablita, tener en cuenta esta parte cuando vaya con los tipos
-  const tableData = [
+  //Estos dos arrays de objetos es para la info de las tablas, Preferi hacerlo aqui porque puedes
+  //manejar las dos al mismo tiempo y mas si necesitas condicionales, no se como lo ibas  a hacer
+  //y por eso no cree una mejor estructura que dos simples arrays
+  const consultationTableData = [
     {
       id: 1,
       motivo: "Consulta de rutina",
@@ -172,6 +181,38 @@ const SpecificCase: React.FC = () => {
 
   ];
 
+  const surgeryTableData = [
+    {
+      id: 1,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      categoria:"ginecologo"
+    },
+    {
+      id: 2,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      categoria:"ginecologo"
+    },
+    {
+      id: 3,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      categoria:"ginecologo"
+    },
+    {
+      id: 4,
+      motivo: "Consulta de rutina",
+      person: "Juan Pérez",
+      time: "2024-03-11T09:00:00",
+      categoria:"ginecologo"
+    },
+
+  ];
+
 
 
   return (
@@ -180,7 +221,7 @@ const SpecificCase: React.FC = () => {
         sx={{
           backgroundColor: "#fff",
           width: "100vw",
-          height: "10vh",
+          height: isMediumScreen ? "10vh" : "auto",
           boxShadow: 1,
           padding: "1px",
           display: 'flex',
@@ -189,17 +230,23 @@ const SpecificCase: React.FC = () => {
 
         }}
       >
-        <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+       {isMediumScreen ? 
+        <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
           {CaseObj && CaseObj.descripcion}
-        </Typography>
+        </Typography> 
+        :
+        <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+          {CaseObj && CaseObj.descripcion}
+        </Typography> }
+
         <Box sx={{ marginRight: "3rem" }}>
-          {/*Cambia el color de la etiqueta, esta en consultaation table si se necesita edicion de este */}
-          <Badge tipo={CaseObj ? CaseObj.estado : ""} w={"8rem"} h={"2.5rem"} />
+          {/*Cambia el color de la etiqueta, esta en consultationTable si se necesita edicion de este */}
+          <Badge tipo={CaseObj ? CaseObj.estado : ""} w={isMediumScreen ? "8rem" : "4rem"} h={ isMediumScreen ?"2.5rem" :"2rem"} />
         </Box>
 
       </Box>
 
-      <Box sx={{ width: "90vw", height: "auto", background: "white", margin: "4rem 4rem 0 4rem", padding: "2rem 0 2rem", boxShadow: 1 }}>
+      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
 
         <Box sx={{
           width: "100%",
@@ -224,7 +271,7 @@ const SpecificCase: React.FC = () => {
                   {/*CASE */}
                   <Formik
                     validateOnMount={false}
-                    validateOnChange={false}
+                    validateOnChange={false} //Estos dos resuelven el bug de cambiar algo que se supone que no debe
                     initialValues={{ caseInitialValues }}
                     validationSchema={yupCaseSchema}
                     onSubmit={() => console.log("adios")}
@@ -340,7 +387,7 @@ const SpecificCase: React.FC = () => {
 
       </Box>
 
-      <Box sx={{ width: "90vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: "1rem 4rem 0 4rem", boxShadow: 1 }}>
+      <Box sx={{ width:  isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1 }}>
         <Box sx={{
           width: "100%",
           marginTop: "1rem",
@@ -465,7 +512,11 @@ const SpecificCase: React.FC = () => {
           </Modal>
         </Box>
 
-        <ConsultationTable type={"all"} dataObject={tableData} />
+        {CaseObj?.categoria == "Consulta" ?<ConsultationTable type={"all"} dataObject={consultationTableData} />
+        :
+        CaseObj?.categoria == "Cirugia" ?<SurgeryTable type={"all"} dataObject={surgeryTableData}></SurgeryTable> 
+         : 
+         <div>Ninguna tabla coincide con la categoria</div>}
       </Box>
 
 
