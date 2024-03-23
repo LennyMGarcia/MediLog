@@ -25,11 +25,15 @@ import PaidIcon from '@mui/icons-material/Paid';
 import { useMediaQuery, useTheme } from "@mui/material";
 import profileStyle from "../../../Profile/style/profileStyle.module.css"
 import Swal from "sweetalert2";
+import { Badge } from "../Tables/consultationTable";
 
 import dayjs from "dayjs";
 import SurgeryForm from "../forms/SurgeryForm";
-import useDataSurgeryStore from "../../StateManagement/ZustandSurgeryManagement";
+import useDataSurgeryStore, { getAllSurgeryData } from "../../StateManagement/ZustandSurgeryManagement";
 import yupSurgerySchema from "../../Utils/yup-schema/yupSurgerySchema";
+import axios from "axios";
+import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
+import useUserStore from "../../../../Common/Utils/setUserSession";
 
 //NO QUIERO QUE TE LA PASES LEYENDO COMENTARIOS CUALQUIER COSA VE A SPECIFICASE
 
@@ -50,9 +54,25 @@ const style = {
 
 const Surgery: React.FC = () => {
 
+  interface IfoundSurgery {
+    id: number,
+    motivo: string,
+    paciente: string,
+    especialistas: string[],
+    especialistas_id: string | number,
+    observaciones: string,
+    estudios: string[],
+    instrucciones: string[],
+    categoria: string,
+    resultado: string,
+  }
+
+  const { authenticated } = useUserStore();
+  const { getUser } = useUserStore();
   const navigate = useNavigate();
 
   const { id } = useParams();
+  const user_id = authenticated() ? getUser().member_id : null;
 
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
@@ -62,8 +82,9 @@ const Surgery: React.FC = () => {
   const [SurgeryModalOpen, setSurgeryModalOpen] = useState(false);
   const handleSurgeryModalOpen = () => setSurgeryModalOpen(true);
   const handleSurgeryModalClose = () => setSurgeryModalOpen(false);
+  const [surgeryObj, setsurgeryObj] = useState<IfoundSurgery | undefined>(); // Estado para almacenar el objeto de caso
 
-  const Surgery= {
+  /*onst Surgery = {
     id: 1,
     motivo: "Decir hola",
     pacientes: "Lenny",
@@ -73,28 +94,73 @@ const Surgery: React.FC = () => {
     instrucciones: ["comprar camisa de fuerza", "usarla"],
     categoria: "Perro",
     resultado: "Fracaso",
+  }*/
+  //Funccion que se encarga de buscar el record en la base de datos
+  const getRecordFromDB = async (id: number | string | any, table: string) => {
+    const result = await axios.get(getBackendConnectionString(`${table}/${id}`)
+    ).then(response => {
+      if (response.status === 200 || response.status === 201) {
+        return response.data;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
   }
 
-  interface IfoundSurgery{
-    id: number,
-    motivo: string,
-    pacientes: string,
-    especialistas: string[],
-    observaciones: string,
-    estudios: string[],
-    instrucciones: string[],
-    categoria: string,
-    resultado: string,
+  //Funccion que se encarga de buscar el record en la base de datos
+  const editRecordFromDB = async (id: number | string | any, data: any) => {
+    const result = await axios.put(getBackendConnectionString(`cirugias/${id}`), data,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(response => {
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        return true;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
   }
 
-  const [surgeryObj, setsurgeryObj] = useState<IfoundSurgery| undefined>(); // Estado para almacenar el objeto de caso
+  //Funccion que se modificar record a la base de datos
+  const editSubmitHandler = async () => {
+
+    const data = getAllSurgeryData();
+    const payload = {
+      motivo: data.motivo,
+      especialistas_id: data.especialistas_id || user_id,
+      categoria: data.categoria,
+      observaciones: data.observaciones,
+      resultado: data.resultado,
+      estudios: data.estudios && JSON.stringify(data.estudios),
+      instrucciones: data.instrucciones && JSON.stringify(data.instrucciones)
+    }
+    const result = await editRecordFromDB(id, payload);
+    return result;
+
+  }
+
 
   useEffect(() => {
-    const SugeryId = Number(id); 
+    const SugeryId = Number(id);
 
-    const foundSurgery: IfoundSurgery| undefined = Surgery.id === SugeryId ? Surgery: undefined;
-
-    setsurgeryObj(foundSurgery);
+    //const foundSurgery: IfoundSurgery | undefined = Surgery.id === SugeryId ? Surgery : undefined;
+    const foundSurgery: IfoundSurgery | undefined | Promise<any> = getRecordFromDB(SugeryId, 'cirugias').then(result => {
+      if (!result) return undefined;
+      console.log(result)
+      setsurgeryObj(result);
+    });
 
     if (!foundSurgery) {
       navigate('/404');
@@ -103,7 +169,7 @@ const Surgery: React.FC = () => {
 
   const surgeryInitialValues = {
     motivo: "",
-    pacientes: "",
+    paciente: "",
     especialistas: [""],
     observaciones: "",
     estudios: [""],
@@ -127,15 +193,18 @@ const Surgery: React.FC = () => {
 
         }}
       >
-         {isMediumScreen ? 
-        <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-          {surgeryObj && surgeryObj?.motivo}
-        </Typography> 
-        :
-        <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-          {surgeryObj && surgeryObj.motivo}
-        </Typography> }
-
+        {isMediumScreen ?
+          <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            {surgeryObj && surgeryObj?.motivo}
+          </Typography>
+          :
+          <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            {surgeryObj && surgeryObj.motivo}
+          </Typography>}
+        <Box sx={{ marginRight: "3rem" }}>
+          {/*Cambia el color de la etiqueta, esta en consultationTable si se necesita edicion de este */}
+          <Badge tipo={surgeryObj ? surgeryObj?.resultado : ""} w={isMediumScreen ? "8rem" : "4rem"} h={isMediumScreen ? "2.5rem" : "2rem"} />
+        </Box>
 
       </Box>
 
@@ -162,15 +231,15 @@ const Surgery: React.FC = () => {
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
-                    validateOnMount = {false}
-                    validateOnChange = {false}
+                    validateOnMount={false}
+                    validateOnChange={false}
                     initialValues={{ surgeryInitialValues }}
                     validationSchema={yupSurgerySchema}
                     onSubmit={() => console.log("adios")}
                   >
-                    {({ handleSubmit, isValid  }) => (
+                    {({ handleSubmit, isValid }) => (
                       <Form onSubmit={handleSubmit}>
-                        
+
                         <Box sx={{
                           maxHeight: '60vh',
                           overflowY: 'scroll',
@@ -220,29 +289,29 @@ const Surgery: React.FC = () => {
                                 //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
                                 //no se si necesitaras esto asi que lo deje asi
-                                //editSubmitHandler().then(result => {
-                                if (result) {
-                                  handleSurgeryModalClose()
-                                  Swal.fire({
-                                    title: 'Aplicado con exito',
-                                    text: 'Todos los datos han sido editados.',
-                                    icon: 'success',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                  //window.location.href = `/pacientes/${idOrName}`;
-                                } else {
-                                  Swal.fire({
-                                    title: 'No se aplicaron cambios',
-                                    text: 'Acceso Denegado',
-                                    icon: 'warning',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                }
-                                //});
+                                editSubmitHandler().then(result => {
+                                  if (result) {
+                                    handleSurgeryModalClose()
+                                    Swal.fire({
+                                      title: 'Aplicado con exito',
+                                      text: 'Todos los datos han sido editados.',
+                                      icon: 'success',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                    window.location.reload();
+                                  } else {
+                                    Swal.fire({
+                                      title: 'No se aplicaron cambios',
+                                      text: 'Acceso Denegado',
+                                      icon: 'warning',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                  }
+                                });
                               }
                               else if (!isValid) {
                                 Swal.fire({
@@ -268,11 +337,11 @@ const Surgery: React.FC = () => {
           </Modal>
         </Box>
         <ProfileList dataList={[
-          { name: "Paciente", data: surgeryObj && surgeryObj.pacientes },
+          { name: "Paciente", data: surgeryObj && surgeryObj.paciente },
           { name: "Especialista", data: <ListFormater formatData={surgeryObj ? surgeryObj.especialistas : []} />, },
           { name: "Motivo", data: surgeryObj && surgeryObj.motivo, },
           { name: "Categoria", data: surgeryObj && surgeryObj.categoria, },
-          { name: "Estudios", data: <ListFormater formatData={surgeryObj ? surgeryObj.estudios : []} />  },
+          { name: "Estudios", data: <ListFormater formatData={surgeryObj ? surgeryObj.estudios : []} /> },
           { name: "Observaciones", data: surgeryObj && surgeryObj.observaciones },
           { name: "Instrucciones", data: <ListFormater formatData={surgeryObj ? surgeryObj.instrucciones : []} /> },
           { name: "Resultado", data: surgeryObj && surgeryObj.resultado, },

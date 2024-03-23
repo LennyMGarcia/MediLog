@@ -22,25 +22,6 @@ import CaseTableMenu from "./ConsultationMenu";
 import ConsultationMenu from "./ConsultationMenu";
 
 
-
-type IPropsDoctor = {
-  id: number;
-  descripcion: string;
-  paciente: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
-
-type IPropsPatient = {
-  id: number;
-  descripcion: string;
-  doctor: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
-
 type IPropsData = {
   id: number;
   descripcion: string;
@@ -58,20 +39,19 @@ interface IArray {
 
 interface IProps {
   type: "all" | "open" | "close" | "process" | "pending";
-  dataObject:{ //Aqui es como se pasan el objeto de specificCase
+  dataObject: { //Aqui es como se pasan el objeto de specificCase
     id: number,
     motivo: string,
-    person: string,
-    time:string | Date | Dayjs,
-    categoria:string,
+    especialista: string,
+    fecha: string | Date | Dayjs,
+    categoria: string,
   }[]
 }
 
 
 export default function SurgeryTable({ type, dataObject }: IProps) {
   // const data = ["1", "2"];
-  const data =  dataObject
-  const isDoctor = true;
+  const data = dataObject
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -83,7 +63,6 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
   // dayjs().format("DD/MM/YYYY")
 
   const rows = data;
-
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
   };
@@ -95,26 +74,8 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
     setPage(0);
   };
 
-  const badgetStatus: Record<string, any> = {
-    close: {
-      name: "Cerrados",
-      color: "#8EBF43",
-    },
-    open: {
-      name: "Abierto",
-      color: "#28AAE1",
-    },
-    pending: {
-      name: "Suspendido",
-      color: "#E30000",
-    },
-    process: {
-      name: "En Proceso",
-      color: "#E5D540",
-    },
-  };
 
-  
+
 
   function stableSort(array: any[]) {
     const stabilized = array;
@@ -193,9 +154,9 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
               fontSize: "14px",
               width: "300px",
               ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#CDCECF",
-                },
+              {
+                borderColor: "#CDCECF",
+              },
               ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
                 color: "#68696B",
               },
@@ -278,13 +239,13 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 format="DD/MM/YYYY"
                 onChange={(newValue: any) => {
@@ -366,13 +327,13 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 disableFuture
                 onChange={(newValue: any) => {
@@ -497,7 +458,7 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                 >
                   Fecha
                 </TableCell>
-               
+
                 <TableCell
                   sx={{
                     fontFamily: "Arial",
@@ -509,7 +470,7 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                 >
                   categoria
                 </TableCell>
-                
+
                 <TableCell
                   sx={{
                     fontFamily: "Arial",
@@ -585,7 +546,7 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.person}
+                    {row.especialista}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -598,7 +559,7 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.time}
+                    {row.fecha}
                   </TableCell>
 
                   <TableCell
@@ -614,7 +575,7 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                   >
                     {row.categoria}
                   </TableCell>
-                 
+
                   <TableCell
                     align="left"
                     sx={{
@@ -636,7 +597,7 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
       </TableContainer>
 
       <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         component="div"
         count={rowsTotal}
         // count={visibleRows.length}
@@ -657,3 +618,41 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
     </>
   );
 }
+
+/* const badgetStatus: Record<string, any> = {
+     close: {
+       name: "Cerrados",
+       color: "#8EBF43",
+     },
+     open: {
+       name: "Abierto",
+       color: "#28AAE1",
+     },
+     pending: {
+       name: "Suspendido",
+       color: "#E30000",
+     },
+     process: {
+       name: "En Proceso",
+       color: "#E5D540",
+     },
+   };
+ */
+
+/*type IPropsDoctor = {
+  id: number;
+  descripcion: string;
+  paciente: string;
+  time: string;
+  estado: string;
+  categoria: number;
+};
+
+type IPropsPatient = {
+  id: number;
+  descripcion: string;
+  doctor: string;
+  time: string;
+  estado: string;
+  categoria: number;
+};*/

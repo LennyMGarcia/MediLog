@@ -86,16 +86,16 @@ export default function TabsTable() {
         <TablaCasos type="all" />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <TablaCasos type="open" />
+        <TablaCasos type="Activo" />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <TablaCasos type="process" />
+        <TablaCasos type="Proceso" />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <TablaCasos type="close" />
+        <TablaCasos type="Inactivo" />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
-        <TablaCasos type="pending" />
+        <TablaCasos type="Suspendido" />
       </CustomTabPanel>
     </Box>
   );

@@ -27,10 +27,12 @@ import Swal from "sweetalert2";
 
 import dayjs from "dayjs";
 import ConsultationForm from "../forms/ConsultationForm";
-import useDataConsultationStore from "../../StateManagement/ZustandConsultationManagement";
+import useDataConsultationStore, { getAllConsultationData } from "../../StateManagement/ZustandConsultationManagement";
 import yupConsultationSchema from "../../Utils/yup-schema/yupConsultatioEschema";
 import { useMediaQuery, useTheme } from "@mui/material";
-
+import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
+import useUserStore from "../../../../Common/Utils/setUserSession";
+import axios from "axios";
 //NO QUIERO QUE TE LA PASES LEYENDO COMENTARIOS CUALQUIER COSA VE A SPECIFICASE
 
 const style = {
@@ -46,13 +48,23 @@ const style = {
   p: 4,
 };
 
-
-
 const Consultation: React.FC = () => {
 
-  const navigate = useNavigate();
+  interface IfoundConsultation {
+    id: number,
+    motivo: string,
+    paciente: string,
+    especialistas: string[],
+    observaciones: string,
+    estudios: string[],
+    plan_tratamiento: string[]
+  }
 
+  const navigate = useNavigate();
+  const { authenticated } = useUserStore();
+  const { getUser } = useUserStore();
   const { id } = useParams();
+  const user_id = authenticated() ? getUser().member_id : null;
 
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
@@ -62,34 +74,72 @@ const Consultation: React.FC = () => {
   const [consultationModalOpen, setConsultationModalOpen] = useState(false);
   const handleConsultationModalOpen = () => setConsultationModalOpen(true);
   const handleConsultationModalClose = () => setConsultationModalOpen(false);
-
-  const Consultation = {
-    id: 1,
-    motivo: "No comer",
-    pacientes: "Lenny",
-    especialistas: ["jhon", "josefina"],
-    observaciones: "ninguna",
-    estudios: ["Tentar", "Arropar"],
-    plan_tratamiento: ["Comer", "dormir"]
-  }
-
-  interface IfoundConsultation {
-    id: number,
-    motivo: string,
-    pacientes: string,
-    especialistas: string[],
-    observaciones: string,
-    estudios: string[],
-    plan_tratamiento: string[]
-  }
-
   const [ConsultationObj, setConsultationObj] = useState<IfoundConsultation | undefined>(); // Estado para almacenar el objeto de caso
+
+  //Funccion que se encarga de buscar el record en la base de datos
+  const getRecordFromDB = async (id: number | string | any, table: string) => {
+    const result = await axios.get(getBackendConnectionString(`${table}/${id}`)
+    ).then(response => {
+      if (response.status === 200 || response.status === 201) {
+        return response.data;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
+  }
+
+  //Funccion que se encarga de buscar el record en la base de datos
+  const editRecordFromDB = async (id: number | string | any, data: any) => {
+    const result = await axios.put(getBackendConnectionString(`consultas/${id}`), data,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(response => {
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        return true;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
+  }
+
+  //Funccion que se modificar record a la base de datos
+  const editSubmitHandler = async () => {
+
+    const data = getAllConsultationData();
+    const payload = {
+      motivo: data.motivo,
+      especialistas_id: data.especialistas_id || user_id,
+      observaciones: data.observaciones,
+      estudios: data.estudios && JSON.stringify(data.estudios),
+      plan_tratamiento: data.plan_tratamiento && JSON.stringify(data.plan_tratamiento)
+    }
+    console.log(payload)
+    const result = await editRecordFromDB(id, payload);
+    return result;
+
+  }
 
   useEffect(() => {
     const consultatioId = Number(id); // Convertir ID a número
 
-    const foundConsultation: IfoundConsultation | undefined = Consultation.id === consultatioId ? Consultation : undefined;
-    setConsultationObj(foundConsultation);
+    // const foundConsultation: IfoundConsultation | undefined = Consultation.id === consultatioId ? Consultation : undefined;
+    const foundConsultation: IfoundConsultation | undefined | Promise<any> = getRecordFromDB(consultatioId, 'consultas').then(result => {
+      if (!result) return undefined;
+      console.log(result)
+      setConsultationObj(result)
+    });
 
     if (!foundConsultation) {
       navigate('/404');
@@ -120,14 +170,14 @@ const Consultation: React.FC = () => {
 
         }}
       >
-         {isMediumScreen ? 
-        <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-          {ConsultationObj && ConsultationObj?.motivo}
-        </Typography> 
-        :
-        <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-          {ConsultationObj && ConsultationObj.motivo}
-        </Typography> }
+        {isMediumScreen ?
+          <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            {ConsultationObj && ConsultationObj?.motivo}
+          </Typography>
+          :
+          <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            {ConsultationObj && ConsultationObj.motivo}
+          </Typography>}
 
 
       </Box>
@@ -213,29 +263,29 @@ const Consultation: React.FC = () => {
                                 //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
                                 //no se si necesitaras esto asi que lo deje asi
-                                //editSubmitHandler().then(result => {
-                                if (result) {
-                                  handleConsultationModalClose()
-                                  Swal.fire({
-                                    title: 'Aplicado con exito',
-                                    text: 'Todos los datos han sido editados.',
-                                    icon: 'success',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                  //window.location.href = `/pacientes/${idOrName}`;
-                                } else {
-                                  Swal.fire({
-                                    title: 'No se aplicaron cambios',
-                                    text: 'Acceso Denegado',
-                                    icon: 'warning',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                }
-                                //});
+                                editSubmitHandler().then(result => {
+                                  if (result) {
+                                    handleConsultationModalClose()
+                                    Swal.fire({
+                                      title: 'Aplicado con exito',
+                                      text: 'Todos los datos han sido editados.',
+                                      icon: 'success',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                    window.location.reload();
+                                  } else {
+                                    Swal.fire({
+                                      title: 'No se aplicaron cambios',
+                                      text: 'Acceso Denegado',
+                                      icon: 'warning',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                  }
+                                });
                               }
                               else if (!isValid) {
                                 Swal.fire({
@@ -261,7 +311,7 @@ const Consultation: React.FC = () => {
           </Modal>
         </Box>
         <ProfileList dataList={[
-          { name: "Paciente", data: ConsultationObj && ConsultationObj.pacientes },
+          { name: "Paciente", data: ConsultationObj && ConsultationObj.paciente },
           { name: "Especialista", data: <ListFormater formatData={ConsultationObj ? ConsultationObj.especialistas : []} />, },
           { name: "Motivo", data: ConsultationObj && ConsultationObj.motivo, },
           { name: "Estudios", data: <ListFormater formatData={ConsultationObj ? ConsultationObj.estudios : []} /> },
@@ -278,3 +328,13 @@ const Consultation: React.FC = () => {
 };
 
 export default Consultation;
+
+/*const Consultation = {
+    id: 1,
+    motivo: "No comer",
+    pacientes: "Lenny",
+    especialistas: ["jhon", "josefina"],
+    observaciones: "ninguna",
+    estudios: ["Tentar", "Arropar"],
+    plan_tratamiento: ["Comer", "dormir"]
+  }*/

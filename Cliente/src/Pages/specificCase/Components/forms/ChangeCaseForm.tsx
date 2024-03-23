@@ -11,8 +11,9 @@ import { Dayjs } from "dayjs";
 interface ChangeCaseForm<T> {
     caseValues?: {
         descripcion: string,
-        pacientes: string,
-        especialistas: string[],
+        paciente: string,
+        especialistas: number[],
+        especialistas_id: string | number,
         consultas: string[],
         cirugias: string[],
         estado: string,
@@ -69,15 +70,30 @@ const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ caseValues, setOfZustand
 
             <Box>
                 <SPCaseInput
-                    initialValue={caseValues?.pacientes}
+                    initialValue={caseValues?.paciente}
                     zustandCallback={setOfZustandCallback}
                     label="Pacientes"
                     name="pacientes"
                     placeholder="Escriba su paciente"
                 />
             </Box>
-
             <Box>
+                <SPCaseInput
+                    initialValue={caseValues?.especialistas_id}
+                    zustandCallback={setOfZustandCallback}
+                    label="Especialista"
+                    name="especialistas_id"
+                    placeholder="Escriba su paciente"
+                />
+            </Box>
+
+        </>
+    )
+}
+
+export default ChageCaseForm;
+
+/** <Box>
                 <SPCaseMultiInput
                     Values={caseValues?.especialistas}
                     zustandCallback={setOfZustandCallback}
@@ -86,9 +102,4 @@ const ChageCaseForm: React.FC<ChangeCaseForm<any>> = ({ caseValues, setOfZustand
                     placeholder="Escriba su especialista"
                     canFistElementDelete={false}
                 />
-            </Box>
-        </>
-    )
-}
-
-export default ChageCaseForm;
+            </Box> */

@@ -11,8 +11,9 @@ import SPCaseSelect from "../forms-control/SpecificCaseSelect";
 interface ISurgeryForm<T> {
     SurgeryValues?: {
         motivo: string,
-        pacientes: string,
+        paciente: string,
         especialistas: string[],
+        especialistas_id: string,
         observaciones: string,
         estudios: string[],
         instrucciones: string[],
@@ -39,10 +40,10 @@ const SurgeryForm: React.FC<ISurgeryForm<any>> = ({ setOfZustandCallback, getOfZ
 
             <Box>
                 <SPCaseInput
-                    initialValue={SurgeryValues?.pacientes}
+                    initialValue={SurgeryValues?.paciente}
                     zustandCallback={setOfZustandCallback}
                     label="Pacientes"
-                    name="pacientes"
+                    name="paciente"
                     placeholder="Escriba su paciente"
                 />
             </Box>
@@ -81,15 +82,13 @@ const SurgeryForm: React.FC<ISurgeryForm<any>> = ({ setOfZustandCallback, getOfZ
                     ]}
                 />
             </Box>
-
             <Box>
-                <SPCaseMultiInput
-                    Values={SurgeryValues?.especialistas}
+                <SPCaseInput
+                    initialValue={SurgeryValues?.especialistas_id}
                     zustandCallback={setOfZustandCallback}
-                    label="Especialistas"
-                    name="especialistas"
-                    placeholder="Escriba su especialista"
-                    canFistElementDelete={false}
+                    label="Especialista"
+                    name="especialistas_id"
+                    placeholder="Escriba su categoria"
                 />
             </Box>
 
@@ -117,3 +116,14 @@ const SurgeryForm: React.FC<ISurgeryForm<any>> = ({ setOfZustandCallback, getOfZ
 }
 
 export default SurgeryForm;
+
+/**<Box>
+                <SPCaseMultiInput
+                    Values={SurgeryValues?.especialistas}
+                    zustandCallback={setOfZustandCallback}
+                    label="Especialistas"
+                    name="especialistas"
+                    placeholder="Escriba su especialista"
+                    canFistElementDelete={false}
+                />
+            </Box> */

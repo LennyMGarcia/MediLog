@@ -46,17 +46,21 @@ class Consulta extends Model {
         try {
             this.data = data;
             this.values = [
-                this.data.pacientes_id,
                 this.data.especialistas_id,
                 this.data.motivo,
                 this.data.estudios || null,
                 this.data.observaciones || null,
                 this.data.plan_tratamiento || null,
-                this.data.visibilidad || true,
-                this.data.eliminado || false,
+            ];
+            const edit_colums = [
+                'especialistas_id',
+                'motivo',
+                'estudios',
+                'observaciones',
+                'plan_tratamiento',
             ];
             const query = new Builder(this.table);
-            const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values)
+            const [results, fields] = await DB.execute(query.update_query(edit_colums, this.values, id), this.values)
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];

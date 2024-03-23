@@ -9,6 +9,8 @@ import Paper from "@mui/material/Paper";
 import { Box, Chip, TablePagination } from "@mui/material";
 import { useMemo, useState, useEffect } from "react";
 import useUserStore from "../../../Common/Utils/setUserSession";
+import { Link } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 type IPropsData = {
   id: number;
@@ -20,12 +22,12 @@ type IPropsData = {
 };
 
 export default function ShortTable() {
+  const navigate = useNavigate()
   const casos = useUserStore((state) => state.casos);
   const { autopopulate } = useUserStore();
   const { getUser } = useUserStore();
 
   const [data, setData] = useState(casos);
-  const [logged, setLogged] = useState(true);
 
   useEffect(() => {
     //Zustand que permite la consulta de casos relacionados con el usuario
@@ -33,7 +35,7 @@ export default function ShortTable() {
       setData(result.casos)
     });
     return;
-  }, [logged]);
+  }, []);
 
   // Esto es para que la data que entra, solo se tomen 5
   const rows = data.slice(0, 5);
@@ -204,7 +206,9 @@ export default function ShortTable() {
                   padding: "5px 16px",
                 }}
               >
-                {row?.id}
+                <Link component='button' variant="body2" onClick={() => {
+                  navigate(`/cases/${row?.id}`)
+                }}>{row?.id}</Link>
               </TableCell>
               <TableCell
                 align="left"

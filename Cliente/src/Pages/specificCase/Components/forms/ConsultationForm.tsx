@@ -10,8 +10,9 @@ import { Dayjs } from "dayjs";
 interface ConsultationForm<T> {
     consultationValues?: {
         motivo: string,
-        pacientes: string,
+        paciente: string,
         especialistas: string[],
+        especialistas_id: string,
         observaciones: string,
         estudios: string[],
         plan_tratamiento: string[]
@@ -36,7 +37,7 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
 
             <Box>
                 <SPCaseInput
-                    initialValue={consultationValues?.pacientes}
+                    initialValue={consultationValues?.paciente}
                     zustandCallback={setOfZustandCallback}
                     label="Pacientes"
                     name="pacientes"
@@ -53,15 +54,13 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
                     placeholder="Escriba sus observaciones"
                 />
             </Box>
-
             <Box>
-                <SPCaseMultiInput
-                    Values={consultationValues?.especialistas}
+                <SPCaseInput
+                    initialValue={consultationValues?.especialistas_id}
                     zustandCallback={setOfZustandCallback}
-                    label="Especialistas"
-                    name="especialistas"
-                    placeholder="Escriba su especialista"
-                    canFistElementDelete={false}
+                    label="Especialista ID"
+                    name="especialistas_id"
+                    placeholder="Escriba sus observaciones"
                 />
             </Box>
 
@@ -84,8 +83,20 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
                     placeholder="Escriba su tratamiento"
                 />
             </Box>
+
         </>
     )
 }
 
 export default ConsultationForm;
+
+/**    <Box>
+                <SPCaseMultiInput
+                    Values={consultationValues?.especialistas}
+                    zustandCallback={setOfZustandCallback}
+                    label="Especialistas"
+                    name="especialistas"
+                    placeholder="Escriba su especialista"
+                    canFistElementDelete={false}
+                />
+            </Box> */

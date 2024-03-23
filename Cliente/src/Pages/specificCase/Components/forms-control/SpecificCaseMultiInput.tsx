@@ -27,10 +27,10 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
 
     const handleChange = useCallback((e: ChangeEvent<any>, index: number) => {
         const value = e.target.value.trim();
-       
+
         if (zustandCallback != undefined) {
             zustandCallback(name, value, index);
-          }
+        }
     }, []);
 
     const [processedValues, setProcessedValues] = useState<boolean>(false);
@@ -51,7 +51,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                 if (zustandCallback != undefined) {
                     console.log(name);
                     zustandCallback(name, value, index);
-                  }
+                }
             });
         }
     }, []);
@@ -83,7 +83,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                 if (zustandCallback != undefined) {
                     console.log(name);
                     zustandCallback(name, null, index);
-                  }
+                }
                 Swal.fire({
                     title: 'Eliminado',
                     text: 'El elemento ha sido eliminado.',
@@ -151,7 +151,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                                 )}
                                             </Field>
 
-                                           { !(!canFistElementDelete && index == 0) && <Button variant="contained" sx={{
+                                            {!(!canFistElementDelete && index == 0) && <Button variant="contained" sx={{
                                                 backgroundColor: " #52b69a",
                                                 height: "1rem",
                                                 width: '1rem',
@@ -160,7 +160,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                                 }
                                             }} type='button' onClick={() => handleRemoveItem(index, remove)}>
                                                 - {/*Simbolo negativo*/}
-                                            </Button> }
+                                            </Button>}
                                         </Box>
                                     ))}
                                     <Button sx={{

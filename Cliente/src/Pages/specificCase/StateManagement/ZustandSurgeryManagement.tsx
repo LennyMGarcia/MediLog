@@ -18,6 +18,7 @@ const useDataSurgeryStore = create<surgerySchemaValues & surgerySchemaActions>((
     motivo: "",
     pacientes: "",
     especialistas: [""],
+    especialistas_id: "",
     observaciones: "",
     estudios: [""],
     instrucciones: [""],
@@ -33,7 +34,7 @@ const useDataSurgeryStore = create<surgerySchemaValues & surgerySchemaActions>((
                 const currentArray = get()[validatedName] || [];
                 if (Array.isArray(currentArray)) {
                     const newArray: string[] = [...currentArray];
-                    if (typeof value === 'string') {
+                    if (typeof value === 'string' || typeof value === 'number') {
                         newArray[index] = value;
                         updatedData[validatedName] = newArray;
                     } else if (value === null) {

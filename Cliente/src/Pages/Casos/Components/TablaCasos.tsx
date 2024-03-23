@@ -1,4 +1,5 @@
 import Table from "@mui/material/Table";
+import { Button } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -12,7 +13,7 @@ import {
   TablePagination,
   TextField,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   LocalizationProvider,
   pickersFadeTransitionGroupClasses,
@@ -22,6 +23,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { PendingActionsOutlined, Search } from "@mui/icons-material";
 import TableMenu from "./Menu";
+import useUserStore from "../../../Common/Utils/setUserSession";
+import { useNavigate } from "react-router";
+import { Link } from "@mui/material";
 
 type IPropsData = {
   id: number;
@@ -39,56 +43,54 @@ interface IArray {
 
 // Tipos de datos a mostrar en la tabla
 interface IProps {
-  type: "all" | "open" | "close" | "process" | "pending";
+  type: "all" | "Activo" | "Inactivo" | "Proceso" | "Suspendido";
 }
 
 export default function TablaCasos({ type }: IProps) {
-  // Data que debe cambiar en base al tipo que se paso
-  const data = [
-    {
-      id: 1,
-      descripcion: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      estado: "open",
-      categoria: 2,
-    },
-    {
-      id: 2,
-      descripcion: "Examen de sangre",
-      person: "María Rodríguez",
-      time: "2024-03-12T10:30:00",
-      estado: "close",
-      categoria: 1,
-    },
-    {
-      id: 3,
-      descripcion: "Consulta de seguimiento",
-      person: "Luis García",
-      time: "2024-03-13T11:15:00",
-      estado: "pending",
-      categoria: 3,
-    },
-    {
-      id: 4,
-      descripcion: "Revisión de presión arterial",
-      person: "Ana Martínez",
-      time: "2024-03-14T15:45:00",
-      estado: "process",
-      categoria: 2,
-    },
-    {
-      id: 5,
-      descripcion: "Vacunación contra la gripe",
-      person: "Carlos Sánchez",
-      time: "2024-03-15T08:20:00",
-      estado: "open",
-      categoria: 1,
-    },
-  ];
+  const navigate = useNavigate();
+  const { autopopulate } = useUserStore();
+  const { getUser } = useUserStore();
+  const loading = useUserStore(state => state.loading);
+  const casos = useUserStore((state) => state.casos);
+
+  const [data, setData] = useState(type === 'all' ? casos : casos.filter((cases: any) => cases.estado === type));
+
+  useEffect(() => {
+    //Zustand que permite la consulta de casos relacionados con el usuario
+    if (casos.length <= 0) {
+      autopopulate().then(result => {
+        const casos = result.casos;
+        if (casos) {
+          //Funcciones que divide que los registros segun el estado
+          const casos_abiertos = casos.filter((cases: any) => cases.estado === 'Activo');
+          const casos_cerrados = casos.filter((cases: any) => cases.estado === 'Inactivo');
+          const casos_proceso = casos.filter((cases: any) => cases.estado === 'Proceso');
+          const casos_suspendidos = casos.filter((cases: any) => cases.estado === 'Suspendido');
+
+          if (type === 'Activo') {
+            setData(casos_abiertos);
+            return;
+          } else if (type === 'Inactivo') {
+            setData(casos_cerrados);
+            return;
+          }
+          else if (type === 'Proceso') {
+            setData(casos_proceso);
+            return;
+          } else if (type === 'Suspendido') {
+            setData(casos_suspendidos);
+            return;
+          }
+          setData(casos);
+          return;
+        }
+      });
+    }
+  });
+
 
   // Booleano que debe indicar el rol del usuario, ahora que lo pienso, se puede validar con el zustand
-  const isDoctor = true;
+  const isDoctor = getUser().tipo === 'Paciente' ? false : true;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -111,21 +113,22 @@ export default function TablaCasos({ type }: IProps) {
   };
 
   const badgetStatus: Record<string, any> = {
-    close: {
-      name: "Cerrados",
+
+    Inactivo: {
+      name: "Inactivo",
       color: "#8EBF43",
     },
-    open: {
-      name: "Abierto",
+    Activo: {
+      name: "Activo",
       color: "#28AAE1",
     },
-    pending: {
-      name: "Suspendido",
-      color: "#E30000",
-    },
-    process: {
+    Proceso: {
       name: "En Proceso",
       color: "#E5D540",
+    },
+    Suspendido: {
+      name: "Suspendido",
+      color: "#E30000",
     },
   };
 
@@ -192,12 +195,20 @@ export default function TablaCasos({ type }: IProps) {
   // Esta es una funcion de Material UI para la paginacion
   const visibleRows = useMemo(
     () =>
-      stableSort(rows).slice(
+      stableSort(data).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
     [page, rowsPerPage, openInputSearch, dateStart, dateEnd]
   );
+
+  const search_patient = (search: string) => {
+    const id = parseInt(search);
+    if (typeof (id) === 'number') {
+      navigate('/cases/' + search);
+    }
+    return;
+  }
 
   return (
     <>
@@ -217,73 +228,90 @@ export default function TablaCasos({ type }: IProps) {
           }}
         >
           {/* <Box></Box> */}
-          <TextField
-            label="Buscar"
-            variant="outlined"
+          <Box
             sx={{
-              fieldset: {
-                borderRadius: "8px",
-                borderColor: "#CDCECF",
-              },
-              fontFamily: "Arial",
-              fontWeight: "400",
-              fontSize: "14px",
-              width: "300px",
-              ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
+              display: "flex",
+              gap: "16px",
+            }}
+          >
+            <TextField
+              label="Buscar"
+              variant="outlined"
+              sx={{
+                fieldset: {
+                  borderRadius: "8px",
                   borderColor: "#CDCECF",
                 },
-              ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
-                color: "#68696B",
-              },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "#CDCECF", // Color del borde
-                },
-                "&:hover": {
-                  "& fieldset": {
-                    border: "solid 1px #111113",
-                  },
-                },
-                "&:focus": {
-                  "& fieldset": {
-                    border: "solid 1px #111113",
-                  },
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                },
-                "& legend span": {
-                  paddingLeft: "0px",
-                  paddingRight: "4px",
-                },
-                "& legend": {
-                  paddingInlineStar: "0px",
-                  paddingInlineEnd: "0px",
-                },
-              },
-            }}
-            value={openInputSearch}
-            InputProps={{
-              startAdornment: <Search />,
-            }}
-            InputLabelProps={{
-              shrink: !!openInputSearch,
-              margin: "dense",
-              style: {
-                paddingLeft: openInputSearch ? "0px" : "25px",
-                color: "#68696B",
                 fontFamily: "Arial",
                 fontWeight: "400",
                 fontSize: "14px",
-                marginTop: "3px",
-              },
-            }}
-            onChange={(e) => {
-              setOpenInputSearch(e.target.value);
-            }}
-          />
-
+                width: "300px",
+                ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "#CDCECF",
+                },
+                ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
+                  color: "#68696B",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#CDCECF", // Color del borde
+                  },
+                  "&:hover": {
+                    "& fieldset": {
+                      border: "solid 1px #111113",
+                    },
+                  },
+                  "&:focus": {
+                    "& fieldset": {
+                      border: "solid 1px #111113",
+                    },
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#CDCECF", // Color del borde cuando está enfocado
+                  },
+                  "& legend span": {
+                    paddingLeft: "0px",
+                    paddingRight: "4px",
+                  },
+                  "& legend": {
+                    paddingInlineStar: "0px",
+                    paddingInlineEnd: "0px",
+                  },
+                },
+              }}
+              value={openInputSearch}
+              InputProps={{
+                startAdornment: <Search />,
+              }}
+              InputLabelProps={{
+                shrink: !!openInputSearch,
+                margin: "dense",
+                style: {
+                  paddingLeft: openInputSearch ? "0px" : "25px",
+                  color: "#68696B",
+                  fontFamily: "Arial",
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  marginTop: "3px",
+                },
+              }}
+              onChange={(e) => {
+                setOpenInputSearch(e.target.value);
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#168AAD",
+              }}
+              onClick={() => {
+                search_patient(openInputSearch);
+              }}
+            >
+              Buscar paciente
+            </Button>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -306,13 +334,13 @@ export default function TablaCasos({ type }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 format="DD/MM/YYYY"
                 onChange={(newValue: any) => {
@@ -386,13 +414,13 @@ export default function TablaCasos({ type }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 disableFuture
                 onChange={(newValue: any) => {
@@ -495,7 +523,7 @@ export default function TablaCasos({ type }: IProps) {
                   }}
                   align="left"
                 >
-                  Doctor
+                  {isDoctor ? 'Pacientes' : 'Doctores'}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -544,9 +572,9 @@ export default function TablaCasos({ type }: IProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {visibleRows.map((row) => (
+              {visibleRows.map((data) => (
                 <TableRow
-                  key={row.id}
+                  key={data.id}
                   sx={{
                     "&:last-child td, &:last-child th": { border: 0 },
                     borderRadius: "8px",
@@ -567,7 +595,9 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.id}
+                    <Link component='button' variant="body2" onClick={() => {
+                      navigate(`/cases/${data?.id}`)
+                    }}>{data?.id}</Link>
                   </TableCell>
                   <TableCell
                     align="left"
@@ -579,7 +609,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.descripcion}
+                    {data?.descripcion}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -591,7 +621,12 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.person}
+                    <Link component='button' variant="body2" onClick={() => {
+                      if (isDoctor) {
+                        navigate(`/pacientes/${data?.pacientes_id}`)
+                      }
+                      return;
+                    }}>{isDoctor ? data?.pacientes_id : data?.especialistas_id}</Link>
                   </TableCell>
                   <TableCell
                     align="left"
@@ -603,7 +638,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.time}
+                    {data?.fecha}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -616,8 +651,8 @@ export default function TablaCasos({ type }: IProps) {
                     }}
                   >
                     <Badge
-                      bg={badgetStatus[row.estado].color}
-                      tipo={badgetStatus[row.estado].name}
+                      bg={badgetStatus[data.estado]?.color}
+                      tipo={badgetStatus[data.estado]?.name}
                     />
                   </TableCell>
                   <TableCell
@@ -630,7 +665,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.categoria}
+                    {data?.categoria}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -652,7 +687,7 @@ export default function TablaCasos({ type }: IProps) {
       </TableContainer>
 
       <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         component="div"
         count={rowsTotal}
         rowsPerPage={rowsPerPage}
@@ -672,3 +707,46 @@ export default function TablaCasos({ type }: IProps) {
     </>
   );
 }
+// Data que debe cambiar en base al tipo que se paso
+/*const data = [
+  {
+    id: 1,
+    descripcion: "Consulta de rutina",
+    person: "Juan Pérez",
+    time: "2024-03-11T09:00:00",
+    estado: "open",
+    categoria: 2,
+  },
+  {
+    id: 2,
+    descripcion: "Examen de sangre",
+    person: "María Rodríguez",
+    time: "2024-03-12T10:30:00",
+    estado: "close",
+    categoria: 1,
+  },
+  {
+    id: 3,
+    descripcion: "Consulta de seguimiento",
+    person: "Luis García",
+    time: "2024-03-13T11:15:00",
+    estado: "pending",
+    categoria: 3,
+  },
+  {
+    id: 4,
+    descripcion: "Revisión de presión arterial",
+    person: "Ana Martínez",
+    time: "2024-03-14T15:45:00",
+    estado: "process",
+    categoria: 2,
+  },
+  {
+    id: 5,
+    descripcion: "Vacunación contra la gripe",
+    person: "Carlos Sánchez",
+    time: "2024-03-15T08:20:00",
+    estado: "open",
+    categoria: 1,
+  },
+];*/

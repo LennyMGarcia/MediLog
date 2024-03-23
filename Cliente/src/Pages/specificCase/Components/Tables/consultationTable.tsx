@@ -12,7 +12,7 @@ import {
   TablePagination,
   TextField,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -21,25 +21,6 @@ import { Search } from "@mui/icons-material";
 import CaseTableMenu from "./ConsultationMenu";
 import ConsultationMenu from "./ConsultationMenu";
 
-
-
-type IPropsDoctor = {
-  id: number;
-  descripcion: string;
-  paciente: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
-
-type IPropsPatient = {
-  id: number;
-  descripcion: string;
-  doctor: string;
-  time: string;
-  estado: string;
-  categoria: number;
-};
 
 type IPropsData = {
   id: number;
@@ -58,46 +39,49 @@ interface IArray {
 
 interface IProps {
   type: "all" | "open" | "close" | "process" | "pending";
-  dataObject:{ //Aqui es como se pasan el objeto de specificCase
+  dataObject: { //Aqui es como se pasan el objeto de specificCase
     id: number,
     motivo: string,
     person: string,
-    time:string | Date | Dayjs,
+    time: string | Date | Dayjs,
   }[]
 }
 
 //AQUI EL BADGE 
-export const Badge = ({tipo, w, h }: { tipo: string, w?:string, h?:string }) => {
-    return (
-      <Chip
-        sx={{
-          //   marginLeft: "8px",
-          height: h || "24px",
-          width: w || "93px",
-          color: "#FFFFFF",
-          borderRadius: "6px",
-          backgroundColor: tipo == "Activo"? "#28AAE1" 
-                          : tipo == "Inactivo" ? "#8EBF43"
-                          : tipo == "Suspendido" ? "#E30000"
-                          : tipo == "En proceso" ? "#E5D540"
-                          : "none",
-          "& .MuiChip-label": {
-            display: "block",
-            whiteSpace: "pre",
-            fontFamily: "Arial",
-            fontSize: "12px",
-            fontWeight: "700",
-            lineHeight: "20px",
-          },
-        }}
-        label={tipo}
-      />
-    );
-  };
+export const Badge = ({ tipo, w, h }: { tipo: string, w?: string, h?: string }) => {
+  return (
+    <Chip
+      sx={{
+        //   marginLeft: "8px",
+        height: h || "24px",
+        width: w || "93px",
+        color: "#FFFFFF",
+        borderRadius: "6px",
+        backgroundColor: tipo == "Activo" ? "#28AAE1"
+          : tipo == "Inactivo" ? "#8EBF43"
+            : tipo == "Suspendido" ? "#E30000"
+              : tipo == "En proceso" ? "#E5D540"
+                : tipo == "Exito" ? "#8EBF43"
+                  : tipo == "Fracaso" ? "#E30000"
+                    : tipo == "Incompleto" ? "#E5D540"
+                      : "none",
+        "& .MuiChip-label": {
+          display: "block",
+          whiteSpace: "pre",
+          fontFamily: "Arial",
+          fontSize: "12px",
+          fontWeight: "700",
+          lineHeight: "20px",
+        },
+      }}
+      label={tipo}
+    />
+  );
+};
 
 export default function ConsultationTable({ type, dataObject }: IProps) {
   // const data = ["1", "2"];
-  const data =  dataObject
+  const data = dataObject
   const isDoctor = true;
 
   const [page, setPage] = useState(0);
@@ -109,7 +93,11 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
   const [dateEnd, setDateEnd] = useState<string | null>();
   // dayjs().format("DD/MM/YYYY")
 
-  const rows = data;
+  const [rows, setRows] = useState<any[]>(data);
+
+  useEffect(() => {
+    setRows(data);
+  }, [data]);
 
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
@@ -141,41 +129,9 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
     },
   };
 
-  
 
   function stableSort(array: any[]) {
     const stabilized = array;
-
-    // if (dateStart)
-    //   stabilized = stabilized.filter((a) => {
-    //     const start = new Date(a.date);
-    //     const startState = new Date(dateStart);
-
-    //     // console.log(a.date);
-    //     // console.log(dateStart);
-    //     console.log(dayjs(start).isAfter(dayjs(startState)));
-    //     return dayjs(a.date).isAfter(dateStart);
-    //   });
-
-    // if (dateEnd)
-    //   stabilized = stabilized.filter((a) => {
-    //     return dayjs(a.date).isBefore(dateEnd);
-    //   });
-
-    // if (dateEnd)
-    //   stabilized = stabilized.filter((a) => {
-    //     a.date <= dateEnd;
-    //   });
-
-    // if (openInputSearch)
-    //   stabilized = stabilized.filter((item) => {
-    //     // item.numberOrder == openInputSearch;
-
-    //     return normalizeString(item.nameClient)
-    //       .toLowerCase()
-    //       .includes(openInputSearch.toLowerCase());
-    //   });
-
     setRowsTotal(stabilized.length);
     return stabilized;
   }
@@ -220,9 +176,9 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
               fontSize: "14px",
               width: "300px",
               ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#CDCECF",
-                },
+              {
+                borderColor: "#CDCECF",
+              },
               ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
                 color: "#68696B",
               },
@@ -305,13 +261,13 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 format="DD/MM/YYYY"
                 onChange={(newValue: any) => {
@@ -393,13 +349,13 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                     borderColor: "#CDCECF",
                   },
                   ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "#CDCECF",
-                    },
+                  {
+                    borderColor: "#CDCECF",
+                  },
                   ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                    {
-                      color: "#68696B",
-                    },
+                  {
+                    color: "#68696B",
+                  },
                 }}
                 disableFuture
                 onChange={(newValue: any) => {
@@ -524,8 +480,8 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                 >
                   Fecha
                 </TableCell>
-               
-                
+
+
                 <TableCell
                   sx={{
                     fontFamily: "Arial",
@@ -601,7 +557,7 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.person}
+                    {row.especialista}
                   </TableCell>
                   <TableCell
                     align="left"
@@ -614,9 +570,9 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    {row.time}
+                    {row.fecha}
                   </TableCell>
-                 
+
                   <TableCell
                     align="left"
                     sx={{
@@ -638,7 +594,7 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
       </TableContainer>
 
       <TablePagination
-        rowsPerPageOptions={[10, 25, 50]}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         component="div"
         count={rowsTotal}
         // count={visibleRows.length}
@@ -659,3 +615,49 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
     </>
   );
 }
+// if (dateStart)
+//   stabilized = stabilized.filter((a) => {
+//     const start = new Date(a.date);
+//     const startState = new Date(dateStart);
+
+//     // console.log(a.date);
+//     // console.log(dateStart);
+//     console.log(dayjs(start).isAfter(dayjs(startState)));
+//     return dayjs(a.date).isAfter(dateStart);
+//   });
+
+// if (dateEnd)
+//   stabilized = stabilized.filter((a) => {
+//     return dayjs(a.date).isBefore(dateEnd);
+//   });
+
+// if (dateEnd)
+//   stabilized = stabilized.filter((a) => {
+//     a.date <= dateEnd;
+//   });
+
+// if (openInputSearch)
+//   stabilized = stabilized.filter((item) => {
+//     // item.numberOrder == openInputSearch;
+
+//     return normalizeString(item.nameClient)
+//       .toLowerCase()
+//       .includes(openInputSearch.toLowerCase());
+//   });
+/*type IPropsDoctor = {
+  id: number;
+  descripcion: string;
+  paciente: string;
+  time: string;
+  estado: string;
+  categoria: number;
+};
+
+type IPropsPatient = {
+  id: number;
+  descripcion: string;
+  doctor: string;
+  time: string;
+  estado: string;
+  categoria: number;
+};*/

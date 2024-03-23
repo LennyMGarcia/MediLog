@@ -19,6 +19,7 @@ const useDataConsultationStore = create<consultationSchemaValues & consultationS
     motivo: "",
     pacientes: "",
     especialistas: [""],
+    especialistas_id: "",
     observaciones: "",
     estudios: [""],
     plan_tratamiento: [""],
@@ -31,7 +32,7 @@ const useDataConsultationStore = create<consultationSchemaValues & consultationS
                 const currentArray = get()[validatedName] || [];
                 if (Array.isArray(currentArray)) {
                     const newArray: string[] = [...currentArray];
-                    if (typeof value === 'string') {
+                    if (typeof value === 'string' || typeof value === 'number') {
                         newArray[index] = value;
                         updatedData[validatedName] = newArray;
                     } else if (value === null) {

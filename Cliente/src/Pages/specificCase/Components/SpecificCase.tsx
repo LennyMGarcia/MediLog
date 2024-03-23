@@ -43,7 +43,10 @@ import yupConsultationSchema from "../Utils/yup-schema/yupConsultatioEschema";
 import yupSurgerySchema from "../Utils/yup-schema/yupSurgerySchema";
 import SurgeryTable from "./Tables/SurgeryTable";
 import { useMediaQuery, useTheme } from "@mui/material";
-
+import getBackendConnectionString from "../../../Common/Utils/getBackendString";
+import axios from "axios";
+import { set } from "zod";
+import useUserStore from "../../../Common/Utils/setUserSession";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -69,7 +72,27 @@ const style = {
 //VERAS QUE TODO ESTO ES ALGO QUE YA HAS VISTO, LO DE JULIO NO LO HE TOCADO MUCHO, SOLO PASE EL OBJETO HACIA ACA Y CAMBIE CAMPOS
 const SpecificCase: React.FC = () => {
 
+  const { authenticated } = useUserStore();
+  const { getUser } = useUserStore();
+
+  interface IfoundCase {
+    id: number;
+    descripcion: string;
+    paciente: string;
+    pacientes_id: number;
+    especialistas_id: number | string;
+    especialistas: string[];
+    consultas: string[];
+    consultas_id: number;
+    cirugias: string[];
+    cirugias_id: number;
+    estado: string;
+    categoria: string;
+    seguimiento: string;
+  }
+
   const { id } = useParams();
+  const user_id = authenticated() ? getUser().id : null;
 
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
@@ -87,49 +110,142 @@ const SpecificCase: React.FC = () => {
   const handleConsultationModalOpen = () => setConsultationModalOpen(true);
   const handleConsultationModalClose = () => setConsultationModalOpen(false);
 
-  const Case = {
-    id: 1,
-    descripcion: "es un muchacho muy pero muy grande y de buen corazom",
-    pacientes: "Lenny",
-    especialistas: ["Coraline", "Stephany"],
-    consultas: [],
-    cirugias: [],
-    estado: "Activo",
-    categoria: "Cirugia",
-    seguimiento: "no hay seguimiento",
-  }
-
-  interface IfoundCase {
-    id: number;
-    descripcion: string;
-    pacientes: string;
-    especialistas: string[];
-    consultas: string[];
-    cirugias: string[];
-    estado: string;
-    categoria: string;
-    seguimiento: string;
-  }
   // Estado para almacenar el objeto de caso
-  const [CaseObj, setCaseObj] = useState<IfoundCase | undefined>(); 
+  const [CaseObj, setCaseObj] = useState<IfoundCase | undefined>();
+  const [consultationTableData, setConsultationTableData] = useState<undefined | any>([]);
+  const [surgeryTableData, setSurgeryTableData] = useState<undefined | any>([]);
+  const [categoria, setCategoria] = useState<string>('Consulta');
+  const [type, setType] = useState<"all" | "open" | "close" | "process" | "pending">('all');
 
-  //Sirve para encontrar el objeto a traves el id puesto en la url
-  useEffect(() => {
-    const caseId = Number(id); // 
-
-    const foundCase: IfoundCase | undefined = Case.id === caseId ? Case : undefined;
-    setCaseObj(foundCase);
-
-    if (!foundCase) {
-      navigate('/404');
+  //Funccion que se encarga de buscar el record en la base de datos
+  const getRecordFromDB = async (id: number | string | any, table: string) => {
+    const result = await axios.get(getBackendConnectionString(`${table}/${id}`)
+    ).then(response => {
+      if (response.status === 200 || response.status === 201) {
+        return response.data;
+      }
+      return false;
     }
-  }, [id]);
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
+  }
+  //Funccion que se encarga de buscar el record en la base de datos
+  const getSurgeryFromDB = async (id: number | string | any, table: string) => {
+    const surgery = await axios.get(getBackendConnectionString(`${table}/${id}`)
+    ).then(response => {
+      // console.log(response.data)
+      if (response.status === 200 || response.status === 201) {
+        return response.data;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return surgery;
+  }
 
-  
+  //Funccion que se encarga de buscar el record en la base de datos
+  const getConsultFromDB = async (id: number | string | any, table: string) => {
+    const consult = await axios.get(getBackendConnectionString(`${table}/${id}`)
+    ).then(response => {
+      //  console.log(response.data)
+
+      if (response.status === 200 || response.status === 201) {
+        return response.data;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return consult;
+  }
+
+  //Funccion que se encarga de buscar el record en la base de datos
+  const editRecordFromDB = async (id: number | string | any, data: any) => {
+    const result = await axios.put(getBackendConnectionString(`casos/${id}`), data,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(response => {
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        return true;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
+  }
+
+  //Funccion que se agregar record a la base de datos
+  const addRecordtoDB = async (id: number | string | any, data: any) => {
+    const result = await axios.post(getBackendConnectionString(`consultas`), data,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(response => {
+      console.log(response);
+      if (response.status === 200 || response.status === 201) {
+        return true;
+      }
+      return false;
+    }
+    ).catch(error => {
+      console.log(error);
+      return false;
+    });
+    return result;
+  }
+
+  //Funccion que se modificar record a la base de datos
+  const editSubmitHandler = async () => {
+
+    const data = getAllCaseData();
+    const payload = {
+      descripcion: data.descripcion,
+      especialistas_id: data.especialistas_id,
+      estado: data.estado,
+      seguimiento: data.seguimiento
+    }
+    const result = await editRecordFromDB(id, payload);
+    return result;
+
+  }
+
+  const addSubmitHandler = async () => {
+
+    const data = getAllConsultationData();
+    const paciente_id = CaseObj?.pacientes_id;
+    const payload = {
+      motivo: data?.motivo,
+      pacientes_id: paciente_id,
+      especialistas_id: user_id,
+      observaciones: data?.observaciones,
+      estudios: data?.estudios && JSON.stringify(data?.estudios),
+      plan_tratamiento: data?.plan_tratamiento && JSON.stringify(data?.plan_tratamiento)
+    }
+    const result = await addRecordtoDB(id, payload);
+    return result;
+
+  }
   const caseInitialValues = {
     descripcion: "",
-    pacientes: "",
-    especialistas: [""],
+    paciente: "",
+    especialista: [""],
     consultas: [""],
     cirugias: [""],
     estado: "",
@@ -139,8 +255,9 @@ const SpecificCase: React.FC = () => {
 
   const consultationInitialValues = {
     motivo: '',
-    pacientes: "",
-    especialistas: [""],
+    paciente: "",
+    especialista: [""],
+    especialistas_id: [""],
     observaciones: [""],
     estudios: [""],
     plan_tratamiento: [""],
@@ -149,71 +266,40 @@ const SpecificCase: React.FC = () => {
   //Estos dos arrays de objetos es para la info de las tablas, Preferi hacerlo aqui porque puedes
   //manejar las dos al mismo tiempo y mas si necesitas condicionales, no se como lo ibas  a hacer
   //y por eso no cree una mejor estructura que dos simples arrays
-  const consultationTableData = [
-    {
-      id: 1,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
 
-    },
-    {
-      id: 2,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
+  //Sirve para encontrar el objeto a traves el id puesto en la url
+  useEffect(() => {
+    const caseId = Number(id); // 
 
-    },
-    {
-      id: 3,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
+    //const foundCase: IfoundCase | undefined = Case.id === caseId ? Case : undefined;
+    const foundCase: IfoundCase | undefined | Promise<any> = getRecordFromDB(caseId, 'casos').then(result => {
+      if (!result) return undefined;
+      console.log(result)
+      setCaseObj(result);
+      if (result.categoria === "Cirugia") {
+        setCategoria('Cirugia');
+      } else {
+        setCategoria('Consulta');
+      }
+      getConsultFromDB(result.consultas_id, 'consultas').then(consult => {
+        if (!consult) return [];
+        setConsultationTableData(consult.consultas);
+        setType('open');
+        return consult;
+      });
+      getSurgeryFromDB(result.cirugias_id, 'cirugias').then(surgery => {
+        if (!surgery) return [];
+        setSurgeryTableData(surgery.cirugias);
+        setType('close');
+        return surgery;
+      });
+      return result;
+    });
 
-    },
-    {
-      id: 4,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-
-    },
-
-  ];
-
-  const surgeryTableData = [
-    {
-      id: 1,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      categoria:"ginecologo"
-    },
-    {
-      id: 2,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      categoria:"ginecologo"
-    },
-    {
-      id: 3,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      categoria:"ginecologo"
-    },
-    {
-      id: 4,
-      motivo: "Consulta de rutina",
-      person: "Juan Pérez",
-      time: "2024-03-11T09:00:00",
-      categoria:"ginecologo"
-    },
-
-  ];
-
-
+    if (!foundCase) {
+      navigate('/404');
+    }
+  }, []);
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
@@ -230,18 +316,18 @@ const SpecificCase: React.FC = () => {
 
         }}
       >
-       {isMediumScreen ? 
-        <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-          {CaseObj && CaseObj.descripcion}
-        </Typography> 
-        :
-        <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-          {CaseObj && CaseObj.descripcion}
-        </Typography> }
+        {isMediumScreen ?
+          <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            {CaseObj && CaseObj?.descripcion}
+          </Typography>
+          :
+          <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            {CaseObj && CaseObj?.descripcion}
+          </Typography>}
 
         <Box sx={{ marginRight: "3rem" }}>
           {/*Cambia el color de la etiqueta, esta en consultationTable si se necesita edicion de este */}
-          <Badge tipo={CaseObj ? CaseObj.estado : ""} w={isMediumScreen ? "8rem" : "4rem"} h={ isMediumScreen ?"2.5rem" :"2rem"} />
+          <Badge tipo={CaseObj ? CaseObj?.estado : ""} w={isMediumScreen ? "8rem" : "4rem"} h={isMediumScreen ? "2.5rem" : "2rem"} />
         </Box>
 
       </Box>
@@ -328,30 +414,31 @@ const SpecificCase: React.FC = () => {
                               if (result.isConfirmed && isValid) {
                                 //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
-                                //no se si necesitaras esto asi que lo deje asi
-                                //editSubmitHandler().then(result => {
-                                if (result) {
-                                  handleCaseInfoModalClose()
-                                  Swal.fire({
-                                    title: 'Aplicado con exito',
-                                    text: 'Todos los datos han sido editados.',
-                                    icon: 'success',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                  //window.location.href = `/pacientes/${idOrName}`;
-                                } else {
-                                  Swal.fire({
-                                    title: 'No se aplicaron cambios',
-                                    text: 'Acceso Denegado',
-                                    icon: 'warning',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                }
-                                //});
+                                //no se si necesitaras esto asi que lo deje asi -- K LINDO 
+                                editSubmitHandler().then(result => {
+                                  if (result) {
+                                    handleCaseInfoModalClose()
+                                    Swal.fire({
+                                      title: 'Aplicado con exito',
+                                      text: 'Todos los datos han sido editados.',
+                                      icon: 'success',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                    window.location.reload();
+
+                                  } else {
+                                    Swal.fire({
+                                      title: 'No se aplicaron cambios',
+                                      text: 'Acceso Denegado',
+                                      icon: 'warning',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                  }
+                                });
                               }
                               else if (!isValid) {
                                 Swal.fire({
@@ -377,17 +464,17 @@ const SpecificCase: React.FC = () => {
           </Modal>
         </Box>
         <ProfileList dataList={[
-          { name: "Descripcion", data: CaseObj && CaseObj.descripcion },
-          { name: "categoria", data: CaseObj && CaseObj.categoria, },
-          { name: "estado", data: CaseObj && CaseObj.estado, },
-          { name: "Pacientes", data: CaseObj && CaseObj.pacientes },
-          { name: "Especialistas", data: <ListFormater formatData={CaseObj ? CaseObj.especialistas : []} /> },
-          { name: "Seguimiento", data: CaseObj && CaseObj.seguimiento, },
+          { name: "Descripcion", data: CaseObj && CaseObj?.descripcion },
+          { name: "Categoria", data: CaseObj && CaseObj?.categoria, },
+          { name: "Estado", data: CaseObj && CaseObj?.estado, },
+          { name: "Paciente", data: CaseObj && CaseObj?.paciente },
+          { name: "Especialistas", data: <ListFormater formatData={CaseObj ? CaseObj?.especialistas : []} /> },
+          { name: "Seguimiento", data: CaseObj && CaseObj?.seguimiento, },
         ]} />
 
       </Box>
 
-      <Box sx={{ width:  isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1 }}>
+      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1 }}>
         <Box sx={{
           width: "100%",
           marginTop: "1rem",
@@ -395,7 +482,7 @@ const SpecificCase: React.FC = () => {
           justifyContent: "space-between",
 
         }}>
-          <Typography variant="h6" sx={{ padding: "0 2rem 2rem 1rem" }}>Consultas</Typography>
+          <Typography variant="h6" sx={{ padding: "0 2rem 2rem 1rem" }}>{categoria}s</Typography>
           {/*EDITAR*/}
           {/*{rol === 'Admin' &&*/}
           <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Agregar consulta</Button>
@@ -464,29 +551,29 @@ const SpecificCase: React.FC = () => {
                                 //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
                                 //no se si necesitaras esto asi que lo deje asi
-                                //editSubmitHandler().then(result => {
-                                if (result) {
-                                  handleConsultationModalClose()
-                                  Swal.fire({
-                                    title: 'Aplicado con exito',
-                                    text: 'Todos los datos han sido editados.',
-                                    icon: 'success',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                  //window.location.href = `/pacientes/${idOrName}`;
-                                } else {
-                                  Swal.fire({
-                                    title: 'No se aplicaron cambios',
-                                    text: 'Acceso Denegado',
-                                    icon: 'warning',
-                                    customClass: {
-                                      container: profileStyle.sweetAlertContainer,
-                                    }
-                                  });
-                                }
-                                //});
+                                addSubmitHandler().then(result => {
+                                  if (result) {
+                                    handleConsultationModalClose()
+                                    Swal.fire({
+                                      title: 'Aplicado con exito',
+                                      text: 'Todos los datos han sido editados.',
+                                      icon: 'success',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                    window.location.reload();
+                                  } else {
+                                    Swal.fire({
+                                      title: 'No se aplicaron cambios',
+                                      text: 'Acceso Denegado',
+                                      icon: 'warning',
+                                      customClass: {
+                                        container: profileStyle.sweetAlertContainer,
+                                      }
+                                    });
+                                  }
+                                });
                               }
                               else if (!isValid) {
                                 Swal.fire({
@@ -512,11 +599,11 @@ const SpecificCase: React.FC = () => {
           </Modal>
         </Box>
 
-        {CaseObj?.categoria == "Consulta" ?<ConsultationTable type={"all"} dataObject={consultationTableData} />
-        :
-        CaseObj?.categoria == "Cirugia" ?<SurgeryTable type={"all"} dataObject={surgeryTableData}></SurgeryTable> 
-         : 
-         <div>Ninguna tabla coincide con la categoria</div>}
+        {categoria == "Consulta" ? <ConsultationTable type={type} dataObject={consultationTableData} />
+          :
+          categoria == "Cirugia" ? <SurgeryTable type={type} dataObject={surgeryTableData}></SurgeryTable>
+            :
+            <div>Ninguna tabla coincide con la categoria</div>}
       </Box>
 
 
@@ -527,3 +614,77 @@ const SpecificCase: React.FC = () => {
 
 export default SpecificCase;
 
+/*const Case = {
+    id: 1,
+    descripcion: "es un muchacho muy pero muy grande y de buen corazom",
+    pacientes: "Lenny",
+    especialistas: ["Coraline", "Stephany"],
+    consultas: [],
+    cirugias: [],
+    estado: "Activo",
+    categoria: "Cirugia",
+    seguimiento: "no hay seguimiento",
+  }*/
+/*var consultationTableData = [
+ {
+   id: 1,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+
+ },
+ {
+   id: 2,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+
+ },
+ {
+   id: 3,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+
+ },
+ {
+   id: 4,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+
+ },
+
+];
+
+var surgeryTableData = [
+ {
+   id: 1,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+   categoria: "ginecologo"
+ },
+ {
+   id: 2,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+   categoria: "ginecologo"
+ },
+ {
+   id: 3,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+   categoria: "ginecologo"
+ },
+ {
+   id: 4,
+   motivo: "Consulta de rutina",
+   especialista: "Juan Pérez",
+   fecha: "2024-03-11T09:00:00",
+   categoria: "ginecologo"
+ },
+
+];*/

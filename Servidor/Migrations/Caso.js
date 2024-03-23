@@ -51,21 +51,21 @@ class Caso extends Model {
 
         try {
             this.data = data;
+
             this.values = [
                 this.data.descripcion,
-                this.data.pacientes_id,
                 this.data.especialistas_id,
-                this.data.consultas || null,
-                this.data.cirugias || null,
                 this.data.estado || null,
-                this.data.categoria || 'Activo',
                 this.data.seguimiento || 'No Indicaciones',
-                this.data.visibilidad || true,
-                this.data.eliminado || false,
             ];
-
+            const edit_colums = [
+                'descripcion',
+                'especialistas_id',
+                'estado',
+                'seguimiento',
+            ];
             const query = new Builder(this.table);
-            const [results, fields] = await DB.execute(query.update_query(this.columns, this.values, id), this.values);
+            const [results, fields] = await DB.execute(query.update_query(edit_colums, this.values, id), this.values);
             return results;
 
         } catch (error) {

@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import { Person2, Search } from "@mui/icons-material";
 //import pacientes from '../../../Common/Mocks/listaPaciente.json'
 import useUserStore from "../../../Common/Utils/setUserSession";
+import { useNavigate } from "react-router-dom";
 
 type IProps = {
   idPatient: number;
@@ -33,6 +34,7 @@ type IProps = {
 };
 
 export default function TablaPatients() {
+  const navigate = useNavigate();
   const { autopopulate } = useUserStore();
   const pacientes = useUserStore((state) => state.pacientes);
   const loading = useUserStore(state => state.loading);
@@ -425,6 +427,9 @@ export default function TablaPatients() {
                           bgcolor: "#168AAD",
                         }}
                         startIcon={<Person2 />}
+                        onClick={() => {
+                          navigate(`/pacientes/${row.id}`);
+                        }}
                       >
                         Ver Perfil
                       </Button>
