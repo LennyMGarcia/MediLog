@@ -8,11 +8,11 @@ const mysql = require('mysql2/promise');
 
 //Configuracion que permite multiples conexiones a la base de dato sin cerrar 
 const DB = mysql.createPool({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    database: process.env.DATABASE_NAME,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT,
+    host: process.env.DATABASE_HOST || 'localhost',
+    user: process.env.DATABASE_USER || 'root',
+    database: process.env.DATABASE_NAME || 'Medilog',
+    password: process.env.DATABASE_PASSWORD || '',
+    port: process.env.DATABASE_PORT || 3305,
     waitForConnections: true,
     connectionLimit: 10, //Cantidad Maxima de Conexiones
     maxIdle: 10, //Tiempo de Inactividad Maxima
