@@ -59,7 +59,11 @@ export default function TablaPatients() {
   const [dateStart, setDateStart] = useState<string | null>();
   const [dateEnd, setDateEnd] = useState<string | null>();
 
-  const rows = data;
+  const [rows, setRows] = useState<any[]>(data);
+
+  useEffect(() => {
+    setRows(data);
+  }, [data]);
 
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
@@ -75,35 +79,6 @@ export default function TablaPatients() {
   function stableSort(array: any[]) {
     const stabilized = array;
 
-    // if (dateStart)
-    //   stabilized = stabilized.filter((a) => {
-    //     const start = new Date(a.date);
-    //     const startState = new Date(dateStart);
-
-    //     // console.log(a.date);
-    //     // console.log(dateStart);
-    //     console.log(dayjs(start).isAfter(dayjs(startState)));
-    //     return dayjs(a.date).isAfter(dateStart);
-    //   });
-
-    // if (dateEnd)
-    //   stabilized = stabilized.filter((a) => {
-    //     return dayjs(a.date).isBefore(dateEnd);
-    //   });
-
-    // if (dateEnd)
-    //   stabilized = stabilized.filter((a) => {
-    //     a.date <= dateEnd;
-    //   });
-
-    // if (openInputSearch)
-    //   stabilized = stabilized.filter((item) => {
-    //     // item.numberOrder == openInputSearch;
-
-    //     return normalizeString(item.nameClient)
-    //       .toLowerCase()
-    //       .includes(openInputSearch.toLowerCase());
-    //   });
 
     setRowsTotal(stabilized.length);
     return stabilized;
@@ -116,7 +91,7 @@ export default function TablaPatients() {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [page, rowsPerPage, openInputSearch, dateStart, dateEnd]
+    [page, rowsPerPage, openInputSearch, dateStart, dateEnd, rows]
   );
 
   return (
@@ -463,3 +438,32 @@ export default function TablaPatients() {
     </>
   );
 }
+// if (dateStart)
+//   stabilized = stabilized.filter((a) => {
+//     const start = new Date(a.date);
+//     const startState = new Date(dateStart);
+
+//     // console.log(a.date);
+//     // console.log(dateStart);
+//     console.log(dayjs(start).isAfter(dayjs(startState)));
+//     return dayjs(a.date).isAfter(dateStart);
+//   });
+
+// if (dateEnd)
+//   stabilized = stabilized.filter((a) => {
+//     return dayjs(a.date).isBefore(dateEnd);
+//   });
+
+// if (dateEnd)
+//   stabilized = stabilized.filter((a) => {
+//     a.date <= dateEnd;
+//   });
+
+// if (openInputSearch)
+//   stabilized = stabilized.filter((item) => {
+//     // item.numberOrder == openInputSearch;
+
+//     return normalizeString(item.nameClient)
+//       .toLowerCase()
+//       .includes(openInputSearch.toLowerCase());
+//   });

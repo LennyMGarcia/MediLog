@@ -47,6 +47,7 @@ import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import axios from "axios";
 import { set } from "zod";
 import useUserStore from "../../../Common/Utils/setUserSession";
+import { LinearProgress, CircularProgress } from "@mui/material";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -74,6 +75,8 @@ const SpecificCase: React.FC = () => {
 
   const { authenticated } = useUserStore();
   const { getUser } = useUserStore();
+  const loading = useUserStore(state => state.loading);
+
 
   interface IfoundCase {
     id: number;
@@ -137,6 +140,9 @@ const SpecificCase: React.FC = () => {
     const surgery = await axios.get(getBackendConnectionString(`${table}/${id}`)
     ).then(response => {
       // console.log(response.data)
+      /* console.log(table)
+       console.log(id)
+       console.log(response.data)*/
       if (response.status === 200 || response.status === 201) {
         return response.data;
       }
@@ -153,7 +159,10 @@ const SpecificCase: React.FC = () => {
   const getConsultFromDB = async (id: number | string | any, table: string) => {
     const consult = await axios.get(getBackendConnectionString(`${table}/${id}`)
     ).then(response => {
-      //  console.log(response.data)
+
+      /* console.log(table)
+       console.log(id)
+       console.log(response.data)*/
 
       if (response.status === 200 || response.status === 201) {
         return response.data;
@@ -216,10 +225,10 @@ const SpecificCase: React.FC = () => {
 
     const data = getAllCaseData();
     const payload = {
-      descripcion: data.descripcion,
-      especialistas_id: data.especialistas_id,
-      estado: data.estado,
-      seguimiento: data.seguimiento
+      descripcion: data?.descripcion,
+      especialistas_id: data?.especialistas_id,
+      estado: data?.estado,
+      seguimiento: data?.seguimiento
     }
     const result = await editRecordFromDB(id, payload);
     return result;
@@ -263,9 +272,7 @@ const SpecificCase: React.FC = () => {
     plan_tratamiento: [""],
   };
 
-  //Estos dos arrays de objetos es para la info de las tablas, Preferi hacerlo aqui porque puedes
-  //manejar las dos al mismo tiempo y mas si necesitas condicionales, no se como lo ibas  a hacer
-  //y por eso no cree una mejor estructura que dos simples arrays
+
 
   //Sirve para encontrar el objeto a traves el id puesto en la url
   useEffect(() => {
@@ -275,21 +282,23 @@ const SpecificCase: React.FC = () => {
     const foundCase: IfoundCase | undefined | Promise<any> = getRecordFromDB(caseId, 'casos').then(result => {
       if (!result) return undefined;
       console.log(result)
+      console.log(result.consultas_id)
+
       setCaseObj(result);
-      if (result.categoria === "Cirugia") {
+      if (result?.categoria === "Cirugia") {
         setCategoria('Cirugia');
       } else {
         setCategoria('Consulta');
       }
-      getConsultFromDB(result.consultas_id, 'consultas').then(consult => {
+      getConsultFromDB(result?.consultas_id, 'consultas').then(consult => {
         if (!consult) return [];
-        setConsultationTableData(consult.consultas);
+        setConsultationTableData(consult?.consultas);
         setType('open');
         return consult;
       });
-      getSurgeryFromDB(result.cirugias_id, 'cirugias').then(surgery => {
+      getSurgeryFromDB(result?.cirugias_id, 'cirugias').then(surgery => {
         if (!surgery) return [];
-        setSurgeryTableData(surgery.cirugias);
+        setSurgeryTableData(surgery?.cirugias);
         setType('close');
         return surgery;
       });
@@ -303,177 +312,177 @@ const SpecificCase: React.FC = () => {
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
-      <Box
-        sx={{
-          backgroundColor: "#fff",
-          width: "100vw",
-          height: isMediumScreen ? "10vh" : "auto",
-          boxShadow: 1,
-          padding: "1px",
-          display: 'flex',
-          justifyContent: "space-between",
-          alignItems: "center",
+      {!loading &&
+        <Box
+          sx={{
+            backgroundColor: "#fff",
+            width: "100vw",
+            height: isMediumScreen ? "10vh" : "auto",
+            boxShadow: 1,
+            padding: "1px",
+            display: 'flex',
+            justifyContent: "space-between",
+            alignItems: "center",
 
-        }}
-      >
-        {isMediumScreen ?
-          <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-            {CaseObj && CaseObj?.descripcion}
-          </Typography>
-          :
-          <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
-            {CaseObj && CaseObj?.descripcion}
-          </Typography>}
+          }}
+        >
+          {isMediumScreen ?
+            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+              {CaseObj && CaseObj?.descripcion}
+            </Typography>
+            :
+            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+              {CaseObj && CaseObj?.descripcion}
+            </Typography>}
 
-        <Box sx={{ marginRight: "3rem" }}>
-          {/*Cambia el color de la etiqueta, esta en consultationTable si se necesita edicion de este */}
-          <Badge tipo={CaseObj ? CaseObj?.estado : ""} w={isMediumScreen ? "8rem" : "4rem"} h={isMediumScreen ? "2.5rem" : "2rem"} />
-        </Box>
+          <Box sx={{ marginRight: "3rem" }}>
+            {/*Cambia el color de la etiqueta, esta en consultationTable si se necesita edicion de este */}
+            <Badge tipo={CaseObj ? CaseObj?.estado : ""} w={isMediumScreen ? "8rem" : "4rem"} h={isMediumScreen ? "2.5rem" : "2rem"} />
+          </Box>
 
-      </Box>
+        </Box>}
+      {loading ? <LinearProgress /> :
+        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
+          <Box sx={{
+            width: "100%",
+            marginTop: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
 
-      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
+          }}>
+            <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion del caso</Typography>
+            {/*EDITAR*/}
+            {/*{rol === 'Admin' &&*/}
+            <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Editar</Button>
+            {/*}*/}
+            <Modal
+              keepMounted
+              open={caseInfoModalOpen}
+              onClose={handleCaseInfoModalClose}
+            >
+              <Box sx={style} >
+                <Box sx={{ width: '100%', typography: 'body1' }}>
+                  <Box sx={{ width: '100%', height: "100%" }}>
+                    {/*CASE */}
+                    <Formik
+                      validateOnMount={false}
+                      validateOnChange={false} //Estos dos resuelven el bug de cambiar algo que se supone que no debe
+                      initialValues={{ caseInitialValues }}
+                      validationSchema={yupCaseSchema}
+                      onSubmit={() => console.log("adios")}
+                    >
+                      {({ handleSubmit, isValid }) => (
+                        <Form onSubmit={handleSubmit}>
 
-        <Box sx={{
-          width: "100%",
-          marginTop: "1rem",
-          display: "flex",
-          justifyContent: "space-between",
+                          <Box sx={{
+                            maxHeight: '60vh',
+                            overflowY: 'scroll',
+                            '&::-webkit-scrollbar': {
+                              width: '0.5em',
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                              backgroundColor: '#52b69a',
+                              borderRadius: '4px',
+                            },
+                          }}>
+                            {/*AQUI EL FORM DE CASE */}
+                            <Box>
+                              {
+                                CaseObj && <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData} caseValues={CaseObj} />
+                              }
+                            </Box>
 
-        }}>
-          <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion del caso</Typography>
-          {/*EDITAR*/}
-          {/*{rol === 'Admin' &&*/}
-          <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Editar</Button>
-          {/*}*/}
-          <Modal
-            keepMounted
-            open={caseInfoModalOpen}
-            onClose={handleCaseInfoModalClose}
-          >
-            <Box sx={style} >
-              <Box sx={{ width: '100%', typography: 'body1' }}>
-                <Box sx={{ width: '100%', height: "100%" }}>
-                  {/*CASE */}
-                  <Formik
-                    validateOnMount={false}
-                    validateOnChange={false} //Estos dos resuelven el bug de cambiar algo que se supone que no debe
-                    initialValues={{ caseInitialValues }}
-                    validationSchema={yupCaseSchema}
-                    onSubmit={() => console.log("adios")}
-                  >
-                    {({ handleSubmit, isValid }) => (
-                      <Form onSubmit={handleSubmit}>
 
-                        <Box sx={{
-                          maxHeight: '60vh',
-                          overflowY: 'scroll',
-                          '&::-webkit-scrollbar': {
-                            width: '0.5em',
-                          },
-                          '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: '#52b69a',
-                            borderRadius: '4px',
-                          },
-                        }}>
-                          {/*AQUI EL FORM DE CASE */}
-                          <Box>
-                            {
-                              CaseObj && <ChageCaseForm setOfZustandCallback={setCaseData} getOfZustandCallback={getCaseData} caseValues={CaseObj} />
-                            }
+
                           </Box>
+                          {/*ENVIAR INFORMACION*/}
+                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                            fullWidth
+                            variant="contained"
+                            type="submit"
+                            //disabled={!isValid}
+                            onClick={() => {
+                              Swal.fire({
+                                title: '¿Estás seguro?',
+                                text: `Esta acción cambiara todos tus datos`,
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#52b69a',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Aplicar cambios',
+                                cancelButtonText: 'Cancelar',
+                                customClass: {
+                                  container: profileStyle.sweetAlertContainer,
+                                },
+                                allowOutsideClick: () => !Swal.isLoading(),
+                                allowEscapeKey: () => !Swal.isLoading(),
+                                allowEnterKey: () => !Swal.isLoading(),
+                                stopKeydownPropagation: false,
 
+                              }).then((result) => {
+                                if (result.isConfirmed && isValid) {
+                                  //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
 
+                                  //no se si necesitaras esto asi que lo deje asi -- K LINDO 
+                                  editSubmitHandler().then(result => {
+                                    if (result) {
+                                      handleCaseInfoModalClose()
+                                      Swal.fire({
+                                        title: 'Aplicado con exito',
+                                        text: 'Todos los datos han sido editados.',
+                                        icon: 'success',
+                                        customClass: {
+                                          container: profileStyle.sweetAlertContainer,
+                                        }
+                                      });
+                                      window.location.reload();
 
-                        </Box>
-                        {/*ENVIAR INFORMACION*/}
-                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
-                          fullWidth
-                          variant="contained"
-                          type="submit"
-                          //disabled={!isValid}
-                          onClick={() => {
-                            Swal.fire({
-                              title: '¿Estás seguro?',
-                              text: `Esta acción cambiara todos tus datos`,
-                              icon: 'question',
-                              showCancelButton: true,
-                              confirmButtonColor: '#52b69a',
-                              cancelButtonColor: '#d33',
-                              confirmButtonText: 'Aplicar cambios',
-                              cancelButtonText: 'Cancelar',
-                              customClass: {
-                                container: profileStyle.sweetAlertContainer,
-                              },
-                              allowOutsideClick: () => !Swal.isLoading(),
-                              allowEscapeKey: () => !Swal.isLoading(),
-                              allowEnterKey: () => !Swal.isLoading(),
-                              stopKeydownPropagation: false,
-
-                            }).then((result) => {
-                              if (result.isConfirmed && isValid) {
-                                //mandame la funcion aqui >:V -- Muy util que dejaras este comentario, por eso no pase horas buscando
-
-                                //no se si necesitaras esto asi que lo deje asi -- K LINDO 
-                                editSubmitHandler().then(result => {
-                                  if (result) {
-                                    handleCaseInfoModalClose()
-                                    Swal.fire({
-                                      title: 'Aplicado con exito',
-                                      text: 'Todos los datos han sido editados.',
-                                      icon: 'success',
-                                      customClass: {
-                                        container: profileStyle.sweetAlertContainer,
-                                      }
-                                    });
-                                    window.location.reload();
-
-                                  } else {
-                                    Swal.fire({
-                                      title: 'No se aplicaron cambios',
-                                      text: 'Acceso Denegado',
-                                      icon: 'warning',
-                                      customClass: {
-                                        container: profileStyle.sweetAlertContainer,
-                                      }
-                                    });
-                                  }
-                                });
-                              }
-                              else if (!isValid) {
-                                Swal.fire({
-                                  title: 'No se aplicaron cambios',
-                                  text: 'Hay datos invalidados dentro del formulario',
-                                  icon: 'warning',
-                                  customClass: {
-                                    container: profileStyle.sweetAlertContainer,
-                                  }
-                                });
-                              }
-                            })
-                          }}
-                        >
-                          Aplicar cambios
-                        </Button>
-                      </Form>
-                    )}
-                  </Formik>
+                                    } else {
+                                      Swal.fire({
+                                        title: 'No se aplicaron cambios',
+                                        text: 'Acceso Denegado',
+                                        icon: 'warning',
+                                        customClass: {
+                                          container: profileStyle.sweetAlertContainer,
+                                        }
+                                      });
+                                    }
+                                  });
+                                }
+                                else if (!isValid) {
+                                  Swal.fire({
+                                    title: 'No se aplicaron cambios',
+                                    text: 'Hay datos invalidados dentro del formulario',
+                                    icon: 'warning',
+                                    customClass: {
+                                      container: profileStyle.sweetAlertContainer,
+                                    }
+                                  });
+                                }
+                              })
+                            }}
+                          >
+                            Aplicar cambios
+                          </Button>
+                        </Form>
+                      )}
+                    </Formik>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </Modal>
+            </Modal>
+          </Box>
+          <ProfileList dataList={[
+            { name: "Descripcion", data: CaseObj && CaseObj?.descripcion },
+            { name: "Categoria", data: CaseObj && CaseObj?.categoria, },
+            { name: "Estado", data: CaseObj && CaseObj?.estado, },
+            { name: "Paciente", data: CaseObj && CaseObj?.paciente },
+            { name: "Especialistas", data: <ListFormater formatData={CaseObj ? CaseObj?.especialistas : []} /> },
+            { name: "Seguimiento", data: CaseObj && CaseObj?.seguimiento, },
+          ]} />
+
         </Box>
-        <ProfileList dataList={[
-          { name: "Descripcion", data: CaseObj && CaseObj?.descripcion },
-          { name: "Categoria", data: CaseObj && CaseObj?.categoria, },
-          { name: "Estado", data: CaseObj && CaseObj?.estado, },
-          { name: "Paciente", data: CaseObj && CaseObj?.paciente },
-          { name: "Especialistas", data: <ListFormater formatData={CaseObj ? CaseObj?.especialistas : []} /> },
-          { name: "Seguimiento", data: CaseObj && CaseObj?.seguimiento, },
-        ]} />
-
-      </Box>
-
+      }
       <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1 }}>
         <Box sx={{
           width: "100%",
@@ -613,7 +622,9 @@ const SpecificCase: React.FC = () => {
 };
 
 export default SpecificCase;
-
+//Estos dos arrays de objetos es para la info de las tablas, Preferi hacerlo aqui porque puedes
+//manejar las dos al mismo tiempo y mas si necesitas condicionales, no se como lo ibas  a hacer
+//y por eso no cree una mejor estructura que dos simples arrays
 /*const Case = {
     id: 1,
     descripcion: "es un muchacho muy pero muy grande y de buen corazom",

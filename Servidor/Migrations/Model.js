@@ -35,6 +35,17 @@ class Model {
         }
 
     }
+    async findUserRecords(id, table) {
+        try {
+            this.id = id;
+            const query = new Builder(table);
+            const [result, fields] = await DB.query(query.select_query('*', 'pacientes_id'), [this.id]);
+            return result;
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+    }
     async delete(id) {
         try {
             this.id = id;

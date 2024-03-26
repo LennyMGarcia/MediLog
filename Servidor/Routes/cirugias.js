@@ -50,12 +50,10 @@ router.get('/:id', id_validation, async (req, res) => {
         const paciente_data = await paciente.find(data?.pacientes_id);
         const especialista = new Especialista();
         const especialista_data = await especialista.find(data?.especialistas_id);
-        const usuario = new Usuario(data?.pacientes_id);
-        const user = await usuario.getUser();
-        const casos = await usuario.casos();
-        const cirugias = await usuario.cirugias();
-        const consultas = await usuario.consultas();
-        const transacciones = await usuario.transacciones();
+        const casos = await paciente.findUserRecords(paciente_data?.id, 'casos');
+        const cirugias = await paciente.findUserRecords(paciente_data?.id, 'cirugias');
+        const consultas = await paciente.findUserRecords(paciente_data?.id, 'consultas');
+        const transacciones = await paciente.findUserRecords(paciente_data?.id, 'transacciones');
 
         consultas.forEach(element => {
             element.especialista = `${especialista_data?.nombre} ${especialista_data?.apellido}` || 'Usuario Desconocido'

@@ -99,7 +99,12 @@ export default function TablaCasos({ type }: IProps) {
   const [dateStart, setDateStart] = useState<string | null>();
   const [dateEnd, setDateEnd] = useState<string | null>();
 
-  const rows = data;
+  const [rows, setRows] = useState<any[]>(data);
+
+  useEffect(() => {
+    setRows(data);
+  }, [data]);
+
 
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
@@ -158,35 +163,6 @@ export default function TablaCasos({ type }: IProps) {
   function stableSort(array: any[]) {
     const stabilized = array;
 
-    // if (dateStart)
-    //   stabilized = stabilized.filter((a) => {
-    //     const start = new Date(a.date);
-    //     const startState = new Date(dateStart);
-
-    //     // console.log(a.date);
-    //     // console.log(dateStart);
-    //     console.log(dayjs(start).isAfter(dayjs(startState)));
-    //     return dayjs(a.date).isAfter(dateStart);
-    //   });
-
-    // if (dateEnd)
-    //   stabilized = stabilized.filter((a) => {
-    //     return dayjs(a.date).isBefore(dateEnd);
-    //   });
-
-    // if (dateEnd)
-    //   stabilized = stabilized.filter((a) => {
-    //     a.date <= dateEnd;
-    //   });
-
-    // if (openInputSearch)
-    //   stabilized = stabilized.filter((item) => {
-    //     // item.numberOrder == openInputSearch;
-
-    //     return normalizeString(item.nameClient)
-    //       .toLowerCase()
-    //       .includes(openInputSearch.toLowerCase());
-    //   });
 
     setRowsTotal(stabilized.length);
     return stabilized;
@@ -199,7 +175,7 @@ export default function TablaCasos({ type }: IProps) {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [page, rowsPerPage, openInputSearch, dateStart, dateEnd]
+    [page, rowsPerPage, openInputSearch, dateStart, dateEnd, rows]
   );
 
   const search_patient = (search: string) => {
@@ -677,7 +653,7 @@ export default function TablaCasos({ type }: IProps) {
                       padding: "5px 16px",
                     }}
                   >
-                    <TableMenu />
+                    <TableMenu id={data?.id} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -750,3 +726,33 @@ export default function TablaCasos({ type }: IProps) {
     categoria: 1,
   },
 ];*/
+
+// if (dateStart)
+//   stabilized = stabilized.filter((a) => {
+//     const start = new Date(a.date);
+//     const startState = new Date(dateStart);
+
+//     // console.log(a.date);
+//     // console.log(dateStart);
+//     console.log(dayjs(start).isAfter(dayjs(startState)));
+//     return dayjs(a.date).isAfter(dateStart);
+//   });
+
+// if (dateEnd)
+//   stabilized = stabilized.filter((a) => {
+//     return dayjs(a.date).isBefore(dateEnd);
+//   });
+
+// if (dateEnd)
+//   stabilized = stabilized.filter((a) => {
+//     a.date <= dateEnd;
+//   });
+
+// if (openInputSearch)
+//   stabilized = stabilized.filter((item) => {
+//     // item.numberOrder == openInputSearch;
+
+//     return normalizeString(item.nameClient)
+//       .toLowerCase()
+//       .includes(openInputSearch.toLowerCase());
+//   });

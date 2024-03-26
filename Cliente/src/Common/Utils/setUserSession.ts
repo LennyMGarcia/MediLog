@@ -18,6 +18,9 @@ const useUserStore = create((set: any, get: any) => ({
         localStorage.setItem('user', JSON.stringify(user));
         return { user: user }
     }),
+    toggleLoading: (status: boolean) => set(() => {
+        return { loading: status }
+    }),
     getPacientes: (id: number) => {
         const query = JSON.parse(localStorage.getItem('user') || '{}');
         set({ pacientes: [] })

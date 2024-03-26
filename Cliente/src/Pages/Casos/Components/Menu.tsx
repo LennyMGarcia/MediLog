@@ -6,9 +6,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModalAlert from "../../../Common/Modals/ModalAlert";
-import { Visibility } from "@mui/icons-material";
+import { TurnedIn, Visibility } from "@mui/icons-material";
+import axios from "axios";
+import getBackendConnectionString from "../../../Common/Utils/getBackendString";
+import { useNavigate } from "react-router-dom";
 
-export default function TableMenu() {
+export default function TableMenu({ id }: any) {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -19,6 +23,20 @@ export default function TableMenu() {
   };
 
   const [openModal, setOpenModal] = React.useState(false);
+
+  const destroyMediaFromDB = async () => {
+    const success = await axios.delete(getBackendConnectionString(`casos/${id}`)).then(res => {
+      console.log(res);
+      if (res.status === 200 || res.status === 201) {
+        return true;
+      }
+      return false;
+    }).catch(error => {
+      console.log(error);
+      return false;
+    })
+    return success;
+  }
 
   return (
     <>
@@ -41,7 +59,10 @@ export default function TableMenu() {
         }}
       >
         <MenuItem
-          onClick={handleClose}
+          onClick={() => {
+            //handleClose
+            navigate(`/cases/${id}`);
+          }}
           sx={{
             gap: 1,
           }}
@@ -68,7 +89,13 @@ export default function TableMenu() {
         type="warning"
         open={openModal}
         handleClose={() => {
-          setOpenModal(false);
+          destroyMediaFromDB().then(success => {
+            if (!success) return false;
+            setOpenModal(false);
+            return true;
+          }).finally(() => {
+            window.location.reload();
+          })
         }}
       />
     </>

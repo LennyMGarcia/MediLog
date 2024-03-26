@@ -46,12 +46,10 @@ router.get('/:id', id_validation, async (req, res) => {
         const paciente_data = await paciente.find(data?.pacientes_id);
         const especialista = new Especialista();
         const especialista_data = await especialista.find(data?.especialistas_id);
-        const usuario = new Usuario(data?.pacientes_id);
-        const user = await usuario.getUser();
-        const casos = await usuario.casos();
-        const cirugias = await usuario.cirugias();
-        const consultas = await usuario.consultas();
-        const transacciones = await usuario.transacciones();
+        const casos = await paciente.findUserRecords(paciente_data?.id, 'casos');
+        const cirugias = await paciente.findUserRecords(paciente_data?.id, 'cirugias');
+        const consultas = await paciente.findUserRecords(paciente_data?.id, 'consultas');
+        const transacciones = await paciente.findUserRecords(paciente_data?.id, 'transacciones');
 
         consultas.forEach(element => {
             element.especialista = `${especialista_data?.nombre} ${especialista_data?.apellido}` || 'Usuario Desconocido'
@@ -59,6 +57,7 @@ router.get('/:id', id_validation, async (req, res) => {
         cirugias.forEach(element => {
             element.especialista = `${especialista_data?.nombre} ${especialista_data?.apellido}` || 'Usuario Desconocido'
         });
+
         data.estudios = JSON.parse(data.estudios) || [];
         data.plan_tratamiento = JSON.parse(data.plan_tratamiento) || [];
         const payload = {
@@ -119,6 +118,8 @@ router.delete('/:id', id_validation, async (req, res) => {
     if (validated.isEmpty()) {
         const model = new Consulta();
         const destroy = await model.delete(id);
+        console.log(destroy);
+        if (destroy[0]?.success === false) return res.status(destroy[0].status).json({ 'message': 'Esa Consulta tiene un caso abierto.' });
         return res.status(200).json({ 'message': 'Registro Eliminado Exitosamente.' });
     }
 
