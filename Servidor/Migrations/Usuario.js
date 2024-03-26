@@ -334,6 +334,7 @@ class Usuario extends Model {
         if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
 
         const columns = [
+            'id',
             'pacientes_id',
             'especialistas_id',
             'categoria',
@@ -343,6 +344,7 @@ class Usuario extends Model {
             'instrucciones',
             'resultado',
             'visibilidad',
+            'fecha',
             'eliminado',
         ];
 
@@ -383,6 +385,7 @@ class Usuario extends Model {
         if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
 
         const columns = [
+            'id',
             'pacientes_id',
             'especialistas_id',
             'motivo',
@@ -390,6 +393,7 @@ class Usuario extends Model {
             'observaciones',
             'plan_tratamiento',
             'visibilidad',
+            'fecha',
             'eliminado',
         ];
 

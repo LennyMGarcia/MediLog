@@ -18,6 +18,7 @@ const useDataCaseStore = create<CaseSchemaValues & CaseSchemaActions>((set, get)
     descripcion: "",
     pacientes: "",
     especialistas: [""],
+    especialistas_id: "",
     consultas: [""],
     cirugias: [""],
     estado: "Activo",
@@ -32,7 +33,7 @@ const useDataCaseStore = create<CaseSchemaValues & CaseSchemaActions>((set, get)
                 const currentArray = get()[validatedName] || [];
                 if (Array.isArray(currentArray)) {
                     const newArray: string[] = [...currentArray];
-                    if (typeof value === 'string') {
+                    if (typeof value === 'string' || typeof value === 'number') {
                         newArray[index] = value;
                         updatedData[validatedName] = newArray;
                     } else if (value === null) {

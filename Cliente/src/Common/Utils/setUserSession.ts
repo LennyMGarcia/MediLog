@@ -18,6 +18,9 @@ const useUserStore = create((set: any, get: any) => ({
         localStorage.setItem('user', JSON.stringify(user));
         return { user: user }
     }),
+    toggleLoading: (status: boolean) => set(() => {
+        return { loading: status }
+    }),
     getPacientes: (id: number) => {
         const query = JSON.parse(localStorage.getItem('user') || '{}');
         set({ pacientes: [] })
@@ -55,7 +58,7 @@ const useUserStore = create((set: any, get: any) => ({
             const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
                 const data = response.data;
                 if (response.status === 200 || response.status === 201) {
-                    console.log(data);
+                    //    console.log(data);
                     return data;
                 }
                 set({ loading: true })
@@ -78,7 +81,7 @@ const useUserStore = create((set: any, get: any) => ({
         const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
             const data = response.data;
             if (response.status === 200 || response.status === 201) {
-                console.log(data);
+                //   console.log(data);
                 return data;
             }
             set({ loading: true })
