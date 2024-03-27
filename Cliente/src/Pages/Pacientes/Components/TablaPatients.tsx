@@ -52,6 +52,8 @@ export default function TablaPatients() {
 
   //const isDoctor = getUser().tipo === 'Paciente' ? false : true;
 
+
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rowsTotal, setRowsTotal] = useState(data.length);

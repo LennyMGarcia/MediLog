@@ -21,7 +21,7 @@ import useUserStore from "../Utils/setUserSession";
 const pagesPatients = [
   { name: "Dashboard", link: "/dashboard" },
   { name: "Casos", link: "/cases" },
-  { name: "Casos Terceros", link: "/" },
+  { name: "Casos Terceros", link: "/externalCases" },
   { name: "Perfil", link: "/profile" },
 ];
 
@@ -44,13 +44,13 @@ function Appbar() {
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
 
-  /*useEffect(() => {
+  useEffect(() => {
     if (!authenticated()) {
       navigate('/')
       return;
     }
     return;
-  });*/
+  });
 
   const nombre = authenticated() ? getUser().nombre : null;
   const apellido = authenticated() ? getUser().apellido : null;
