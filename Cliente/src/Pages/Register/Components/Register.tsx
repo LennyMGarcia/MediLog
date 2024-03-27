@@ -27,6 +27,8 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import axios from "axios";
 import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import { useEffect, useState } from "react";
+import BannerSnackbars from "../../../Common/snackbars/BannerSnackBar";
+import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 
 const ImageArray = [
   registerDoctor,
@@ -67,6 +69,11 @@ const initialValues = [
 ];
 
 const Register: React.FC = () => {
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const { authUser } = useUserStore();
   const { authenticated } = useUserStore();
   const [logged, setLogged] = useState(false);
@@ -88,7 +95,7 @@ const Register: React.FC = () => {
     if (currentStepIndex === steps.length - 2) {
       const result = await axios
         .post(
-          getBackendConnectionString("register"),
+          getBackendConnectionString("test"),
           {
             nombre: getRegisterData("nombre"),
             apellido: getRegisterData("apellido"),
@@ -128,16 +135,28 @@ const Register: React.FC = () => {
             next();
             return { success: true, message: response.statusText };
           } else {
-            const error_msj = response.data?.message;
+            console.log(response)
+            const error_msj = response.data?.message; 
             console.log(response);
             console.log(error_msj);
+            setStatusCode(response.status);
+            setMessage(response.statusText)
+            setOpen(true);
+            console.log(open)
             return { success: false, message: error_msj };
           }
         })
         .catch((error) => {
+          console.log(error)
           const error_msj = error?.response?.data?.message;
-          console.log(error);
+          console.log(error.response.statusText);
           console.log(error_msj);
+          setStatusCode(error.response.status);
+          setMessage(() => {
+           return getHTTPTextError(error.response.status);
+          });
+          setOpen(true);
+          console.log(open)
           return { success: false, message: error_msj };
         });
       return result;
@@ -209,6 +228,8 @@ const Register: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
+      <BannerSnackbars status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
+
     </Box>
   );
 

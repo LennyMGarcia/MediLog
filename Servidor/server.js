@@ -64,9 +64,9 @@ app.get("/test", async (req, res) => {
 // RUTA PARA COMPROBAR ALGORITMO DE SNAPBACK
 app.post("/test", async (req, res) => {
     console.log(req.body);
-    console.log(correo);
-    console.log(contrasena);
-    return res.status(307).json({ 'message': 'Credenciales Incorrectas o Contrasena Correcta.' });
+    /*console.log(correo);
+    console.log(contrasena);*/
+    return res.status(500).json({ 'message': 'Credenciales Incorrectas o Contrasena Correcta.' });
 });
 
 // Iniciar Servidor en Puerto Designado
