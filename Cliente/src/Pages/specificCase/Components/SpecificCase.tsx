@@ -77,7 +77,6 @@ const SpecificCase: React.FC = () => {
   const { getUser } = useUserStore();
   const loading = useUserStore(state => state.loading);
 
-
   interface IfoundCase {
     id: number;
     descripcion: string;

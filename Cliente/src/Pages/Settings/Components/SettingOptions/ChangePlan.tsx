@@ -18,7 +18,8 @@ import useTheme from "@mui/material/styles/useTheme";
 import useUserStore from '../../../../Common/Utils/setUserSession';
 import axios from 'axios';
 import getBackendConnectionString from '../../../../Common/Utils/getBackendString';
-
+import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
 interface Option {
   value: string;
   label: string;
@@ -186,6 +187,10 @@ const ChangePlan: React.FC = () => {
 
 const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
 
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const { authenticated } = useUserStore();
   const { getUser } = useUserStore();
   const { updateUser } = useUserStore();
@@ -208,7 +213,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
   const change_product = async (id: number, plan: string) => {
     if (!id) return;
 
-    const results = await axios.put(getBackendConnectionString(`usuarios/${id}`), {
+    const results = await axios.put(getBackendConnectionString(`usuarios/${id}`), {//usuarios
       plan: plan,
     }).then((response) => {
       console.log(response);
@@ -221,6 +226,11 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
       const error_msj = error?.response?.data?.message;
       console.log(error);
       console.log(error_msj);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
 
@@ -317,6 +327,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
       >
         Confirmar
       </Button>
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </div>
   );
 };

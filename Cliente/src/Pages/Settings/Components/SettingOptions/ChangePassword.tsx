@@ -20,6 +20,9 @@ import useTheme from "@mui/material/styles/useTheme";
 import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
 import axios from "axios";
 import useUserStore from "../../../../Common/Utils/setUserSession";
+import { useState } from "react";
+import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
 
 //Si necesitas cambiar un valor seria en la parte donde dice value, solo retorna un objeto yup esto, lo unico que cambia es el test
 //
@@ -66,6 +69,11 @@ const getPasswordSchema = () => {
 const passwordSchema = getPasswordSchema();
 
 const ChangePassword: React.FC = () => {
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -88,7 +96,7 @@ const ChangePassword: React.FC = () => {
   const change_password = async (currentPass: string, newPass: string) => {
     console.log(currentPass);
     console.log(newPass);
-    const result = await axios.put(getBackendConnectionString(`usuarios/password/${id}`), {
+    const result = await axios.put(getBackendConnectionString(`usuarios/password/${id}`), {//usuarios/password
       correo: correo,
       currentPass: currentPass,
       newPass: newPass
@@ -103,6 +111,15 @@ const ChangePassword: React.FC = () => {
       const error_msj = error?.response?.data?.message;
       console.log(error);
       console.log(error_msj);
+      setSsetStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);tatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return { success: false, message: error_msj };
     });
 
@@ -269,6 +286,7 @@ const ChangePassword: React.FC = () => {
 
 
       </Box>
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box >
   );
 

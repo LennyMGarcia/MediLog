@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import BannerSnackbars from "../../../Common/snackbars/BannerSnackBar";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 
+
 const ImageArray = [
   registerDoctor,
   asianDoctor,
@@ -95,7 +96,7 @@ const Register: React.FC = () => {
     if (currentStepIndex === steps.length - 2) {
       const result = await axios
         .post(
-          getBackendConnectionString("test"),
+          getBackendConnectionString("register"),//register
           {
             nombre: getRegisterData("nombre"),
             apellido: getRegisterData("apellido"),

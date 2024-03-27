@@ -37,6 +37,8 @@ import mergedSpecialistSchema from "../Utils/yup-schema/yupProfileSpecialistSche
 import axios from "axios";
 import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import useUserStore from "../../../Common/Utils/setUserSession";
+import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -137,6 +139,10 @@ const specialistProfileDataObject: ISpecialistProfileData = {
 
 const Profile: React.FC = () => {
 
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
   const loading = useUserStore(state => state.loading);
@@ -204,6 +210,11 @@ const Profile: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -237,6 +248,11 @@ const Profile: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -645,6 +661,7 @@ const Profile: React.FC = () => {
           </Grid>
 
         </Grid>}
+        <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 

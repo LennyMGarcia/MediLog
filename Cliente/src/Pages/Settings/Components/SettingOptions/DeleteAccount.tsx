@@ -18,6 +18,8 @@ import useTheme from "@mui/material/styles/useTheme";
 import axios from "axios";
 import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
 import useUserStore from "../../../../Common/Utils/setUserSession";
+import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
 
 const style = {
   position: "absolute" as "absolute",
@@ -60,6 +62,11 @@ const passwordSchema = getPasswordSchema(contrasenaFromDatabase);
 //const passwordSchema = getPasswordSchema();
 
 const DeleteAccount: React.FC = () => {
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
   const { logoutUser } = useUserStore();
@@ -86,7 +93,7 @@ const DeleteAccount: React.FC = () => {
   const handleModalClose = () => setModalOpen(false);
 
   const destroy_account = async (id: number) => {
-    const result = await axios.delete(getBackendConnectionString(`usuarios/${id}`))
+    const result = await axios.delete(getBackendConnectionString(`usuarios/${id}`))//usuarios
       .then((response) => {
         console.log(response);
         if (response.status === 200 || response.status === 201) {
@@ -97,10 +104,15 @@ const DeleteAccount: React.FC = () => {
         const error_msj = error?.response?.data?.message;
         console.log(error);
         console.log(error_msj);
+        setStatusCode(error.response.status);
+        setMessage(() => {
+          return getHTTPTextError(error.response.status);
+        });
+        setOpen(true);
         return { success: false, message: error_msj };
-      }).finally(() => {
-        logoutUser();
-      });
+      })/*.finally(() => {
+          logoutUser();
+        });*/
     return result;
   }
 
@@ -333,6 +345,7 @@ const DeleteAccount: React.FC = () => {
           </Box>
         </Modal>
       </Box>
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 };
