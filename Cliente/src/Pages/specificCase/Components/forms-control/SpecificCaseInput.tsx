@@ -9,6 +9,7 @@ import { useMediaQuery } from "@mui/material";
 import { getAllCaseData } from "../../StateManagement/ZustandSpecificCaseManagement";
 import { getAllConsultationData } from "../../StateManagement/ZustandConsultationManagement";
 import { getAllSurgeryData } from "../../StateManagement/ZustandSurgeryManagement";
+import { getAllCreateData } from "../../StateManagement/ZustandCreateCaseManagement";
 
 interface InputProps<T> extends Omit<TextFieldProps, "variant"> {
   label?: React.ReactNode;
@@ -32,6 +33,7 @@ const SPCaseInput: React.FC<InputProps<any>> = ({
     const newValue = e.target.value;
     const newValueFormatted: any = newValue.trim();
     setValue(newValue);
+    console.log(getAllCreateData());
     //console.log(getAllCaseData());
     //console.log(getAllConsultationData())
     //console.log(getAllSurgeryData())
@@ -43,9 +45,8 @@ const SPCaseInput: React.FC<InputProps<any>> = ({
   };
 
   useEffect(() => {
-    if(zustandCallback != undefined)
-    {
-        zustandCallback(name, initialValue);
+    if (zustandCallback != undefined) {
+      zustandCallback(name, initialValue);
     }
   }, []);
 

@@ -1,5 +1,5 @@
 import Table from "@mui/material/Table";
-import { Button } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -188,498 +188,500 @@ export default function TablaCasos({ type }: IProps) {
 
   return (
     <>
-      <TableContainer
-        component={Paper}
-        sx={{
-          boxShadow: "none",
-          paddding: "0px 24px",
-        }}
-      >
-        <Box
+      {loading ? <LinearProgress /> :
+
+        <TableContainer
+          component={Paper}
           sx={{
-            padding: "24px",
-            // width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
+            boxShadow: "none",
+            paddding: "0px 24px",
           }}
         >
-          {/* <Box></Box> */}
           <Box
             sx={{
+              padding: "24px",
+              // width: "100%",
               display: "flex",
-              gap: "16px",
+              justifyContent: "space-between",
             }}
           >
-            <TextField
-              label="Buscar"
-              variant="outlined"
+            {/* <Box></Box> */}
+            <Box
               sx={{
-                fieldset: {
-                  borderRadius: "8px",
-                  borderColor: "#CDCECF",
-                },
-                fontFamily: "Arial",
-                fontWeight: "400",
-                fontSize: "14px",
-                width: "300px",
-                ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "#CDCECF",
-                },
-                ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
-                  color: "#68696B",
-                },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#CDCECF", // Color del borde
-                  },
-                  "&:hover": {
-                    "& fieldset": {
-                      border: "solid 1px #111113",
-                    },
-                  },
-                  "&:focus": {
-                    "& fieldset": {
-                      border: "solid 1px #111113",
-                    },
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                  },
-                  "& legend span": {
-                    paddingLeft: "0px",
-                    paddingRight: "4px",
-                  },
-                  "& legend": {
-                    paddingInlineStar: "0px",
-                    paddingInlineEnd: "0px",
-                  },
-                },
+                display: "flex",
+                gap: "16px",
               }}
-              value={openInputSearch}
-              InputProps={{
-                startAdornment: <Search />,
-              }}
-              InputLabelProps={{
-                shrink: !!openInputSearch,
-                margin: "dense",
-                style: {
-                  paddingLeft: openInputSearch ? "0px" : "25px",
-                  color: "#68696B",
+            >
+              <TextField
+                label="Buscar"
+                variant="outlined"
+                sx={{
+                  fieldset: {
+                    borderRadius: "8px",
+                    borderColor: "#CDCECF",
+                  },
                   fontFamily: "Arial",
                   fontWeight: "400",
                   fontSize: "14px",
-                  marginTop: "3px",
-                },
-              }}
-              onChange={(e) => {
-                setOpenInputSearch(e.target.value);
-              }}
-            />
-            <Button
-              variant="contained"
+                  width: "300px",
+                  ".css-1oplba7-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                  {
+                    borderColor: "#CDCECF",
+                  },
+                  ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused": {
+                    color: "#68696B",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#CDCECF", // Color del borde
+                    },
+                    "&:hover": {
+                      "& fieldset": {
+                        border: "solid 1px #111113",
+                      },
+                    },
+                    "&:focus": {
+                      "& fieldset": {
+                        border: "solid 1px #111113",
+                      },
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#CDCECF", // Color del borde cuando está enfocado
+                    },
+                    "& legend span": {
+                      paddingLeft: "0px",
+                      paddingRight: "4px",
+                    },
+                    "& legend": {
+                      paddingInlineStar: "0px",
+                      paddingInlineEnd: "0px",
+                    },
+                  },
+                }}
+                value={openInputSearch}
+                InputProps={{
+                  startAdornment: <Search />,
+                }}
+                InputLabelProps={{
+                  shrink: !!openInputSearch,
+                  margin: "dense",
+                  style: {
+                    paddingLeft: openInputSearch ? "0px" : "25px",
+                    color: "#68696B",
+                    fontFamily: "Arial",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    marginTop: "3px",
+                  },
+                }}
+                onChange={(e) => {
+                  setOpenInputSearch(e.target.value);
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={{
+                  bgcolor: "#168AAD",
+                }}
+                onClick={() => {
+                  search_patient(openInputSearch);
+                }}
+              >
+                Buscar paciente
+              </Button>
+            </Box>
+            <Box
               sx={{
-                bgcolor: "#168AAD",
-              }}
-              onClick={() => {
-                search_patient(openInputSearch);
+                display: "flex",
+                gap: "16px",
               }}
             >
-              Buscar paciente
-            </Button>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Fecha de inicio"
+                  sx={{
+                    label: {
+                      marginTop: "3px",
+                      fontFamily: "Arial",
+                      fontWeight: "400",
+                      fontSize: "14px",
+                      color: "#68696B",
+                    },
+                    fieldset: {
+                      borderRadius: "8px",
+                      borderColor: "#CDCECF",
+                    },
+                    ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                    {
+                      borderColor: "#CDCECF",
+                    },
+                    ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
+                    {
+                      color: "#68696B",
+                    },
+                  }}
+                  format="DD/MM/YYYY"
+                  onChange={(newValue: any) => {
+                    setDateStart(dayjs(newValue).format("DD/MM/YYYY"));
+                  }}
+                  disableFuture
+                  slotProps={{
+                    day: {
+                      sx: {
+                        "&.Mui-selected": {
+                          backgroundColor: "#8EBF43 !important",
+                        },
+                      },
+                    },
+                    textField: {
+                      sx: {
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#CDCECF", // Color del borde
+                          },
+                          "&:hover": {
+                            "& fieldset": {
+                              border: "solid 1px #111113",
+                            },
+                          },
+                          "&:focus": {
+                            "& fieldset": {
+                              border: "solid 1px #111113",
+                            },
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#CDCECF", // Color del borde cuando está enfocado
+                            border: "solid 1px #111113",
+                          },
+                          "& legend span": {
+                            paddingLeft: "0px",
+                            paddingRight: "8px",
+                          },
+                          "& legend": {
+                            paddingInlineStar: "0px",
+                            paddingInlineEnd: "0px",
+                          },
+                        },
+                        label: {
+                          "&.Mui-focused": {
+                            color: "#68696B",
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  disableHighlightToday
+                />
+              </LocalizationProvider>
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Fecha final"
+                  format="DD/MM/YYYY"
+                  sx={{
+                    label: {
+                      marginTop: "3px",
+                      fontFamily: "Arial",
+                      fontWeight: "400",
+                      fontSize: "14px",
+                      color: "#68696B",
+                    },
+
+                    fieldset: {
+                      borderRadius: "8px",
+                      borderColor: "#CDCECF",
+                    },
+                    ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                    {
+                      borderColor: "#CDCECF",
+                    },
+                    ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
+                    {
+                      color: "#68696B",
+                    },
+                  }}
+                  disableFuture
+                  onChange={(newValue: any) => {
+                    console.log(newValue);
+                    setDateEnd(dayjs(newValue).format("DD/MM/YYYY"));
+                  }}
+                  slotProps={{
+                    day: {
+                      sx: {
+                        "&.Mui-selected": {
+                          backgroundColor: "#8EBF43 !important",
+                        },
+                      },
+                    },
+                    textField: {
+                      sx: {
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#CDCECF", // Color del borde
+                          },
+                          "&:hover": {
+                            "& fieldset": {
+                              border: "solid 1px #111113",
+                            },
+                          },
+                          "&:focus": {
+                            "& fieldset": {
+                              border: "solid 1px #111113",
+                            },
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#CDCECF", // Color del borde cuando está enfocado
+                            border: "solid 1px #111113",
+                          },
+                          "& legend span": {
+                            paddingLeft: "0px",
+                            paddingRight: "8px",
+                          },
+                          "& legend": {
+                            paddingInlineStar: "0px",
+                            paddingInlineEnd: "0px",
+                          },
+                        },
+                        label: {
+                          "&.Mui-focused": {
+                            color: "#68696B",
+                          },
+                        },
+                      },
+                    },
+                  }}
+                  disableHighlightToday
+                />
+              </LocalizationProvider>
+            </Box>
           </Box>
+
           <Box
             sx={{
-              display: "flex",
-              gap: "16px",
+              padding: "0px 24px",
             }}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Fecha de inicio"
-                sx={{
-                  label: {
-                    marginTop: "3px",
-                    fontFamily: "Arial",
-                    fontWeight: "400",
-                    fontSize: "14px",
-                    color: "#68696B",
-                  },
-                  fieldset: {
-                    borderRadius: "8px",
-                    borderColor: "#CDCECF",
-                  },
-                  ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                  {
-                    borderColor: "#CDCECF",
-                  },
-                  ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                  {
-                    color: "#68696B",
-                  },
-                }}
-                format="DD/MM/YYYY"
-                onChange={(newValue: any) => {
-                  setDateStart(dayjs(newValue).format("DD/MM/YYYY"));
-                }}
-                disableFuture
-                slotProps={{
-                  day: {
-                    sx: {
-                      "&.Mui-selected": {
-                        backgroundColor: "#8EBF43 !important",
-                      },
-                    },
-                  },
-                  textField: {
-                    sx: {
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#CDCECF", // Color del borde
-                        },
-                        "&:hover": {
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&:focus": {
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                          border: "solid 1px #111113",
-                        },
-                        "& legend span": {
-                          paddingLeft: "0px",
-                          paddingRight: "8px",
-                        },
-                        "& legend": {
-                          paddingInlineStar: "0px",
-                          paddingInlineEnd: "0px",
-                        },
-                      },
-                      label: {
-                        "&.Mui-focused": {
-                          color: "#68696B",
-                        },
-                      },
-                    },
-                  },
-                }}
-                disableHighlightToday
-              />
-            </LocalizationProvider>
-
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Fecha final"
-                format="DD/MM/YYYY"
-                sx={{
-                  label: {
-                    marginTop: "3px",
-                    fontFamily: "Arial",
-                    fontWeight: "400",
-                    fontSize: "14px",
-                    color: "#68696B",
-                  },
-
-                  fieldset: {
-                    borderRadius: "8px",
-                    borderColor: "#CDCECF",
-                  },
-                  ".css-1on77vi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                  {
-                    borderColor: "#CDCECF",
-                  },
-                  ".css-m524gb-MuiFormLabel-root-MuiInputLabel-root.Mui-focused":
-                  {
-                    color: "#68696B",
-                  },
-                }}
-                disableFuture
-                onChange={(newValue: any) => {
-                  console.log(newValue);
-                  setDateEnd(dayjs(newValue).format("DD/MM/YYYY"));
-                }}
-                slotProps={{
-                  day: {
-                    sx: {
-                      "&.Mui-selected": {
-                        backgroundColor: "#8EBF43 !important",
-                      },
-                    },
-                  },
-                  textField: {
-                    sx: {
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "#CDCECF", // Color del borde
-                        },
-                        "&:hover": {
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&:focus": {
-                          "& fieldset": {
-                            border: "solid 1px #111113",
-                          },
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#CDCECF", // Color del borde cuando está enfocado
-                          border: "solid 1px #111113",
-                        },
-                        "& legend span": {
-                          paddingLeft: "0px",
-                          paddingRight: "8px",
-                        },
-                        "& legend": {
-                          paddingInlineStar: "0px",
-                          paddingInlineEnd: "0px",
-                        },
-                      },
-                      label: {
-                        "&.Mui-focused": {
-                          color: "#68696B",
-                        },
-                      },
-                    },
-                  },
-                }}
-                disableHighlightToday
-              />
-            </LocalizationProvider>
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            padding: "0px 24px",
-          }}
-        >
-          <Table
-            aria-label="simple table"
-            sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
-          >
-            <TableHead
-              sx={{
-                backgroundColor: "#F4F4F5",
-              }}
+            <Table
+              aria-label="simple table"
+              sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
             >
-              <TableRow>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                >
-                  No. de Caso
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Caso
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  {isDoctor ? 'Pacientes' : 'Doctores'}
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Fecha
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Estatus
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Categoria
-                </TableCell>
-                <TableCell
-                  sx={{
-                    fontFamily: "Arial",
-                    fontWeight: "700",
-                    fontSize: "14px",
-                    color: "#939497",
-                  }}
-                  align="left"
-                >
-                  Acciones
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {visibleRows.map((data) => (
-                <TableRow
-                  key={data.id}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    borderRadius: "8px",
-                    "& > *": { borderBottom: "none" },
-                    ".css-1qanp6x-MuiTableCell-root": {
-                      borderBottom: "none",
-                    },
-                  }}
-                >
+              <TableHead
+                sx={{
+                  backgroundColor: "#F4F4F5",
+                }}
+              >
+                <TableRow>
                   <TableCell
-                    component="th"
-                    scope="row"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
                   >
-                    <Link component='button' variant="body2" onClick={() => {
-                      navigate(`/cases/${data?.id}`)
-                    }}>{data?.id}</Link>
+                    No. de Caso
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {data?.descripcion}
+                    Caso
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    <Link component='button' variant="body2" onClick={() => {
-                      if (isDoctor) {
-                        navigate(`/pacientes/${data?.pacientes_id}`)
-                      }
-                      return;
-                    }}>{isDoctor ? data?.pacientes_id : data?.especialistas_id}</Link>
+                    {isDoctor ? 'Pacientes' : 'Doctores'}
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {data?.fecha}
+                    Fecha
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    <Badge
-                      bg={badgetStatus[data.estado]?.color}
-                      tipo={badgetStatus[data.estado]?.name}
-                    />
+                    Estatus
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    {data?.categoria}
+                    Categoria
                   </TableCell>
                   <TableCell
-                    align="left"
                     sx={{
                       fontFamily: "Arial",
-                      fontWeight: "400",
+                      fontWeight: "700",
                       fontSize: "14px",
-                      color: "#070708",
-                      padding: "5px 16px",
+                      color: "#939497",
                     }}
+                    align="left"
                   >
-                    <TableMenu id={data?.id} />
+                    Acciones
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </TableContainer>
-
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50]}
-        component="div"
-        count={rowsTotal}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        labelRowsPerPage={"Filas por página:"}
-        sx={{
-          typography: {
-            color: "#070708",
-            lineHeight: "22px",
-            fontWeight: "400",
-            fontSize: "14px",
-          },
-        }}
-      />
+              </TableHead>
+              <TableBody>
+                {visibleRows.map((data) => (
+                  <TableRow
+                    key={data.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                      borderRadius: "8px",
+                      "& > *": { borderBottom: "none" },
+                      ".css-1qanp6x-MuiTableCell-root": {
+                        borderBottom: "none",
+                      },
+                    }}
+                  >
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      <Link component='button' variant="body2" onClick={() => {
+                        navigate(`/cases/${data?.id}`)
+                      }}>{data?.id}</Link>
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {data?.descripcion}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      <Link component='button' variant="body2" onClick={() => {
+                        if (isDoctor) {
+                          navigate(`/pacientes/${data?.pacientes_id}`)
+                        }
+                        return;
+                      }}>{isDoctor ? data?.pacientes_id : data?.especialistas_id}</Link>
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {data?.fecha}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      <Badge
+                        bg={badgetStatus[data.estado]?.color}
+                        tipo={badgetStatus[data.estado]?.name}
+                      />
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      {data?.categoria}
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontFamily: "Arial",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        color: "#070708",
+                        padding: "5px 16px",
+                      }}
+                    >
+                      <TableMenu id={data?.id} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </TableContainer>}
+      {!loading &&
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          component="div"
+          count={rowsTotal}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage={"Filas por página:"}
+          sx={{
+            typography: {
+              color: "#070708",
+              lineHeight: "22px",
+              fontWeight: "400",
+              fontSize: "14px",
+            },
+          }}
+        />}
     </>
   );
 }

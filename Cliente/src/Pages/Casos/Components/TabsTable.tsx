@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import { useState } from "react";
 import TablaCasos from "./TablaCasos";
+import TablaCasosTerceros from "./TablaCasosTerceros";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,7 +49,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function TabsTable() {
+export default function TabsTable({ type }: any) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -83,19 +84,24 @@ export default function TabsTable() {
 
       {/* Aqui las tablas dependiendo la tab seleccionada */}
       <CustomTabPanel value={value} index={0}>
-        <TablaCasos type="all" />
+        {type === 'CasosTerceros' ? <TablaCasosTerceros type="all" /> :
+          <TablaCasos type="all" />}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <TablaCasos type="Activo" />
+        {type === 'CasosTerceros' ? <TablaCasosTerceros type="Activo" /> :
+          <TablaCasos type="Activo" />}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <TablaCasos type="Proceso" />
+        {type === 'CasosTerceros' ? <TablaCasosTerceros type="Proceso" /> :
+          <TablaCasos type="Proceso" />}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <TablaCasos type="Inactivo" />
+        {type === 'CasosTerceros' ? <TablaCasosTerceros type="Inactivo" /> :
+          <TablaCasos type="Inactivo" />}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
-        <TablaCasos type="Suspendido" />
+        {type === 'CasosTerceros' ? <TablaCasosTerceros type="Suspendido" /> :
+          <TablaCasos type="Suspendido" />}
       </CustomTabPanel>
     </Box>
   );

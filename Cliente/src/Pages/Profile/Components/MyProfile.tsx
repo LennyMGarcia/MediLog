@@ -138,6 +138,7 @@ const MyProfile: React.FC = () => {
 
     const { getUser } = useUserStore();
     const { authenticated } = useUserStore();
+    const { toggleLoading } = useUserStore();
     const loading = useUserStore(state => state.loading);
 
     const { getRegisterData } = useDataRegisterStore();
@@ -197,6 +198,7 @@ const MyProfile: React.FC = () => {
         ).then(response => {
             console.log(response);
             if (response.status === 200 || response.status === 201) {
+                toggleLoading(false);
                 return response.data;
             }
             return false;
@@ -232,6 +234,7 @@ const MyProfile: React.FC = () => {
                 console.log(response);
                 if (response.status === 200 || response.status === 201) {
                     setUserType('Paciente');
+                    toggleLoading(false);
                     return true;
                 }
                 return false;
@@ -260,6 +263,7 @@ const MyProfile: React.FC = () => {
                 console.log(response);
                 if (response.status === 200 || response.status === 201) {
                     setUserType('Especialista');
+                    toggleLoading(false);
                     return true;
                 }
                 return false;

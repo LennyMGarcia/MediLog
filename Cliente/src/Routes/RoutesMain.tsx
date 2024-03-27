@@ -17,6 +17,7 @@ import NotFoundPage from "../Pages/Error404";
 import SpecificCase from "../Pages/specificCase/Components/SpecificCase";
 import Consultation from "../Pages/specificCase/Components/pages/Consultattion";
 import Surgery from "../Pages/specificCase/Components/pages/surgery";
+import CasosTerceros from "../Pages/Casos/CasosTerceros";
 
 export default function RoutesMain() {
   return (
@@ -32,6 +33,7 @@ export default function RoutesMain() {
           <Route path="/pacientes" element={<Patients />} />
           <Route path={"/pacientes/:idOrName"} element={<Profile />} />
           <Route path={"/cases"} element={<Casos />} />
+          <Route path={"/externalCases"} element={<CasosTerceros />} />
           <Route path={"/settings"} element={<Settings />} />
           <Route path={"/settings/appearance"} element={<Appearance />} />
           <Route path={"/settings/deleteAccount"} element={<DeleteAccount />} />
@@ -40,11 +42,11 @@ export default function RoutesMain() {
             element={<ChangePassword />}
           />
           <Route path={"/settings/changePlan"} element={<ChangePlan />} />
-          <Route path={"/cases/:id"} element={<SpecificCase/>}/>
-          <Route path={"/cases/consultation/:id"} element={<Consultation/>}/>
-          <Route path={"/cases/surgery/:id"} element={<Surgery/>}/>
+          <Route path={"/cases/:id"} element={<SpecificCase />} />
+          <Route path={"/cases/consultation/:id"} element={<Consultation />} />
+          <Route path={"/cases/surgery/:id"} element={<Surgery />} />
         </Route>
-        <Route path="*" element={<NotFoundPage/>}/>
+        <Route path="*" element={<NotFoundPage />} />
 
       </Routes>
     </BrowserRouter>

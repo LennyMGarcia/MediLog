@@ -4,6 +4,7 @@ const Paciente = require('../Migrations/Paciente');
 const Usuario = require('../Migrations/Usuario');
 const Producto = require('../Migrations/Producto');
 const { body, param, validationResult } = require('express-validator');
+const Caso = require('../Migrations/Caso');
 
 // Reglas de Validaciones
 const validaciones = [
@@ -59,6 +60,32 @@ router.get('/:id', id_validation, async (req, res) => {
         const product_model = new Producto();
         const producto = await product_model.find(user?.plan)
 
+        //Funccion que busca los familiares de un paciente si hay
+        const obj = JSON.parse(data?.familiares_id);
+        var familias = []
+        var ids = []
+        var casos_familiares = [];
+        if (obj) {
+            obj.forEach((element) => {
+                if (typeof (element) === 'string') {
+                    const id = parseInt(element);
+                    ids.push(id);
+                } else {
+                    ids.push(element);
+                }
+            });
+
+            for (let i = 0; i < ids.length; i++) {
+                const element = ids[i];
+                const family_member = new Paciente();
+                const family_member_data = await family_member.find(element);
+                const cases_family_member = new Caso();
+                const cases_family_member_data = await family_member.findUserRecords(family_member_data.id, 'casos');
+                familias.push(family_member_data);
+                casos_familiares.push(...cases_family_member_data);
+            }
+        }
+
         const payload = {
             id: data?.id || '',
             tipo: 'Paciente',
@@ -74,6 +101,8 @@ router.get('/:id', id_validation, async (req, res) => {
             padecimientos: data?.padecimientos || false,
             alergias: data?.alergias || false,
             familiares: data?.familiares_id || false,
+            familias: familias || [],
+            casos_familiares: casos_familiares || [],
             metodo_pago: user?.metodo_pago || 'Tarjeta de Credito',
             datos_financieros: user?.datos_financieros || '',
             cvv: user?.cvv || '',
