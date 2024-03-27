@@ -88,7 +88,7 @@ router.post('/', validaciones, async (req, res) => {
         const model = new Caso();
         const result = await model.insert(data);
 
-        if (result[0].success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(201).json(result);
     }
 
@@ -106,7 +106,7 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
         const model = new Caso();
         const result = await model.update(data, id);
 
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(201).json(result);
     }
 

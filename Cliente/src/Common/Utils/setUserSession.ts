@@ -10,6 +10,7 @@ const useUserStore = create((set: any, get: any) => ({
     casos: [],
     cirugias: [],
     consultas: [],
+    familiares: [],
     transacciones: [],
     pacientes: [],
     paciente: [],
@@ -21,35 +22,20 @@ const useUserStore = create((set: any, get: any) => ({
     toggleLoading: (status: boolean) => set(() => {
         return { loading: status }
     }),
-    getPacientes: (id: number) => {
-        const query = JSON.parse(localStorage.getItem('user') || '{}');
-        set({ pacientes: [] })
-        if (query.tipo === "Paciente") {
-            axios.get(getBackendConnectionString(`pacientes/${id}`)).then((response) => {
-                const data = response.data;
-                if (response.status === 200 || response.status === 201) {
-                    set({ casos: data.casos, cirugias: data.cirugias, consultas: data.consultas, transacciones: data.transacciones })
-                    console.log(data);
-                    return data;
-                }
-                return null;
-            }).catch(error => {
-                console.log(error);
-            })
-            return
-        }
-        axios.get(getBackendConnectionString(`pacientes/${id}`)).then((response) => {
-            const data = response.data;
-            console.log([data]);
+    getFamiliares: async (id: number) => {
+        const result = axios.get(getBackendConnectionString(`pacientes/${id}`)).then((response) => {
+            const data = response.data.casos_familiares
             if (response.status === 200 || response.status === 201) {
-                set({ paciente: [data] })
-                return;
+                set({ loading: false, familiares: data })
+                return data;
             }
-            return null;
+            return [];
         }).catch(error => {
             console.log(error);
+            set({ loading: true })
+            return [];
         })
-        return
+        return result;
     },
     autopopulate: async () => {
         const query = JSON.parse(localStorage.getItem('user') || '{}');
