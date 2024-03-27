@@ -12,10 +12,10 @@ export default function getHTTPTextError<IHTTPTextError>(erroNumber: string | nu
             return "Registro no existe";
         break;
         case "500":
-            return "Conflicto con foreign key, base de datos o acceso denegado";
+            return "Conflicto con base de datos o acceso denegado";
         break;
         case "501":
-            return "falta de privilegio o falta de autorizacion";
+            return "Falta de privilegio o falta de autorizacion";
         break;
         default:
             return "Se produjo un error al procesar la solicitud"

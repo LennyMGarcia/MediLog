@@ -291,7 +291,7 @@ const MyProfile: React.FC = () => {
     useEffect(() => {
         //  if (!userType) return navigate('/');
         if (userType === 'Paciente') {
-            setRuta('pacientes');
+            setRuta('test');
         } else {
             setRuta('especialistas');
         }
