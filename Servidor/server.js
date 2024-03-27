@@ -76,6 +76,13 @@ app.put("/test/:id", async (req, res) => {
     return res.status(500).json({ 'message': 'Credenciales Incorrectas o Contrasena Correcta.' });
 });
 
+app.delete("/test/:id", async (req, res) => {
+    console.log(req.body);
+    /*console.log(correo);
+    console.log(contrasena);*/
+    return res.status(404).json({ 'message': 'Credenciales Incorrectas o Contrasena Correcta.' });
+});
+
 // Iniciar Servidor en Puerto Designado
 app.listen(PORT, () => {
     console.log(`Conectado al Puerto:${PORT}`);
