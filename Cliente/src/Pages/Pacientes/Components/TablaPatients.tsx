@@ -23,6 +23,7 @@ import { Person2, Search } from "@mui/icons-material";
 //import pacientes from '../../../Common/Mocks/listaPaciente.json'
 import useUserStore from "../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router-dom";
+import { searchRecordsFromArray } from "../../Casos/Casos";
 
 type IProps = {
   idPatient: number;
@@ -39,7 +40,7 @@ export default function TablaPatients() {
   const pacientes = useUserStore((state) => state.pacientes);
   const loading = useUserStore(state => state.loading);
 
-  const [data, setData] = useState(pacientes);
+  const [data, setData] = useState<any[]>(pacientes);
 
   useEffect(() => {
     //Zustand que permite la consulta de pacientes relacionados con el usuario
@@ -51,8 +52,6 @@ export default function TablaPatients() {
   }, []);
 
   //const isDoctor = getUser().tipo === 'Paciente' ? false : true;
-
-
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -96,6 +95,13 @@ export default function TablaPatients() {
     [page, rowsPerPage, openInputSearch, dateStart, dateEnd, rows]
   );
 
+  const search_patient = (search: string) => {
+    if (!search) return;
+    const payload: any[] = searchRecordsFromArray(pacientes, search, 'nombre', 'apellido', undefined, 'correo');
+    setData(payload);
+    return;
+  }
+
   return (
     <>
       {loading ? <LinearProgress /> :
@@ -111,7 +117,7 @@ export default function TablaPatients() {
               padding: "24px",
               // width: "100%",
               display: "flex",
-              justifyContent: "space-between",
+              gap: "16px"
             }}
           >
             <TextField
@@ -189,6 +195,17 @@ export default function TablaPatients() {
                 setOpenInputSearch(e.target.value);
               }}
             />
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#168AAD",
+              }}
+              onClick={() => {
+                search_patient(openInputSearch);
+              }}
+            >
+              Buscar Paciente
+            </Button>
           </Box>
 
           <Box

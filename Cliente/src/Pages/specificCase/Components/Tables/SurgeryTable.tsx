@@ -11,7 +11,8 @@ import {
   InputAdornment,
   TablePagination,
   TextField,
-  LinearProgress
+  LinearProgress,
+  Button
 } from "@mui/material";
 import { useMemo, useState, useEffect } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -22,6 +23,8 @@ import { Search } from "@mui/icons-material";
 import CaseTableMenu from "./ConsultationMenu";
 import ConsultationMenu from "./ConsultationMenu";
 import useUserStore from "../../../../Common/Utils/setUserSession";
+import { useNavigate } from "react-router-dom";
+import { searchRecordsFromArray } from "../../../Casos/Casos";
 
 type IPropsData = {
   id: number;
@@ -52,6 +55,12 @@ interface IProps {
 
 export default function SurgeryTable({ type, dataObject }: IProps) {
   const loading = useUserStore(state => state.loading);
+  const navigate = useNavigate();
+
+  //Funccion que redirige si registro no existe
+  if (!dataObject) {
+    navigate('/cases');
+  }
   const data = dataObject
 
   const [page, setPage] = useState(0);
@@ -95,6 +104,13 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
       ),
     [page, rowsPerPage, openInputSearch, dateStart, dateEnd, rows]
   );
+
+  const search_patient = (search: string) => {
+    if (!search) return;
+    const payload: any[] = searchRecordsFromArray(dataObject, search, 'motivo', 'especialista', undefined, 'categoria');
+    setRows(payload);
+    return;
+  }
 
   return (
     <>
@@ -191,7 +207,17 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
                 setOpenInputSearch(e.target.value);
               }}
             />
-
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#168AAD",
+              }}
+              onClick={() => {
+                search_patient(openInputSearch);
+              }}
+            >
+              Buscar Cirugia
+            </Button>
             <Box
               sx={{
                 display: "flex",
