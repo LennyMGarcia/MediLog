@@ -34,6 +34,8 @@ import yupSurgerySchema from "../../Utils/yup-schema/yupSurgerySchema";
 import axios from "axios";
 import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
 import useUserStore from "../../../../Common/Utils/setUserSession";
+import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
 
 //NO QUIERO QUE TE LA PASES LEYENDO COMENTARIOS CUALQUIER COSA VE A SPECIFICASE
 
@@ -59,7 +61,7 @@ const Surgery: React.FC = () => {
     motivo: string,
     paciente: string,
     especialistas: string[],
-    especialistas_id: string | number,
+    especialistas_id: string ,
     observaciones: string,
     estudios: string[],
     instrucciones: string[],
@@ -67,6 +69,10 @@ const Surgery: React.FC = () => {
     resultado: string,
   }
   const loading = useUserStore(state => state.loading);
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
 
   const { authenticated } = useUserStore();
   const { toggleLoading } = useUserStore();
@@ -95,6 +101,11 @@ const Surgery: React.FC = () => {
         toggleLoading(false);
         return response.data;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
+      setOpen(true);
       return false;
     }
     ).catch(error => {
@@ -107,7 +118,7 @@ const Surgery: React.FC = () => {
 
   //Funccion que se encarga de buscar el record en la base de datos
   const editRecordFromDB = async (id: number | string | any, data: any) => {
-    const result = await axios.put(getBackendConnectionString(`cirugias/${id}`), data,
+    const result = await axios.put(getBackendConnectionString(`cirugias/${id}`), data, //cirugias
       {
         headers: {
           'Content-Type': 'application/json'
@@ -119,11 +130,20 @@ const Surgery: React.FC = () => {
         toggleLoading(false);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
+      setOpen(true);
       return false;
     }
     ).catch(error => {
       console.log(error);
-      navigate('/404');
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -345,7 +365,7 @@ const Surgery: React.FC = () => {
           ]} />
 
         </Box>}
-
+        <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 

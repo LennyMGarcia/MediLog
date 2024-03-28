@@ -48,6 +48,8 @@ import axios from "axios";
 import { set } from "zod";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import { LinearProgress, CircularProgress } from "@mui/material";
+import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -73,11 +75,14 @@ const style = {
 //VERAS QUE TODO ESTO ES ALGO QUE YA HAS VISTO, LO DE JULIO NO LO HE TOCADO MUCHO, SOLO PASE EL OBJETO HACIA ACA Y CAMBIE CAMPOS
 const SpecificCase: React.FC = () => {
 
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const { authenticated } = useUserStore();
   const { getUser } = useUserStore();
   const { toggleLoading } = useUserStore();
   const loading = useUserStore(state => state.loading);
-
 
   interface IfoundCase {
     id: number;
@@ -133,6 +138,7 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      navigate('/404');
       return false;
     });
     return result;
@@ -153,6 +159,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return surgery;
@@ -175,6 +186,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return consult;
@@ -182,7 +198,7 @@ const SpecificCase: React.FC = () => {
 
   //Funccion que se encarga de buscar el record en la base de datos
   const editRecordFromDB = async (id: number | string | any, data: any) => {
-    const result = await axios.put(getBackendConnectionString(`casos/${id}`), data,
+    const result = await axios.put(getBackendConnectionString(`casos/${id}`), data, //casos
       {
         headers: {
           'Content-Type': 'application/json'
@@ -198,6 +214,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -205,7 +226,7 @@ const SpecificCase: React.FC = () => {
 
   //Funccion que se agregar record a la base de datos
   const addRecordtoDB = async (id: number | string | any, data: any) => {
-    const result = await axios.post(getBackendConnectionString(`consultas`), data,
+    const result = await axios.post(getBackendConnectionString(`consultas`), data, //consultas
       {
         headers: {
           'Content-Type': 'application/json'
@@ -221,6 +242,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -273,7 +299,7 @@ const SpecificCase: React.FC = () => {
     paciente: "",
     especialista: [""],
     especialistas_id: [""],
-    observaciones: [""],
+    observaciones: "",
     estudios: [""],
     plan_tratamiento: [""],
   };
@@ -318,7 +344,7 @@ const SpecificCase: React.FC = () => {
 
   return (
     <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
-      {!loading &&
+      {true &&
         <Box
           sx={{
             backgroundColor: "#fff",
@@ -347,7 +373,7 @@ const SpecificCase: React.FC = () => {
           </Box>
 
         </Box>}
-      {loading ? <LinearProgress /> :
+      {false ? <LinearProgress /> :
         <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
           <Box sx={{
             width: "100%",
@@ -621,7 +647,7 @@ const SpecificCase: React.FC = () => {
             <div>Ninguna tabla coincide con la categoria</div>}
       </Box>
 
-
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 
