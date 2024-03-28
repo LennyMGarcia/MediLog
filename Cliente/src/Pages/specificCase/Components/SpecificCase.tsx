@@ -75,6 +75,7 @@ const SpecificCase: React.FC = () => {
 
   const { authenticated } = useUserStore();
   const { getUser } = useUserStore();
+  const { toggleLoading } = useUserStore();
   const loading = useUserStore(state => state.loading);
 
 
@@ -125,6 +126,7 @@ const SpecificCase: React.FC = () => {
     const result = await axios.get(getBackendConnectionString(`${table}/${id}`)
     ).then(response => {
       if (response.status === 200 || response.status === 201) {
+        toggleLoading(false);
         return response.data;
       }
       return false;
@@ -144,6 +146,7 @@ const SpecificCase: React.FC = () => {
        console.log(id)
        console.log(response.data)*/
       if (response.status === 200 || response.status === 201) {
+        toggleLoading(false);
         return response.data;
       }
       return false;
@@ -165,6 +168,7 @@ const SpecificCase: React.FC = () => {
        console.log(response.data)*/
 
       if (response.status === 200 || response.status === 201) {
+        toggleLoading(false);
         return response.data;
       }
       return false;
@@ -187,6 +191,7 @@ const SpecificCase: React.FC = () => {
     ).then(response => {
       console.log(response);
       if (response.status === 200 || response.status === 201) {
+        toggleLoading(false);
         return true;
       }
       return false;
@@ -209,6 +214,7 @@ const SpecificCase: React.FC = () => {
     ).then(response => {
       console.log(response);
       if (response.status === 200 || response.status === 201) {
+        toggleLoading(false);
         return true;
       }
       return false;

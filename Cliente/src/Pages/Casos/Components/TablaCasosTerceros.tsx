@@ -1,5 +1,4 @@
 import Table from "@mui/material/Table";
-import { Button, LinearProgress } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -12,6 +11,8 @@ import {
     InputAdornment,
     TablePagination,
     TextField,
+    Button,
+    LinearProgress
 } from "@mui/material";
 import { useMemo, useState, useEffect } from "react";
 import {
@@ -26,6 +27,7 @@ import TableMenu from "./Menu";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router";
 import { Link } from "@mui/material";
+import { searchRecordsFromArray } from "../Casos";
 
 type IPropsData = {
     id: number;
@@ -56,7 +58,7 @@ export default function TablaCasosTerceros({ type }: IProps) {
 
     const user_id = authenticated() ? getUser().member_id : null;
 
-    const [data, setData] = useState(type === 'all' ? familiares : familiares.filter((cases: any) => cases.estado === type));
+    const [data, setData] = useState<any[]>(type === 'all' ? familiares : familiares.filter((cases: any) => cases.estado === type));
 
     useEffect(() => {
         //Zustand que permite la consulta de casos relacionados con el usuario
@@ -186,10 +188,9 @@ export default function TablaCasosTerceros({ type }: IProps) {
     );
 
     const search_patient = (search: string) => {
-        const id = parseInt(search);
-        if (typeof (id) === 'number') {
-            navigate('/cases/' + search);
-        }
+        if (!search) return;
+        const payload: any[] = searchRecordsFromArray(familiares, search, 'descripcion', 'categoria', 'id');
+        setData(payload);
         return;
     }
 
@@ -294,7 +295,7 @@ export default function TablaCasosTerceros({ type }: IProps) {
                                     search_patient(openInputSearch);
                                 }}
                             >
-                                Buscar paciente
+                                Buscar Familiar
                             </Button>
                         </Box>
                         <Box

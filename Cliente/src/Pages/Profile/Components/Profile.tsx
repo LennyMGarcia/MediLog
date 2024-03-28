@@ -139,6 +139,7 @@ const Profile: React.FC = () => {
 
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
+  const user_id = authenticated() ? getUser().member_id : undefined;
   const loading = useUserStore(state => state.loading);
 
   const { getRegisterData } = useDataRegisterStore();
@@ -476,7 +477,8 @@ const Profile: React.FC = () => {
                             >
                               <Tab icon={<PersonPinIcon />} value="one" label="basico" />
                               <Tab icon={<PhoneIcon />} value="two" label="Contacto" />
-                              <Tab icon={<PaidIcon />} value="three" label="MonetariO" />
+                              {user_id === idOrName &&
+                                <Tab icon={<PaidIcon />} value="three" label="MonetariO" />}
                             </Tabs>
                             <Box sx={{
                               maxHeight: '60vh',
@@ -496,10 +498,10 @@ const Profile: React.FC = () => {
                               <Box role="tabpanel" hidden={tabValue !== "two"}>
                                 <ContactProfileForm profileValues={profileData || {}} />
                               </Box>
-
-                              <Box role="tabpanel" hidden={tabValue !== "three"}>
-                                <FinancialProfileForm profileValues={profileData || {}} />
-                              </Box>
+                              {user_id === idOrName &&
+                                <Box role="tabpanel" hidden={tabValue !== "three"}>
+                                  <FinancialProfileForm profileValues={profileData || {}} />
+                                </Box>}
 
                             </Box>
                             {/*ENVIAR INFORMACION*/}
@@ -627,21 +629,21 @@ const Profile: React.FC = () => {
                 ]} />
               </AccordionDetails>
             </Accordion>
-
-            <Accordion defaultExpanded>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                id="Informacion_financiera"
-              >
-                Informacion financiera
-              </AccordionSummary>
-              <AccordionDetails>
-                <ProfileList dataList={[
-                  { name: "Metodo de pago", data: profileData?.metodo_pago, },
-                  { name: "Codigo de tarjeta", data: profileData?.datos_financieros, },
-                ]} />
-              </AccordionDetails>
-            </Accordion>
+            {user_id === idOrName &&
+              <Accordion defaultExpanded>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  id="Informacion_financiera"
+                >
+                  Informacion financiera
+                </AccordionSummary>
+                <AccordionDetails>
+                  <ProfileList dataList={[
+                    { name: "Metodo de pago", data: profileData?.metodo_pago, },
+                    { name: "Codigo de tarjeta", data: profileData?.datos_financieros, },
+                  ]} />
+                </AccordionDetails>
+              </Accordion>}
           </Grid>
 
         </Grid>}
