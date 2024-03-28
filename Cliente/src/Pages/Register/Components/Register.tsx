@@ -152,11 +152,7 @@ const Register: React.FC = () => {
           const error_msj = error?.response?.data?.message;
           //console.log(error.response.statusText);
           //console.log(error_msj);
-          setStsetStatusCode(error.response.status);
-          setMessage(() => {
-           return getHTTPTextError(error.response.status);
-          });
-          setOpen(true);atusCode(error.response.status);
+          setStatusCode(error.response.status);
           setMessage(() => {
            return getHTTPTextError(error.response.status);
           });

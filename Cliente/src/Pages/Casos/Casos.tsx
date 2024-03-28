@@ -10,15 +10,14 @@ import yupCreateCaseSchema from "../specificCase/Utils/yup-schema/yupCreateCaseS
 import axios from "axios";
 import getBackendConnectionString from "../../Common/Utils/getBackendString";
 import Swal from "sweetalert2";
-import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManagement/ZustandCreateCaseManagement";
-import profileStyle from "../Profile/style/profileStyle.module.css";
-import useUserStore from "../../Common/Utils/setUserSession";
-<<<<<<< HEAD
 import LinearProgress from "@mui/material";
 import getHTTPTextError from "../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../Common/snackbars/BannerSnackBar";
-=======
->>>>>>> dev
+import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManagement/ZustandCreateCaseManagement";
+import profileStyle from "../Profile/style/profileStyle.module.css";
+import useUserStore from "../../Common/Utils/setUserSession";
+
+
 
 const style = {
   position: 'absolute' as 'absolute',
