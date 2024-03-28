@@ -14,6 +14,8 @@ import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManag
 import profileStyle from "../Profile/style/profileStyle.module.css";
 import useUserStore from "../../Common/Utils/setUserSession";
 import LinearProgress from "@mui/material";
+import getHTTPTextError from "../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../Common/snackbars/BannerSnackBar";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -29,6 +31,11 @@ const style = {
 };
 
 export default function CasosTerceros() {
+
+    const [open, setOpen] = useState<boolean>(false);
+    const [statusCode, setStatusCode] = useState<string | number>('');
+    const [message, setMessage] = useState<string>('');
+
     const { authenticated } = useUserStore();
     const { getUser } = useUserStore();
     const loading = useUserStore(state => state.loading);
@@ -56,6 +63,11 @@ export default function CasosTerceros() {
             return false;
         }
         ).catch(error => {
+            setStatusCode(error.response.status);
+            setMessage(() => {
+                return getHTTPTextError(error.response.status);
+            });
+            setOpen(true);
             console.log(error);
             return false;
         });
@@ -119,6 +131,7 @@ export default function CasosTerceros() {
                 {/* Componente de tablas y tabs */}
                 <TabsTable type='CasosTerceros' />
             </Grid>
+            <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
         </Grid>
     );
 }
