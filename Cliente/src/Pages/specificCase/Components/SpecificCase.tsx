@@ -48,6 +48,8 @@ import axios from "axios";
 import { set } from "zod";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import { LinearProgress, CircularProgress } from "@mui/material";
+import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -72,6 +74,10 @@ const style = {
 
 //VERAS QUE TODO ESTO ES ALGO QUE YA HAS VISTO, LO DE JULIO NO LO HE TOCADO MUCHO, SOLO PASE EL OBJETO HACIA ACA Y CAMBIE CAMPOS
 const SpecificCase: React.FC = () => {
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
 
   const { authenticated } = useUserStore();
   const { getUser } = useUserStore();
@@ -130,6 +136,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -149,6 +160,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return surgery;
@@ -170,6 +186,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return consult;
@@ -192,6 +213,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -214,6 +240,11 @@ const SpecificCase: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -614,7 +645,7 @@ const SpecificCase: React.FC = () => {
             <div>Ninguna tabla coincide con la categoria</div>}
       </Box>
 
-
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 

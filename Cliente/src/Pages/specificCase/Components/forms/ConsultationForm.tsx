@@ -60,7 +60,7 @@ const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallbac
                     zustandCallback={setOfZustandCallback}
                     label="Especialista ID"
                     name="especialistas_id"
-                    placeholder="Escriba sus observaciones"
+                    placeholder="Escriba el id del especialista"
                 />
             </Box>
 

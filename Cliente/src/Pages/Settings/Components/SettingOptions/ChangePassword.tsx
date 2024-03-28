@@ -111,11 +111,7 @@ const ChangePassword: React.FC = () => {
       const error_msj = error?.response?.data?.message;
       console.log(error);
       console.log(error_msj);
-      setSsetStatusCode(error.response.status);
-      setMessage(() => {
-        return getHTTPTextError(error.response.status);
-      });
-      setOpen(true);tatusCode(error.response.status);
+      setStatusCode(error.response.status);
       setMessage(() => {
         return getHTTPTextError(error.response.status);
       });

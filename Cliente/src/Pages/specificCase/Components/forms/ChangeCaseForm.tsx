@@ -12,7 +12,7 @@ interface ChangeCaseForm<T> {
     caseValues?: {
         descripcion: string,
         paciente: string,
-        especialistas: number[],
+        especialistas: number[] | string[], //se agego string[] aqui por si se necesita cambios o da errores
         especialistas_id: string | number,
         consultas: string[],
         cirugias: string[],
