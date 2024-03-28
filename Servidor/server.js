@@ -61,6 +61,13 @@ app.get("/test", async (req, res) => {
     return res.json('Pendejo tu DB no esta configurado!')
 });
 
+app.get("/test/:id", async (req, res) => {
+    console.log(req.body);
+    /*console.log(correo);
+    console.log(contrasena);*/
+    return res.status(500).json({ 'message': 'Credenciales Incorrectas o Contrasena Correcta.' });
+});
+
 // RUTA PARA COMPROBAR ALGORITMO DE SNAPBACK
 app.post("/test", async (req, res) => {
     console.log(req.body);
