@@ -13,6 +13,7 @@ import {
   InputAdornment,
   TablePagination,
   TextField,
+  Button
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -23,6 +24,8 @@ import { Search } from "@mui/icons-material";
 import CaseTableMenu from "./ConsultationMenu";
 import ConsultationMenu from "./ConsultationMenu";
 import useUserStore from "../../../../Common/Utils/setUserSession";
+import { searchRecordsFromArray } from "../../../Casos/Casos";
+import { useNavigate } from "react-router-dom";
 
 type IPropsData = {
   id: number;
@@ -83,6 +86,12 @@ export const Badge = ({ tipo, w, h }: { tipo: string, w?: string, h?: string }) 
 
 export default function ConsultationTable({ type, dataObject }: IProps) {
   const loading = useUserStore(state => state.loading);
+  const navigate = useNavigate();
+
+  //Funccion que redirige si registro no existe
+  if (!dataObject) {
+    navigate('/cases');
+  }
 
   const data = dataObject
 
@@ -126,6 +135,13 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
       ),
     [page, rowsPerPage, openInputSearch, dateStart, dateEnd, rows]
   );
+
+  const search_patient = (search: string) => {
+    if (!search) return;
+    const payload: any[] = searchRecordsFromArray(dataObject, search, 'motivo', 'especialista', 'pacientes_id');
+    setRows(payload);
+    return;
+  }
 
   return (
     <>
@@ -222,6 +238,17 @@ export default function ConsultationTable({ type, dataObject }: IProps) {
                 setOpenInputSearch(e.target.value);
               }}
             />
+            <Button
+              variant="contained"
+              sx={{
+                bgcolor: "#168AAD",
+              }}
+              onClick={() => {
+                search_patient(openInputSearch);
+              }}
+            >
+              Buscar Consulta
+            </Button>
             <Box
               sx={{
                 display: "flex",

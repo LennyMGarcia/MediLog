@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManagement/ZustandCreateCaseManagement";
 import profileStyle from "../Profile/style/profileStyle.module.css";
 import useUserStore from "../../Common/Utils/setUserSession";
-import LinearProgress from "@mui/material";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -28,10 +27,37 @@ const style = {
   p: 4,
 };
 
+//Funccion que se encarga del algoritmo de la barra de busqueda
+export const searchRecordsFromArray = (record: any[], search: string, field: string, backupfield: string, thirdfield?: string | undefined, fourthfield?: string): any[] => {
+  var payload: any[] = []
+  record.forEach(element => {
+    if (element[`${field}`]?.toLowerCase() === search?.toLowerCase()) {
+      payload.push(element);
+      console.log('field')
+      console.log(element)
+
+    } else if (element[`${backupfield}`]?.toLowerCase() === search?.toLowerCase()) {
+      payload.push(element);
+      console.log('backupfield')
+      console.log(element)
+    } else if (element[`${thirdfield}`] === parseInt(search)) {
+      payload.push(element);
+      console.log('thirdfield')
+      console.log(element)
+    } else if (element[`${fourthfield}`]?.toLowerCase() === search?.toLowerCase()) {
+      payload.push(element);
+      console.log('backupfield')
+      console.log(element)
+    }
+  });
+  console.log('payload')
+  console.log(payload)
+  return payload;
+}
+
 export default function Casos() {
   const { authenticated } = useUserStore();
   const { getUser } = useUserStore();
-  const loading = useUserStore(state => state.loading);
   const user_id = authenticated() ? getUser().member_id : null;
 
   const [caseInfoModalOpen, setCaseInfoModalOpen] = useState(false);

@@ -26,6 +26,7 @@ import TableMenu from "./Menu";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router";
 import { Link } from "@mui/material";
+import { searchRecordsFromArray } from "../Casos";
 
 type IPropsData = {
   id: number;
@@ -53,7 +54,7 @@ export default function TablaCasos({ type }: IProps) {
   const loading = useUserStore(state => state.loading);
   const casos = useUserStore((state) => state.casos);
 
-  const [data, setData] = useState(type === 'all' ? casos : casos.filter((cases: any) => cases.estado === type));
+  const [data, setData] = useState<any[]>(type === 'all' ? casos : casos.filter((cases: any) => cases.estado === type));
 
   useEffect(() => {
     //Zustand que permite la consulta de casos relacionados con el usuario
@@ -179,10 +180,9 @@ export default function TablaCasos({ type }: IProps) {
   );
 
   const search_patient = (search: string) => {
-    const id = parseInt(search);
-    if (typeof (id) === 'number') {
-      navigate('/cases/' + search);
-    }
+    if (!search) return;
+    const payload: any[] = searchRecordsFromArray(casos, search, 'descripcion', 'categoria', 'pacientes_id');
+    setData(payload);
     return;
   }
 
@@ -287,7 +287,7 @@ export default function TablaCasos({ type }: IProps) {
                   search_patient(openInputSearch);
                 }}
               >
-                Buscar paciente
+                Buscar Caso
               </Button>
             </Box>
             <Box
