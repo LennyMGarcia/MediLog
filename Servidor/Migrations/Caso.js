@@ -74,6 +74,25 @@ class Caso extends Model {
         }
 
     }
+    async subscribe(pacientes_id = null, especialistas_id = null) {
+        if (!pacientes_id) return [{ 'success': false, 'error': 'Registro No Existe', 'status': 400 }];
+        if (!especialistas_id) return [{ 'success': false, 'error': 'Registro No Existe', 'status': 400 }];
+
+        try {
+
+            this.values = [
+                especialistas_id,
+                pacientes_id
+            ];
+            const [results, fields] = await DB.execute(`UPDATE ${this.table} SET especialistas_id=? where pacientes_id=?`, this.values);
+            return results;
+
+        } catch (error) {
+            return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
+            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
+        }
+
+    }
 }
 
 module.exports = Caso;

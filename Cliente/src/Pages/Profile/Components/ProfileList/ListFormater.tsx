@@ -29,7 +29,7 @@ const ListFormater: React.FC<IDataListaFormater> = ({ formatData, isNavigate = f
                                 {isNavigate ?
                                     <Typography variant="body1">
                                         <strong>{
-                                            <Link to={`/profile/${item}`} onClick={() => handleLinkClick(item)}>{item}</Link>
+                                            <Link to={`/pacientes/${item}`} onClick={() => handleLinkClick(item)}>{item}</Link>
                                         }</strong>
                                     </Typography>
                                     :
