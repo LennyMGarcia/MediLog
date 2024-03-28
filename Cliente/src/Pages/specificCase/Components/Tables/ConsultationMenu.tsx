@@ -10,8 +10,15 @@ import { Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
+import { useState } from "react";
+import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
+import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
 
 export default function ConsultationMenu({ id, ruta }: any) {
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -34,6 +41,11 @@ export default function ConsultationMenu({ id, ruta }: any) {
       return false;
     }).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpenSnackbar(true);
       return false;
     })
     return success;
@@ -99,6 +111,7 @@ export default function ConsultationMenu({ id, ruta }: any) {
           })
         }}
       />
+      <BannerSnackbar status={statusCode} message={message} isOpen={openSnackbar} onClose={() => setOpenSnackbar(false)} />
     </>
   );
 }

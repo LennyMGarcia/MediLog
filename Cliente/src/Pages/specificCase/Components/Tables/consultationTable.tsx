@@ -50,7 +50,7 @@ interface IProps {
 }
 
 //AQUI EL BADGE 
-export const Badge = ({ tipo, w, h }: { tipo: string, w?: string, h?: string }) => {
+export const Badge = ({ tipo, w, h }: { tipo: string | undefined, w?: string, h?: string }) => {
   return (
     <Chip
       sx={{

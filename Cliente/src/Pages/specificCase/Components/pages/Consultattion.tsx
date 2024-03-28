@@ -33,6 +33,8 @@ import { useMediaQuery, useTheme, LinearProgress } from "@mui/material";
 import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
 import useUserStore from "../../../../Common/Utils/setUserSession";
 import axios from "axios";
+import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
+import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
 //NO QUIERO QUE TE LA PASES LEYENDO COMENTARIOS CUALQUIER COSA VE A SPECIFICASE
 
 const style = {
@@ -55,10 +57,15 @@ const Consultation: React.FC = () => {
     motivo: string,
     paciente: string,
     especialistas: string[],
+    especialistas_id: string,
     observaciones: string,
     estudios: string[],
     plan_tratamiento: string[]
   }
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
 
   const navigate = useNavigate();
   const loading = useUserStore(state => state.loading);
@@ -86,10 +93,16 @@ const Consultation: React.FC = () => {
         toggleLoading(false);
         return response.data;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
+      setOpen(true);
       return false;
     }
     ).catch(error => {
       console.log(error);
+      navigate('/404');
       return false;
     });
     return result;
@@ -97,7 +110,7 @@ const Consultation: React.FC = () => {
 
   //Funccion que se encarga de buscar el record en la base de datos
   const editRecordFromDB = async (id: number | string | any, data: any) => {
-    const result = await axios.put(getBackendConnectionString(`consultas/${id}`), data,
+    const result = await axios.put(getBackendConnectionString(`consultas/${id}`), data, //consultas
       {
         headers: {
           'Content-Type': 'application/json'
@@ -109,11 +122,20 @@ const Consultation: React.FC = () => {
         toggleLoading(false);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
+      setOpen(true);
       return false;
     }
     ).catch(error => {
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       console.log(error);
-      navigate('/404');
       return false;
     });
     return result;
@@ -327,7 +349,7 @@ const Consultation: React.FC = () => {
           ]} />
 
         </Box>}
-
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 
