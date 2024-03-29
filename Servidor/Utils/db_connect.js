@@ -12,7 +12,7 @@ const DB = mysql.createPool({
     user: process.env.DATABASE_USER || 'root',
     database: process.env.DATABASE_NAME || 'medilog',
     password: process.env.DATABASE_PASSWORD || '',
-    port: process.env.DATABASE_PORT || 3306,
+    port: process.env.DATABASE_PORT || 3305,
     waitForConnections: true,
     connectionLimit: 10, //Cantidad Maxima de Conexiones
     maxIdle: 10, //Tiempo de Inactividad Maxima

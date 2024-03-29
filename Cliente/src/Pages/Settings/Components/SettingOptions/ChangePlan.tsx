@@ -221,6 +221,10 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
         updateUser(plan);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }).catch(error => {
       const error_msj = error?.response?.data?.message;

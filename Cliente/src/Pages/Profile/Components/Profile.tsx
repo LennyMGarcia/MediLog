@@ -209,6 +209,10 @@ const Profile: React.FC = () => {
         toggleLoading(false);
         return response.data;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
@@ -248,6 +252,10 @@ const Profile: React.FC = () => {
         toggleLoading(false);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
@@ -309,6 +317,10 @@ const Profile: React.FC = () => {
         const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
 
         if (!fetchedProfileData) {
+          setStatusCode(404);
+          setMessage(() => {
+            return getHTTPTextError(404);
+          });
           console.log('No se encontró el perfil');
           navigate('/404');
           return id;
@@ -406,6 +418,10 @@ const Profile: React.FC = () => {
         toggleLoading(false);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }).catch(error => {
       console.log(error)
@@ -711,7 +727,7 @@ const Profile: React.FC = () => {
           </Grid>
 
         </Grid>}
-        <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 

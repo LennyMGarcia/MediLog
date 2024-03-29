@@ -205,6 +205,15 @@ export default function Navbar() {
                 sx={{
                   bgcolor: "#168AAD",
                 }}
+                onClick={() => navigate('/dashboard')}
+              >
+                Dashboard
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  bgcolor: "#168AAD",
+                }}
                 onClick={() => logout()}
               >
                 Desconectar

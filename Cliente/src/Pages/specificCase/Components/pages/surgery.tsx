@@ -61,7 +61,7 @@ const Surgery: React.FC = () => {
     motivo: string,
     paciente: string,
     especialistas: string[],
-    especialistas_id: string ,
+    especialistas_id: string,
     observaciones: string,
     estudios: string[],
     instrucciones: string[],
@@ -110,6 +110,10 @@ const Surgery: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
       navigate('/404');
       return false;
     });
@@ -365,7 +369,7 @@ const Surgery: React.FC = () => {
           ]} />
 
         </Box>}
-        <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 

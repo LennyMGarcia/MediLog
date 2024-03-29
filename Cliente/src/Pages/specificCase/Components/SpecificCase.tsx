@@ -134,10 +134,18 @@ const SpecificCase: React.FC = () => {
         toggleLoading(false);
         return response.data;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
       navigate('/404');
       return false;
     });
@@ -155,6 +163,10 @@ const SpecificCase: React.FC = () => {
         toggleLoading(false);
         return response.data;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
@@ -182,6 +194,10 @@ const SpecificCase: React.FC = () => {
         toggleLoading(false);
         return response.data;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
@@ -210,6 +226,10 @@ const SpecificCase: React.FC = () => {
         toggleLoading(false);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
@@ -238,6 +258,10 @@ const SpecificCase: React.FC = () => {
         toggleLoading(false);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {

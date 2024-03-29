@@ -99,6 +99,10 @@ const DeleteAccount: React.FC = () => {
         if (response.status === 200 || response.status === 201) {
           return { success: true, message: response.statusText };
         }
+        setStatusCode(response.status);
+        setMessage(() => {
+          return getHTTPTextError(response.status);
+        });
         return { success: false, message: response.statusText };
       }).catch(error => {
         const error_msj = error?.response?.data?.message;
@@ -110,9 +114,7 @@ const DeleteAccount: React.FC = () => {
         });
         setOpen(true);
         return { success: false, message: error_msj };
-      })/*.finally(() => {
-          logoutUser();
-        });*/
+      })
     return result;
   }
 
@@ -318,7 +320,10 @@ const DeleteAccount: React.FC = () => {
                                       container:
                                         SweetAlertDAStyle.sweetAlertContainer,
                                     },
-                                  }).finally(() => navigate("/"));
+                                  }).finally(() => {
+                                    logoutUser();
+                                    navigate("/")
+                                  });
                                 } else {
                                   Swal.fire({
                                     title: "Ha ocurrido un error",

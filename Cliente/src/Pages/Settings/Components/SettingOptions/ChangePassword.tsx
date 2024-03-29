@@ -105,6 +105,10 @@ const ChangePassword: React.FC = () => {
       if (response.status === 201 || response.status === 200) {
         return { success: true, message: response.statusText };
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return { success: false, message: response.statusText };
 
     }).catch(error => {

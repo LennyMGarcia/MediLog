@@ -89,6 +89,10 @@ export default function Casos() {
       if (response.status === 200 || response.status === 201) {
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {

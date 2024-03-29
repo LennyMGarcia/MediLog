@@ -207,6 +207,10 @@ const MyProfile: React.FC = () => {
                 toggleLoading(false);
                 return response.data;
             }
+            setStatusCode(response.status);
+            setMessage(() => {
+                return getHTTPTextError(response.status);
+            });
             return false;
         }
         ).catch(error => {
@@ -248,6 +252,10 @@ const MyProfile: React.FC = () => {
                     toggleLoading(false);
                     return true;
                 }
+                setStatusCode(response.status);
+                setMessage(() => {
+                    return getHTTPTextError(response.status);
+                });
                 return false;
             }
             ).catch(error => {
@@ -282,6 +290,10 @@ const MyProfile: React.FC = () => {
                     toggleLoading(false);
                     return true;
                 }
+                setStatusCode(response.status);
+                setMessage(() => {
+                    return getHTTPTextError(response.status);
+                });
                 return false;
             }
             ).catch(error => {
