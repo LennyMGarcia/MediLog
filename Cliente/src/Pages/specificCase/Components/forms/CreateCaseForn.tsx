@@ -34,7 +34,7 @@ const CreateCaseForm: React.FC<CreateCaseForm<any>> = ({ setOfZustandCallback, g
                     zustandCallback={setOfZustandCallback}
                     label="Descripcion"
                     name="descripcion"
-                    placeholder="Escriba su dirección"
+                    placeholder="Escriba su descripcion"
                 />
             </Box>
 
@@ -49,7 +49,7 @@ const CreateCaseForm: React.FC<CreateCaseForm<any>> = ({ setOfZustandCallback, g
                         { key: "Activo", value: "Activo" },
                         { key: "Inactivo", value: "Inactivo" },
                         { key: "Suspendido", value: "Suspendido" },
-                        { key: "Procese", value: "Proceso" },
+                        { key: "Proceso", value: "Proceso" },
                     ]}
                 />
             </Box>

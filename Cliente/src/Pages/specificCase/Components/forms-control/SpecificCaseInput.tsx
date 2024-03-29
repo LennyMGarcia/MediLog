@@ -15,7 +15,7 @@ interface InputProps<T> extends Omit<TextFieldProps, "variant"> {
   label?: React.ReactNode;
   name?: string;
   placeHolder?: string;
-  initialValue?: string;
+  initialValue?: string | number; //se agego number aqui por si se necesita cambios o da errores
   zustandCallback?: (name: string, value: T) => void;
 }
 
@@ -27,15 +27,15 @@ const SPCaseInput: React.FC<InputProps<any>> = ({
   zustandCallback,
   ...rest
 }) => {
-  const [value, setValue] = useState<string>(initialValue);
+  const [value, setValue] = useState<string | number>(initialValue); //se agego number aqui por si se necesita cambios o da errores
 
   const handleChange = (e: ChangeEvent<any>) => {
     const newValue = e.target.value;
     const newValueFormatted: any = newValue.trim();
     setValue(newValue);
-    console.log(getAllCreateData());
+    //console.log(getAllCreateData());
     //console.log(getAllCaseData());
-    //console.log(getAllConsultationData())
+    console.log(getAllConsultationData())
     //console.log(getAllSurgeryData())
 
     if (zustandCallback != undefined) {

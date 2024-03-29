@@ -10,9 +10,14 @@ import yupCreateCaseSchema from "../specificCase/Utils/yup-schema/yupCreateCaseS
 import axios from "axios";
 import getBackendConnectionString from "../../Common/Utils/getBackendString";
 import Swal from "sweetalert2";
+import LinearProgress from "@mui/material";
+import getHTTPTextError from "../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../Common/snackbars/BannerSnackBar";
 import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManagement/ZustandCreateCaseManagement";
 import profileStyle from "../Profile/style/profileStyle.module.css";
 import useUserStore from "../../Common/Utils/setUserSession";
+
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -56,6 +61,11 @@ export const searchRecordsFromArray = (record: any[], search: string, field: str
 }
 
 export default function Casos() {
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<string | number>('');
+  const [message, setMessage] = useState<string>('');
+
   const { authenticated } = useUserStore();
   const { getUser } = useUserStore();
   const user_id = authenticated() ? getUser().member_id : null;
@@ -68,7 +78,7 @@ export default function Casos() {
 
   //Funccion que se encarga de buscar el record en la base de datos
   const createRecordInDB = async (data: any) => {
-    const result = await axios.post(getBackendConnectionString(`casos`), data,
+    const result = await axios.post(getBackendConnectionString(`casos`), data, //casos
       {
         headers: {
           'Content-Type': 'application/json'
@@ -83,6 +93,11 @@ export default function Casos() {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
+      setOpen(true);
       return false;
     });
     return result;
@@ -280,6 +295,7 @@ export default function Casos() {
         {/* Componente de tablas y tabs */}
         <TabsTable type='Casos' />
       </Grid>
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Grid>
   );
 }
