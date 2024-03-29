@@ -38,6 +38,10 @@ export default function ConsultationMenu({ id, ruta }: any) {
       if (res.status === 200 || res.status === 201) {
         return true;
       }
+      setStatusCode(res.status);
+      setMessage(() => {
+        return getHTTPTextError(res.status);
+      });
       return false;
     }).catch(error => {
       console.log(error);

@@ -65,8 +65,8 @@ router.get('/:id', id_validation, async (req, res) => {
         var familias = []
         var ids = []
         var casos_familiares = [];
-        if (obj) {
-            obj.forEach((element) => {
+        if (obj.length >= 1) {
+            obj?.forEach((element) => {
                 if (typeof (element) === 'string') {
                     const id = parseInt(element);
                     ids.push(id);
@@ -80,7 +80,7 @@ router.get('/:id', id_validation, async (req, res) => {
                 const family_member = new Paciente();
                 const family_member_data = await family_member.find(element);
                 const cases_family_member = new Caso();
-                const cases_family_member_data = await family_member.findUserRecords(family_member_data.id, 'casos');
+                const cases_family_member_data = await family_member.findUserRecords(family_member_data?.id, 'casos');
                 familias.push(family_member_data);
                 casos_familiares.push(...cases_family_member_data);
             }

@@ -102,6 +102,10 @@ const Consultation: React.FC = () => {
     }
     ).catch(error => {
       console.log(error);
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
       navigate('/404');
       return false;
     });

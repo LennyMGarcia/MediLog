@@ -145,6 +145,7 @@ const Profile: React.FC = () => {
 
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
+  const { toggleLoading } = useUserStore();
   const user_id = authenticated() ? getUser().member_id : undefined;
   const loading = useUserStore(state => state.loading);
 
@@ -205,8 +206,13 @@ const Profile: React.FC = () => {
     ).then(response => {
       console.log(response);
       if (response.status === 200 || response.status === 201) {
+        toggleLoading(false);
         return response.data;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
@@ -243,8 +249,13 @@ const Profile: React.FC = () => {
     ).then(response => {
       console.log(response);
       if (response.status === 200 || response.status === 201) {
+        toggleLoading(false);
         return true;
       }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
       return false;
     }
     ).catch(error => {
@@ -306,6 +317,10 @@ const Profile: React.FC = () => {
         const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
 
         if (!fetchedProfileData) {
+          setStatusCode(404);
+          setMessage(() => {
+            return getHTTPTextError(404);
+          });
           console.log('No se encontró el perfil');
           navigate('/404');
           return id;
@@ -392,6 +407,29 @@ const Profile: React.FC = () => {
     return <CircularProgress />; //shadow
   }
 
+  const subscribe = async () => {
+    if (!user_id) return;
+    const success = await axios.put(getBackendConnectionString(`casos/subscribe/${idOrName}`), {
+      especialistas_id: user_id,
+    }).then(res => {
+      console.log(res)
+      if (res.status === 200 || res.status === 201) {
+        window.location.href = '/pacientes';
+        toggleLoading(false);
+        return true;
+      }
+      setStatusCode(response.status);
+      setMessage(() => {
+        return getHTTPTextError(response.status);
+      });
+      return false;
+    }).catch(error => {
+      console.log(error)
+      return false;
+    })
+    return success;
+  }
+
   const initialValues = {
     tabValue: "one",
     field1: "",
@@ -445,7 +483,32 @@ const Profile: React.FC = () => {
                   variant="square" >
                   {profileData?.nombre.charAt(0) || ''}
                 </Avatar>
+
               </Box>
+            </Box>
+            <Box sx={{
+              width: "15rem",
+              height: "2rem",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "2rem"
+            }}>
+              {rol === 'Admin' &&
+                <Button
+                  variant="contained"
+                  sx={{
+                    bgcolor: "#168AAD",
+                    width: "12rem",
+                    margin: "auto",
+                    marginLeft: "1.7rem"
+                  }}
+                  onClick={() => {
+                    subscribe()
+                  }}
+                >
+                  Suscribirse
+                </Button>}
             </Box>
             <Box sx={{
               margin: "auto",
@@ -457,6 +520,7 @@ const Profile: React.FC = () => {
               {/*EDITAR*/}
               {rol === 'Admin' &&
                 <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>}
+
               <Modal
                 keepMounted
                 open={modalOpen}
@@ -663,7 +727,7 @@ const Profile: React.FC = () => {
           </Grid>
 
         </Grid>}
-        <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
     </Box>
   );
 

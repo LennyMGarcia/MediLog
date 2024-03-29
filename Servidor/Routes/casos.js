@@ -113,6 +113,24 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
     const error_msg = validated.errors[0].msg;
     return res.status(400).json({ 'message': error_msg });
 });
+router.put('/subscribe/:id', id_validation, async (req, res) => {
+    const id = req.params.id;
+    const validated = validationResult(req);
+
+    //Condicion que verifica si los campos obligatorios estan incluidos
+    if (validated.isEmpty()) {
+        const especialistas_id = req.body.especialistas_id;
+
+        const model = new Caso();
+        const result = await model.subscribe(id, especialistas_id);
+        console.log(result);
+        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        return res.status(201).json(result);
+    }
+
+    const error_msg = validated.errors[0].msg;
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
+});
 router.delete('/:id', id_validation, async (req, res) => {
     const id = req.params.id;
     const validated = validationResult(req);
