@@ -12,7 +12,8 @@
     "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1",
 
     "caso-test":"jest Servidor/__test__/FunctionalTesting/casos.test.js",
-    "authUser-test":"jest Servidor/__test__/UnitTesting/isAuthUser.test.js"
+    "authUser-test":"jest Servidor/__test__/UnitTesting/isAuthUser.test.js",
+    "loggedIn-test":"jest Servidor/__test__/UnitTesting/isLoggedIn.test.js"
   },
   "proxy": "http://localhost:5173/",
   "keywords": [],
