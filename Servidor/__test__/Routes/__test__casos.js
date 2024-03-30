@@ -74,10 +74,6 @@ app.delete('/__test__casos/:id', id_validation, async (req, res) => {
     }
 });
 
-app.get("/testCasos/", async (req, res) => {
-    return res.status(200).send('H');
-});
-
 
 var server = app.listen(PORT, () => {
     console.log(`Conectado al Puerto:${PORT}`);

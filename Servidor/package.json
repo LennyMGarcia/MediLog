@@ -9,7 +9,10 @@
     "build": "npm run build --prefix ../Cliente",
     "dev": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run cliente\"",
     "devBuild": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run build\"",
-    "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1"
+    "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1",
+
+    "caso-test":"jest Servidor/__test__/FunctionalTesting/casos.test.js",
+    "authUser-test":"jest Servidor/__test__/UnitTesting/isAuthUser.test.js"
   },
   "proxy": "http://localhost:5173/",
   "keywords": [],
