@@ -95,10 +95,10 @@ describe('TEST DE CASOS', () => {
             nock.cleanAll();
         });
     
-        it("Espera recibir una solicitud 200 con PUT", async () => {
+        it("Espera recibir una solicitud 201 con PUT", async () => {
             nock(`http://localhost:${PORT}`)
                 .put('/casos/9')
-                .reply(200);
+                .reply(201);
     
             const response = await axios.put(`http://localhost:${PORT}/casos/9`, {
                 id:9,
@@ -111,7 +111,7 @@ describe('TEST DE CASOS', () => {
                 seguimiento: 'Seguimiento de prueba',
             });
 
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(201);
         });
     
         it("Debería retornar un error 400 cuando se hace una solicitud PUT con un ID inválido", async () => {
