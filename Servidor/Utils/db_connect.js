@@ -10,7 +10,7 @@ const mysql = require('mysql2/promise');
 const DB = mysql.createPool({
     host: process.env.DATABASE_HOST || 'localhost',
     user: process.env.DATABASE_USER || 'root',
-    database: process.env.DATABASE_NAME || 'medilog',
+    database: process.env.DATABASE_NAME || 'medilogPrueba',
     password: process.env.DATABASE_PASSWORD || '',
     port: process.env.DATABASE_PORT || 3306,
     waitForConnections: true,

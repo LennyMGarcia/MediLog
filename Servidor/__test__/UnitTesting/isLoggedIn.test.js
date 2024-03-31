@@ -1,15 +1,25 @@
 const axios = require('axios');
 const express = require('express');
-const __isLoggedIn = require('../Middlewares/__test__isLoggedIn'); // Suponiendo que el middleware se encuentra en un archivo isAuthUser.js
+const isLoggedIn = require('../../Middlewares/isLoggedIn');
 
-const app = express();
+describe('isLoggedIn middleware', () => {
+    let req, res, next;
 
-describe('isAuthUser middleware', () => {
-    it('Debe retornar 401 si no esta logueado', async () => {
-        expect(__isLoggedIn(1)).toBe("307")
+    beforeEach(() => {
+        req = { body: {} };
+        res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+        next = jest.fn();
     });
 
-    it('Deberia pasar si el usuario esta autenticado', async () => {
-        expect(__isLoggedIn(3)).toBe("200")
+    it('deberia llamar a next() si no hay un usuario en el cuerpo de la solicitud', () => {
+        isLoggedIn(req, res, next);
+        expect(next).toHaveBeenCalled();
+    });
+
+    it('deberia devolver un código de estado 307 y un mensaje de redireccion si hay un usuario en el cuerpo de la solicitud', () => {
+        req.body.user = { id: 123 };
+        isLoggedIn(req, res, next);
+        expect(res.status).toHaveBeenCalledWith(307);
+        expect(res.json).toHaveBeenCalledWith({ message: 'Accesso Denegado.', redirectTo: '/' });
     });
 });
