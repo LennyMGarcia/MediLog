@@ -1,7 +1,7 @@
 const axios = require('axios');
 const express = require('express');
-const app = require('../Routes/__test__casos'); //ejemplo si quieres usar rutas de prueba, no estan bien elaboradas
-const { closeServer } = require('../Routes/__test__casos');
+const app = require('../Routes/__test__route'); //ejemplo si quieres usar rutas de prueba, no estan bien elaboradas
+const { closeServer } = require('../Routes/__test__route');
 const nock = require('nock');
 
 const PORT = 3001;
