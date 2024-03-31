@@ -26,10 +26,10 @@ describe('TEST DE CASOS', () => {
         it('el ID debe ser 1', async () => {
             expect(response.data.id).toBe(9);
         });
-        it('Se espera que la descripcion sea Caso de Prueba', async () => {
+        it('Se espera que la descripcion sea Dolores cronicos', async () => {
             expect(response.data.descripcion).toBe('Dolores Cronicos');
         });
-        it('Se espera que la descripcion sea paciente de prueba', async () => {
+        it('Se espera que la descripcion sea Fulano Detal', async () => {
             expect(response.data.paciente).toBe('Fulano Detal');
         });
         it('Se espera que el estado sea Activo', async () => {
@@ -38,13 +38,13 @@ describe('TEST DE CASOS', () => {
         it('Se espera que el ID del paciente sea 1', async () => {
             expect(response.data.pacientes_id).toBe(1);
         });
-        it('Se espera que el ID del especialista sea 2', async () => {
+        it('Se espera que el ID del especialista sea 1', async () => {
             expect(response.data.especialistas_id).toBe("1");
         });
-        it('Se espera que la categoria sea Categoria de prueba', async () => {
+        it('Se espera que la categoria sea Dialisis', async () => {
             expect(response.data.categoria).toBe('Dialisis');
         });
-        it('Se espera que la el seguimiento sea Seguimiento de prueba', async () => {
+        it('Se espera que la el seguimiento sea Citas en 3 meses', async () => {
             expect(response.data.seguimiento).toBe('Citas en 3 meses');
         });
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {

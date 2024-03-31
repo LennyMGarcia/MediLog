@@ -11,6 +11,7 @@
     "devBuild": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run build\"",
     "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1",
     
+    "inicio-test":"jest Servidor/__test__/FunctionalTesting/inicio.test.js",
     "caso-test": "jest Servidor/__test__/FunctionalTesting/casos.test.js",
     "cirugias-test":"jest Servidor/__test__/FunctionalTesting/cirugias.test.js",
     "isAuthUser-test": "jest Servidor/__test__/UnitTesting/isAuthUser.test.js",
