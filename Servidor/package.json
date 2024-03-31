@@ -14,6 +14,7 @@
     "inicio-test":"jest Servidor/__test__/FunctionalTesting/inicio.test.js",
     "caso-test": "jest Servidor/__test__/FunctionalTesting/casos.test.js",
     "cirugias-test":"jest Servidor/__test__/FunctionalTesting/cirugias.test.js",
+    "consultas-test":"jest Servidor/__test__/FunctionalTesting/consultas.test.js",
     "isAuthUser-test": "jest Servidor/__test__/UnitTesting/isAuthUser.test.js",
     "isLoggedIn-test": "jest Servidor/__test__/UnitTesting/isLoggedIn.test.js"
   },
