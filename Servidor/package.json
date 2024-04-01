@@ -9,13 +9,30 @@
     "build": "npm run build --prefix ../Cliente",
     "dev": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run cliente\"",
     "devBuild": "concurrently --kill-others-on-fail \"npm run servidor\" \"npm run build\"",
-    "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1"
+    "test": "echo \"Medilog: La mejor aplicacion por Julio Sierra, Lenny Garcia, Ben Junior Dorlouis\" && exit 1",
+    
+    "inicio-test":"jest Servidor/__test__/FunctionalTesting/inicio.test.js",
+    "caso-test": "jest Servidor/__test__/FunctionalTesting/casos.test.js",
+    "cirugias-test":"jest Servidor/__test__/FunctionalTesting/cirugias.test.js",
+    "consultas-test":"jest Servidor/__test__/FunctionalTesting/consultas.test.js",
+    "especialistas-test":"jest Servidor/__test__/FunctionalTesting/especialistas.test.js",
+    "pacientes-test":"jest Servidor/__test__/FunctionalTesting/pacientes.test.js",
+    "productos-test":"jest Servidor/__test__/FunctionalTesting/productos.test.js",
+    "usuarios-test":"jest Servidor/__test__/FunctionalTesting/usuarios.test.js",
+
+    "isAuthUser-test": "jest Servidor/__test__/UnitTesting/isAuthUser.test.js",
+    "isLoggedIn-test": "jest Servidor/__test__/UnitTesting/isLoggedIn.test.js",
+
+    "jest-coverage":"jest --coverage",
+    "allJest":"npm run inicio-test && npm run caso-test && npm run cirugias-test && npm run consultas-test && npm run especialistas-test && npm run pacientes-test && npm run productos-test && npm run usuarios-test && npm run isAuthUser-test && npm run isLoggedIn-test"
+    
   },
   "proxy": "http://localhost:5173/",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "connect-sqlite3": "^0.9.13",
     "cookie-parser": "^1.4.6",
@@ -35,6 +52,9 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "nodemon": "^3.0.3"
+    "jest": "^29.7.0",
+    "nock": "^13.5.4",
+    "nodemon": "^3.0.3",
+    "supertest": "^6.3.4"
   }
 }

@@ -1,7 +1,7 @@
 const isLoggedIn = (req, res, next) => {
     //Middle que redirige si user ya esta loggeado
     const auth_user = req.body.user;
-    console.log('user ID: ' + auth_user?.id);
+    //console.log('user ID: ' + auth_user?.id);
     if (!auth_user) {
         next();
     }

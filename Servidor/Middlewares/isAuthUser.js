@@ -1,7 +1,7 @@
 const isAuthUser = (req, res, next) => {
     //Middle que protege las rutas de acceso no autorizado
     const auth_user = req.body.user;
-    console.log('user ID: ' + auth_user?.id);
+    //console.log('user ID: ' + auth_user?.id);
     if (auth_user) {
         next();
     }
