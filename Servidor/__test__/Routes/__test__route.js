@@ -22,6 +22,8 @@ const id_validation = [
     param('id').escape().trim().notEmpty().isInt().withMessage('Numero de Identificacion Invalido.')
 ];
 
+//Solo funciona para probar, aunque uso tambien cosas de aqui
+
 app.get('/__test__casos/:id', id_validation, async (req, res) => {
     const id = req.params.id;
     const validated = validationResult(req);
