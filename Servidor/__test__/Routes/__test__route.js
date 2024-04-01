@@ -76,7 +76,7 @@ app.delete('/__test__casos/:id', id_validation, async (req, res) => {
 
 
 var server = app.listen(PORT, () => {
-    console.log(`Conectado al Puerto:${PORT}`);
+    //console.log(`Conectado al Puerto:${PORT}`);
 });
 
 module.exports = {app, closeServer};

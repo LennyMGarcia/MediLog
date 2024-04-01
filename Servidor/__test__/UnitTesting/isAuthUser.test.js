@@ -1,6 +1,5 @@
 const axios = require('axios');
 const express = require('express');
-const __isAuthUser = require('../Middlewares/__test__isAuthUser'); // Suponiendo que el middleware se encuentra en un archivo isAuthUser.js
 
 const app = express();
 

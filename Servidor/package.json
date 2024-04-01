@@ -15,11 +15,17 @@
     "caso-test": "jest Servidor/__test__/FunctionalTesting/casos.test.js",
     "cirugias-test":"jest Servidor/__test__/FunctionalTesting/cirugias.test.js",
     "consultas-test":"jest Servidor/__test__/FunctionalTesting/consultas.test.js",
-    "especialitas-test":"jest Servidor/__test__/FunctionalTesting/especialistas.test.js",
+    "especialistas-test":"jest Servidor/__test__/FunctionalTesting/especialistas.test.js",
     "pacientes-test":"jest Servidor/__test__/FunctionalTesting/pacientes.test.js",
+    "productos-test":"jest Servidor/__test__/FunctionalTesting/productos.test.js",
+    "usuarios-test":"jest Servidor/__test__/FunctionalTesting/usuarios.test.js",
 
     "isAuthUser-test": "jest Servidor/__test__/UnitTesting/isAuthUser.test.js",
-    "isLoggedIn-test": "jest Servidor/__test__/UnitTesting/isLoggedIn.test.js"
+    "isLoggedIn-test": "jest Servidor/__test__/UnitTesting/isLoggedIn.test.js",
+
+    "jest-coverage":"jest --coverage",
+    "allJest":"npm run inicio-test && npm run caso-test && npm run cirugias-test && npm run consultas-test && npm run especialistas-test && npm run pacientes-test && npm run productos-test && npm run usuarios-test && npm run isAuthUser-test && npm run isLoggedIn-test"
+    
   },
   "proxy": "http://localhost:5173/",
   "keywords": [],

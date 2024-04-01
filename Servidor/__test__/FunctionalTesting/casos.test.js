@@ -23,7 +23,7 @@ describe('TEST DE CASOS', () => {
         it('Se espera un Ok o 200 como respuesta', async () => {
             expect(response.status).toBe(200);
         });
-        it('el ID debe ser 1', async () => {
+        it('el ID debe ser 9', async () => {
             expect(response.data.id).toBe(9);
         });
         it('Se espera que la descripcion sea Dolores cronicos', async () => {
