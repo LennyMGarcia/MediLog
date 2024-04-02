@@ -53,7 +53,7 @@ export default function Patients() {
                 borderRadius: "8px",
                 borderColor: "#CDCECF",
               },
-              backgroundColor: "#FFFFFF",
+              backgroundColor: globalTheme.palette.background.secondary,
 
               fontFamily: "Arial",
               fontWeight: "400",
@@ -132,7 +132,7 @@ export default function Patients() {
         xs={12}
         sx={{
           borderRadius: "25px",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: globalTheme.palette.background.secondary,
           boxShadow: "0px 12px 24px -4px #919EAB1F",
           width: "100%",
         }}

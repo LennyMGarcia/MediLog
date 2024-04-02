@@ -99,7 +99,7 @@ const ChangePlan: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#e9ecef",
+        backgroundColor: globalTheme.palette.background.main,
         width: "100vw",
         height: "160vh",
         padding: "1px",
@@ -107,7 +107,7 @@ const ChangePlan: React.FC = () => {
     >
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: "100vw",
           height: "10vh",
           boxShadow: 1,
@@ -139,7 +139,7 @@ const ChangePlan: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "20vw" : "65vw",
           height: "5vh",
           boxShadow: 1,
@@ -165,7 +165,7 @@ const ChangePlan: React.FC = () => {
       </Box>
 
       <Box sx={{
-        backgroundColor: "#fff",
+        backgroundColor: globalTheme.palette.background.secondary,
         width: isMediumScreen ? "90vw" : "100vw",
         height: "100vh",
         boxShadow: 1,
@@ -254,7 +254,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
           }}
 
           sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? `2px solid ${globalTheme.palette.primary.main}` : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
-        >   <Box sx={{ backgroundColor: option.color != ("" || null || undefined) ? option.color : "#e9ecef", borderRadius: "50%", width: "3.3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        >   <Box sx={{ backgroundColor: option.color != ("" || null || undefined) ? option.color : globalTheme.palette.background.main, borderRadius: "50%", width: "3.3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
             <ViewInArIcon></ViewInArIcon>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', }}>

@@ -129,13 +129,13 @@ const ChangePassword: React.FC = () => {
 
   return (
     <Box sx={{
-      backgroundColor: "#e9ecef",
+      backgroundColor: globalTheme.palette.background.main,
       width: "100vw",
       height: isMediumScreen ? "110rem" : "150vh",
       padding: "1px"
     }}>
       <Box sx={{
-        backgroundColor: "#fff",
+        backgroundColor: globalTheme.palette.background.secondary,
         width: "100vw",
         height: "10vh",
         boxShadow: 1,
@@ -157,7 +157,7 @@ const ChangePassword: React.FC = () => {
       </Box>
 
       <Box sx={{
-        backgroundColor: "#fff",
+        backgroundColor: globalTheme.palette.background.secondary,
         width: isMediumScreen ? "20vw" : '80vw',
         height: "5vh",
         boxShadow: 1,
@@ -170,7 +170,7 @@ const ChangePassword: React.FC = () => {
       </Box>
 
       <Box sx={{
-        backgroundColor: "#fff",
+        backgroundColor: globalTheme.palette.background.secondary,
         width: isMediumScreen ? "90vw" : "100vw",
         height: isMediumScreen ? "90vh" : "115vh",
         boxShadow: 1,

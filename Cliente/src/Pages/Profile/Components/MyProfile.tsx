@@ -437,7 +437,7 @@ const MyProfile: React.FC = () => {
 
     return (
 
-        <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
+        <Box sx={{ backgroundColor: globalTheme.palette.background.main, minHeight: "86vh", width: "100vw" }}>
             <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem" }} variant="h5">Perfil</Typography>
             {loading ? <LinearProgress /> :
                 <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>

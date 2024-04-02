@@ -22,7 +22,7 @@ const Settings: React.FC = () => {
     return (
         <Box
             sx={{
-                backgroundColor: "#e9ecef",
+                backgroundColor: globalTheme.palette.background.main,
                 width: "100vw",
                 height: "100vh",
                 padding: "1px",
@@ -30,7 +30,7 @@ const Settings: React.FC = () => {
         >
             <Box
                 sx={{
-                    backgroundColor: "#fff",
+                    backgroundColor: globalTheme.palette.background.secondary,
                     width: "100vw",
                     height: "10vh",
                     boxShadow: 1,
@@ -44,7 +44,7 @@ const Settings: React.FC = () => {
 
             <Box
                 sx={{
-                    backgroundColor: "#fff",
+                    backgroundColor: globalTheme.palette.background.secondary,
                     width: isMediumScreen ? "15vw" : "50vw",
                     height: "5vh",
                     boxShadow: 1,
@@ -71,7 +71,7 @@ const Settings: React.FC = () => {
 
             <Box
                 sx={{
-                    backgroundColor: "#fff",
+                    backgroundColor: globalTheme.palette.background.secondary,
                     width: isMediumScreen ? "90vw" : "100vw",
                     height: "70vh",
                     boxShadow: 1,
@@ -108,7 +108,7 @@ const Settings: React.FC = () => {
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                            backgroundColor: "#e9ecef",
+                                            backgroundColor: globalTheme.palette.background.main,
                                             width: isMediumScreen ? "5vw" : "23vw",
                                             height: "10vh",
                                             borderRadius: "0.5rem",
@@ -173,7 +173,7 @@ const Settings: React.FC = () => {
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                            backgroundColor: "#e9ecef",
+                                            backgroundColor: globalTheme.palette.background.main,
                                             width: isMediumScreen ? "5vw" : "23vw",
                                             height: "10vh",
                                             borderRadius: "0.5rem",
@@ -238,7 +238,7 @@ const Settings: React.FC = () => {
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                            backgroundColor: "#e9ecef",
+                                            backgroundColor: globalTheme.palette.background.main,
                                             width: isMediumScreen ? "5vw" : "23vw",
                                             height: "10vh",
                                             borderRadius: "0.5rem",
@@ -303,7 +303,7 @@ const Settings: React.FC = () => {
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                            backgroundColor: "#e9ecef",
+                                            backgroundColor: globalTheme.palette.background.main,
                                             width: isMediumScreen ? "5vw" : "23vw",
                                             height: "10vh",
                                             borderRadius: "0.5rem",

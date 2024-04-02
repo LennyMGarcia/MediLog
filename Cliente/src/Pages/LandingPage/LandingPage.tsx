@@ -194,7 +194,7 @@ export default function LandingPage() {
         // spacing={5}
         display={"flex"}
         gap={7}
-        bgcolor={"#E9ECEF"}
+        bgcolor={globalTheme.palette.background.main}
       >
         <Grid
           container
@@ -218,7 +218,7 @@ export default function LandingPage() {
             >
               <Typography
                 variant="h4"
-                color={"#E9ECEF"}
+                color={globalTheme.palette.background.main}
                 sx={{
                   fontWeight: "600",
                   textAlign: "center",
@@ -230,7 +230,7 @@ export default function LandingPage() {
 
               <Typography
                 variant="body1"
-                color={"#E9ECEF"}
+                color={globalTheme.palette.background.main}
                 sx={{
                   fontWeight: "400",
                   textAlign: "center",
@@ -262,7 +262,7 @@ export default function LandingPage() {
                   variant={"contained"}
                   sx={{
                     textTransform: "capitalize",
-                    color: "#E9ECEF",
+                    color: globalTheme.palette.background.main,
                     bgcolor: globalTheme.palette.secondary.main,
                   }}
                   onClick={() => {
@@ -277,7 +277,7 @@ export default function LandingPage() {
               {/* <Grid item xs={5} textAlign={"center"}> */}
               <Typography
                 variant="body1"
-                color={"#E9ECEF"}
+                color={globalTheme.palette.background.main}
                 sx={{
                   fontSize: "18px",
                 }}
@@ -360,7 +360,7 @@ export default function LandingPage() {
                   item
                   container
                   key={idx}
-                  bgcolor={"#FFFFFF"}
+                  bgcolor={globalTheme.palette.background.secondary}
                   borderRadius={"28px"}
                   xs={12}
                   sm={5}
@@ -459,7 +459,7 @@ export default function LandingPage() {
               fontSize={52}
               fontWeight={700}
               // color={"#0B1B35"}
-              color={"#E9ECEF"}
+              color={globalTheme.palette.background.main}
             >
               La Empresa
             </Typography>
@@ -467,7 +467,7 @@ export default function LandingPage() {
               textAlign={"center"}
               fontWeight={400}
               fontSize={18}
-              color={"#E9ECEF"}
+              color={globalTheme.palette.background.main}
             >
               SatoruScript desarrolla soluciones tecnológicas innovadoras para
               la salud, enfocadas en mejorar la calidad de vida. Trabajamos con
@@ -480,7 +480,7 @@ export default function LandingPage() {
 
           <Grid item container xs={12} spacing={3}>
             <Grid item xs={12}>
-              <Typography color={"#E9ECEF"} fontSize={18}>
+              <Typography color={globalTheme.palette.background.main} fontSize={18}>
                 Conoce a nuestro equipo:
               </Typography>
             </Grid>
@@ -513,7 +513,7 @@ export default function LandingPage() {
                         fontSize={22}
                         fontWeight={700}
                         // color={"E9ECEF"}
-                        color={"#E9ECEF"}
+                        color={globalTheme.palette.background.main}
                       >
                         {found.name}
                       </Typography>
@@ -591,7 +591,7 @@ export default function LandingPage() {
                   md={5.9}
                   lg={5.9}
                   key={idx}
-                  bgcolor={"#FFFFFF"}
+                  bgcolor={globalTheme.palette.background.secondary}
                   borderRadius={"28px"}
                   padding={2}
                   justifyContent={"space-between"}
@@ -720,7 +720,7 @@ export default function LandingPage() {
               variant="h4"
               fontSize={52}
               fontWeight={700}
-              color={"#E9ECEF"}
+              color={globalTheme.palette.background.main}
             >
               Resuelve tus dudas
             </Typography>

@@ -85,7 +85,7 @@ const Appearance: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#e9ecef",
+        backgroundColor: globalTheme.palette.background.main,
         width: "100vw",
         height: isMediumScreen ? "160vh" : " 170vh",
         padding: "1px",
@@ -93,7 +93,7 @@ const Appearance: React.FC = () => {
     >
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: "100vw",
           height: "10vh",
           boxShadow: 1,
@@ -125,7 +125,7 @@ const Appearance: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "16vw" : "60vw",
           height: "5vh",
           boxShadow: 1,
@@ -152,7 +152,7 @@ const Appearance: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "90vw" : "100vw",
           height: isMediumScreen ? "130vh" : "140vh",
           boxShadow: 1,

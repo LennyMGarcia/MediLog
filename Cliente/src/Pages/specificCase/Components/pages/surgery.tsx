@@ -200,11 +200,11 @@ const Surgery: React.FC = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
+    <Box sx={{ backgroundColor: globalTheme.palette.background.main, height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
       {!loading &&
         <Box
           sx={{
-            backgroundColor: "#fff",
+            backgroundColor: globalTheme.palette.background.secondary,
             width: "100vw",
             height: isMediumScreen ? "10vh" : "auto",
             boxShadow: 1,

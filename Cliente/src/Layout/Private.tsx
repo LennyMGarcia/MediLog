@@ -2,6 +2,7 @@ import { Box, Grid } from "@mui/material";
 import { Outlet } from "react-router";
 import Appbar from "../Common/Components/AppBar";
 import Footer from "../Common/Components/Footer";
+import { globalTheme } from "../theme/globalTheme";
 
 export default function Private() {
   return (
@@ -18,7 +19,7 @@ export default function Private() {
         sx={{
           width: "100%",
           minHeight: "90vh",
-          bgcolor: "#E9ECEF",
+          bgcolor: globalTheme.palette.background.main,
         }}
       >
         <Outlet />

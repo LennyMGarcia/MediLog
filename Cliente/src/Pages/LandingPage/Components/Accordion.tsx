@@ -50,7 +50,7 @@ export default function AccordionNormal({
           // flexDirection: "column",
           alignItems: "center",
           gap: "10px",
-          background: "#FFF",
+          background: globalTheme.palette.background.secondary,
           color: "#333",
           textAlign: "start",
           //   fontFamily: "Open Sans",

@@ -122,7 +122,7 @@ const DeleteAccount: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#e9ecef",
+        backgroundColor: globalTheme.palette.background.main,
         width: "100vw",
         height: isMediumScreen ? "130vh" : "160vh",
         padding: "1px",
@@ -130,7 +130,7 @@ const DeleteAccount: React.FC = () => {
     >
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: "100vw",
           height: "10vh",
           boxShadow: 1,
@@ -162,7 +162,7 @@ const DeleteAccount: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "20vw" : "70vw",
           height: "5vh",
           boxShadow: 1,
@@ -189,7 +189,7 @@ const DeleteAccount: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "90vw" : "100vw",
           height: isMediumScreen ? "100vh" : "130vh",
           boxShadow: 1,

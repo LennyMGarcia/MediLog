@@ -292,7 +292,7 @@ export default function Casos() {
         xs={12}
         sx={{
           borderRadius: "16px",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: globalTheme.palette.background.secondary,
           boxShadow: "0px 12px 24px -4px #919EAB1F",
           width: "100%",
         }}

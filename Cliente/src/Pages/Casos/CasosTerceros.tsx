@@ -16,6 +16,7 @@ import useUserStore from "../../Common/Utils/setUserSession";
 import LinearProgress from "@mui/material";
 import getHTTPTextError from "../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../theme/globalTheme";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -123,7 +124,7 @@ export default function CasosTerceros() {
                 xs={12}
                 sx={{
                     borderRadius: "16px",
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: globalTheme.palette.background.secondary,
                     boxShadow: "0px 12px 24px -4px #919EAB1F",
                     width: "100%",
                 }}
