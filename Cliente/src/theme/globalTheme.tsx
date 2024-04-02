@@ -2,8 +2,8 @@
 export const globalTheme = {
     palette: {
       background:{
-        main:"#e9ecef",
-        secondary:"#FFFFFF"
+        main:"#222",
+        secondary:"#666"
       },
       FSH:{
         main:"#184e77"
@@ -26,5 +26,10 @@ export const globalTheme = {
   
       }
     },
+    font:{
+      primary:{
+        main:"#fff"
+      }
+    }
   };
 

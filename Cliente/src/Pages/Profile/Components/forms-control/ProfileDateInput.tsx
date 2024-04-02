@@ -13,6 +13,7 @@ import Box from "@mui/material/Box/Box";
 import { useFormikContext } from "formik";
 import useDataRegisterStore from "../../../Register/ZustandRegisterManagement";
 import { useMediaQuery } from "@mui/material";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 interface DateProps {
   label?: React.ReactNode;
@@ -80,7 +81,25 @@ const ProfileDateInput: React.FC<DateProps> = ({
               {...rest}
               sx={{
                 "& .MuiInputBase-root": {
+                  color: globalTheme.font.primary.main,
                   height: "3rem",
+                },
+                '& .MuiFormLabel-root': {
+                  color: globalTheme.font.primary.main, 
+                },
+                
+                '& .MuiOutlinedInput-root': {
+                
+                  '& fieldset': {
+                    borderColor: globalTheme.font.primary.main,
+                     
+                  },
+                  '&:hover fieldset': {
+                    borderColor: globalTheme.palette.secondary.main,
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: globalTheme.palette.primary.main, // Color del borde cuando está enfocado
+                  },
                 },
                 display: "block",
                 mt: "0.8rem",

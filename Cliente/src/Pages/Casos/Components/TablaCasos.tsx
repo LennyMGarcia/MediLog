@@ -464,7 +464,7 @@ export default function TablaCasos({ type }: IProps) {
           >
             <Table
               aria-label="simple table"
-              sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
+              sx={{ borderCollapse: "separate", borderSpacing: "0 8px", }}
             >
               <TableHead
                 sx={{

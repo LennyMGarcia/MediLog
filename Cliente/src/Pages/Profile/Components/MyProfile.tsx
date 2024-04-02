@@ -47,7 +47,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: "auto",
     height: "auto",
-    bgcolor: 'background.paper',
+    bgcolor: globalTheme.palette.background.secondary,
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
@@ -438,18 +438,19 @@ const MyProfile: React.FC = () => {
     return (
 
         <Box sx={{ backgroundColor: globalTheme.palette.background.main, minHeight: "86vh", width: "100vw" }}>
-            <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem" }} variant="h5">Perfil</Typography>
+            <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem", color:globalTheme.font.primary.main }} variant="h5">Perfil</Typography>
             {loading ? <LinearProgress /> :
                 <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
                     <Grid item md={3} xs={12}>
                         <Box sx={{
-                            backgroundColor: "white",
+                            backgroundColor: globalTheme.palette.background.secondary,
+                            color:globalTheme.font.primary.main,
                             width: "15rem",
                             height: "16rem",
                             boxShadow: 1,
                             borderRadius: "1rem",
                         }}>
-                            <Typography sx={{ padding: "1rem" }} variant="body1">Foto de perfil</Typography>
+                            <Typography sx={{ padding: "1rem", }} variant="body1">Foto de perfil</Typography>
                             <Box sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -614,7 +615,7 @@ const MyProfile: React.FC = () => {
                     </Grid>
 
                     <Grid item md={9} xs={12} sx={{ marginLeft: "auto", marginRight: "auto" }}>
-                        <Accordion defaultExpanded>
+                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 id="Informacion_basica"
@@ -647,7 +648,7 @@ const MyProfile: React.FC = () => {
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion defaultExpanded>
+                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 id="Informacion_contacto"
@@ -663,7 +664,7 @@ const MyProfile: React.FC = () => {
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion defaultExpanded>
+                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 id="Informacion_financiera"
