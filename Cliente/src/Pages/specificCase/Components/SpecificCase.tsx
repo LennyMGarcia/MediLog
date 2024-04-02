@@ -50,6 +50,7 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import { LinearProgress, CircularProgress } from "@mui/material";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../theme/globalTheme";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -409,7 +410,7 @@ const SpecificCase: React.FC = () => {
             <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion del caso</Typography>
             {/*EDITAR*/}
             {/*{rol === 'Admin' &&*/}
-            <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Editar</Button>
+            <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Editar</Button>
             {/*}*/}
             <Modal
               keepMounted
@@ -437,7 +438,7 @@ const SpecificCase: React.FC = () => {
                               width: '0.5em',
                             },
                             '&::-webkit-scrollbar-thumb': {
-                              backgroundColor: '#52b69a',
+                              backgroundColor: globalTheme.palette.primary.main,
                               borderRadius: '4px',
                             },
                           }}>
@@ -452,7 +453,7 @@ const SpecificCase: React.FC = () => {
 
                           </Box>
                           {/*ENVIAR INFORMACION*/}
-                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                          <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                             fullWidth
                             variant="contained"
                             type="submit"
@@ -463,7 +464,7 @@ const SpecificCase: React.FC = () => {
                                 text: `Esta acción cambiara todos tus datos`,
                                 icon: 'question',
                                 showCancelButton: true,
-                                confirmButtonColor: '#52b69a',
+                                confirmButtonColor: globalTheme.palette.primary.main,
                                 cancelButtonColor: '#d33',
                                 confirmButtonText: 'Aplicar cambios',
                                 cancelButtonText: 'Cancelar',
@@ -550,7 +551,7 @@ const SpecificCase: React.FC = () => {
           <Typography variant="h6" sx={{ padding: "0 2rem 2rem 1rem" }}>{categoria}s</Typography>
           {/*EDITAR*/}
           {/*{rol === 'Admin' &&*/}
-          <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Agregar consulta</Button>
+          <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Agregar consulta</Button>
           {/*}*/}
           <Modal
             keepMounted
@@ -575,7 +576,7 @@ const SpecificCase: React.FC = () => {
                             width: '0.5em',
                           },
                           '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: '#52b69a',
+                            backgroundColor: globalTheme.palette.primary.main,
                             borderRadius: '4px',
                           },
                         }}>
@@ -588,7 +589,7 @@ const SpecificCase: React.FC = () => {
 
                         </Box>
                         {/*ENVIAR INFORMACION*/}
-                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                        <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                           fullWidth
                           variant="contained"
                           type="submit"
@@ -599,7 +600,7 @@ const SpecificCase: React.FC = () => {
                               text: `Esta acción cambiara todos tus datos`,
                               icon: 'question',
                               showCancelButton: true,
-                              confirmButtonColor: '#52b69a',
+                              confirmButtonColor: globalTheme.palette.primary.main,
                               cancelButtonColor: '#d33',
                               confirmButtonText: 'Aplicar cambios',
                               cancelButtonText: 'Cancelar',

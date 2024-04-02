@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import profileStyle from "../../style/profileStyle.module.css"
 import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
+import { globalTheme } from '../../../../theme/globalTheme';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -58,7 +59,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
             text: `Esta acción eliminará este elemento`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#52b69a',
+            confirmButtonColor: globalTheme.palette.primary.main,
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminarlo',
             cancelButtonText: 'Cancelar',
@@ -142,7 +143,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                             </Field>
 
                                             <Button variant="contained" sx={{
-                                                backgroundColor: " #52b69a",
+                                                backgroundColor: globalTheme.palette.primary.main,
                                                 height: "1rem",
                                                 width: '1rem',
                                                 '&:hover': {
@@ -154,7 +155,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                         </Box>
                                     ))}
                                     <Button sx={{
-                                        backgroundColor: " #52b69a",
+                                        backgroundColor: globalTheme.palette.primary.main,
                                         height: "1rem",
                                         width: '1rem',
                                         '&:hover': {

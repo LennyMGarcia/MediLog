@@ -2,6 +2,7 @@ import Box from "@mui/material/Box/Box";
 import Typography from "@mui/material/Typography/Typography";
 import React from "react";
 import highFiving from "/assets/Pictures/highFiving.png"
+import { globalTheme } from "../../../../theme/globalTheme";
 
 
 const ThanksForm: React.FC = () => {
@@ -14,7 +15,7 @@ const ThanksForm: React.FC = () => {
                     width: "13rem",
                     height: "13rem",
                     textAlign: "center",
-                    backgroundColor: "#52B69A",
+                    backgroundColor: globalTheme.palette.primary.main,
                     borderRadius: "50%",
                     display: "flex",
                     justifyContent: "center",

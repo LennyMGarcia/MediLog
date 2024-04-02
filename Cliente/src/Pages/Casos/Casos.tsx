@@ -16,6 +16,7 @@ import BannerSnackbar from "../../Common/snackbars/BannerSnackBar";
 import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManagement/ZustandCreateCaseManagement";
 import profileStyle from "../Profile/style/profileStyle.module.css";
 import useUserStore from "../../Common/Utils/setUserSession";
+import { globalTheme } from "../../theme/globalTheme";
 
 
 
@@ -167,7 +168,7 @@ export default function Casos() {
             }}
             variant="contained"
             sx={{
-              bgcolor: "#168AAD",
+              bgcolor: globalTheme.palette.secondary.main,
             }}
           >
             Crear caso
@@ -198,7 +199,7 @@ export default function Casos() {
                             width: '0.5em',
                           },
                           '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: '#52b69a',
+                            backgroundColor: globalTheme.palette.primary.main,
                             borderRadius: '4px',
                           },
                         }}>
@@ -210,7 +211,7 @@ export default function Casos() {
                           </Box>
                         </Box>
                         {/*ENVIAR INFORMACION*/}
-                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                        <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                           fullWidth
                           variant="contained"
                           type="submit"
@@ -221,7 +222,7 @@ export default function Casos() {
                               text: `Esta acción cambiara todos tus datos`,
                               icon: 'question',
                               showCancelButton: true,
-                              confirmButtonColor: '#52b69a',
+                              confirmButtonColor: globalTheme.palette.primary.main,
                               cancelButtonColor: '#d33',
                               confirmButtonText: 'Aplicar cambios',
                               cancelButtonText: 'Cancelar',

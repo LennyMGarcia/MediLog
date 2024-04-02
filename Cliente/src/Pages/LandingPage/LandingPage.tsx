@@ -5,6 +5,7 @@ import AccordionNormal from "./Components/Accordion";
 import useModalLogin from "../../Common/Modals/useModalLogin";
 import IconAndLabel from "/assets/Pictures/IconAndLabelFix.png";
 import useUserStore from "../../Common/Utils/setUserSession";
+import { globalTheme } from "../../theme/globalTheme";
 
 export default function LandingPage() {
   // Esta comentado para tener una vision de prueba con el otro mientras tanto
@@ -203,7 +204,7 @@ export default function LandingPage() {
           borderRadius={5}
           // padding={3}
           // spacing={1}
-          bgcolor={"#184E77"}
+          bgcolor={globalTheme.palette.FSH.main}
           columnSpacing={2}
         >
           <Grid item container xs={12} md={6} spacing={1}>
@@ -262,7 +263,7 @@ export default function LandingPage() {
                   sx={{
                     textTransform: "capitalize",
                     color: "#E9ECEF",
-                    bgcolor: "#168AAD",
+                    bgcolor: globalTheme.palette.secondary.main,
                   }}
                   onClick={() => {
                     handleOpenModal();
@@ -284,7 +285,7 @@ export default function LandingPage() {
                 No tienes cuenta?
                 <Button
                   sx={{
-                    color: "#168AAD",
+                    color: globalTheme.palette.secondary.main,
                     fontSize: "18px",
                   }}
                   onClick={() => navigate("/register")}
@@ -439,7 +440,7 @@ export default function LandingPage() {
           borderRadius={5}
           padding={3}
           gap={1}
-          bgcolor={"#184E77"}
+          bgcolor={globalTheme.palette.FSH.main}
         >
           <Grid item xs={12} flexDirection={"column"}>
             <Typography
@@ -702,7 +703,7 @@ export default function LandingPage() {
         </Grid> */}
         </Grid>
 
-        <Grid item xs={12} bgcolor={"#184E77"} borderRadius={5} padding={4}>
+        <Grid item xs={12} bgcolor={globalTheme.palette.FSH.main} borderRadius={5} padding={4}>
           <Grid item xs={12}>
             <Typography
               variant="h5"

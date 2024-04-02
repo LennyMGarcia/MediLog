@@ -11,6 +11,7 @@ import PasswordIcon from "@mui/icons-material/Password";
 import ViewCarouselIcon from "@mui/icons-material/ViewCarousel";
 import { useMediaQuery } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
+import { globalTheme } from "../../../theme/globalTheme";
 
 const Settings: React.FC = () => {
     const navigate = useNavigate();
@@ -117,7 +118,7 @@ const Settings: React.FC = () => {
                                             sx={{
                                                 width: isMediumScreen ? "3.5vw" : "10vw",
                                                 height: "7vh",
-                                                color: "#52b69a",
+                                                color: globalTheme.palette.primary.main,
                                             }}
                                         />
                                     </Grid>
@@ -182,7 +183,7 @@ const Settings: React.FC = () => {
                                             sx={{
                                                 width: isMediumScreen ? "3.5vw" : "10vw",
                                                 height: "7vh",
-                                                color: "#52b69a",
+                                                color: globalTheme.palette.primary.main,
                                             }}
                                         />
                                     </Grid>
@@ -247,7 +248,7 @@ const Settings: React.FC = () => {
                                             sx={{
                                                 width: isMediumScreen ? "3.5vw" : "10vw",
                                                 height: "7vh",
-                                                color: "#52b69a",
+                                                color: globalTheme.palette.primary.main,
                                             }}
                                         />
                                     </Grid>
@@ -312,7 +313,7 @@ const Settings: React.FC = () => {
                                             sx={{
                                                 width: isMediumScreen ? "3.5vw" : "10vw",
                                                 height: "7vh",
-                                                color: "#52b69a",
+                                                color: globalTheme.palette.primary.main,
                                             }}
                                         />
                                     </Grid>

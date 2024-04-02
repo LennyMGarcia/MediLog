@@ -38,6 +38,7 @@ import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../theme/globalTheme";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -457,7 +458,7 @@ const MyProfile: React.FC = () => {
                                 <Avatar sx={{
                                     height: "10rem",
                                     width: "10rem",
-                                    backgroundColor: "#52b69a",
+                                    backgroundColor: globalTheme.palette.primary.main,
                                     fontSize: "5rem"
                                 }}
                                     variant="square" >
@@ -473,7 +474,7 @@ const MyProfile: React.FC = () => {
                             alignItems: "center"
                         }}>
                             {/*EDITAR*/}
-                            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>
+                            <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: globalTheme.palette.primary.main, margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>
                             <Modal
                                 keepMounted
                                 open={modalOpen}
@@ -495,12 +496,12 @@ const MyProfile: React.FC = () => {
                                                             variant="fullWidth"
                                                             sx={{
                                                                 '& .MuiTabs-indicator': {
-                                                                    backgroundColor: ' #52b69a',
+                                                                    backgroundColor: globalTheme.palette.primary.main,
                                                                 },
                                                                 '& .MuiTab-root': {
-                                                                    color: '#168aad',
+                                                                    color: globalTheme.palette.secondary.main,
                                                                     '&.Mui-selected': {
-                                                                        color: ' #52b69a',
+                                                                        color: globalTheme.palette.primary.main,
                                                                     },
                                                                     '&:hover': {
                                                                         color: '#34a0a4',
@@ -519,7 +520,7 @@ const MyProfile: React.FC = () => {
                                                                 width: '0.5em',
                                                             },
                                                             '&::-webkit-scrollbar-thumb': {
-                                                                backgroundColor: '#52b69a',
+                                                                backgroundColor: globalTheme.palette.primary.main,
                                                                 borderRadius: '4px',
                                                             },
                                                         }}>
@@ -537,7 +538,7 @@ const MyProfile: React.FC = () => {
 
                                                         </Box>
                                                         {/*ENVIAR INFORMACION*/}
-                                                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                                                        <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                                                             fullWidth
                                                             variant="contained"
                                                             type="submit"
@@ -548,7 +549,7 @@ const MyProfile: React.FC = () => {
                                                                     text: `Esta acción cambiara todos tus datos`,
                                                                     icon: 'question',
                                                                     showCancelButton: true,
-                                                                    confirmButtonColor: '#52b69a',
+                                                                    confirmButtonColor: globalTheme.palette.primary.main,
                                                                     cancelButtonColor: '#d33',
                                                                     confirmButtonText: 'Aplicar cambios',
                                                                     cancelButtonText: 'Cancelar',

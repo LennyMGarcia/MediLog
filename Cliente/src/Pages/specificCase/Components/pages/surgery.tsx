@@ -36,6 +36,7 @@ import getBackendConnectionString from "../../../../Common/Utils/getBackendStrin
 import useUserStore from "../../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 //NO QUIERO QUE TE LA PASES LEYENDO COMENTARIOS CUALQUIER COSA VE A SPECIFICASE
 
@@ -241,7 +242,7 @@ const Surgery: React.FC = () => {
             <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion de la consulta</Typography>
             {/*EDITAR*/}
             {/*{rol === 'Admin' &&*/}
-            <Button variant="contained" onClick={handleSurgeryModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Editar</Button>
+            <Button variant="contained" onClick={handleSurgeryModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Editar</Button>
             {/*}*/}
             <Modal
               keepMounted
@@ -268,7 +269,7 @@ const Surgery: React.FC = () => {
                               width: '0.5em',
                             },
                             '&::-webkit-scrollbar-thumb': {
-                              backgroundColor: '#52b69a',
+                              backgroundColor: globalTheme.palette.primary.main,
                               borderRadius: '4px',
                             },
                           }}>
@@ -282,7 +283,7 @@ const Surgery: React.FC = () => {
 
                           </Box>
                           {/*ENVIAR INFORMACION*/}
-                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                          <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                             fullWidth
                             variant="contained"
                             type="submit"
@@ -293,7 +294,7 @@ const Surgery: React.FC = () => {
                                 text: `Esta acción cambiara todos tus datos`,
                                 icon: 'question',
                                 showCancelButton: true,
-                                confirmButtonColor: '#52b69a',
+                                confirmButtonColor: globalTheme.palette.primary.main,
                                 cancelButtonColor: '#d33',
                                 confirmButtonText: 'Aplicar cambios',
                                 cancelButtonText: 'Cancelar',

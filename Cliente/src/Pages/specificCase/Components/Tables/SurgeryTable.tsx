@@ -25,6 +25,7 @@ import ConsultationMenu from "./ConsultationMenu";
 import useUserStore from "../../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router-dom";
 import { searchRecordsFromArray } from "../../../Casos/Casos";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 type IPropsData = {
   id: number;
@@ -210,7 +211,7 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
             <Button
               variant="contained"
               sx={{
-                bgcolor: "#168AAD",
+                bgcolor: globalTheme.palette.secondary.main,
               }}
               onClick={() => {
                 search_patient(openInputSearch);

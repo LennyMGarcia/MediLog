@@ -18,6 +18,7 @@ import { ErrorMessage, Field, FieldProps, useFormikContext } from "formik";
 import useTheme from "@mui/material/styles/useTheme";
 // import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import { useMediaQuery } from "@mui/material";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 const tiers = [
   [
@@ -134,7 +135,7 @@ export default function PricingForm() {
                     <Card
                       sx={{
                         backgroundColor:
-                          tier.position === "middle" ? "#52b69a" : "white",
+                          tier.position === "middle" ? globalTheme.palette.primary.main : "white",
                         boxShadow: tier.position === "middle" ? "4px 4px" : 3,
                         border:
                           tier.position === "middle"
@@ -143,7 +144,7 @@ export default function PricingForm() {
                             ? "1px black solid"
                             : "1px black",
                         borderColor:
-                          selectedPlan === tier.title ? "#168aad" : "inherit",
+                          selectedPlan === tier.title ? globalTheme.palette.secondary.main : "inherit",
                         borderRadius: "2vh",
                         minHeight: tier.position === "middle" ? "60vh" : "50vh",
                         width: "14rem",
@@ -211,8 +212,8 @@ export default function PricingForm() {
                           sx={{
                             background:
                               tier.position === "middle"
-                                ? "#168aad"
-                                : "#52b69a",
+                                ? globalTheme.palette.secondary.main
+                                : globalTheme.palette.primary.main,
                           }}
                           type="button"
                           onClick={() => {

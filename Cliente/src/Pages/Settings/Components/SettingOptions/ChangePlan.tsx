@@ -20,6 +20,7 @@ import axios from 'axios';
 import getBackendConnectionString from '../../../../Common/Utils/getBackendString';
 import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from '../../../../theme/globalTheme';
 interface Option {
   value: string;
   label: string;
@@ -64,7 +65,7 @@ const ChangePlan: React.FC = () => {
 
   const options: Option[] = type == "Paciente" ?
     [
-      { value: 'Basico', label: 'Basico', price: 0, subLabel: "Plan con los requerimientos esenciales, sin ventajas anadidas", color: "#52b69a" },
+      { value: 'Basico', label: 'Basico', price: 0, subLabel: "Plan con los requerimientos esenciales, sin ventajas anadidas", color: globalTheme.palette.primary.main },
       { value: 'Familiar', label: 'Familiar', price: 1000, subLabel: "Plan escalable, costumizable, con opciones avanzadas y para toda la familia", color: "#34a0a4" },
       { value: 'Paciente', label: 'Paciente', price: 600, subLabel: "Plan  escalable y costumizable para un solo usuario", color: "#d9ed92" },
     ]
@@ -75,7 +76,7 @@ const ChangePlan: React.FC = () => {
         price: 3000,
         subLabel:
           "Plan con los requerimientos necesarios para un doctor independiente",
-        color: "#52b69a",
+        color: globalTheme.palette.primary.main,
       },
       {
         value: "Hospitales",
@@ -119,7 +120,7 @@ const ChangePlan: React.FC = () => {
         <Button
           onClick={() => navigate("/settings")}
           sx={{
-            color: "#52b69a",
+            color: globalTheme.palette.primary.main,
             "&:hover": {
               backgroundColor: "#ffeffe",
               color: "#34a0a4",
@@ -252,7 +253,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
 
           }}
 
-          sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? '2px solid #52b69a' : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
+          sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? `2px solid ${globalTheme.palette.primary.main}` : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
         >   <Box sx={{ backgroundColor: option.color != ("" || null || undefined) ? option.color : "#e9ecef", borderRadius: "50%", width: "3.3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
             <ViewInArIcon></ViewInArIcon>
           </Box>
@@ -268,7 +269,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
         </Card>
       ))}
 
-      <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : "2rem", backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
+      <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : "2rem", backgroundColor: globalTheme.palette.primary.main, "&:hover": { backgroundColor: "#34a0a4" } }}
 
         variant="contained"
         type="submit"
@@ -279,7 +280,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
             text: `Si procede con esta accion cambiaras tu plan y los privilegios que ofrecen`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#52b69a',
+            confirmButtonColor: globalTheme.palette.primary.main,
             cancelButtonColor: '#d33',
             confirmButtonText: 'Acepto',
             cancelButtonText: 'Cancelar',

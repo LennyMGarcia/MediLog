@@ -39,6 +39,7 @@ import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../theme/globalTheme";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -418,9 +419,9 @@ const Profile: React.FC = () => {
         toggleLoading(false);
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(res.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(res.status);
       });
       return false;
     }).catch(error => {
@@ -477,7 +478,7 @@ const Profile: React.FC = () => {
                 <Avatar sx={{
                   height: "10rem",
                   width: "10rem",
-                  backgroundColor: "#52b69a",
+                  backgroundColor: globalTheme.palette.primary.main,
                   fontSize: "5rem"
                 }}
                   variant="square" >
@@ -498,7 +499,7 @@ const Profile: React.FC = () => {
                 <Button
                   variant="contained"
                   sx={{
-                    bgcolor: "#168AAD",
+                    bgcolor: globalTheme.palette.secondary.main,
                     width: "12rem",
                     margin: "auto",
                     marginLeft: "1.7rem"
@@ -519,7 +520,7 @@ const Profile: React.FC = () => {
             }}>
               {/*EDITAR*/}
               {rol === 'Admin' &&
-                <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>}
+                <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: globalTheme.palette.primary.main, margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>}
 
               <Modal
                 keepMounted
@@ -542,12 +543,12 @@ const Profile: React.FC = () => {
                               variant="fullWidth"
                               sx={{
                                 '& .MuiTabs-indicator': {
-                                  backgroundColor: ' #52b69a',
+                                  backgroundColor: globalTheme.palette.primary.main,
                                 },
                                 '& .MuiTab-root': {
-                                  color: '#168aad',
+                                  color: globalTheme.palette.secondary.main,
                                   '&.Mui-selected': {
-                                    color: ' #52b69a',
+                                    color: globalTheme.palette.primary.main,
                                   },
                                   '&:hover': {
                                     color: '#34a0a4',
@@ -567,7 +568,7 @@ const Profile: React.FC = () => {
                                 width: '0.5em',
                               },
                               '&::-webkit-scrollbar-thumb': {
-                                backgroundColor: '#52b69a',
+                                backgroundColor: globalTheme.palette.primary.main,
                                 borderRadius: '4px',
                               },
                             }}>
@@ -585,7 +586,7 @@ const Profile: React.FC = () => {
 
                             </Box>
                             {/*ENVIAR INFORMACION*/}
-                            <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                            <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                               fullWidth
                               variant="contained"
                               type="submit"
@@ -596,7 +597,7 @@ const Profile: React.FC = () => {
                                   text: `Esta acción cambiara todos tus datos`,
                                   icon: 'question',
                                   showCancelButton: true,
-                                  confirmButtonColor: '#52b69a',
+                                  confirmButtonColor: globalTheme.palette.primary.main,
                                   cancelButtonColor: '#d33',
                                   confirmButtonText: 'Aplicar cambios',
                                   cancelButtonText: 'Cancelar',

@@ -16,6 +16,7 @@ import Icon from "/assets/Pictures/IconMediLog.png";
 import { Button, Collapse } from "@mui/material";
 import ModalAlert from "../Modals/ModalAlert";
 import useUserStore from "../Utils/setUserSession";
+import { globalTheme } from "../../theme/globalTheme";
 
 // Paginas para los pacientes
 const pagesPatients = [
@@ -82,7 +83,7 @@ function Appbar() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "#184E77",
+        backgroundColor: globalTheme.palette.FSH.main,
         minHeight: "72px",
       }}
     >
@@ -276,7 +277,7 @@ function Appbar() {
       <Collapse
         in={checked}
         sx={{
-          bgcolor: "#168AAD",
+          bgcolor: globalTheme.palette.secondary.main,
           display: {
             xs: "block",
             md: "none",

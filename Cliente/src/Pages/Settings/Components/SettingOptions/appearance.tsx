@@ -20,6 +20,7 @@ import Swal from "sweetalert2";
 import WestIcon from "@mui/icons-material/West";
 import { useMediaQuery } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 const marks = [
   {
@@ -51,7 +52,7 @@ const HandleResetButtom = () => {
     text: `Esta acción restablecera toda la configuracion`,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#52b69a",
+    confirmButtonColor: globalTheme.palette.primary.main,
     cancelButtonColor: "#d33",
     confirmButtonText: "Sí, restablecelo",
     cancelButtonText: "Cancelar",
@@ -105,7 +106,7 @@ const Appearance: React.FC = () => {
         <Button
           onClick={() => navigate("/settings")}
           sx={{
-            color: "#52b69a",
+            color: globalTheme.palette.primary.main,
             "&:hover": {
               backgroundColor: "#ffeffe",
               color: "#34a0a4",
@@ -190,7 +191,7 @@ const Appearance: React.FC = () => {
             variant="contained"
             sx={{
               marginRight: "3rem",
-              background: "#52b69a",
+              background: globalTheme.palette.primary.main,
               "&:hover": { backgroundColor: "#34a0a4" },
             }}
             onClick={HandleResetButtom}
@@ -269,7 +270,7 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
   };
 
   const selectedStyle: React.CSSProperties = {
-    borderColor: "#52b69a",
+    borderColor: globalTheme.palette.primary.main,
   };
 
   return (
@@ -278,7 +279,7 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
         value={value}
         control={
           <Radio
-            checkedIcon={<CheckCircleRoundedIcon sx={{ color: "#52b69a" }} />}
+            checkedIcon={<CheckCircleRoundedIcon sx={{ color: globalTheme.palette.primary.main }} />}
             sx={{ margin: "2rem" }}
           />
         }
@@ -346,7 +347,7 @@ const FontSizeSlider: React.FC = () => {
         Elige el tema de tu preferencia
       </Typography>
       <Slider
-        sx={{ margin: "1rem 0 0 4rem", color: "#52b69a" }}
+        sx={{ margin: "1rem 0 0 4rem", color: globalTheme.palette.primary.main }}
         track={false}
         value={Number(value)}
         onChange={handleChange}

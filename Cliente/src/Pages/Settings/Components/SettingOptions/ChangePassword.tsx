@@ -23,6 +23,7 @@ import useUserStore from "../../../../Common/Utils/setUserSession";
 import { useState } from "react";
 import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 //Si necesitas cambiar un valor seria en la parte donde dice value, solo retorna un objeto yup esto, lo unico que cambia es el test
 //
@@ -145,7 +146,7 @@ const ChangePassword: React.FC = () => {
 
       }}>
         <Button onClick={() => navigate("/settings")} sx={{
-          color: "#52b69a", "&:hover": {
+          color: globalTheme.palette.primary.main, "&:hover": {
             backgroundColor: "#ffeffe",
             color: "#34a0a4"
           }
@@ -210,7 +211,7 @@ const ChangePassword: React.FC = () => {
                   </Grid>
                 </Grid>
 
-                <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : '2rem', backgroundColor: "#52b69a", "&:hover": { backgroundColor: "#34a0a4" } }}
+                <Button sx={{ mt: "1rem", marginLeft: isMediumScreen ? "5rem" : '2rem', backgroundColor: globalTheme.palette.primary.main, "&:hover": { backgroundColor: "#34a0a4" } }}
 
                   variant="contained"
                   type="submit"
@@ -224,7 +225,7 @@ const ChangePassword: React.FC = () => {
                       text: `Si procede con esta accion modificaras tu contraseña`,
                       icon: 'warning',
                       showCancelButton: true,
-                      confirmButtonColor: '#52b69a',
+                      confirmButtonColor: globalTheme.palette.primary.main,
                       cancelButtonColor: '#d33',
                       confirmButtonText: 'Acepto',
                       cancelButtonText: 'Cancelar',

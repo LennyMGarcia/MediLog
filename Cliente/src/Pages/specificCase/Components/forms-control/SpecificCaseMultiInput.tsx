@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import profileStyle from "../../../Profile/style/profileStyle.module.css"
 import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
+import { globalTheme } from '../../../../theme/globalTheme';
 
 interface InputProps<T> extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -65,7 +66,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
             text: `Esta acción eliminará este elemento`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#52b69a',
+            confirmButtonColor: globalTheme.palette.primary.main,
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminarlo',
             cancelButtonText: 'Cancelar',
@@ -152,7 +153,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                             </Field>
 
                                             {!(!canFistElementDelete && index == 0) && <Button variant="contained" sx={{
-                                                backgroundColor: " #52b69a",
+                                                backgroundColor: globalTheme.palette.primary.main,
                                                 height: "1rem",
                                                 width: '1rem',
                                                 '&:hover': {
@@ -164,7 +165,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                         </Box>
                                     ))}
                                     <Button sx={{
-                                        backgroundColor: " #52b69a",
+                                        backgroundColor: globalTheme.palette.primary.main,
                                         height: "1rem",
                                         width: '1rem',
                                         '&:hover': {

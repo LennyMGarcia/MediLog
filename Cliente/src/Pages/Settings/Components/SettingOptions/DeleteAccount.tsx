@@ -20,6 +20,7 @@ import getBackendConnectionString from "../../../../Common/Utils/getBackendStrin
 import useUserStore from "../../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 const style = {
   position: "absolute" as "absolute",
@@ -142,7 +143,7 @@ const DeleteAccount: React.FC = () => {
         <Button
           onClick={() => navigate("/settings")}
           sx={{
-            color: "#52b69a",
+            color: globalTheme.palette.primary.main,
             "&:hover": {
               backgroundColor: "#ffeffe",
               color: "#34a0a4",
@@ -285,7 +286,7 @@ const DeleteAccount: React.FC = () => {
                       />
 
                       <Button
-                        sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                        sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                         fullWidth
                         variant="contained"
                         type="submit"
@@ -296,7 +297,7 @@ const DeleteAccount: React.FC = () => {
                             text: `Si procede con esta accion de eliminacion no hay vuelta atras`,
                             icon: "warning",
                             showCancelButton: true,
-                            confirmButtonColor: "#52b69a",
+                            confirmButtonColor: globalTheme.palette.primary.main,
                             cancelButtonColor: "#d33",
                             confirmButtonText: "Acepto",
                             cancelButtonText: "Cancelar",
