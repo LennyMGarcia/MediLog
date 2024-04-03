@@ -115,7 +115,7 @@ export default function CasosTerceros() {
             }}
         >
             <Grid item container xs={12} justifyContent={"space-between"}>
-                <Typography variant="h5" fontSize={40}>
+                <Typography variant="h5" fontSize={40} sx={{color:globalTheme.font.primary.main}}>
                     Casos Terceros
                 </Typography>
             </Grid>

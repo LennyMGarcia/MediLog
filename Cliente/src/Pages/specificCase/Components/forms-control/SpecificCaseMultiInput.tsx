@@ -99,7 +99,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
 
     return (
         <Box>
-            <Accordion key={name}>
+            <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}}  key={name}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     id={name}
@@ -136,9 +136,27 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                                             error={Boolean(form.errors[name] && form.touched[name])}
                                                             {...rest}
                                                             sx={{
-                                                                '& .MuiInputBase-root': {
-                                                                    height: 'auto',
-                                                                },
+                                                                "& .MuiInputBase-root": {
+                                                                    color: globalTheme.font.primary.main,
+                                                                    height: "auto",
+                                                                  },
+                                                                  '& .MuiFormLabel-root': {
+                                                                    color: globalTheme.font.primary.main, 
+                                                                  },
+                                                                  
+                                                                  '& .MuiOutlinedInput-root': {
+                                                                  
+                                                                    '& fieldset': {
+                                                                      borderColor: globalTheme.font.primary.main,
+                                                                       
+                                                                    },
+                                                                    '&:hover fieldset': {
+                                                                      borderColor: globalTheme.palette.secondary.main,
+                                                                    },
+                                                                    '&.Mui-focused fieldset': {
+                                                                      borderColor: globalTheme.palette.primary.main, // Color del borde cuando está enfocado
+                                                                    },
+                                                                  },
                                                                 mt: index === 0 ? "-1rem" : "0.5rem "
                                                             }}
                                                         />

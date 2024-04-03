@@ -27,7 +27,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",
-  bgcolor: 'background.paper',
+  bgcolor: globalTheme.palette.background.secondary,
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -149,7 +149,7 @@ export default function Casos() {
     >
       <Grid item container xs={12} justifyContent={"space-between"}>
         <Grid item xs={1}>
-          <Typography variant="h5" fontSize={40}>
+          <Typography variant="h5" fontSize={40} sx={{color:globalTheme.font.primary.main}}>
             Casos
           </Typography>
         </Grid>

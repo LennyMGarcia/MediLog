@@ -154,7 +154,7 @@ const DeleteAccount: React.FC = () => {
         </Button>
         <Typography
           variant="h5"
-          sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}
+          sx={{ margin: "0.7rem", marginLeft: "0.5rem", color: globalTheme.font.primary.main }}
         >
           Eliminar cuenta
         </Typography>
@@ -176,13 +176,13 @@ const DeleteAccount: React.FC = () => {
       >
         <SettingsIcon
           sx={{
-            color: "gray",
+            color: "#aaa",
             width: "1rem",
             height: "1rem",
             paddingRight: "0.5rem",
           }}
         />
-        <Typography variant="subtitle1" sx={{ color: "gray" }}>
+        <Typography variant="subtitle1" sx={{ color: "#aaa" }}>
           configuracion / Eliminar Cuenta
         </Typography>
       </Box>
@@ -199,7 +199,7 @@ const DeleteAccount: React.FC = () => {
         <Typography
           variant="h6"
           sx={{
-            padding: isMediumScreen ? "2rem 0 0.5rem 6rem" : "2rem 0 0 2rem",
+            padding: isMediumScreen ? "2rem 0 0.5rem 6rem" : "2rem 0 0 2rem", color: globalTheme.font.primary.main
           }}
         >
           Eliminar cuenta
@@ -207,7 +207,7 @@ const DeleteAccount: React.FC = () => {
         <Box
           sx={{
             padding: isMediumScreen ? "0 10rem 1rem 6rem" : "0 2rem 1rem 2rem",
-            color: "gray",
+            color: "#aaa",
           }}
         >
           <Typography variant="subtitle1">
@@ -246,6 +246,7 @@ const DeleteAccount: React.FC = () => {
             backgroundColor: "red",
             marginLeft: isMediumScreen ? "7rem" : "2rem",
             "&:hover": { backgroundColor: "#8b0000" },
+            
           }}
           onClick={handleModalOpen}
         >

@@ -131,7 +131,7 @@ const ChangePlan: React.FC = () => {
         </Button>
         <Typography
           variant="h5"
-          sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}
+          sx={{ margin: "0.7rem", marginLeft: "0.5rem", color: globalTheme.font.primary.main }}
         >
           Cambiar Plan
         </Typography>
@@ -153,13 +153,13 @@ const ChangePlan: React.FC = () => {
       >
         <SettingsIcon
           sx={{
-            color: "gray",
+            color: "#aaa",
             width: "1rem",
             height: "1rem",
             paddingRight: "0.5rem",
           }}
         />
-        <Typography variant="subtitle1" sx={{ color: "gray" }}>
+        <Typography variant="subtitle1" sx={{ color: "#aaa" }}>
           configuracion / cambiar plan
         </Typography>
       </Box>
@@ -172,12 +172,12 @@ const ChangePlan: React.FC = () => {
         marginLeft: isMediumScreen ? "3rem" : 0
       }}>
 
-        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem" }}>Configuracion de Plan</Typography>
-        <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Cambia la configuracion y el tipo de plan</Typography>
+        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem", color: globalTheme.font.primary.main }}>Configuracion de Plan</Typography>
+        <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}>Cambia la configuracion y el tipo de plan</Typography>
         <Divider variant="middle" sx={{ margin: "0 2rem" }} />
 
-        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>Plan</Typography>
-        <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "gray" }}>Cambia la configuracion de tu plan</Typography>
+        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem", color: globalTheme.font.primary.main }}>Plan</Typography>
+        <Typography variant="subtitle2" sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}>Cambia la configuracion de tu plan</Typography>
 
         {/*Componente de Plan*/}
         <RadioCard options={options} currentPlan={plan} />
@@ -253,7 +253,7 @@ const RadioCard: React.FC<RadioCardProps> = ({ options, currentPlan }) => {
 
           }}
 
-          sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? `2px solid ${globalTheme.palette.primary.main}` : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem" }}
+          sx={{ margin: isMediumScreen ? "1rem 0 0 3rem" : "1rem 0 0 1rem", paddingLeft: "0.5rem", display: "flex", justifyContent: "left", alignItems: "center", cursor: 'pointer', marginBottom: 1, borderRadius: "1rem", border: selectedOption === option.value ? `2px solid ${globalTheme.palette.primary.main}` : '2px solid #e9ecef', width: isMediumScreen ? "60vw" : "88vw", height: "5rem", }}
         >   <Box sx={{ backgroundColor: option.color != ("" || null || undefined) ? option.color : globalTheme.palette.background.main, borderRadius: "50%", width: "3.3rem", height: "3rem", display: "flex", justifyContent: "center", alignItems: "center" }}>
             <ViewInArIcon></ViewInArIcon>
           </Box>

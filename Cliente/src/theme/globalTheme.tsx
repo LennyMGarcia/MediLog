@@ -23,8 +23,11 @@ export const globalTheme = {
         suspended:"#c9184a",
         deleted:"red",
         procces:"#99d98c"
-  
+      },
+      table:{
+        main:"#aaa"
       }
+
     },
     font:{
       primary:{

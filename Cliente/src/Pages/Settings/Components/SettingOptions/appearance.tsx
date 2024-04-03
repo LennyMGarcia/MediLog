@@ -117,7 +117,7 @@ const Appearance: React.FC = () => {
         </Button>
         <Typography
           variant="h5"
-          sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}
+          sx={{ margin: "0.7rem", marginLeft: "0.5rem",color: globalTheme.font.primary.main }}
         >
           Apariencia
         </Typography>
@@ -139,13 +139,13 @@ const Appearance: React.FC = () => {
       >
         <SettingsIcon
           sx={{
-            color: "gray",
+            color: "#aaa",
             width: "1rem",
             height: "1rem",
             paddingRight: "0.5rem",
           }}
         />
-        <Typography variant="subtitle1" sx={{ color: "gray" }}>
+        <Typography variant="subtitle1" sx={{ color: "#aaa" }}>
           configuracion / Apariencia
         </Typography>
       </Box>
@@ -159,18 +159,18 @@ const Appearance: React.FC = () => {
           marginLeft: isMediumScreen ? "3rem" : 0,
         }}
       >
-        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem" }}>
+        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem",color: globalTheme.font.primary.main }}>
           Apariencia
         </Typography>
         <Typography
           variant="subtitle2"
-          sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
+          sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}
         >
           Cambia como quieres que luzca el sistema
         </Typography>
         <Divider variant="middle" sx={{ margin: "0 2rem" }} />
 
-        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0rem 3rem" }}>
+        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0rem 3rem" , color: globalTheme.font.primary.main}}>
           Reiniciar configuracion
         </Typography>
         <Box
@@ -183,7 +183,7 @@ const Appearance: React.FC = () => {
         >
           <Typography
             variant="subtitle2"
-            sx={{ padding: "0 0 0 3rem", color: "gray" }}
+            sx={{ padding: "0 0 0 3rem", color: "#aaa" }}
           >
             Regrese al aspecto base del sistema
           </Typography>
@@ -202,12 +202,12 @@ const Appearance: React.FC = () => {
 
         <Divider variant="middle" sx={{ margin: "0 2rem" }} />
 
-        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>
+        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem", color: globalTheme.font.primary.main }}>
           Tema
         </Typography>
         <Typography
           variant="subtitle2"
-          sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
+          sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}
         >
           Elige el tema de tu preferencia
         </Typography>
@@ -337,17 +337,17 @@ const FontSizeSlider: React.FC = () => {
 
   return (
     <Box sx={{ width: "60vw" }}>
-      <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>
-        Tema
+      <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem", color: globalTheme.font.primary.main }}>
+        Fuente
       </Typography>
       <Typography
         variant="subtitle2"
-        sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
+        sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}
       >
-        Elige el tema de tu preferencia
+        Elige la fuente de tu preferencia
       </Typography>
       <Slider
-        sx={{ margin: "1rem 0 0 4rem", color: globalTheme.palette.primary.main }}
+        sx={{ margin: "1rem 0 0 4rem", color: globalTheme.palette.primary.main, "& .MuiSlider-markLabel":{color:globalTheme.font.primary.main} }}
         track={false}
         value={Number(value)}
         onChange={handleChange}

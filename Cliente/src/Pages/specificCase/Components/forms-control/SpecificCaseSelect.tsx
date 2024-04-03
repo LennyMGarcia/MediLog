@@ -12,6 +12,7 @@ import useDataRegisterStore from "../../../Register/ZustandRegisterManagement";
 import InputLabel from "@mui/material/InputLabel/InputLabel";
 import { useMediaQuery } from "@mui/material";
 import { Dayjs } from "dayjs";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 interface ISelect<T> extends Omit<SelectProps, "variant"> {
   label?: React.ReactNode;
@@ -95,6 +96,25 @@ const SPCaseSelect: React.FC<ISelect<any>> = ({
                 fontSize: "0.9rem",
                 mt: "0.5rem",
                 maxWidth: isMediumScreen ? "29.25rem" : "18.75rem",
+                '& .MuiSelect-outlined': {
+                  borderColor: "white", // Color del borde al pasar el ratón
+                },
+                '&.Mui-focused': {
+                  borderColor: globalTheme.palette.primary.main, // Color del borde cuando está enfocado
+                },
+                '&.Mui-disabled': {
+                  color: globalTheme.font.primary.main, // Color del texto cuando está deshabilitado
+                },
+                '& .MuiSelect-select': {
+                  color: globalTheme.font.primary.main,
+                  borderColor:globalTheme.font.primary.main,
+                },
+                '& .Mui-disabled': {
+                  color: globalTheme.font.primary.main, // Color del texto cuando está deshabilitado
+                },
+                "&.MuiOutlinedInput-root": {
+                  borderColor: "white", // Color del borde normal
+                },
               }}
             >
               <MenuItem key="" value="" disabled defaultValue="sel">

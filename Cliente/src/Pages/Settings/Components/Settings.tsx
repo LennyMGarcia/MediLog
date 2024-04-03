@@ -37,7 +37,7 @@ const Settings: React.FC = () => {
                     padding: "1px",
                 }}
             >
-                <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+                <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "5rem", color: globalTheme.font.primary.main }}>
                     Configuración de la cuenta
                 </Typography>
             </Box>
@@ -64,7 +64,7 @@ const Settings: React.FC = () => {
                         paddingRight: "0.5rem",
                     }}
                 />
-                <Typography variant="subtitle1" sx={{ color: "gray" }}>
+                <Typography variant="subtitle1" sx={{ color: "#aaa" }}>
                     configuración /
                 </Typography>
             </Box>
@@ -130,10 +130,10 @@ const Settings: React.FC = () => {
                                             textAlign: "left",
                                         }}
                                     >
-                                        <Typography variant="subtitle1" sx={{ color: "black" }}>
+                                        <Typography variant="subtitle1" sx={{ color: globalTheme.font.primary.main }}>
                                             Apariencia y fuente
                                         </Typography>
-                                        <Typography variant="subtitle2" sx={{ color: "gray" }}>
+                                        <Typography variant="subtitle2" sx={{ color: "#aaa" }}>
                                             Cambiar tema del sitema y tamaño de la fuente
                                         </Typography>
                                     </Grid>
@@ -195,10 +195,10 @@ const Settings: React.FC = () => {
                                             textAlign: "left",
                                         }}
                                     >
-                                        <Typography variant="subtitle1" sx={{ color: "black" }}>
+                                        <Typography variant="subtitle1" sx={{ color: globalTheme.font.primary.main }}>
                                             Cambiar Plan
                                         </Typography>
-                                        <Typography variant="subtitle2" sx={{ color: "gray" }}>
+                                        <Typography variant="subtitle2" sx={{ color: "#aaa" }}>
                                             Cambiar plan y todo lo relacionado a ello{" "}
                                         </Typography>
                                     </Grid>
@@ -260,10 +260,10 @@ const Settings: React.FC = () => {
                                             textAlign: "left",
                                         }}
                                     >
-                                        <Typography variant="subtitle1" sx={{ color: "black" }}>
+                                        <Typography variant="subtitle1" sx={{ color: globalTheme.font.primary.main }}>
                                             Cambiar contrañena
                                         </Typography>
-                                        <Typography variant="subtitle2" sx={{ color: "gray" }}>
+                                        <Typography variant="subtitle2" sx={{ color: "#aaa" }}>
                                             Cambiar contraseña por una nueva y más segura
                                         </Typography>
                                     </Grid>
@@ -325,10 +325,10 @@ const Settings: React.FC = () => {
                                             textAlign: "left",
                                         }}
                                     >
-                                        <Typography variant="subtitle1" sx={{ color: "black" }}>
+                                        <Typography variant="subtitle1" sx={{ color: globalTheme.font.primary.main }}>
                                             Eliminar cuenta
                                         </Typography>
-                                        <Typography variant="subtitle2" sx={{ color: "gray" }}>
+                                        <Typography variant="subtitle2" sx={{ color: "#aaa" }}>
                                             Eliminar cuenta y sus datos de forma permanente
                                         </Typography>
                                     </Grid>

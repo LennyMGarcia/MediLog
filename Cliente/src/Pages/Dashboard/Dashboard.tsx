@@ -81,7 +81,7 @@ function Dashboard() {
             fontFamily: "Arial",
             fontWeight: "700",
             fontSize: "24px",
-            color: "#070708",
+            color: globalTheme.font.primary.main,
           }}
         >
           Bienvenido, {nombre} {apellido}

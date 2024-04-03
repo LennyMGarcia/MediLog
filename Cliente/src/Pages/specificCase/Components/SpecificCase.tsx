@@ -59,7 +59,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",
-  bgcolor: 'background.paper',
+  bgcolor: globalTheme.palette.background.secondary,
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -384,11 +384,11 @@ const SpecificCase: React.FC = () => {
           }}
         >
           {isMediumScreen ?
-            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
               {CaseObj && CaseObj?.descripcion}
             </Typography>
             :
-            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
               {CaseObj && CaseObj?.descripcion}
             </Typography>}
 
@@ -399,15 +399,15 @@ const SpecificCase: React.FC = () => {
 
         </Box>}
       {false ? <LinearProgress /> :
-        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
+        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1, backgroundColor:globalTheme.palette.background.secondary, color: globalTheme.font.primary.main}}>
           <Box sx={{
             width: "100%",
             marginTop: "1rem",
             display: "flex",
             justifyContent: "space-between",
-
+            
           }}>
-            <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion del caso</Typography>
+            <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem", color:globalTheme.font.primary.main }}>Informacion del caso</Typography>
             {/*EDITAR*/}
             {/*{rol === 'Admin' &&*/}
             <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Editar</Button>
@@ -540,7 +540,7 @@ const SpecificCase: React.FC = () => {
 
         </Box>
       }
-      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1 }}>
+      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1, backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main }}>
         <Box sx={{
           width: "100%",
           marginTop: "1rem",
@@ -558,7 +558,7 @@ const SpecificCase: React.FC = () => {
             open={consultationModalOpen}
             onClose={handleConsultationModalClose}
           >
-            <Box sx={style} >
+            <Box sx={style} >3
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik

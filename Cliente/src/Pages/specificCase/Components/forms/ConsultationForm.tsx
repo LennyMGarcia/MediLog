@@ -6,6 +6,7 @@ import SPCaseMultiInput from "../forms-control/SpecificCaseMultiInput";
 import SPCaseInput from "../forms-control/SpecificCaseInput";
 import { Typography } from "@mui/material";
 import { Dayjs } from "dayjs";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 interface ConsultationForm<T> {
     consultationValues?: {
@@ -24,7 +25,7 @@ interface ConsultationForm<T> {
 const ConsultationForm: React.FC<ConsultationForm<any>> = ({ setOfZustandCallback, getOfZustandCallback, consultationValues }) => {
     return (
         <>
-            <Typography variant="h6">Gestione su consulta</Typography>
+            <Typography variant="h6" sx={{color:globalTheme.font.primary.main}}>Gestione su consulta</Typography>
             <Box>
                 <SPCaseInput
                     initialValue={consultationValues?.motivo}

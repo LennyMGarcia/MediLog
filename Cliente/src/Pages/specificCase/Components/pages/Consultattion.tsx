@@ -45,7 +45,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",
-  bgcolor: 'background.paper',
+  bgcolor: globalTheme.palette.background.secondary ,
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -204,18 +204,18 @@ const Consultation: React.FC = () => {
           }}
         >
           {isMediumScreen ?
-            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
               {ConsultationObj && ConsultationObj?.motivo}
             </Typography>
             :
-            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
               {ConsultationObj && ConsultationObj.motivo}
             </Typography>}
 
 
         </Box>}
       {loading ? <LinearProgress /> :
-        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
+        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1,  backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main  }}>
 
           <Box sx={{
             width: "100%",

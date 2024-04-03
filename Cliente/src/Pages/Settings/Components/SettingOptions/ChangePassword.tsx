@@ -153,7 +153,7 @@ const ChangePassword: React.FC = () => {
         }}>
           <WestIcon sx={{ margin: "0.7rem", marginLeft: "3rem" }}></WestIcon>
         </Button>
-        <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}>Cambiar contraseña</Typography>
+        <Typography variant="h5" sx={{ margin: "0.7rem", marginLeft: "0.5rem", color: globalTheme.font.primary.main }}>Cambiar contraseña</Typography>
       </Box>
 
       <Box sx={{
@@ -166,7 +166,7 @@ const ChangePassword: React.FC = () => {
         borderStartStartRadius: "1rem",
         borderTopRightRadius: "1rem"
       }}>
-        <SettingsIcon sx={{ color: "gray", width: "1rem", height: "1rem", paddingRight: "0.5rem" }} /><Typography variant="subtitle1" sx={{ color: "gray" }}>configuracion / Cambiar contraseña</Typography>
+        <SettingsIcon sx={{ color: "#aaa", width: "1rem", height: "1rem", paddingRight: "0.5rem" }} /><Typography variant="subtitle1" sx={{ color: "#aaa" }}>configuracion / Cambiar contraseña</Typography>
       </Box>
 
       <Box sx={{
@@ -184,8 +184,8 @@ const ChangePassword: React.FC = () => {
           >
             {({ handleSubmit, isValid, dirty }) => (
               <Form onSubmit={handleSubmit}>
-                <Typography variant="h6" sx={{ padding: isMediumScreen ? "3rem 0 0 5rem" : "3rem 0 0 2rem" }}>Cambiar contraseña</Typography>
-                <Typography variant="subtitle1" sx={{ color: "gray", margin: isMediumScreen ? "1px 0 0 5rem" : "0 3rem 0 3rem" }}>Su nueva contraseña debe ser diferente a la contraseña actual</Typography>
+                <Typography variant="h6" sx={{ padding: isMediumScreen ? "3rem 0 0 5rem" : "3rem 0 0 2rem", color: globalTheme.font.primary.main }}>Cambiar contraseña</Typography>
+                <Typography variant="subtitle1" sx={{ color: "#aaa", margin: isMediumScreen ? "1px 0 0 5rem" : "0 3rem 0 3rem" }}>Su nueva contraseña debe ser diferente a la contraseña actual</Typography>
                 <Grid container>
                   <Grid item md={6} xs={12}>
                     <Box sx={{ marginLeft: isMediumScreen ? "5rem" : "2rem" }}>
@@ -197,7 +197,7 @@ const ChangePassword: React.FC = () => {
                     </Box>
                   </Grid>
                   <Grid item md={6} xs={12}>
-                    <Box sx={{ margin: isMediumScreen ? " 0 6rem 0 0" : " 1rem 2rem", color: "gray" }}>
+                    <Box sx={{ margin: isMediumScreen ? " 0 6rem 0 0" : " 1rem 2rem", color: "#aaa" }}>
                       <Typography variant="subtitle1">La nueva contraseña debe seguir los siguientes parametros de nuestra politica de contrasena</Typography>
                       <ul>
                         <li><Typography variant="subtitle1">La contraseña debe tener minimo 6 caracteres</Typography></li>
