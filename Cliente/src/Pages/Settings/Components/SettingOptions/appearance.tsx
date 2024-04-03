@@ -1,5 +1,7 @@
 import Box from "@mui/material/Box/Box";
-import registerDoctor from "/assets/Pictures/registerDoctor.jpg";
+import darkTheme from "/assets/Pictures/darktheme.png";
+import lightTheme from "/assets/Pictures/lightTheme.png";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import Typography from "@mui/material/Typography/Typography";
 import Button from "@mui/material/Button/Button";
@@ -53,7 +55,7 @@ const Appearance: React.FC = () => {
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const navigate = useNavigate();
-  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<string>(localStorage.getItem("selectedTheme") || "");
 
   //const {setAllThemeData} = useThemeStore()
   const setAllThemeData = useThemeStore(state => state.setAllThemeData);
@@ -95,6 +97,7 @@ const Appearance: React.FC = () => {
   const handleChange = (value: string) => {
 
     setSelectedValue(value);
+    localStorage.setItem("selectedTheme", value);
     if (value === "option1") {
       setAllThemeData({
         backgroundMain: "#e9ecef",
@@ -268,7 +271,7 @@ const Appearance: React.FC = () => {
           >
             <ImageRadioButton
               value="option1"
-              src={registerDoctor}
+              src={lightTheme}
               alt="Opción 1"
               name="Claro"
               onChange={handleChange}
@@ -276,7 +279,7 @@ const Appearance: React.FC = () => {
             />
             <ImageRadioButton
               value="option2"
-              src={registerDoctor}
+              src={darkTheme}
               alt="Opción 2"
               name="Oscuro"
               onChange={handleChange}
@@ -300,13 +303,14 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
   onChange,
   selectedValue,
 }) => {
+  
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const imageStyle: React.CSSProperties = {
-    width: "20rem",
+    width: "30rem",
     height: "15rem",
-    marginLeft: "-22.2rem",
+    marginLeft: "-32.2rem",
     marginBottom: "12.3rem",
     cursor: "pointer",
     border: "2px solid transparent",
@@ -318,7 +322,7 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
   };
 
   return (
-    <Box sx={{ marginLeft: isMediumScreen ? "14rem" : "12rem" }}>
+    <Box sx={{ marginLeft: isMediumScreen ? "25.5rem" : "12rem" }}>
       <FormControlLabel
         value={value}
         control={
@@ -335,7 +339,7 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
               ...imageStyle,
               ...(value === selectedValue
                 ? selectedStyle
-                : { borderColor: "white" }),
+                : { borderColor: "none" }),
             }}
             onClick={() => onChange(value)}
           />
