@@ -21,6 +21,7 @@ import WestIcon from "@mui/icons-material/West";
 import { useMediaQuery } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
 import { globalTheme } from "../../../../theme/globalTheme";
+import useThemeStore from "../../../../theme/zustandThemeManagement";
 
 const marks = [
   {
@@ -46,30 +47,6 @@ interface ImageRadioButtonProps {
   name: string;
 }
 
-const HandleResetButtom = () => {
-  Swal.fire({
-    title: "¿Estás seguro?",
-    text: `Esta acción restablecera toda la configuracion`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: globalTheme.palette.primary.main,
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, restablecelo",
-    cancelButtonText: "Cancelar",
-    allowOutsideClick: () => !Swal.isLoading(),
-    allowEscapeKey: () => !Swal.isLoading(),
-    allowEnterKey: () => !Swal.isLoading(),
-    stopKeydownPropagation: false,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: "Eliminado",
-        text: "Se ha restableecido todo con exito.",
-        icon: "success",
-      });
-    }
-  });
-};
 
 const Appearance: React.FC = () => {
   const theme = useTheme();
@@ -78,8 +55,75 @@ const Appearance: React.FC = () => {
   const navigate = useNavigate();
   const [selectedValue, setSelectedValue] = useState<string>("");
 
+  //const {setAllThemeData} = useThemeStore()
+  const setAllThemeData = useThemeStore(state => state.setAllThemeData);
+
+  const HandleResetButtom = () => {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: `Esta acción restablecera toda la configuracion`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: globalTheme.palette.primary.main,
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, restablecelo",
+      cancelButtonText: "Cancelar",
+      allowOutsideClick: () => !Swal.isLoading(),
+      allowEscapeKey: () => !Swal.isLoading(),
+      allowEnterKey: () => !Swal.isLoading(),
+      stopKeydownPropagation: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setAllThemeData({
+          backgroundMain: "#e9ecef",
+          backgroundSecondary: "#fff",
+          FSHMain: "#184e77",
+          primaryMain: '#52b69a',
+          secondaryMain: '#168aad',
+          tertiaryMain: "red",
+          tableMain: "#aaa",
+          fontPrimaryMain: "#000",
+        });
+        
+        window.location.reload();
+        
+      }
+    });
+  };
+  
+
   const handleChange = (value: string) => {
+
     setSelectedValue(value);
+    if (value === "option1") {
+      setAllThemeData({
+        backgroundMain: "#e9ecef",
+        backgroundSecondary: "#fff",
+        FSHMain: "#184e77",
+        primaryMain: '#52b69a',
+        secondaryMain: '#168aad',
+        tertiaryMain: "red",
+        tableMain: "#aaa",
+        fontPrimaryMain: "#000",
+      });
+      window.location.reload();
+      console.log("Se seleccionó Claro");
+
+    } else if (value === "option2") {
+      setAllThemeData({
+        backgroundMain: "#222",
+        backgroundSecondary: "#666",
+        FSHMain: "#184e77",
+        primaryMain: '#52b69a',
+        secondaryMain: '#168aad',
+        tertiaryMain: "red",
+        tableMain: "#aaa",
+        fontPrimaryMain: "#fff",
+      })
+      window.location.reload();
+      console.log("Se seleccionó Oscuro");
+
+    }
   };
 
   return (
@@ -117,7 +161,7 @@ const Appearance: React.FC = () => {
         </Button>
         <Typography
           variant="h5"
-          sx={{ margin: "0.7rem", marginLeft: "0.5rem",color: globalTheme.font.primary.main }}
+          sx={{ margin: "0.7rem", marginLeft: "0.5rem", color: globalTheme.font.primary.main }}
         >
           Apariencia
         </Typography>
@@ -159,7 +203,7 @@ const Appearance: React.FC = () => {
           marginLeft: isMediumScreen ? "3rem" : 0,
         }}
       >
-        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem",color: globalTheme.font.primary.main }}>
+        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem", color: globalTheme.font.primary.main }}>
           Apariencia
         </Typography>
         <Typography
@@ -170,7 +214,7 @@ const Appearance: React.FC = () => {
         </Typography>
         <Divider variant="middle" sx={{ margin: "0 2rem" }} />
 
-        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0rem 3rem" , color: globalTheme.font.primary.main}}>
+        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0rem 3rem", color: globalTheme.font.primary.main }}>
           Reiniciar configuracion
         </Typography>
         <Box
@@ -347,7 +391,7 @@ const FontSizeSlider: React.FC = () => {
         Elige la fuente de tu preferencia
       </Typography>
       <Slider
-        sx={{ margin: "1rem 0 0 4rem", color: globalTheme.palette.primary.main, "& .MuiSlider-markLabel":{color:globalTheme.font.primary.main} }}
+        sx={{ margin: "1rem 0 0 4rem", color: globalTheme.palette.primary.main, "& .MuiSlider-markLabel": { color: globalTheme.font.primary.main } }}
         track={false}
         value={Number(value)}
         onChange={handleChange}
