@@ -5,7 +5,6 @@ import AccordionNormal from "./Components/Accordion";
 import useModalLogin from "../../Common/Modals/useModalLogin";
 import IconAndLabel from "/assets/Pictures/IconAndLabelFix.png";
 import useUserStore from "../../Common/Utils/setUserSession";
-import { globalTheme } from "../../theme/globalTheme";
 
 export default function LandingPage() {
   // Esta comentado para tener una vision de prueba con el otro mientras tanto
@@ -194,7 +193,7 @@ export default function LandingPage() {
         // spacing={5}
         display={"flex"}
         gap={7}
-        bgcolor={globalTheme.palette.background.main}
+        bgcolor={"#E9ECEF"}
       >
         <Grid
           container
@@ -204,7 +203,7 @@ export default function LandingPage() {
           borderRadius={5}
           // padding={3}
           // spacing={1}
-          bgcolor={globalTheme.palette.FSH.main}
+          bgcolor={"#184E77"}
           columnSpacing={2}
         >
           <Grid item container xs={12} md={6} spacing={1}>
@@ -218,7 +217,7 @@ export default function LandingPage() {
             >
               <Typography
                 variant="h4"
-                color={globalTheme.palette.background.main}
+                color={"#E9ECEF"}
                 sx={{
                   fontWeight: "600",
                   textAlign: "center",
@@ -230,7 +229,7 @@ export default function LandingPage() {
 
               <Typography
                 variant="body1"
-                color={globalTheme.palette.background.main}
+                color={"#E9ECEF"}
                 sx={{
                   fontWeight: "400",
                   textAlign: "center",
@@ -262,8 +261,8 @@ export default function LandingPage() {
                   variant={"contained"}
                   sx={{
                     textTransform: "capitalize",
-                    color: globalTheme.palette.background.main,
-                    bgcolor: globalTheme.palette.secondary.main,
+                    color: "#E9ECEF",
+                    bgcolor: "#168AAD",
                   }}
                   onClick={() => {
                     handleOpenModal();
@@ -277,7 +276,7 @@ export default function LandingPage() {
               {/* <Grid item xs={5} textAlign={"center"}> */}
               <Typography
                 variant="body1"
-                color={globalTheme.palette.background.main}
+                color={"#E9ECEF"}
                 sx={{
                   fontSize: "18px",
                 }}
@@ -285,7 +284,7 @@ export default function LandingPage() {
                 No tienes cuenta?
                 <Button
                   sx={{
-                    color: globalTheme.palette.secondary.main,
+                    color: "#168AAD",
                     fontSize: "18px",
                   }}
                   onClick={() => navigate("/register")}
@@ -360,7 +359,7 @@ export default function LandingPage() {
                   item
                   container
                   key={idx}
-                  bgcolor={globalTheme.palette.background.secondary}
+                  bgcolor={"#FFFFFF"}
                   borderRadius={"28px"}
                   xs={12}
                   sm={5}
@@ -440,7 +439,7 @@ export default function LandingPage() {
           borderRadius={5}
           padding={3}
           gap={1}
-          bgcolor={globalTheme.palette.FSH.main}
+          bgcolor={"#184E77"}
         >
           <Grid item xs={12} flexDirection={"column"}>
             <Typography
@@ -459,7 +458,7 @@ export default function LandingPage() {
               fontSize={52}
               fontWeight={700}
               // color={"#0B1B35"}
-              color={globalTheme.palette.background.main}
+              color={"#E9ECEF"}
             >
               La Empresa
             </Typography>
@@ -467,7 +466,7 @@ export default function LandingPage() {
               textAlign={"center"}
               fontWeight={400}
               fontSize={18}
-              color={globalTheme.palette.background.main}
+              color={"#E9ECEF"}
             >
               SatoruScript desarrolla soluciones tecnológicas innovadoras para
               la salud, enfocadas en mejorar la calidad de vida. Trabajamos con
@@ -480,7 +479,7 @@ export default function LandingPage() {
 
           <Grid item container xs={12} spacing={3}>
             <Grid item xs={12}>
-              <Typography color={globalTheme.palette.background.main} fontSize={18}>
+              <Typography color={"#E9ECEF"} fontSize={18}>
                 Conoce a nuestro equipo:
               </Typography>
             </Grid>
@@ -513,7 +512,7 @@ export default function LandingPage() {
                         fontSize={22}
                         fontWeight={700}
                         // color={"E9ECEF"}
-                        color={globalTheme.palette.background.main}
+                        color={"#E9ECEF"}
                       >
                         {found.name}
                       </Typography>
@@ -591,7 +590,7 @@ export default function LandingPage() {
                   md={5.9}
                   lg={5.9}
                   key={idx}
-                  bgcolor={globalTheme.palette.background.secondary}
+                  bgcolor={"#FFFFFF"}
                   borderRadius={"28px"}
                   padding={2}
                   justifyContent={"space-between"}
@@ -703,7 +702,7 @@ export default function LandingPage() {
         </Grid> */}
         </Grid>
 
-        <Grid item xs={12} bgcolor={globalTheme.palette.FSH.main} borderRadius={5} padding={4}>
+        <Grid item xs={12} bgcolor={"#184E77"} borderRadius={5} padding={4}>
           <Grid item xs={12}>
             <Typography
               variant="h5"
@@ -720,7 +719,7 @@ export default function LandingPage() {
               variant="h4"
               fontSize={52}
               fontWeight={700}
-              color={globalTheme.palette.background.main}
+              color={"#E9ECEF"}
             >
               Resuelve tus dudas
             </Typography>
