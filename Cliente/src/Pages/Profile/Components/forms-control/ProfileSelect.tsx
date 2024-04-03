@@ -11,6 +11,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import useDataRegisterStore from "../../../Register/ZustandRegisterManagement";
 import InputLabel from "@mui/material/InputLabel/InputLabel";
 import { useMediaQuery } from "@mui/material";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 interface ISelect extends Omit<SelectProps, "variant"> {
   label?: React.ReactNode;
@@ -57,7 +58,7 @@ const ProfileSelect: React.FC<ISelect> = ({
       <Field id={name} name={name}>
         {({ field, form }: FieldProps) => (
           <React.Fragment>
-            <InputLabel shrink sx={{ margin: "0.2rem 0 -1rem 0.5rem" }}>
+            <InputLabel shrink sx={{ margin: "0.2rem 0 -1rem 0.5rem", color: globalTheme.font.primary.main }}>
               {label}
             </InputLabel>
             <Select
@@ -77,10 +78,30 @@ const ProfileSelect: React.FC<ISelect> = ({
                 height: "3rem",
                 fontSize: "0.9rem",
                 mt: "0.5rem",
+                borderColor:"white",
                 maxWidth: isMediumScreen ? "29.25rem" : "18.75rem",
+                '& .MuiSelect-outlined': {
+                  borderColor: "white", // Color del borde al pasar el ratón
+                },
+                '&.Mui-focused': {
+                  borderColor: globalTheme.palette.primary.main, // Color del borde cuando está enfocado
+                },
+                '&.Mui-disabled': {
+                  color: globalTheme.font.primary.main, // Color del texto cuando está deshabilitado
+                },
+                '& .MuiSelect-select': {
+                  color: globalTheme.font.primary.main,
+                  borderColor:globalTheme.font.primary.main,
+                },
+                '& .Mui-disabled': {
+                  color: globalTheme.font.primary.main, // Color del texto cuando está deshabilitado
+                },
+                "&.MuiOutlinedInput-root": {
+                  borderColor: "white", // Color del borde normal
+                },
               }}
             >
-              <MenuItem key="" value="" disabled defaultValue="sel">
+              <MenuItem key="" value="" disabled defaultValue="sel" >
                 Seleccione una opcion
               </MenuItem>
               {Array.isArray(selectObject) ? (

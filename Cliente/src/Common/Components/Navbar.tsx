@@ -2,6 +2,7 @@ import { Button, Grid, Link, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import useModalLogin from "../Modals/useModalLogin";
 import useUserStore from "../Utils/setUserSession";
+import { globalTheme } from "../../theme/globalTheme";
 
 export default function Navbar() {
   const { authenticated } = useUserStore();
@@ -47,7 +48,7 @@ export default function Navbar() {
         container
         sx={{
           width: "100%",
-          backgroundColor: "#184E77",
+          backgroundColor: globalTheme.palette.FSH.main,
           minHeight: "72px",
         }}
         display={"flex"}
@@ -175,7 +176,7 @@ export default function Navbar() {
               <Button
                 variant="contained"
                 sx={{
-                  bgcolor: "#168AAD",
+                  bgcolor: globalTheme.palette.secondary.main,
                 }}
                 onClick={() => navigate("/register")}
               >
@@ -203,7 +204,7 @@ export default function Navbar() {
               <Button
                 variant="contained"
                 sx={{
-                  bgcolor: "#168AAD",
+                  bgcolor: globalTheme.palette.secondary.main,
                 }}
                 onClick={() => navigate('/dashboard')}
               >
@@ -212,7 +213,7 @@ export default function Navbar() {
               <Button
                 variant="contained"
                 sx={{
-                  bgcolor: "#168AAD",
+                  bgcolor: globalTheme.palette.secondary.main,
                 }}
                 onClick={() => logout()}
               >

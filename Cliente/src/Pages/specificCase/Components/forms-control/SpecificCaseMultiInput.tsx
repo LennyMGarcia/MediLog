@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import profileStyle from "../../../Profile/style/profileStyle.module.css"
 import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
+import { globalTheme } from '../../../../theme/globalTheme';
 
 interface InputProps<T> extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -65,7 +66,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
             text: `Esta acción eliminará este elemento`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#52b69a',
+            confirmButtonColor: globalTheme.palette.primary.main,
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminarlo',
             cancelButtonText: 'Cancelar',
@@ -98,7 +99,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
 
     return (
         <Box>
-            <Accordion key={name}>
+            <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}}  key={name}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     id={name}
@@ -135,9 +136,27 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                                             error={Boolean(form.errors[name] && form.touched[name])}
                                                             {...rest}
                                                             sx={{
-                                                                '& .MuiInputBase-root': {
-                                                                    height: 'auto',
-                                                                },
+                                                                "& .MuiInputBase-root": {
+                                                                    color: globalTheme.font.primary.main,
+                                                                    height: "auto",
+                                                                  },
+                                                                  '& .MuiFormLabel-root': {
+                                                                    color: globalTheme.font.primary.main, 
+                                                                  },
+                                                                  
+                                                                  '& .MuiOutlinedInput-root': {
+                                                                  
+                                                                    '& fieldset': {
+                                                                      borderColor: globalTheme.font.primary.main,
+                                                                       
+                                                                    },
+                                                                    '&:hover fieldset': {
+                                                                      borderColor: globalTheme.palette.secondary.main,
+                                                                    },
+                                                                    '&.Mui-focused fieldset': {
+                                                                      borderColor: globalTheme.palette.primary.main, // Color del borde cuando está enfocado
+                                                                    },
+                                                                  },
                                                                 mt: index === 0 ? "-1rem" : "0.5rem "
                                                             }}
                                                         />
@@ -152,7 +171,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                             </Field>
 
                                             {!(!canFistElementDelete && index == 0) && <Button variant="contained" sx={{
-                                                backgroundColor: " #52b69a",
+                                                backgroundColor: globalTheme.palette.primary.main,
                                                 height: "1rem",
                                                 width: '1rem',
                                                 '&:hover': {
@@ -164,7 +183,7 @@ const SPCaseMultiInput: React.FC<InputProps<any>> = ({ label, name = "", placeHo
                                         </Box>
                                     ))}
                                     <Button sx={{
-                                        backgroundColor: " #52b69a",
+                                        backgroundColor: globalTheme.palette.primary.main,
                                         height: "1rem",
                                         width: '1rem',
                                         '&:hover': {

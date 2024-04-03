@@ -7,6 +7,7 @@ import SPCaseInput from "../forms-control/SpecificCaseInput";
 import { Typography } from "@mui/material";
 import { Dayjs } from "dayjs";
 import SPCaseSelect from "../forms-control/SpecificCaseSelect";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 interface ISurgeryForm<T> {
     SurgeryValues?: {
@@ -27,7 +28,7 @@ interface ISurgeryForm<T> {
 const SurgeryForm: React.FC<ISurgeryForm<any>> = ({ setOfZustandCallback, getOfZustandCallback, SurgeryValues }) => {
     return (
         <>
-            <Typography variant="h6">Gestione su Cirugia</Typography>
+            <Typography variant="h6" sx={{color:globalTheme.font.primary.main}}>Gestione su Cirugia</Typography>
             <Box>
                 <SPCaseInput
                     initialValue={SurgeryValues?.motivo}

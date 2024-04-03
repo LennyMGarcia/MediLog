@@ -5,6 +5,7 @@ import ShortTable from "./Components/ShortTable";
 import useUserStore from "../../Common/Utils/setUserSession";
 import dayjs from "dayjs";
 import { useState, useEffect } from "react";
+import { globalTheme } from "../../theme/globalTheme";
 
 function Dashboard() {
   const { getUser } = useUserStore();
@@ -80,7 +81,7 @@ function Dashboard() {
             fontFamily: "Arial",
             fontWeight: "700",
             fontSize: "24px",
-            color: "#070708",
+            color: globalTheme.font.primary.main,
           }}
         >
           Bienvenido, {nombre} {apellido}
@@ -132,7 +133,7 @@ function Dashboard() {
           alignItems={"center"}
           padding={"30px 0px"}
           sx={{
-            backgroundColor: "#FFFFFF",
+            backgroundColor: globalTheme.palette.background.secondary,
             borderRadius: "8px",
             display: "flex",
             alignItem: "center",
@@ -176,7 +177,7 @@ function Dashboard() {
             md={12}
             lg={6.5}
             sx={{
-              backgroundColor: "#FFFFFF",
+              backgroundColor: globalTheme.palette.background.secondary,
               borderRadius: "8px",
               display: "flex",
               flexDirection: "row",

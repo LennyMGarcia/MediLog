@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Swal from 'sweetalert2';
 import profileStyle from "../../style/profileStyle.module.css"
 import useDataRegisterStore from '../../../Register/ZustandRegisterManagement';
+import { globalTheme } from '../../../../theme/globalTheme';
 
 interface InputProps extends Omit<TextFieldProps, 'variant'> {
     label?: React.ReactNode,
@@ -58,7 +59,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
             text: `Esta acción eliminará este elemento`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#52b69a',
+            confirmButtonColor: globalTheme.palette.primary.main,
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminarlo',
             cancelButtonText: 'Cancelar',
@@ -88,7 +89,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
 
     return (
         <Box>
-            <Accordion key={name}>
+            <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} key={name}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     id={name}
@@ -125,9 +126,27 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                                             error={Boolean(form.errors[name] && form.touched[name])}
                                                             {...rest}
                                                             sx={{
-                                                                '& .MuiInputBase-root': {
-                                                                    height: 'auto',
-                                                                },
+                                                                "& .MuiInputBase-root": {
+                                                                    color: globalTheme.font.primary.main,
+                                                                    height: "auto",
+                                                                  },
+                                                                  '& .MuiFormLabel-root': {
+                                                                    color: globalTheme.font.primary.main, 
+                                                                  },
+                                                                  
+                                                                  '& .MuiOutlinedInput-root': {
+                                                                  
+                                                                    '& fieldset': {
+                                                                      borderColor: globalTheme.font.primary.main,
+                                                                       
+                                                                    },
+                                                                    '&:hover fieldset': {
+                                                                      borderColor: globalTheme.palette.secondary.main,
+                                                                    },
+                                                                    '&.Mui-focused fieldset': {
+                                                                      borderColor: globalTheme.palette.primary.main, // Color del borde cuando está enfocado
+                                                                    },
+                                                                  },
                                                                 mt: index === 0 ? "-1rem" : "0.5rem "
                                                             }}
                                                         />
@@ -142,7 +161,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                             </Field>
 
                                             <Button variant="contained" sx={{
-                                                backgroundColor: " #52b69a",
+                                                backgroundColor: globalTheme.palette.primary.main,
                                                 height: "1rem",
                                                 width: '1rem',
                                                 '&:hover': {
@@ -154,7 +173,7 @@ const ProfileMultiInput: React.FC<InputProps> = ({ label, name = "", placeHolder
                                         </Box>
                                     ))}
                                     <Button sx={{
-                                        backgroundColor: " #52b69a",
+                                        backgroundColor: globalTheme.palette.primary.main,
                                         height: "1rem",
                                         width: '1rem',
                                         '&:hover': {

@@ -1,4 +1,5 @@
 import { Grid, Typography } from "@mui/material";
+import { globalTheme } from "../../theme/globalTheme";
 
 export default function () {
   return (
@@ -6,7 +7,7 @@ export default function () {
       container
       item
       xs={12}
-      bgcolor={"#184E77"}
+      bgcolor={globalTheme.palette.FSH.main}
       color={"#FFFFFF"}
       justifyContent={"space-between"}
       alignItems={"center"}

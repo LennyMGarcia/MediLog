@@ -27,6 +27,7 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router";
 import { Link } from "@mui/material";
 import { searchRecordsFromArray } from "../Casos";
+import { globalTheme } from "../../../theme/globalTheme";
 
 type IPropsData = {
   id: number;
@@ -281,7 +282,7 @@ export default function TablaCasos({ type }: IProps) {
               <Button
                 variant="contained"
                 sx={{
-                  bgcolor: "#168AAD",
+                  bgcolor: globalTheme.palette.secondary.main,
                 }}
                 onClick={() => {
                   search_patient(openInputSearch);
@@ -463,7 +464,7 @@ export default function TablaCasos({ type }: IProps) {
           >
             <Table
               aria-label="simple table"
-              sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
+              sx={{ borderCollapse: "separate", borderSpacing: "0 8px", }}
             >
               <TableHead
                 sx={{

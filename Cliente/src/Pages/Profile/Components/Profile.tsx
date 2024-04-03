@@ -39,6 +39,7 @@ import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../theme/globalTheme";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -47,7 +48,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",
-  bgcolor: 'background.paper',
+  bgcolor: globalTheme.palette.background.secondary,
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -418,9 +419,9 @@ const Profile: React.FC = () => {
         toggleLoading(false);
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(res.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(res.status);
       });
       return false;
     }).catch(error => {
@@ -456,13 +457,14 @@ const Profile: React.FC = () => {
   console.log(getAllRegisterData());
 
   return (
-    <Box sx={{ backgroundColor: "#E9ECEF", minHeight: "86vh", width: "100vw" }}>
-      <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem" }} variant="h5">Perfil</Typography>
+    <Box sx={{ backgroundColor: globalTheme.palette.background.main, minHeight: "86vh", width: "100vw" }}>
+      <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem", color:globalTheme.font.primary.main }} variant="h5">Perfil</Typography>
       {loading ? <LinearProgress /> :
         <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
           <Grid item md={3} xs={12}>
             <Box sx={{
-              backgroundColor: "white",
+              backgroundColor: globalTheme.palette.background.secondary,
+              color:globalTheme.font.primary.main,
               width: "15rem",
               height: "16rem",
               boxShadow: 1,
@@ -477,7 +479,7 @@ const Profile: React.FC = () => {
                 <Avatar sx={{
                   height: "10rem",
                   width: "10rem",
-                  backgroundColor: "#52b69a",
+                  backgroundColor: globalTheme.palette.primary.main,
                   fontSize: "5rem"
                 }}
                   variant="square" >
@@ -498,7 +500,7 @@ const Profile: React.FC = () => {
                 <Button
                   variant="contained"
                   sx={{
-                    bgcolor: "#168AAD",
+                    bgcolor: globalTheme.palette.secondary.main,
                     width: "12rem",
                     margin: "auto",
                     marginLeft: "1.7rem"
@@ -519,12 +521,13 @@ const Profile: React.FC = () => {
             }}>
               {/*EDITAR*/}
               {rol === 'Admin' &&
-                <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: "#52b69a", margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>}
+                <Button variant="contained" onClick={handleModalOpen} sx={{ width: "12rem", backgroundColor: globalTheme.palette.primary.main, margin: "auto", marginLeft: "1.7rem" }}>Editar</Button>}
 
               <Modal
                 keepMounted
                 open={modalOpen}
                 onClose={handleModalClose}
+                
               >
                 <Box sx={style} >
                   <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -542,12 +545,12 @@ const Profile: React.FC = () => {
                               variant="fullWidth"
                               sx={{
                                 '& .MuiTabs-indicator': {
-                                  backgroundColor: ' #52b69a',
+                                  backgroundColor: globalTheme.palette.primary.main,
                                 },
                                 '& .MuiTab-root': {
-                                  color: '#168aad',
+                                  color: globalTheme.palette.secondary.main,
                                   '&.Mui-selected': {
-                                    color: ' #52b69a',
+                                    color: globalTheme.palette.primary.main,
                                   },
                                   '&:hover': {
                                     color: '#34a0a4',
@@ -567,7 +570,7 @@ const Profile: React.FC = () => {
                                 width: '0.5em',
                               },
                               '&::-webkit-scrollbar-thumb': {
-                                backgroundColor: '#52b69a',
+                                backgroundColor: globalTheme.palette.primary.main,
                                 borderRadius: '4px',
                               },
                             }}>
@@ -585,7 +588,7 @@ const Profile: React.FC = () => {
 
                             </Box>
                             {/*ENVIAR INFORMACION*/}
-                            <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                            <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                               fullWidth
                               variant="contained"
                               type="submit"
@@ -596,7 +599,7 @@ const Profile: React.FC = () => {
                                   text: `Esta acción cambiara todos tus datos`,
                                   icon: 'question',
                                   showCancelButton: true,
-                                  confirmButtonColor: '#52b69a',
+                                  confirmButtonColor: globalTheme.palette.primary.main,
                                   cancelButtonColor: '#d33',
                                   confirmButtonText: 'Aplicar cambios',
                                   cancelButtonText: 'Cancelar',
@@ -661,14 +664,15 @@ const Profile: React.FC = () => {
           </Grid>
 
           <Grid item md={9} xs={12} sx={{ marginLeft: "auto", marginRight: "auto" }}>
-            <Accordion defaultExpanded>
+            <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 id="Informacion_basica"
+                
               >
                 Informacion basica
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails >
                 {userType == "Paciente" ?
                   <ProfileList dataList={[
                     { name: "Nombre", data: profileData?.nombre || '' },
@@ -694,7 +698,7 @@ const Profile: React.FC = () => {
               </AccordionDetails>
             </Accordion>
 
-            <Accordion defaultExpanded>
+            <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 id="Informacion_contacto"
@@ -710,7 +714,7 @@ const Profile: React.FC = () => {
               </AccordionDetails>
             </Accordion>
             {user_id === idOrName &&
-              <Accordion defaultExpanded>
+              <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   id="Informacion_financiera"

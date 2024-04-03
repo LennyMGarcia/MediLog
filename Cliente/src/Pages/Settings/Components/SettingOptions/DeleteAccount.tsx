@@ -20,6 +20,7 @@ import getBackendConnectionString from "../../../../Common/Utils/getBackendStrin
 import useUserStore from "../../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 const style = {
   position: "absolute" as "absolute",
@@ -121,7 +122,7 @@ const DeleteAccount: React.FC = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#e9ecef",
+        backgroundColor: globalTheme.palette.background.main,
         width: "100vw",
         height: isMediumScreen ? "130vh" : "160vh",
         padding: "1px",
@@ -129,7 +130,7 @@ const DeleteAccount: React.FC = () => {
     >
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: "100vw",
           height: "10vh",
           boxShadow: 1,
@@ -142,7 +143,7 @@ const DeleteAccount: React.FC = () => {
         <Button
           onClick={() => navigate("/settings")}
           sx={{
-            color: "#52b69a",
+            color: globalTheme.palette.primary.main,
             "&:hover": {
               backgroundColor: "#ffeffe",
               color: "#34a0a4",
@@ -153,7 +154,7 @@ const DeleteAccount: React.FC = () => {
         </Button>
         <Typography
           variant="h5"
-          sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}
+          sx={{ margin: "0.7rem", marginLeft: "0.5rem", color: globalTheme.font.primary.main }}
         >
           Eliminar cuenta
         </Typography>
@@ -161,7 +162,7 @@ const DeleteAccount: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "20vw" : "70vw",
           height: "5vh",
           boxShadow: 1,
@@ -175,20 +176,20 @@ const DeleteAccount: React.FC = () => {
       >
         <SettingsIcon
           sx={{
-            color: "gray",
+            color: "#aaa",
             width: "1rem",
             height: "1rem",
             paddingRight: "0.5rem",
           }}
         />
-        <Typography variant="subtitle1" sx={{ color: "gray" }}>
+        <Typography variant="subtitle1" sx={{ color: "#aaa" }}>
           configuracion / Eliminar Cuenta
         </Typography>
       </Box>
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "90vw" : "100vw",
           height: isMediumScreen ? "100vh" : "130vh",
           boxShadow: 1,
@@ -198,7 +199,7 @@ const DeleteAccount: React.FC = () => {
         <Typography
           variant="h6"
           sx={{
-            padding: isMediumScreen ? "2rem 0 0.5rem 6rem" : "2rem 0 0 2rem",
+            padding: isMediumScreen ? "2rem 0 0.5rem 6rem" : "2rem 0 0 2rem", color: globalTheme.font.primary.main
           }}
         >
           Eliminar cuenta
@@ -206,7 +207,7 @@ const DeleteAccount: React.FC = () => {
         <Box
           sx={{
             padding: isMediumScreen ? "0 10rem 1rem 6rem" : "0 2rem 1rem 2rem",
-            color: "gray",
+            color: "#aaa",
           }}
         >
           <Typography variant="subtitle1">
@@ -245,6 +246,7 @@ const DeleteAccount: React.FC = () => {
             backgroundColor: "red",
             marginLeft: isMediumScreen ? "7rem" : "2rem",
             "&:hover": { backgroundColor: "#8b0000" },
+            
           }}
           onClick={handleModalOpen}
         >
@@ -285,7 +287,7 @@ const DeleteAccount: React.FC = () => {
                       />
 
                       <Button
-                        sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                        sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                         fullWidth
                         variant="contained"
                         type="submit"
@@ -296,7 +298,7 @@ const DeleteAccount: React.FC = () => {
                             text: `Si procede con esta accion de eliminacion no hay vuelta atras`,
                             icon: "warning",
                             showCancelButton: true,
-                            confirmButtonColor: "#52b69a",
+                            confirmButtonColor: globalTheme.palette.primary.main,
                             cancelButtonColor: "#d33",
                             confirmButtonText: "Acepto",
                             cancelButtonText: "Cancelar",

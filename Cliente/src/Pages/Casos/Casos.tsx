@@ -16,6 +16,7 @@ import BannerSnackbar from "../../Common/snackbars/BannerSnackBar";
 import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManagement/ZustandCreateCaseManagement";
 import profileStyle from "../Profile/style/profileStyle.module.css";
 import useUserStore from "../../Common/Utils/setUserSession";
+import { globalTheme } from "../../theme/globalTheme";
 
 
 
@@ -26,7 +27,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",
-  bgcolor: 'background.paper',
+  bgcolor: globalTheme.palette.background.secondary,
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -148,7 +149,7 @@ export default function Casos() {
     >
       <Grid item container xs={12} justifyContent={"space-between"}>
         <Grid item xs={1}>
-          <Typography variant="h5" fontSize={40}>
+          <Typography variant="h5" fontSize={40} sx={{color:globalTheme.font.primary.main}}>
             Casos
           </Typography>
         </Grid>
@@ -167,7 +168,7 @@ export default function Casos() {
             }}
             variant="contained"
             sx={{
-              bgcolor: "#168AAD",
+              bgcolor: globalTheme.palette.secondary.main,
             }}
           >
             Crear caso
@@ -198,7 +199,7 @@ export default function Casos() {
                             width: '0.5em',
                           },
                           '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: '#52b69a',
+                            backgroundColor: globalTheme.palette.primary.main,
                             borderRadius: '4px',
                           },
                         }}>
@@ -210,7 +211,7 @@ export default function Casos() {
                           </Box>
                         </Box>
                         {/*ENVIAR INFORMACION*/}
-                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                        <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                           fullWidth
                           variant="contained"
                           type="submit"
@@ -221,7 +222,7 @@ export default function Casos() {
                               text: `Esta acción cambiara todos tus datos`,
                               icon: 'question',
                               showCancelButton: true,
-                              confirmButtonColor: '#52b69a',
+                              confirmButtonColor: globalTheme.palette.primary.main,
                               cancelButtonColor: '#d33',
                               confirmButtonText: 'Aplicar cambios',
                               cancelButtonText: 'Cancelar',
@@ -291,7 +292,7 @@ export default function Casos() {
         xs={12}
         sx={{
           borderRadius: "16px",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: globalTheme.palette.background.secondary,
           boxShadow: "0px 12px 24px -4px #919EAB1F",
           width: "100%",
         }}

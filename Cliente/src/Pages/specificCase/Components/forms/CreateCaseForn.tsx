@@ -7,6 +7,7 @@ import SPCaseInput from "../forms-control/SpecificCaseInput";
 import { Typography } from "@mui/material";
 import SPCaseSelect from "../forms-control/SpecificCaseSelect";
 import { Dayjs } from "dayjs";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 interface CreateCaseForm<T> {
     caseValues?: {
@@ -27,7 +28,7 @@ interface CreateCaseForm<T> {
 const CreateCaseForm: React.FC<CreateCaseForm<any>> = ({ setOfZustandCallback, getOfZustandCallback }) => {
     return (
         <>
-            <Typography variant="h6">Edite su caso</Typography>
+            <Typography variant="h6" sx={{color:globalTheme.font.primary.main}}>Edite su caso</Typography>
             <Box>
                 <SPCaseInput
                     initialValue=''

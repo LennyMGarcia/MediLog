@@ -13,6 +13,7 @@ import getBackendConnectionString from "../Utils/getBackendString";
 import axios from "axios";
 import useUserStore from "../Utils/setUserSession";
 import { useNavigate } from "react-router-dom";
+import { globalTheme } from "../../theme/globalTheme";
 
 // import lockGreen from "/assets/icons/lockGreen.svg";
 
@@ -342,7 +343,7 @@ export default function useModalLogin(): IProps {
               fullWidth
               // disableElevation
               sx={{
-                backgroundColor: "#52B69A",
+                backgroundColor: globalTheme.palette.primary.main,
                 borderRadius: "8px",
                 padding: "14px 24px",
                 fontFamily: "Arial",
@@ -351,7 +352,7 @@ export default function useModalLogin(): IProps {
                 color: "#FFFFFF",
                 textTransform: "capitalize",
                 ":hover": {
-                  backgroundColor: "#52B69A",
+                  backgroundColor: globalTheme.palette.primary.main,
                 },
                 boxShadow: "none",
               }}
@@ -383,13 +384,13 @@ export default function useModalLogin(): IProps {
               No tienes cuenta?{" "}
               <Link
                 to={"/register"}
-                color="#168AAD"
+                color={globalTheme.palette.secondary.main}
                 onClick={() => {
                   handleClose();
                 }}
                 style={{
                   textDecoration: "none",
-                  color: "#168AAD",
+                  color: globalTheme.palette.secondary.main,
                 }}
               >
                 Crea una

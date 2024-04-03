@@ -4,6 +4,7 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { globalTheme } from "../../../theme/globalTheme";
 
 type IProps = {
   type: "open" | "close" | "onProcess" | "suspend" | "delete";
@@ -39,7 +40,7 @@ export default function Cards({ type, number }: IProps) {
   return (
     <Box
       sx={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: globalTheme.palette.background.secondary,
         padding: "24px",
         gap: "24px",
         borderRadius: "8px",

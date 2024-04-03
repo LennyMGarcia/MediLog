@@ -10,6 +10,7 @@ import { getAllCaseData } from "../../StateManagement/ZustandSpecificCaseManagem
 import { getAllConsultationData } from "../../StateManagement/ZustandConsultationManagement";
 import { getAllSurgeryData } from "../../StateManagement/ZustandSurgeryManagement";
 import { getAllCreateData } from "../../StateManagement/ZustandCreateCaseManagement";
+import { globalTheme } from "../../../../theme/globalTheme";
 
 interface InputProps<T> extends Omit<TextFieldProps, "variant"> {
   label?: React.ReactNode;
@@ -80,7 +81,36 @@ const SPCaseInput: React.FC<InputProps<any>> = ({
               {...rest}
               sx={{
                 "& .MuiInputBase-root": {
+                  color: globalTheme.font.primary.main,
                   height: "auto",
+                },
+                '& .MuiFormLabel-root': {
+                  color: globalTheme.font.primary.main, 
+                },
+                
+                '& .MuiOutlinedInput-root': {
+                
+                  '& fieldset': {
+                    borderColor: globalTheme.font.primary.main,
+                     
+                  },
+                  '&:hover fieldset': {
+                    borderColor: globalTheme.palette.secondary.main,
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: globalTheme.palette.primary.main, 
+                  },
+                  '&.Mui-disabled fieldset': {
+                    borderColor: globalTheme.font.primary.main,
+                    color:globalTheme.font.primary.main 
+                  },
+                  '& .Mui-disabled': {
+                    color: globalTheme.font.primary.main, // Color del texto cuando está deshabilitado
+                  },
+                  
+                },
+                '& .Mui-disabled': {
+                  color: globalTheme.font.primary.main, // Color del texto cuando está deshabilitado
                 },
                 mt: "1.5rem",
               }}

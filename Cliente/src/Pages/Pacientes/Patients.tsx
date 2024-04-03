@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Search } from "@mui/icons-material";
 import TablaPatients from "./Components/TablaPatients";
 import { useNavigate } from "react-router";
+import { globalTheme } from "../../theme/globalTheme";
 
 export default function Patients() {
 
@@ -52,7 +53,7 @@ export default function Patients() {
                 borderRadius: "8px",
                 borderColor: "#CDCECF",
               },
-              backgroundColor: "#FFFFFF",
+              backgroundColor: globalTheme.palette.background.secondary,
 
               fontFamily: "Arial",
               fontWeight: "400",
@@ -116,7 +117,7 @@ export default function Patients() {
           <Button
             variant="contained"
             sx={{
-              bgcolor: "#168AAD",
+              bgcolor: globalTheme.palette.secondary.main,
             }}
             onClick={() => {
               search_patient(openInputSearch);
@@ -131,7 +132,7 @@ export default function Patients() {
         xs={12}
         sx={{
           borderRadius: "25px",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: globalTheme.palette.background.secondary,
           boxShadow: "0px 12px 24px -4px #919EAB1F",
           width: "100%",
         }}

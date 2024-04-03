@@ -50,6 +50,7 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import { LinearProgress, CircularProgress } from "@mui/material";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
+import { globalTheme } from "../../../theme/globalTheme";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -58,7 +59,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",
-  bgcolor: 'background.paper',
+  bgcolor: globalTheme.palette.background.secondary,
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -367,11 +368,11 @@ const SpecificCase: React.FC = () => {
   }, []);
 
   return (
-    <Box sx={{ backgroundColor: "#E9ECEF", height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
+    <Box sx={{ backgroundColor: globalTheme.palette.background.main, height: "auto", padding: "0 0 10rem 0", width: "100vw" }}>
       {true &&
         <Box
           sx={{
-            backgroundColor: "#fff",
+            backgroundColor: globalTheme.palette.background.secondary,
             width: "100vw",
             height: isMediumScreen ? "10vh" : "auto",
             boxShadow: 1,
@@ -383,11 +384,11 @@ const SpecificCase: React.FC = () => {
           }}
         >
           {isMediumScreen ?
-            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
               {CaseObj && CaseObj?.descripcion}
             </Typography>
             :
-            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem" }}>
+            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
               {CaseObj && CaseObj?.descripcion}
             </Typography>}
 
@@ -398,18 +399,18 @@ const SpecificCase: React.FC = () => {
 
         </Box>}
       {false ? <LinearProgress /> :
-        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1 }}>
+        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1, backgroundColor:globalTheme.palette.background.secondary, color: globalTheme.font.primary.main}}>
           <Box sx={{
             width: "100%",
             marginTop: "1rem",
             display: "flex",
             justifyContent: "space-between",
-
+            
           }}>
-            <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem" }}>Informacion del caso</Typography>
+            <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem", color:globalTheme.font.primary.main }}>Informacion del caso</Typography>
             {/*EDITAR*/}
             {/*{rol === 'Admin' &&*/}
-            <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Editar</Button>
+            <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Editar</Button>
             {/*}*/}
             <Modal
               keepMounted
@@ -437,7 +438,7 @@ const SpecificCase: React.FC = () => {
                               width: '0.5em',
                             },
                             '&::-webkit-scrollbar-thumb': {
-                              backgroundColor: '#52b69a',
+                              backgroundColor: globalTheme.palette.primary.main,
                               borderRadius: '4px',
                             },
                           }}>
@@ -452,7 +453,7 @@ const SpecificCase: React.FC = () => {
 
                           </Box>
                           {/*ENVIAR INFORMACION*/}
-                          <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                          <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                             fullWidth
                             variant="contained"
                             type="submit"
@@ -463,7 +464,7 @@ const SpecificCase: React.FC = () => {
                                 text: `Esta acción cambiara todos tus datos`,
                                 icon: 'question',
                                 showCancelButton: true,
-                                confirmButtonColor: '#52b69a',
+                                confirmButtonColor: globalTheme.palette.primary.main,
                                 cancelButtonColor: '#d33',
                                 confirmButtonText: 'Aplicar cambios',
                                 cancelButtonText: 'Cancelar',
@@ -539,7 +540,7 @@ const SpecificCase: React.FC = () => {
 
         </Box>
       }
-      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1 }}>
+      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1, backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main }}>
         <Box sx={{
           width: "100%",
           marginTop: "1rem",
@@ -550,14 +551,14 @@ const SpecificCase: React.FC = () => {
           <Typography variant="h6" sx={{ padding: "0 2rem 2rem 1rem" }}>{categoria}s</Typography>
           {/*EDITAR*/}
           {/*{rol === 'Admin' &&*/}
-          <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: "#52b69a", marginRight: "2rem" }}>Agregar consulta</Button>
+          <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Agregar consulta</Button>
           {/*}*/}
           <Modal
             keepMounted
             open={consultationModalOpen}
             onClose={handleConsultationModalClose}
           >
-            <Box sx={style} >
+            <Box sx={style} >3
               <Box sx={{ width: '100%', typography: 'body1' }}>
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
@@ -575,7 +576,7 @@ const SpecificCase: React.FC = () => {
                             width: '0.5em',
                           },
                           '&::-webkit-scrollbar-thumb': {
-                            backgroundColor: '#52b69a',
+                            backgroundColor: globalTheme.palette.primary.main,
                             borderRadius: '4px',
                           },
                         }}>
@@ -588,7 +589,7 @@ const SpecificCase: React.FC = () => {
 
                         </Box>
                         {/*ENVIAR INFORMACION*/}
-                        <Button sx={{ mt: "0.5rem", backgroundColor: "#52b69a" }}
+                        <Button sx={{ mt: "0.5rem", backgroundColor: globalTheme.palette.primary.main }}
                           fullWidth
                           variant="contained"
                           type="submit"
@@ -599,7 +600,7 @@ const SpecificCase: React.FC = () => {
                               text: `Esta acción cambiara todos tus datos`,
                               icon: 'question',
                               showCancelButton: true,
-                              confirmButtonColor: '#52b69a',
+                              confirmButtonColor: globalTheme.palette.primary.main,
                               cancelButtonColor: '#d33',
                               confirmButtonText: 'Aplicar cambios',
                               cancelButtonText: 'Cancelar',

@@ -24,6 +24,7 @@ import { Person2, Search } from "@mui/icons-material";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router-dom";
 import { searchRecordsFromArray } from "../../Casos/Casos";
+import { globalTheme } from "../../../theme/globalTheme";
 
 type IProps = {
   idPatient: number;
@@ -198,7 +199,7 @@ export default function TablaPatients() {
             <Button
               variant="contained"
               sx={{
-                bgcolor: "#168AAD",
+                bgcolor: globalTheme.palette.secondary.main,
               }}
               onClick={() => {
                 search_patient(openInputSearch);
@@ -418,7 +419,7 @@ export default function TablaPatients() {
                       <Button
                         variant="contained"
                         sx={{
-                          bgcolor: "#168AAD",
+                          bgcolor: globalTheme.palette.secondary.main,
                         }}
                         startIcon={<Person2 />}
                         onClick={() => {

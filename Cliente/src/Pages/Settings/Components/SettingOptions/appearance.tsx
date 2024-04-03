@@ -1,5 +1,7 @@
 import Box from "@mui/material/Box/Box";
-import registerDoctor from "/assets/Pictures/registerDoctor.jpg";
+import darkTheme from "/assets/Pictures/darktheme.png";
+import lightTheme from "/assets/Pictures/lightTheme.png";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import Typography from "@mui/material/Typography/Typography";
 import Button from "@mui/material/Button/Button";
@@ -20,6 +22,8 @@ import Swal from "sweetalert2";
 import WestIcon from "@mui/icons-material/West";
 import { useMediaQuery } from "@mui/material";
 import useTheme from "@mui/material/styles/useTheme";
+import { globalTheme } from "../../../../theme/globalTheme";
+import useThemeStore from "../../../../theme/zustandThemeManagement";
 
 const marks = [
   {
@@ -45,46 +49,90 @@ interface ImageRadioButtonProps {
   name: string;
 }
 
-const HandleResetButtom = () => {
-  Swal.fire({
-    title: "¿Estás seguro?",
-    text: `Esta acción restablecera toda la configuracion`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#52b69a",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, restablecelo",
-    cancelButtonText: "Cancelar",
-    allowOutsideClick: () => !Swal.isLoading(),
-    allowEscapeKey: () => !Swal.isLoading(),
-    allowEnterKey: () => !Swal.isLoading(),
-    stopKeydownPropagation: false,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: "Eliminado",
-        text: "Se ha restableecido todo con exito.",
-        icon: "success",
-      });
-    }
-  });
-};
 
 const Appearance: React.FC = () => {
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const navigate = useNavigate();
-  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<string>(localStorage.getItem("selectedTheme") || "");
+
+  //const {setAllThemeData} = useThemeStore()
+  const setAllThemeData = useThemeStore(state => state.setAllThemeData);
+
+  const HandleResetButtom = () => {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: `Esta acción restablecera toda la configuracion`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: globalTheme.palette.primary.main,
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, restablecelo",
+      cancelButtonText: "Cancelar",
+      allowOutsideClick: () => !Swal.isLoading(),
+      allowEscapeKey: () => !Swal.isLoading(),
+      allowEnterKey: () => !Swal.isLoading(),
+      stopKeydownPropagation: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setAllThemeData({
+          backgroundMain: "#e9ecef",
+          backgroundSecondary: "#fff",
+          FSHMain: "#184e77",
+          primaryMain: '#52b69a',
+          secondaryMain: '#168aad',
+          tertiaryMain: "red",
+          tableMain: "#aaa",
+          fontPrimaryMain: "#000",
+        });
+        
+        window.location.reload();
+        
+      }
+    });
+  };
+  
 
   const handleChange = (value: string) => {
+
     setSelectedValue(value);
+    localStorage.setItem("selectedTheme", value);
+    if (value === "option1") {
+      setAllThemeData({
+        backgroundMain: "#e9ecef",
+        backgroundSecondary: "#fff",
+        FSHMain: "#184e77",
+        primaryMain: '#52b69a',
+        secondaryMain: '#168aad',
+        tertiaryMain: "red",
+        tableMain: "#aaa",
+        fontPrimaryMain: "#000",
+      });
+      window.location.reload();
+      console.log("Se seleccionó Claro");
+
+    } else if (value === "option2") {
+      setAllThemeData({
+        backgroundMain: "#222",
+        backgroundSecondary: "#666",
+        FSHMain: "#184e77",
+        primaryMain: '#52b69a',
+        secondaryMain: '#168aad',
+        tertiaryMain: "red",
+        tableMain: "#aaa",
+        fontPrimaryMain: "#fff",
+      })
+      window.location.reload();
+      console.log("Se seleccionó Oscuro");
+
+    }
   };
 
   return (
     <Box
       sx={{
-        backgroundColor: "#e9ecef",
+        backgroundColor: globalTheme.palette.background.main,
         width: "100vw",
         height: isMediumScreen ? "160vh" : " 170vh",
         padding: "1px",
@@ -92,7 +140,7 @@ const Appearance: React.FC = () => {
     >
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: "100vw",
           height: "10vh",
           boxShadow: 1,
@@ -105,7 +153,7 @@ const Appearance: React.FC = () => {
         <Button
           onClick={() => navigate("/settings")}
           sx={{
-            color: "#52b69a",
+            color: globalTheme.palette.primary.main,
             "&:hover": {
               backgroundColor: "#ffeffe",
               color: "#34a0a4",
@@ -116,7 +164,7 @@ const Appearance: React.FC = () => {
         </Button>
         <Typography
           variant="h5"
-          sx={{ margin: "0.7rem", marginLeft: "0.5rem" }}
+          sx={{ margin: "0.7rem", marginLeft: "0.5rem", color: globalTheme.font.primary.main }}
         >
           Apariencia
         </Typography>
@@ -124,7 +172,7 @@ const Appearance: React.FC = () => {
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "16vw" : "60vw",
           height: "5vh",
           boxShadow: 1,
@@ -138,38 +186,38 @@ const Appearance: React.FC = () => {
       >
         <SettingsIcon
           sx={{
-            color: "gray",
+            color: "#aaa",
             width: "1rem",
             height: "1rem",
             paddingRight: "0.5rem",
           }}
         />
-        <Typography variant="subtitle1" sx={{ color: "gray" }}>
+        <Typography variant="subtitle1" sx={{ color: "#aaa" }}>
           configuracion / Apariencia
         </Typography>
       </Box>
 
       <Box
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: globalTheme.palette.background.secondary,
           width: isMediumScreen ? "90vw" : "100vw",
           height: isMediumScreen ? "130vh" : "140vh",
           boxShadow: 1,
           marginLeft: isMediumScreen ? "3rem" : 0,
         }}
       >
-        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem" }}>
+        <Typography variant="h6" sx={{ padding: "2rem 0 0.5rem 3rem", color: globalTheme.font.primary.main }}>
           Apariencia
         </Typography>
         <Typography
           variant="subtitle2"
-          sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
+          sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}
         >
           Cambia como quieres que luzca el sistema
         </Typography>
         <Divider variant="middle" sx={{ margin: "0 2rem" }} />
 
-        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0rem 3rem" }}>
+        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0rem 3rem", color: globalTheme.font.primary.main }}>
           Reiniciar configuracion
         </Typography>
         <Box
@@ -182,7 +230,7 @@ const Appearance: React.FC = () => {
         >
           <Typography
             variant="subtitle2"
-            sx={{ padding: "0 0 0 3rem", color: "gray" }}
+            sx={{ padding: "0 0 0 3rem", color: "#aaa" }}
           >
             Regrese al aspecto base del sistema
           </Typography>
@@ -190,7 +238,7 @@ const Appearance: React.FC = () => {
             variant="contained"
             sx={{
               marginRight: "3rem",
-              background: "#52b69a",
+              background: globalTheme.palette.primary.main,
               "&:hover": { backgroundColor: "#34a0a4" },
             }}
             onClick={HandleResetButtom}
@@ -201,12 +249,12 @@ const Appearance: React.FC = () => {
 
         <Divider variant="middle" sx={{ margin: "0 2rem" }} />
 
-        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>
+        <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem", color: globalTheme.font.primary.main }}>
           Tema
         </Typography>
         <Typography
           variant="subtitle2"
-          sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
+          sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}
         >
           Elige el tema de tu preferencia
         </Typography>
@@ -223,7 +271,7 @@ const Appearance: React.FC = () => {
           >
             <ImageRadioButton
               value="option1"
-              src={registerDoctor}
+              src={lightTheme}
               alt="Opción 1"
               name="Claro"
               onChange={handleChange}
@@ -231,7 +279,7 @@ const Appearance: React.FC = () => {
             />
             <ImageRadioButton
               value="option2"
-              src={registerDoctor}
+              src={darkTheme}
               alt="Opción 2"
               name="Oscuro"
               onChange={handleChange}
@@ -255,13 +303,14 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
   onChange,
   selectedValue,
 }) => {
+  
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const imageStyle: React.CSSProperties = {
-    width: "20rem",
+    width: "30rem",
     height: "15rem",
-    marginLeft: "-22.2rem",
+    marginLeft: "-32.2rem",
     marginBottom: "12.3rem",
     cursor: "pointer",
     border: "2px solid transparent",
@@ -269,16 +318,16 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
   };
 
   const selectedStyle: React.CSSProperties = {
-    borderColor: "#52b69a",
+    borderColor: globalTheme.palette.primary.main,
   };
 
   return (
-    <Box sx={{ marginLeft: isMediumScreen ? "14rem" : "12rem" }}>
+    <Box sx={{ marginLeft: isMediumScreen ? "25.5rem" : "12rem" }}>
       <FormControlLabel
         value={value}
         control={
           <Radio
-            checkedIcon={<CheckCircleRoundedIcon sx={{ color: "#52b69a" }} />}
+            checkedIcon={<CheckCircleRoundedIcon sx={{ color: globalTheme.palette.primary.main }} />}
             sx={{ margin: "2rem" }}
           />
         }
@@ -290,7 +339,7 @@ const ImageRadioButton: React.FC<ImageRadioButtonProps> = ({
               ...imageStyle,
               ...(value === selectedValue
                 ? selectedStyle
-                : { borderColor: "white" }),
+                : { borderColor: "none" }),
             }}
             onClick={() => onChange(value)}
           />
@@ -336,17 +385,17 @@ const FontSizeSlider: React.FC = () => {
 
   return (
     <Box sx={{ width: "60vw" }}>
-      <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem" }}>
-        Tema
+      <Typography variant="subtitle1" sx={{ padding: "1rem 0 0 3rem", color: globalTheme.font.primary.main }}>
+        Fuente
       </Typography>
       <Typography
         variant="subtitle2"
-        sx={{ padding: "0 0 1rem 3rem", color: "gray" }}
+        sx={{ padding: "0 0 1rem 3rem", color: "#aaa" }}
       >
-        Elige el tema de tu preferencia
+        Elige la fuente de tu preferencia
       </Typography>
       <Slider
-        sx={{ margin: "1rem 0 0 4rem", color: "#52b69a" }}
+        sx={{ margin: "1rem 0 0 4rem", color: globalTheme.palette.primary.main, "& .MuiSlider-markLabel": { color: globalTheme.font.primary.main } }}
         track={false}
         value={Number(value)}
         onChange={handleChange}
