@@ -39,6 +39,7 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
 import { globalTheme } from "../../../theme/globalTheme";
+import ProfileTabsTable from "./table/ProfileTabsTable";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -676,6 +677,19 @@ const MyProfile: React.FC = () => {
                                     { name: "Metodo de pago", data: profileData?.metodo_pago, },
                                     { name: "Codigo de tarjeta", data: profileData?.datos_financieros, },
                                 ]} />
+                            </AccordionDetails>
+                        </Accordion>
+
+                                {/*AQUI LA TABLA DE CASOS */}
+                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                id="Informacion_financiera"
+                            >
+                                Tabla de casos
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <ProfileTabsTable/>
                             </AccordionDetails>
                         </Accordion>
                     </Grid>
