@@ -40,6 +40,7 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
 import { globalTheme } from "../../../theme/globalTheme";
+import ProfileTabsTable from "./table/ProfileTabsTable";
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -458,13 +459,13 @@ const Profile: React.FC = () => {
 
   return (
     <Box sx={{ backgroundColor: globalTheme.palette.background.main, minHeight: "86vh", width: "100vw" }}>
-      <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem", color:globalTheme.font.primary.main }} variant="h5">Perfil</Typography>
+      <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem", color: globalTheme.font.primary.main }} variant="h5">Perfil</Typography>
       {loading ? <LinearProgress /> :
         <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
           <Grid item md={3} xs={12}>
             <Box sx={{
               backgroundColor: globalTheme.palette.background.secondary,
-              color:globalTheme.font.primary.main,
+              color: globalTheme.font.primary.main,
               width: "15rem",
               height: "16rem",
               boxShadow: 1,
@@ -527,7 +528,7 @@ const Profile: React.FC = () => {
                 keepMounted
                 open={modalOpen}
                 onClose={handleModalClose}
-                
+
               >
                 <Box sx={style} >
                   <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -664,11 +665,11 @@ const Profile: React.FC = () => {
           </Grid>
 
           <Grid item md={9} xs={12} sx={{ marginLeft: "auto", marginRight: "auto" }}>
-            <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded >
+            <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 id="Informacion_basica"
-                
+
               >
                 Informacion basica
               </AccordionSummary>
@@ -698,7 +699,7 @@ const Profile: React.FC = () => {
               </AccordionDetails>
             </Accordion>
 
-            <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
+            <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 id="Informacion_contacto"
@@ -714,7 +715,7 @@ const Profile: React.FC = () => {
               </AccordionDetails>
             </Accordion>
             {user_id === idOrName &&
-              <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
+              <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   id="Informacion_financiera"
@@ -728,6 +729,19 @@ const Profile: React.FC = () => {
                   ]} />
                 </AccordionDetails>
               </Accordion>}
+              
+                {/*AQUI LA TABLA DE CASOS */}
+            <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                id="Informacion_financiera"
+              >
+                Tabla de casos
+              </AccordionSummary>
+              <AccordionDetails>
+                <ProfileTabsTable />
+              </AccordionDetails>
+            </Accordion>
           </Grid>
 
         </Grid>}
