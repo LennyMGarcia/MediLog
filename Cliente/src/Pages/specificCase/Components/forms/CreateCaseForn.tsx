@@ -82,7 +82,7 @@ const CreateCaseForm: React.FC<CreateCaseForm<any>> = ({ setOfZustandCallback, g
                     zustandCallback={setOfZustandCallback}
                     label="Especialista"
                     name="especialistas_id"
-                    placeholder="Escriba su paciente"
+                    placeholder="Escriba el ID de su especialista"
                 />
             </Box>
 
