@@ -551,7 +551,7 @@ const SpecificCase: React.FC = () => {
           <Typography variant="h6" sx={{ padding: "0 2rem 2rem 1rem" }}>{categoria}s</Typography>
           {/*EDITAR*/}
           {/*{rol === 'Admin' &&*/}
-          <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Agregar consulta</Button>
+          <Button variant="contained" onClick={handleConsultationModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>{categoria == "Consulta" ? "Agregar consulta" : "Agregar Cirugia"}</Button>
           {/*}*/}
           <Modal
             keepMounted
@@ -563,7 +563,7 @@ const SpecificCase: React.FC = () => {
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
                     initialValues={consultationInitialValues}
-                    validationSchema={yupSurgerySchema}
+                    validationSchema={categoria == "Consulta" ? yupConsultationSchema : yupSurgerySchema}
                     onSubmit={() => console.log("adios")}
                   >
                     {({ handleSubmit, isValid }) => (
