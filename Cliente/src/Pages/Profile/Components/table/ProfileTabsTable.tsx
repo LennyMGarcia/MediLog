@@ -50,7 +50,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function ProfileTabsTable({ type }: any) {
+export default function ProfileTabsTable({ id }: any) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -85,19 +85,19 @@ export default function ProfileTabsTable({ type }: any) {
 
       {/* Aqui las tablas dependiendo la tab seleccionada */}
       <CustomTabPanel value={value} index={0}>
-          <ProfileTablaCasos type="all" />
+        <ProfileTablaCasos type="all" id={id} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ProfileTablaCasos type="Activo" />
+        <ProfileTablaCasos type="Activo" id={id} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        <ProfileTablaCasos type="Proceso" />
+        <ProfileTablaCasos type="Proceso" id={id} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-          <ProfileTablaCasos type="Inactivo" />
+        <ProfileTablaCasos type="Inactivo" id={id} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
-        <ProfileTablaCasos type="Suspendido" />
+        <ProfileTablaCasos type="Suspendido" id={id} />
       </CustomTabPanel>
     </Box>
   );

@@ -37,10 +37,54 @@ export default function CasosTerceros() {
     const [statusCode, setStatusCode] = useState<string | number>('');
     const [message, setMessage] = useState<string>('');
 
-    const { authenticated } = useUserStore();
-    const { getUser } = useUserStore();
-    const loading = useUserStore(state => state.loading);
-    const user_id = authenticated() ? getUser().member_id : null;
+
+    return (
+        <Grid
+            container
+            padding={"30px 24px"}
+            gap={4}
+            direction={"column"}
+            sx={{
+                height: "100%",
+            }}
+        >
+            <Grid item container xs={12} justifyContent={"space-between"}>
+                <Typography variant="h5" fontSize={40} sx={{ color: globalTheme.font.primary.main }}>
+                    Casos Terceros
+                </Typography>
+            </Grid>
+            <Grid
+                item
+                xs={12}
+                sx={{
+                    borderRadius: "16px",
+                    backgroundColor: globalTheme.palette.background.secondary,
+                    boxShadow: "0px 12px 24px -4px #919EAB1F",
+                    width: "100%",
+                }}
+            >
+                {/* Componente de tablas y tabs */}
+                <TabsTable type='CasosTerceros' />
+            </Grid>
+            <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
+        </Grid>
+    );
+}
+
+/**
+ * 
+ *  const caseInitialValues = {
+        descripcion: "",
+        paciente: "",
+        especialista: [""],
+        consultas: [""],
+        cirugias: [""],
+        estado: "",
+        categoria: "",
+        seguimiento: "",
+    };
+ * 
+ * const user_id = authenticated() ? getUser().member_id : null;
 
     const [caseInfoModalOpen, setCaseInfoModalOpen] = useState(false);
     const handleCaseInfoModalOpen = () => setCaseInfoModalOpen(true);
@@ -74,8 +118,10 @@ export default function CasosTerceros() {
         });
         return result;
     }
-
-    //Funccion que se modificar record a la base de datos
+ * const { authenticated } = useUserStore();
+    const { getUser } = useUserStore();
+    const loading = useUserStore(state => state.loading);
+ *  //Funccion que se modificar record a la base de datos
     const createSubmitHandler = async () => {
 
         const data = getAllCreateData();
@@ -93,48 +139,4 @@ export default function CasosTerceros() {
         return result;
 
     }
-    const caseInitialValues = {
-        descripcion: "",
-        paciente: "",
-        especialista: [""],
-        consultas: [""],
-        cirugias: [""],
-        estado: "",
-        categoria: "",
-        seguimiento: "",
-    };
-
-    return (
-        <Grid
-            container
-            padding={"30px 24px"}
-            gap={4}
-            direction={"column"}
-            sx={{
-                height: "100%",
-            }}
-        >
-            <Grid item container xs={12} justifyContent={"space-between"}>
-                <Typography variant="h5" fontSize={40} sx={{color:globalTheme.font.primary.main}}>
-                    Casos Terceros
-                </Typography>
-            </Grid>
-            <Grid
-                item
-                xs={12}
-                sx={{
-                    borderRadius: "16px",
-                    backgroundColor: globalTheme.palette.background.secondary,
-                    boxShadow: "0px 12px 24px -4px #919EAB1F",
-                    width: "100%",
-                }}
-            >
-                {/* Componente de tablas y tabs */}
-                <TabsTable type='CasosTerceros' />
-            </Grid>
-            <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
-        </Grid>
-    );
-}
-
-/**  */
+  */

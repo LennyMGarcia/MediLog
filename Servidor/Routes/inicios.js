@@ -24,15 +24,15 @@ router.post('/register', validaciones_register, async (req, res) => {
         const model = new Usuario();
         const result = await model.insert(data);
 
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
-        const query = new Usuario(result.insertId);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
+        const query = new Usuario(result?.insertId);
         const user = await query.getUser();
         console.log(user);
         return res.status(201).json({ user: user, 'message': 'Operacion Exitosa.' });
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': `${error_msg} - Por Favor, Verificar los datos introducidos.` });
+    const error_msg = validated?.errors[0]?.msg || 'Campos Invalidos';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 
 router.post('/login', validaciones, async (req, res) => {
@@ -58,8 +58,8 @@ router.post('/login', validaciones, async (req, res) => {
         return res.status(404).json({ 'message': 'Usuario No Existe.' });
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': `${error_msg} - Por Favor, Verificar los datos introducidos.` });
+    const error_msg = validated?.errors[0]?.msg || 'Campos Invalidos';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 
 module.exports = router;

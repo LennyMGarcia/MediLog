@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
     const model = new Paciente();
     const data = await model.get();
 
-    if (data.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
+    if (data?.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
     return res.status(200).json(data);
 });
 router.get('/:id', id_validation, async (req, res) => {
@@ -57,6 +57,7 @@ router.get('/:id', id_validation, async (req, res) => {
         const data = await model.find(id);
         const user_model = new Usuario();
         const user = await user_model.getMember(data?.id);
+        const casos = await user_model.findUserRecords(data?.id, 'casos');
         const product_model = new Producto();
         const producto = await product_model.find(user?.plan)
 
@@ -65,7 +66,7 @@ router.get('/:id', id_validation, async (req, res) => {
         var familias = []
         var ids = []
         var casos_familiares = [];
-        if (obj.length >= 1) {
+        if (obj?.length >= 1) {
             obj?.forEach((element) => {
                 if (typeof (element) === 'string') {
                     const id = parseInt(element);
@@ -103,6 +104,7 @@ router.get('/:id', id_validation, async (req, res) => {
             familiares: data?.familiares_id || false,
             familias: familias || [],
             casos_familiares: casos_familiares || [],
+            casos: casos[0]?.success === false ? [] : casos,
             metodo_pago: user?.metodo_pago || 'Tarjeta de Credito',
             datos_financieros: user?.datos_financieros || '',
             cvv: user?.cvv || '',
@@ -114,7 +116,7 @@ router.get('/:id', id_validation, async (req, res) => {
         if (!data) return res.status(404).json({ 'message': 'Registro No Existe.' });
         return res.status(200).json(payload);
     }
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 
 });
@@ -131,7 +133,7 @@ router.post('/', validaciones, async (req, res) => {
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 
 });
@@ -150,7 +152,7 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.delete('/:id', id_validation, async (req, res) => {
@@ -162,10 +164,11 @@ router.delete('/:id', id_validation, async (req, res) => {
 
         const model = new Paciente();
         const destroy = await model.delete(id);
+        if (destroy[0]?.success === false) return res.status(destroy[0]?.status).json({ 'message': 'Ese Paciente tiene un caso abierto.' });
         return res.status(200).json({ 'message': 'Registro Eliminado Exitosamente.' });
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 
 });

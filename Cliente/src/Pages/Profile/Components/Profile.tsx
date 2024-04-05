@@ -56,6 +56,7 @@ const style = {
 };
 
 interface IPatientProfileData {
+  id: number | any | null,
   tipo: string,
   nombre: any | null,
   apellido: any | null,
@@ -79,6 +80,7 @@ interface IPatientProfileData {
 }
 
 const patientProfileDataObject: IPatientProfileData = {
+  id: null,
   tipo: '',
   nombre: null,
   apellido: null,
@@ -102,6 +104,7 @@ const patientProfileDataObject: IPatientProfileData = {
 };
 
 interface ISpecialistProfileData {
+  id: number | any | null,
   tipo: any | null,
   nombre: any | null,
   apellido: any | null,
@@ -121,6 +124,7 @@ interface ISpecialistProfileData {
 }
 
 const specialistProfileDataObject: ISpecialistProfileData = {
+  id: null,
   tipo: null,
   nombre: null,
   apellido: null,
@@ -156,8 +160,8 @@ const Profile: React.FC = () => {
   const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
   const [id, setId] = useState<string | undefined>('0');
   //Se deshabilitara los derechos ADMINS temporalmente para permitir acceso a esa ruta -- Intercambiar lineas de comandos al finalizar con la pagina
-  //const [rol, setRol] = useState<string | undefined>('Regular');
-  const [rol, setRol] = useState<string | undefined>('Admin');
+  const [rol, setRol] = useState<string | undefined>('Regular');
+  // const [rol, setRol] = useState<string | undefined>('Admin');
   const { idOrName } = useParams<{ idOrName: string }>();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -293,18 +297,18 @@ const Profile: React.FC = () => {
       setRol(tipo);
     } else {
       //Condiccion que verifica si hay un usuario conectado, en caso de que no hubiera se impide acceso a la ruta -- NO BORRAR
-      //return navigate('/')
+      return navigate('/')
     }
     getRecordFromDB(idOrName).then((result) => {
       //Condicion que redirige al usuario si occurre un error
       if (!result) return navigate('/404');
 
       //Condicion que se encarga de Parsear los records almacenados en formato de ARRAY/JSON en la plataforma
-      result.padecimientos = result.padecimientos ? JSON.parse(result?.padecimientos) : [''];
-      result.alergias = result.alergias ? JSON.parse(result?.alergias) : [''];
-      result.familiares = result.familiares ? JSON.parse(result?.familiares) : [''];
-      result.fecha_nacimiento = result.fecha_nacimiento && dayjs(result.fecha_nacimiento).format('DD-MM-YYYY');
-      result.fecha_expiracion = result.fecha_expiracion && dayjs(result.fecha_expiracion).format('DD-MM-YYYY');
+      result.padecimientos = result?.padecimientos ? JSON.parse(result?.padecimientos) : [''];
+      result.alergias = result?.alergias ? JSON.parse(result?.alergias) : [''];
+      result.familiares = result?.familiares ? JSON.parse(result?.familiares) : [''];
+      result.fecha_nacimiento = result?.fecha_nacimiento && dayjs(result?.fecha_nacimiento).format('DD-MM-YYYY');
+      result.fecha_expiracion = result?.fecha_expiracion && dayjs(result?.fecha_expiracion).format('DD-MM-YYYY');
 
       const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(result);
 
@@ -427,6 +431,10 @@ const Profile: React.FC = () => {
       return false;
     }).catch(error => {
       console.log(error)
+      setStatusCode(error.response.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response.status);
+      });
       return false;
     })
     return success;
@@ -471,7 +479,14 @@ const Profile: React.FC = () => {
               boxShadow: 1,
               borderRadius: "1rem",
             }}>
-              <Typography sx={{ padding: "1rem" }} variant="body1">Foto de perfil</Typography>
+              <Box sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+                <Typography sx={{ padding: "1rem", }} variant="body1">Foto de perfil</Typography>
+                <Typography sx={{ padding: "1rem", fontWeight: 'bold' }} variant="body1">ID: {profileData?.id}</Typography>
+              </Box>
               <Box sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -729,8 +744,8 @@ const Profile: React.FC = () => {
                   ]} />
                 </AccordionDetails>
               </Accordion>}
-              
-                {/*AQUI LA TABLA DE CASOS */}
+
+            {/*AQUI LA TABLA DE CASOS */}
             <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -739,7 +754,7 @@ const Profile: React.FC = () => {
                 Tabla de casos
               </AccordionSummary>
               <AccordionDetails>
-                <ProfileTabsTable />
+                <ProfileTabsTable id={profileData?.id} />
               </AccordionDetails>
             </Accordion>
           </Grid>

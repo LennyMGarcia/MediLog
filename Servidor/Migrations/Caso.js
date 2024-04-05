@@ -42,12 +42,12 @@ class Caso extends Model {
 
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
     async update(data = {}, id = null) {
-        if (!id) return [{ 'success': false, 'error': 'Registro No Existe', 'status': 400 }];
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 404 }];
+        if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
 
         try {
             this.data = data;
@@ -70,13 +70,12 @@ class Caso extends Model {
 
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
     async subscribe(pacientes_id = null, especialistas_id = null) {
-        if (!pacientes_id) return [{ 'success': false, 'error': 'Registro No Existe', 'status': 400 }];
-        if (!especialistas_id) return [{ 'success': false, 'error': 'Registro No Existe', 'status': 400 }];
+        if (!pacientes_id) return [{ 'success': false, 'error': 'Registro No Existe', 'status': 404 }];
+        if (!especialistas_id) return [{ 'success': false, 'error': 'Registro No Existe', 'status': 404 }];
 
         try {
 
@@ -89,7 +88,6 @@ class Caso extends Model {
 
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }

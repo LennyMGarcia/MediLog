@@ -28,31 +28,31 @@ function Dashboard() {
 
   useEffect(() => {
     autopopulate().then(result => {
-      const casos = result.casos;
+      const casos = result?.casos || [];
       if (casos) {
         //Funcciones que divide que los registros segun el estado
-        const casos_abiertos = casos.filter((cases: any) => cases.estado === 'Activo');
-        const casos_cerrados = casos.filter((cases: any) => cases.estado === 'Inactivo');
-        const casos_proceso = casos.filter((cases: any) => cases.estado === 'Proceso');
-        const casos_suspendidos = casos.filter((cases: any) => cases.estado === 'Suspendido');
+        const casos_abiertos = casos.filter((cases: any) => cases?.estado === 'Activo');
+        const casos_cerrados = casos.filter((cases: any) => cases?.estado === 'Inactivo');
+        const casos_proceso = casos.filter((cases: any) => cases?.estado === 'Proceso');
+        const casos_suspendidos = casos.filter((cases: any) => cases?.estado === 'Suspendido');
 
         //Funcciones que aumenta la cantidad de casos en base a los casos existentes
-        if (casos_abiertos.length >= 1) {
+        if (casos_abiertos?.length >= 1) {
           setCasesInfo((curr) => {
             return { ...curr, open: casos_abiertos.length };
           })
         }
-        if (casos_cerrados.length >= 1) {
+        if (casos_cerrados?.length >= 1) {
           setCasesInfo((curr) => {
             return { ...curr, closed: casos_cerrados.length };
           })
         }
-        if (casos_proceso.length >= 1) {
+        if (casos_proceso?.length >= 1) {
           setCasesInfo((curr) => {
-            return { ...curr, onProcess: casos_cerrados.length };
+            return { ...curr, onProcess: casos_proceso.length };
           })
         }
-        if (casos_suspendidos.length >= 1) {
+        if (casos_suspendidos?.length >= 1) {
           setCasesInfo((curr) => {
             return { ...curr, suspend: casos_suspendidos.length };
           })

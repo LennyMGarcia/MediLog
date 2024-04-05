@@ -55,6 +55,7 @@ const style = {
 };
 
 interface IPatientProfileData {
+    id: number | any | null,
     tipo: string,
     nombre: any | null,
     apellido: any | null,
@@ -78,6 +79,7 @@ interface IPatientProfileData {
 }
 
 const patientProfileDataObject: IPatientProfileData = {
+    id: null,
     tipo: '',
     nombre: null,
     apellido: null,
@@ -101,6 +103,7 @@ const patientProfileDataObject: IPatientProfileData = {
 };
 
 interface ISpecialistProfileData {
+    id: number | any | null,
     tipo: any | null,
     nombre: any | null,
     apellido: any | null,
@@ -120,6 +123,7 @@ interface ISpecialistProfileData {
 }
 
 const specialistProfileDataObject: ISpecialistProfileData = {
+    id: null,
     tipo: null,
     nombre: null,
     apellido: null,
@@ -328,7 +332,7 @@ const MyProfile: React.FC = () => {
 
     //Funccion que envia solicitud a base de datos para conseguir infomaciones del usuario conectado cada vez que se cambia el ID
     useEffect(() => {
-        //  if (!userType) return navigate('/');
+        if (!userType) return navigate('/');
         if (userType === 'Paciente') {
             setRuta('pacientes'); //pacientes
         } else {
@@ -336,7 +340,7 @@ const MyProfile: React.FC = () => {
         }
         getRecordFromDB(idOrName).then((result) => {
             //Condicion que redirige al usuario si occurre un error
-            //  if (!result) return navigate('/404');
+            if (!result) return navigate('/404');
 
             //Condicion que se encarga de Parsear los records almacenados en formato de ARRAY/JSON en la plataforma
             result.padecimientos = result.padecimientos ? JSON.parse(result?.padecimientos) : [''];
@@ -347,23 +351,19 @@ const MyProfile: React.FC = () => {
 
             const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(result);
 
-
-
             if (idOrName) {
                 const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
 
                 if (!fetchedProfileData) {
                     console.log('No se encontró el perfil');
-                    //        navigate('/404');
+                    navigate('/404');
                     return;
                 }
                 setProfileData(fetchedProfileData);
-
             }
         });
 
     }, [idOrName, navigate]);
-
 
 
     //Funccion que se encarga de coincidir la informacion entrante con el ID siguiendo el formato del Mapper
@@ -439,19 +439,26 @@ const MyProfile: React.FC = () => {
     return (
 
         <Box sx={{ backgroundColor: globalTheme.palette.background.main, minHeight: "86vh", width: "100vw" }}>
-            <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem", color:globalTheme.font.primary.main }} variant="h5">Perfil</Typography>
+            <Typography sx={{ paddingTop: "2rem", paddingLeft: "5rem", color: globalTheme.font.primary.main }} variant="h5">Perfil</Typography>
             {loading ? <LinearProgress /> :
                 <Grid container spacing={2} sx={{ padding: "2rem", paddingTop: "1rem", paddingLeft: "5rem" }}>
                     <Grid item md={3} xs={12}>
                         <Box sx={{
                             backgroundColor: globalTheme.palette.background.secondary,
-                            color:globalTheme.font.primary.main,
+                            color: globalTheme.font.primary.main,
                             width: "15rem",
                             height: "16rem",
                             boxShadow: 1,
                             borderRadius: "1rem",
                         }}>
-                            <Typography sx={{ padding: "1rem", }} variant="body1">Foto de perfil</Typography>
+                            <Box sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}>
+                                <Typography sx={{ padding: "1rem", }} variant="body1">Foto de perfil</Typography>
+                                <Typography sx={{ padding: "1rem", fontWeight: 'bold' }} variant="body1">ID: {profileData?.id}</Typography>
+                            </Box>
                             <Box sx={{
                                 display: "flex",
                                 justifyContent: "center",
@@ -616,7 +623,7 @@ const MyProfile: React.FC = () => {
                     </Grid>
 
                     <Grid item md={9} xs={12} sx={{ marginLeft: "auto", marginRight: "auto" }}>
-                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
+                        <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 id="Informacion_basica"
@@ -649,7 +656,7 @@ const MyProfile: React.FC = () => {
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
+                        <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 id="Informacion_contacto"
@@ -665,7 +672,7 @@ const MyProfile: React.FC = () => {
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
+                        <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 id="Informacion_financiera"
@@ -680,18 +687,19 @@ const MyProfile: React.FC = () => {
                             </AccordionDetails>
                         </Accordion>
 
-                                {/*AQUI LA TABLA DE CASOS */}
-                        <Accordion sx={{backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main}} defaultExpanded>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                id="Informacion_financiera"
-                            >
-                                Tabla de casos
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <ProfileTabsTable/>
-                            </AccordionDetails>
-                        </Accordion>
+                        {/*AQUI LA TABLA DE CASOS */}
+                        {userType === "Paciente" &&
+                            <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    id="Informacion_financiera"
+                                >
+                                    Tabla de casos
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <ProfileTabsTable id={profileData?.id} />
+                                </AccordionDetails>
+                            </Accordion>}
                     </Grid>
 
                 </Grid>}

@@ -55,6 +55,7 @@ function Appbar() {
 
   const nombre = authenticated() ? getUser().nombre : null;
   const apellido = authenticated() ? getUser().apellido : null;
+  const user_id = authenticated() ? getUser().member_id : null;
   const rol = authenticated() ? getUser().tipo : null;
   const pages = rol === 'Paciente' ? pagesPatients : pagesDoctors;
 
@@ -197,10 +198,19 @@ function Appbar() {
               flexGrow: 0,
               display: "flex",
               flexDirection: "row",
-              gap: "10px",
+              gap: "20px",
               alignItem: "center",
             }}
           >
+            <Box
+              sx={{
+                display: "flex",
+              }}
+            >
+              <Typography variant="h5" fontSize={16} textAlign={"left"}>
+                ID: {user_id}
+              </Typography>
+            </Box>
             <Box
               sx={{
                 width: "100%",

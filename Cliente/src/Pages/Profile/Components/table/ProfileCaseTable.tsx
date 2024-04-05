@@ -50,22 +50,22 @@ interface IArray {
 // Tipos de datos a mostrar en la tabla
 interface IProps {
   type: "all" | "Activo" | "Inactivo" | "Proceso" | "Suspendido";
+  id: number | string | any;
 }
 
-export default function ProfileTablaCasos({ type }: IProps) {
+export default function ProfileTablaCasos({ type, id }: IProps) {
   const navigate = useNavigate();
-  const { autopopulate } = useUserStore();
+  const { getPatientCases } = useUserStore();
   const { getUser } = useUserStore();
   const loading = useUserStore(state => state.loading);
-  const casos = useUserStore((state) => state.casos);
-
+  const casos = useUserStore((state) => state.pacientCases);
   const [data, setData] = useState<any[]>(type === 'all' ? casos : casos.filter((cases: any) => cases.estado === type));
 
   useEffect(() => {
     //Zustand que permite la consulta de casos relacionados con el usuario
     if (casos.length <= 0) {
-      autopopulate().then(result => {
-        const casos = result.casos;
+      getPatientCases(id).then(result => {
+        const casos = result;
         if (casos) {
           //Funcciones que divide que los registros segun el estado
           const casos_abiertos = casos.filter((cases: any) => cases.estado === 'Activo');
@@ -92,7 +92,7 @@ export default function ProfileTablaCasos({ type }: IProps) {
         }
       });
     }
-  });
+  }, []);
 
 
   // Booleano que debe indicar el rol del usuario, ahora que lo pienso, se puede validar con el zustand
@@ -287,7 +287,7 @@ export default function ProfileTablaCasos({ type }: IProps) {
                 variant="contained"
                 sx={{
                   bgcolor: globalTheme.palette.secondary.main,
-                  marginRight:"1rem"
+                  marginRight: "1rem"
                 }}
                 onClick={() => {
                   search_patient(openInputSearch);

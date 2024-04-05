@@ -13,6 +13,7 @@ const useUserStore = create((set: any, get: any) => ({
     familiares: [],
     transacciones: [],
     pacientes: [],
+    pacientCases: [],
     paciente: [],
     loading: true,
     authUser: (user: any) => set(() => {
@@ -27,6 +28,21 @@ const useUserStore = create((set: any, get: any) => ({
             const data = response.data.casos_familiares
             if (response.status === 200 || response.status === 201) {
                 set({ loading: false, familiares: data })
+                return data;
+            }
+            return [];
+        }).catch(error => {
+            console.log(error);
+            set({ loading: true })
+            return [];
+        })
+        return result;
+    },
+    getPatientCases: async (id: number) => {
+        const result = axios.get(getBackendConnectionString(`pacientes/${id}`)).then((response) => {
+            const data = response.data.casos;
+            if (response.status === 200 || response.status === 201) {
+                set({ loading: false, pacientCases: data })
                 return data;
             }
             return [];

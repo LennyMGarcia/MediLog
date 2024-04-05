@@ -35,8 +35,7 @@ router.get('/', async (req, res) => {
     const model = new Usuario();
     const data = await model.get();
 
-    if (data.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
-
+    if (data?.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
     return res.status(200).json(data);
 });
 router.get('/:id', id_validation, async (req, res) => {
@@ -52,7 +51,7 @@ router.get('/:id', id_validation, async (req, res) => {
         const consultas = await model.consultas();
         const transacciones = await model.transacciones();
 
-        if (user.tipo === "Paciente") {
+        if (user?.tipo === "Paciente") {
             const payload =
             {
                 casos: casos[0]?.success === false ? [] : casos,
@@ -72,13 +71,12 @@ router.get('/:id', id_validation, async (req, res) => {
             transacciones: transacciones[0]?.success === false ? [] : transacciones,
             pacientes: pacientes[0]?.success === false ? [] : pacientes
         }
-        //   console.log(payload);
         return res.status(200).json(payload);
         // if (!user) return res.status(404).json({ 'message': 'Registro No Existe.' });
         // return res.status(200).json(user);
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.post('/', async (req, res) => {
@@ -91,12 +89,12 @@ router.post('/', async (req, res) => {
         const model = new Usuario();
         const result = await model.insert(data);
 
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
 
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.put('/password/:id', id_validation, password_validaciones, async (req, res) => {
@@ -108,8 +106,6 @@ router.put('/password/:id', id_validation, password_validaciones, async (req, re
         const correo = req.body.correo;
         const current_password = req.body.currentPass;
         const new_password = req.body.newPass;
-        console.log(current_password);
-        console.log(new_password);
 
         const model = new Usuario();
         const result = await model.authenticate(correo);
@@ -121,15 +117,16 @@ router.put('/password/:id', id_validation, password_validaciones, async (req, re
             if (!authenticated) return res.status(401).json({ 'message': 'Credenciales Incorrectas.' });
             const user = new Usuario();
             const change_password = await user.update_password(new_password, id);
-            console.log(change_password);
+
+            if (change_password[0]?.success === false) return res.status(change_password[0]?.status).json({ 'message': 'No se Pudo Realizar operacion.' });
             return res.status(200).json({ 'message': 'Contrasena Cambiada Exitosamente.' });
         }
 
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(401).json({ 'message': 'Acceso Denegado.' });
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
@@ -147,11 +144,11 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
         const model = new Usuario();
         const result = await model.update_plan(producto.id, id);
 
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 /*router.put('/:id', id_validation, async (req, res) => {
@@ -166,7 +163,7 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
         const model = new Usuario();
         const result = await model.update(data, id);
 
-        if (result[0].success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(201).json(result);
     }
 
@@ -182,10 +179,11 @@ router.delete('/:id', id_validation, async (req, res) => {
 
         const model = new Usuario();
         const destroy = await model.delete(id);
+        if (destroy[0]?.success === false) return res.status(destroy[0]?.status).json({ 'message': 'Ese Paciente tiene un caso abierto.' });
         return res.status(200).json({ 'message': 'Registro Eliminado Exitosamente.' });
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg;
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 

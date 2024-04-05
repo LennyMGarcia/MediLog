@@ -53,6 +53,7 @@ export default function TablaCasosTerceros({ type }: IProps) {
     const navigate = useNavigate();
     const { getFamiliares } = useUserStore();
     const { authenticated } = useUserStore();
+    const { toggleLoading } = useUserStore();
     const { getUser } = useUserStore();
     const loading = useUserStore(state => state.loading);
     const familiares = useUserStore((state) => state.familiares);
@@ -76,19 +77,24 @@ export default function TablaCasosTerceros({ type }: IProps) {
 
                     if (type === 'Activo') {
                         setData(casos_abiertos);
+                        toggleLoading(false);
                         return;
                     } else if (type === 'Inactivo') {
+                        toggleLoading(false);
                         setData(casos_cerrados);
                         return;
                     }
                     else if (type === 'Proceso') {
                         setData(casos_proceso);
+                        toggleLoading(false);
                         return;
                     } else if (type === 'Suspendido') {
                         setData(casos_suspendidos);
+                        toggleLoading(false);
                         return;
                     }
                     setData(familiares);
+                    toggleLoading(false);
                     return;
                 }
             });

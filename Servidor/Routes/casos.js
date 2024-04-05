@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
     const model = new Caso();
     const data = await model.get();
 
-    if (data.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
+    if (data?.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
     return res.status(200).json(data);
 });
 router.get('/:id', id_validation, async (req, res) => {
@@ -74,7 +74,7 @@ router.get('/:id', id_validation, async (req, res) => {
         return res.status(200).json(payload);
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.post('/', validaciones, async (req, res) => {
@@ -92,8 +92,8 @@ router.post('/', validaciones, async (req, res) => {
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
     const id = req.params.id;
@@ -110,8 +110,8 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.put('/subscribe/:id', id_validation, async (req, res) => {
     const id = req.params.id;
@@ -124,11 +124,11 @@ router.put('/subscribe/:id', id_validation, async (req, res) => {
         const model = new Caso();
         const result = await model.subscribe(id, especialistas_id);
         console.log(result);
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
     return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.delete('/:id', id_validation, async (req, res) => {
@@ -142,8 +142,8 @@ router.delete('/:id', id_validation, async (req, res) => {
         return res.status(200).json({ 'message': 'Registro Borrado Exitosamente.' });
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 
 module.exports = router;
