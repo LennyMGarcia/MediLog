@@ -28,7 +28,7 @@ describe('TEST DE INICIO', () => {
                     password: "password",
                 });
 
-                expect(response.status).toBe(200);
+                expect(response?.status).toBe(200);
             });
 
             it('Debería mandar codigo 404 si no hay coincidencias', async () => {
@@ -49,7 +49,7 @@ describe('TEST DE INICIO', () => {
                 } catch (error) {
 
                     expect(error.isAxiosError).toBe(true);
-                    expect(error.response.status).toBe(404);
+                    expect(error.response?.status).toBe(404);
                 }
             });
 
@@ -71,7 +71,7 @@ describe('TEST DE INICIO', () => {
                 } catch (error) {
 
                     expect(error.isAxiosError).toBe(true);
-                    expect(error.response.status).toBe(400);
+                    expect(error.response?.status).toBe(400);
                 }
             });
 
@@ -107,7 +107,7 @@ describe('TEST DE INICIO', () => {
                     fecha: "2024-03-23 17:45:23",
                 });
 
-                expect(response.status).toBe(201);
+                expect(response?.status).toBe(201);
             });
 
 
@@ -128,7 +128,7 @@ describe('TEST DE INICIO', () => {
 
                 try {
                     const response = await axios.post(`http://localhost:${PORT}/register`, {
-                        username:0,
+                        username: 0,
                         password: 0,
                         tipo: "Paciente",
                         plan: 0,
@@ -143,7 +143,7 @@ describe('TEST DE INICIO', () => {
                 } catch (error) {
 
                     expect(error.isAxiosError).toBe(true);
-                    expect(error.response.status).toBe(400);
+                    expect(error.response?.status).toBe(400);
                 }
             });
 

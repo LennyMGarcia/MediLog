@@ -128,20 +128,15 @@ const Register: React.FC = () => {
         )
         .then((response) => {
           //Condicion que verifica si la solicitud fue exitosa
-          if (response.status === 201 || response.status === 200) {
-            const incomingUser = response.data?.user;
-            //console.log(response);
-            //console.log(incomingUser);
+          if (response?.status === 201 || response?.status === 200) {
+            const incomingUser = response?.data?.user;
             authUser(incomingUser);
             next();
-            return { success: true, message: response.statusText };
+            return { success: true, message: response?.statusText };
           } else {
-            //console.log(response)
-            const error_msj = response.data?.message; 
-            //console.log(response);
-            //console.log(error_msj);
-            setStatusCode(response.status);
-            setMessage(response.statusText)
+            const error_msj = response?.data?.message;
+            setStatusCode(response?.status);
+            setMessage(response?.statusText)
             setOpen(true);
             console.log(open)
             return { success: false, message: error_msj };
@@ -150,14 +145,11 @@ const Register: React.FC = () => {
         .catch((error) => {
           console.log(error)
           const error_msj = error?.response?.data?.message;
-          //console.log(error.response.statusText);
-          //console.log(error_msj);
-          setStatusCode(error.response.status);
+          setStatusCode(error.response?.status);
           setMessage(() => {
-           return getHTTPTextError(error.response.status);
+            return getHTTPTextError(error.response?.status);
           });
           setOpen(true);
-          console.log(open)
           return { success: false, message: error_msj };
         });
       return result;

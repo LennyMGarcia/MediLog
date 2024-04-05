@@ -11,6 +11,7 @@ function Dashboard() {
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
   const { autopopulate } = useUserStore();
+  const { toggleLoading } = useUserStore();
   const loading = useUserStore(state => state.loading);
 
   const nombre = authenticated() ? getUser().nombre : null;
@@ -28,34 +29,38 @@ function Dashboard() {
 
   useEffect(() => {
     autopopulate().then(result => {
-      const casos = result.casos;
+      const casos = result?.casos || [];
       if (casos) {
         //Funcciones que divide que los registros segun el estado
-        const casos_abiertos = casos.filter((cases: any) => cases.estado === 'Activo');
-        const casos_cerrados = casos.filter((cases: any) => cases.estado === 'Inactivo');
-        const casos_proceso = casos.filter((cases: any) => cases.estado === 'Proceso');
-        const casos_suspendidos = casos.filter((cases: any) => cases.estado === 'Suspendido');
+        const casos_abiertos = casos.filter((cases: any) => cases?.estado === 'Activo');
+        const casos_cerrados = casos.filter((cases: any) => cases?.estado === 'Inactivo');
+        const casos_proceso = casos.filter((cases: any) => cases?.estado === 'Proceso');
+        const casos_suspendidos = casos.filter((cases: any) => cases?.estado === 'Suspendido');
 
         //Funcciones que aumenta la cantidad de casos en base a los casos existentes
-        if (casos_abiertos.length >= 1) {
+        if (casos_abiertos?.length >= 1) {
           setCasesInfo((curr) => {
-            return { ...curr, open: casos_abiertos.length };
+            return { ...curr, open: casos_abiertos?.length };
           })
+          toggleLoading(false);
         }
-        if (casos_cerrados.length >= 1) {
+        if (casos_cerrados?.length >= 1) {
           setCasesInfo((curr) => {
-            return { ...curr, closed: casos_cerrados.length };
+            return { ...curr, closed: casos_cerrados?.length };
           })
+          toggleLoading(false);
         }
-        if (casos_proceso.length >= 1) {
+        if (casos_proceso?.length >= 1) {
           setCasesInfo((curr) => {
-            return { ...curr, onProcess: casos_cerrados.length };
+            return { ...curr, onProcess: casos_proceso?.length };
           })
+          toggleLoading(false);
         }
-        if (casos_suspendidos.length >= 1) {
+        if (casos_suspendidos?.length >= 1) {
           setCasesInfo((curr) => {
-            return { ...curr, suspend: casos_suspendidos.length };
+            return { ...curr, suspend: casos_suspendidos?.length };
           })
+          toggleLoading(false);
         }
         return;
       }
@@ -94,7 +99,7 @@ function Dashboard() {
             color: "#939497",
           }}
         >
-          {dayjs().format("D [de] MMMM [del] YYYY'")}
+          {dayjs().format("D [de] MMMM [del] YYYY")}
           {/* 12 de enero del 2024 */}
         </Typography>
       </Grid>

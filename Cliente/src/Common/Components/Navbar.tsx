@@ -178,7 +178,10 @@ export default function Navbar() {
                 sx={{
                   bgcolor: globalTheme.palette.secondary.main,
                 }}
-                onClick={() => navigate("/register")}
+                onClick={() =>
+                  //Uso ese comando al lugar de navigate porque navigate no restablece/reinicia el FORM completamente pero ese comando, si
+                  window.location.href = "/register"
+                }
               >
                 Registrarte
               </Button>

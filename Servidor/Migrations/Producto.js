@@ -12,11 +12,12 @@ class Producto extends Model {
         ];
     }
     async getIdByName(name = null) {
+        if (!name) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
+
         this.values = name;
         try {
             const query = new Builder(this.table);
             const [results, fields] = await DB.execute(query.select_query('id', 'nombre'), [this.values]);
-            console.log(results);
             return results[0];
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
@@ -42,7 +43,7 @@ class Producto extends Model {
 
     }
     async update(data = {}, id = null) {
-        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 404 }];
 
         try {
             this.data = data;

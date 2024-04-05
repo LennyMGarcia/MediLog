@@ -56,6 +56,7 @@ const style = {
 };
 
 interface IPatientProfileData {
+  id: number | any | null,
   tipo: string,
   nombre: any | null,
   apellido: any | null,
@@ -79,6 +80,7 @@ interface IPatientProfileData {
 }
 
 const patientProfileDataObject: IPatientProfileData = {
+  id: null,
   tipo: '',
   nombre: null,
   apellido: null,
@@ -102,6 +104,7 @@ const patientProfileDataObject: IPatientProfileData = {
 };
 
 interface ISpecialistProfileData {
+  id: number | any | null,
   tipo: any | null,
   nombre: any | null,
   apellido: any | null,
@@ -121,6 +124,7 @@ interface ISpecialistProfileData {
 }
 
 const specialistProfileDataObject: ISpecialistProfileData = {
+  id: null,
   tipo: null,
   nombre: null,
   apellido: null,
@@ -156,8 +160,8 @@ const Profile: React.FC = () => {
   const [profileData, setProfileData] = useState<IPatientProfileData | ISpecialistProfileData | undefined>()
   const [id, setId] = useState<string | undefined>('0');
   //Se deshabilitara los derechos ADMINS temporalmente para permitir acceso a esa ruta -- Intercambiar lineas de comandos al finalizar con la pagina
-  //const [rol, setRol] = useState<string | undefined>('Regular');
-  const [rol, setRol] = useState<string | undefined>('Admin');
+  const [rol, setRol] = useState<string | undefined>('Regular');
+  // const [rol, setRol] = useState<string | undefined>('Admin');
   const { idOrName } = useParams<{ idOrName: string }>();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -192,6 +196,10 @@ const Profile: React.FC = () => {
 
     const id = data.id;
     if (!id) {
+      setStatusCode(404);
+      setMessage(() => {
+        return getHTTPTextError(404);
+      });
       console.log("No se encontró un ID en el objeto proporcionado.");
       return undefined;
     }
@@ -207,21 +215,21 @@ const Profile: React.FC = () => {
     const result = await axios.get(getBackendConnectionString(`pacientes/${id}`)
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
-        return response.data;
+        return response?.data;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -250,21 +258,21 @@ const Profile: React.FC = () => {
       }
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -293,18 +301,18 @@ const Profile: React.FC = () => {
       setRol(tipo);
     } else {
       //Condiccion que verifica si hay un usuario conectado, en caso de que no hubiera se impide acceso a la ruta -- NO BORRAR
-      //return navigate('/')
+      return navigate('/')
     }
     getRecordFromDB(idOrName).then((result) => {
       //Condicion que redirige al usuario si occurre un error
       if (!result) return navigate('/404');
 
       //Condicion que se encarga de Parsear los records almacenados en formato de ARRAY/JSON en la plataforma
-      result.padecimientos = result.padecimientos ? JSON.parse(result?.padecimientos) : [''];
-      result.alergias = result.alergias ? JSON.parse(result?.alergias) : [''];
-      result.familiares = result.familiares ? JSON.parse(result?.familiares) : [''];
-      result.fecha_nacimiento = result.fecha_nacimiento && dayjs(result.fecha_nacimiento).format('DD-MM-YYYY');
-      result.fecha_expiracion = result.fecha_expiracion && dayjs(result.fecha_expiracion).format('DD-MM-YYYY');
+      result.padecimientos = result?.padecimientos ? JSON.parse(result?.padecimientos) : [''];
+      result.alergias = result?.alergias ? JSON.parse(result?.alergias) : [''];
+      result.familiares = result?.familiares ? JSON.parse(result?.familiares) : [''];
+      result.fecha_nacimiento = result?.fecha_nacimiento && dayjs(result?.fecha_nacimiento).format('DD-MM-YYYY');
+      result.fecha_expiracion = result?.fecha_expiracion && dayjs(result?.fecha_expiracion).format('DD-MM-YYYY');
 
       const profilesObject: Record<string, IPatientProfileData | ISpecialistProfileData | undefined> | undefined = mapDataToProfileObject(result);
 
@@ -375,6 +383,10 @@ const Profile: React.FC = () => {
     }
 
     if (!idOrName) {
+      setStatusCode(404);
+      setMessage(() => {
+        return getHTTPTextError(404);
+      });
       return undefined;
     }
 
@@ -415,18 +427,22 @@ const Profile: React.FC = () => {
       especialistas_id: user_id,
     }).then(res => {
       console.log(res)
-      if (res.status === 200 || res.status === 201) {
+      if (res?.status === 200 || res?.status === 201) {
         window.location.href = '/pacientes';
         toggleLoading(false);
         return true;
       }
-      setStatusCode(res.status);
+      setStatusCode(res?.status);
       setMessage(() => {
-        return getHTTPTextError(res.status);
+        return getHTTPTextError(res?.status);
       });
       return false;
     }).catch(error => {
       console.log(error)
+      setStatusCode(error?.response?.status);
+      setMessage(() => {
+        return getHTTPTextError(error?.response?.status);
+      });
       return false;
     })
     return success;
@@ -471,7 +487,14 @@ const Profile: React.FC = () => {
               boxShadow: 1,
               borderRadius: "1rem",
             }}>
-              <Typography sx={{ padding: "1rem" }} variant="body1">Foto de perfil</Typography>
+              <Box sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+                <Typography sx={{ padding: "1rem", }} variant="body1">Foto de perfil</Typography>
+                <Typography sx={{ padding: "1rem", fontWeight: 'bold' }} variant="body1">ID: {profileData?.id}</Typography>
+              </Box>
               <Box sx={{
                 display: "flex",
                 justifyContent: "center",
@@ -625,8 +648,11 @@ const Profile: React.FC = () => {
                                           customClass: {
                                             container: profileStyle.sweetAlertContainer,
                                           }
+                                        }).then(onsubmit => {
+                                          window.location.href = `/pacientes/${idOrName}`;
+                                          return onsubmit;
                                         });
-                                        window.location.href = `/pacientes/${idOrName}`;
+
                                       } else {
                                         Swal.fire({
                                           title: 'No se aplicaron cambios',
@@ -693,7 +719,7 @@ const Profile: React.FC = () => {
                     { name: "Apellido", data: profileData?.apellido, },
                     { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
                     { name: "Sexo", data: profileData?.sexo, },
-                    { name: "Especialidad", data: (profileData as ISpecialistProfileData).especialidad },
+                    { name: "Especialidad", data: (profileData as ISpecialistProfileData)?.especialidad },
                   ]} />
                 }
               </AccordionDetails>
@@ -729,8 +755,8 @@ const Profile: React.FC = () => {
                   ]} />
                 </AccordionDetails>
               </Accordion>}
-              
-                {/*AQUI LA TABLA DE CASOS */}
+
+            {/*AQUI LA TABLA DE CASOS */}
             <Accordion sx={{ backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }} defaultExpanded>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -739,7 +765,7 @@ const Profile: React.FC = () => {
                 Tabla de casos
               </AccordionSummary>
               <AccordionDetails>
-                <ProfileTabsTable />
+                <ProfileTabsTable id={idOrName} />
               </AccordionDetails>
             </Accordion>
           </Grid>

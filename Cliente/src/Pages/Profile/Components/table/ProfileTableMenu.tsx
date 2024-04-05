@@ -12,6 +12,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ModalAlert from "../../../../Common/Modals/ModalAlert";
 import getBackendConnectionString from "../../../../Common/Utils/getBackendString";
+import getHTTPTextError from "../../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../../Common/snackbars/BannerSnackBar";
 
 export default function ProfileTableMenu({ id }: any) {
   const navigate = useNavigate();
@@ -25,16 +27,27 @@ export default function ProfileTableMenu({ id }: any) {
   };
 
   const [openModal, setOpenModal] = React.useState(false);
+  const [openBanner, setOpenBanner] = React.useState<boolean>(false);
+  const [statusCode, setStatusCode] = React.useState<string | number>('');
+  const [message, setMessage] = React.useState<string>('');
 
   const destroyMediaFromDB = async () => {
     const success = await axios.delete(getBackendConnectionString(`casos/${id}`)).then(res => {
       console.log(res);
-      if (res.status === 200 || res.status === 201) {
+      if (res?.status === 200 || res?.status === 201) {
         return true;
       }
+      setStatusCode(res?.status);
+      setMessage(() => {
+        return getHTTPTextError(res?.status);
+      });
       return false;
     }).catch(error => {
       console.log(error);
+      setStatusCode(error?.response?.status);
+      setMessage(() => {
+        return getHTTPTextError(error?.response?.status);
+      });
       return false;
     })
     return success;
@@ -100,6 +113,8 @@ export default function ProfileTableMenu({ id }: any) {
           })
         }}
       />
+      <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpenBanner(false)} />
+
     </>
   );
 }

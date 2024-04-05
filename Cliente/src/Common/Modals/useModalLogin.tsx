@@ -115,7 +115,6 @@ export default function useModalLogin(): IProps {
             setErrors(newErrors);
           } else {
             //Condicion que  cierra el Modal y Redirecciona al Usuario a otra ruta, despues de un inicio de session exitosa
-            handleClose();
             navigate("/dashboard"); // Redirige a esa ruta en caso de que el usuario se conecte exitosamente. Reemplazar con /dashboard
           }
         });
@@ -164,23 +163,18 @@ export default function useModalLogin(): IProps {
       }, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }).then(async (response) => {
-        if (response.status === 200 || response.status === 201) {
-          const incomingUser = response.data?.user;
-          console.log(response)
-          console.log(incomingUser)
+        if (response?.status === 200 || response?.status === 201) {
+          const incomingUser = response?.data?.user;
+          handleClose();
           authUser(incomingUser);
           await autopopulate();
-          return { logged: true, message: response.statusText };
+          return { logged: true, message: response?.statusText };
         } else {
-          const error_msj = response.data?.message;
-          console.log(response)
-          console.log(error_msj)
+          const error_msj = response?.data?.message;
           return { logged: false, message: error_msj };
         }
       }).catch(error => {
         const error_msj = error?.response?.data?.message;
-        console.log(error)
-        console.log(error_msj)
         return { logged: false, message: error_msj };
       });
       return data;
@@ -262,8 +256,8 @@ export default function useModalLogin(): IProps {
             InputProps={{
               endAdornment: <PersonIcon />,
             }}
-            helperText={errors.email}
-            error={errors.email?.length != 0}
+            helperText={errors?.email}
+            error={errors?.email?.length != 0}
           />
           <TextField
             label="Nueva contraseña"
@@ -304,8 +298,8 @@ export default function useModalLogin(): IProps {
                 </InputAdornment>
               ),
             }}
-            helperText={errors.password}
-            error={errors.password?.length != 0}
+            helperText={errors?.password}
+            error={errors?.password?.length != 0}
           />
 
           <Box

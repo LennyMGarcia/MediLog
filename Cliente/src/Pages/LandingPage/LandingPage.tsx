@@ -33,21 +33,21 @@ export default function LandingPage() {
   const founder = [
     {
       name: "Julio Sierra",
-      img: "https://3.bp.blogspot.com/-hMbPYAMGY_g/WIABi1l7qKI/AAAAAAABFIQ/VRjdLZaUJeo7cclHGo2Jbu9aziR-qwfFQCLcB/s1600/hipolito-mejia.jpg",
-      job: "Luchador por la igualdad para todos",
-      descripcion: "Buena persona, liberal, apoya a todo ser discriminado",
+      img: "https://familiabateyera.com/wp-content/uploads/trujillo.jpg",
+      job: "Lider | Front-End",
+      descripcion: "Liderasmo Incomparable.",
     },
     {
       name: "Lenny Garcia",
-      img: "https://familiabateyera.com/wp-content/uploads/trujillo-1.jpg",
-      job: "Machito blanco opresor",
-      descripcion: "clasista, machista, Racista",
+      img: "https://familiabateyera.com/wp-content/uploads/trujillo.jpg",
+      job: "Tester | Front-End",
+      descripcion: "Talento Inepto.",
     },
     {
-      name: "Ben Junior",
-      img: "http://www.elmatero.net/imagenes/w640/PeaGomez.jpg",
-      job: "nigga",
-      descripcion: "Racista, machsita, facista",
+      name: "Ben Junior D.",
+      img: "http://www.elmatero.net/imagenes/w640/PeaGome.jpg",
+      job: "Back-End | API",
+      descripcion: "Dedicacion Incarnada.",
     },
   ];
 
@@ -253,7 +253,7 @@ export default function LandingPage() {
               // spacing={1}
               gap="20px"
               textAlign={"center"}
-              // padding={"10px"}
+            // padding={"10px"}
             >
               {/* <Grid item xs={3} justifyContent={"flex-end"}> */}
               {!authenticated() && (
@@ -287,7 +287,10 @@ export default function LandingPage() {
                     color: "#168AAD",
                     fontSize: "18px",
                   }}
-                  onClick={() => navigate("/register")}
+                  onClick={() =>
+                    //Uso ese comando al lugar de navigate porque navigate no restablece/reinicia el FORM completamente pero ese comando, si
+                    window.location.href = "/register"
+                  }
                 >
                   Create una cuenta
                 </Button>
@@ -350,8 +353,8 @@ export default function LandingPage() {
             justifyContent={"space-around"}
             direction={"row"}
             gap={2}
-            // rowGap={5}
-            // columnGap={1}
+          // rowGap={5}
+          // columnGap={1}
           >
             {planes.map((plan, idx) => {
               return (
@@ -496,7 +499,7 @@ export default function LandingPage() {
                     flexDirection={"column"}
                     alignItems={"center"}
                     gap={"20px"}
-                    // border={"1px solid #15143966"}
+                  // border={"1px solid #15143966"}
                   >
                     {/* <Grid item xs={12}> */}
                     <Avatar
@@ -802,10 +805,10 @@ export default function LandingPage() {
               item
               container
               xs={12}
-              // height="450"
-              // display={"flex"}
-              // flexDirection={"column"}
-              // justifyContent={"space-around"}
+            // height="450"
+            // display={"flex"}
+            // flexDirection={"column"}
+            // justifyContent={"space-around"}
             >
               <Grid item xs={12} md={6} textAlign={"center"} height={"auto"}>
                 <img

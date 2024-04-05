@@ -43,41 +43,41 @@ describe('TEST DE ESPECIALISTAS', () => {
         });
 
         it('Se espera un Ok o 200 como respuesta', async () => {
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
         it('el ID debe ser 1', async () => {
-            expect(response.data.id).toBe(1);
+            expect(response?.data.id).toBe(1);
         });
         it('Se espera que el nombre sea Fulano', async () => {
-            expect(response.data.nombre).toBe('Fulano');
+            expect(response?.data.nombre).toBe('Fulano');
         });
         it('Se espera que el apellido sea Detalie', async () => {
-            expect(response.data.apellido).toBe('Detalie');
+            expect(response?.data.apellido).toBe('Detalie');
         });
         it('Se espera que el sexo sea F', async () => {
-            expect(response.data.sexo).toBe("F");
+            expect(response?.data.sexo).toBe("F");
         });
         it('Se espera que el correo sea testtes11t@gmail.com', async () => {
-            expect(response.data.correo).toBe("testtes11t@gmail.com");
+            expect(response?.data.correo).toBe("testtes11t@gmail.com");
         });
         it('Se espera que la direccion sea Santo Domingo, RD', async () => {
-            expect(response.data.direccion).toBe('Santo Domingo, RD');
+            expect(response?.data.direccion).toBe('Santo Domingo, RD');
         });
 
         it('Se espera que el telefono sea 8096357888', async () => {
-            expect(response.data.telefono).toBe('8096357888');
+            expect(response?.data.telefono).toBe('8096357888');
         });
         it('Se espera que el especialidad sea Psicologo', async () => {
-            expect(response.data.especialidad).toBe('Psicologo');
+            expect(response?.data.especialidad).toBe('Psicologo');
         });
         it('Se espera que el metodo de pago sea Tarjeta de Credito', async () => {
-            expect(response.data.metodo_pago).toBe("Tarjeta de Credito");
+            expect(response?.data.metodo_pago).toBe("Tarjeta de Credito");
         });
         it('Se espera que la descripcion sea Basico', async () => {
-            expect(response.data.descripcion).toBe("Basico");
+            expect(response?.data.descripcion).toBe("Basico");
         });
         it('Se espera que el precio sea 0', async () => {
-            expect(response.data.precio).toBe(0);
+            expect(response?.data.precio).toBe(0);
         });
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
             try {
@@ -107,7 +107,7 @@ describe('TEST DE ESPECIALISTAS', () => {
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
-                expect(error.response.status).toBe(400);
+                expect(error.response?.status).toBe(400);
             }
         });
     });
@@ -155,9 +155,9 @@ describe('TEST DE ESPECIALISTAS', () => {
                 precio: 0
             });
 
-            expect(response.status).toBe(201);
-            expect(response.data.id).toBe(2);
-            expect(response.data.categoria).toBe('Paciente');
+            expect(response?.status).toBe(201);
+            expect(response?.data.id).toBe(2);
+            expect(response?.data.categoria).toBe('Paciente');
         });
     });
     describe("PUT", () => {
@@ -191,7 +191,7 @@ describe('TEST DE ESPECIALISTAS', () => {
                 precio: 0
             });
 
-            expect(response.status).toBe(201);
+            expect(response?.status).toBe(201);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud PUT con un ID inválido", async () => {
@@ -224,8 +224,8 @@ describe('TEST DE ESPECIALISTAS', () => {
                 expect(true).toBe(false);
             } catch (error) {
 
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });
@@ -243,7 +243,7 @@ describe('TEST DE ESPECIALISTAS', () => {
 
             const response = await axios.delete(`http://localhost:${PORT}/especialistas/1`);
 
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud DELETE con un ID inválido", async () => {
@@ -257,8 +257,8 @@ describe('TEST DE ESPECIALISTAS', () => {
 
                 expect(true).toBe(false);
             } catch (error) {
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });

@@ -45,7 +45,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "auto",
   height: "auto",
-  bgcolor: globalTheme.palette.background.secondary ,
+  bgcolor: globalTheme.palette.background.secondary,
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -90,22 +90,22 @@ const Consultation: React.FC = () => {
   const getRecordFromDB = async (id: number | string | any, table: string) => {
     const result = await axios.get(getBackendConnectionString(`${table}/${id}`)
     ).then(response => {
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
-        return response.data;
+        return response?.data;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       setOpen(true);
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error.response?.status);
       });
       navigate('/404');
       return false;
@@ -123,21 +123,21 @@ const Consultation: React.FC = () => {
       }
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       setOpen(true);
       return false;
     }
     ).catch(error => {
-      setStatusCode(error.response.status);
+      setStatusCode(error.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error.response?.status);
       });
       setOpen(true);
       console.log(error);
@@ -204,18 +204,18 @@ const Consultation: React.FC = () => {
           }}
         >
           {isMediumScreen ?
-            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
+            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem", color: globalTheme.font.primary.main }}>
               {ConsultationObj && ConsultationObj?.motivo}
             </Typography>
             :
-            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
+            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem", color: globalTheme.font.primary.main }}>
               {ConsultationObj && ConsultationObj.motivo}
             </Typography>}
 
 
         </Box>}
       {loading ? <LinearProgress /> :
-        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1,  backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main  }}>
+        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1, backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }}>
 
           <Box sx={{
             width: "100%",

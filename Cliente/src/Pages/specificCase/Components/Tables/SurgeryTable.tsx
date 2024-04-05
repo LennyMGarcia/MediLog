@@ -26,6 +26,7 @@ import useUserStore from "../../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router-dom";
 import { searchRecordsFromArray } from "../../../Casos/Casos";
 import { globalTheme } from "../../../../theme/globalTheme";
+import NoRecords from "../../../../Common/Components/NoRecords";
 
 type IPropsData = {
   id: number;
@@ -406,195 +407,197 @@ export default function SurgeryTable({ type, dataObject }: IProps) {
               padding: "0px 24px",
             }}
           >
-            <Table
-              // sx={{ minWidth: 650 }}
-              aria-label="simple table"
-              sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
-            >
-              <TableHead
-                sx={{
-                  backgroundColor: "#F4F4F5",
-                }}
+            {visibleRows?.length <= 0 ? <NoRecords /> :
+
+              <Table
+                // sx={{ minWidth: 650 }}
+                aria-label="simple table"
+                sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
               >
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                  >
-                    # de consulta
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Motivo
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Doctor
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Fecha
-                  </TableCell>
-
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    categoria
-                  </TableCell>
-
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Acciones
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody
-                sx={
-                  {
-                    // "& > *": {
-                    //   borderBottom: "none", // elimina la línea divisoria en las celdas
-                    // },
-                  }
-                }
-              >
-                {visibleRows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      borderRadius: "8px",
-                      "& > *": { borderBottom: "none" },
-                      ".css-1qanp6x-MuiTableCell-root": {
-                        borderBottom: "none",
-                      },
-
-                      //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
-                      // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
-                    }}
-                  >
+                <TableHead
+                  sx={{
+                    backgroundColor: "#F4F4F5",
+                  }}
+                >
+                  <TableRow>
                     <TableCell
-                      component="th"
-                      scope="row"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
                     >
-                      {row.id}
+                      # de consulta
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.motivo}
+                      Motivo
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.especialista}
+                      Doctor
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.fecha}
+                      Fecha
                     </TableCell>
 
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.categoria}
+                      categoria
                     </TableCell>
 
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      <ConsultationMenu id={row?.id} ruta='surgery' />
+                      Acciones
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody
+                  sx={
+                    {
+                      // "& > *": {
+                      //   borderBottom: "none", // elimina la línea divisoria en las celdas
+                      // },
+                    }
+                  }
+                >
+                  {visibleRows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        borderRadius: "8px",
+                        "& > *": { borderBottom: "none" },
+                        ".css-1qanp6x-MuiTableCell-root": {
+                          borderBottom: "none",
+                        },
+
+                        //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
+                        // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
+                      }}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row.id}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row.motivo}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row.especialista}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row.fecha}
+                      </TableCell>
+
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row.categoria}
+                      </TableCell>
+
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        <ConsultationMenu id={row?.id} ruta='surgery' />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>}
           </Box>
         </TableContainer>}
 

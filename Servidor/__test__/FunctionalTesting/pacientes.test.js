@@ -17,26 +17,26 @@ describe('TEST DE PACIENTES', () => {
         let response;
 
         nock(`http://localhost:${PORT}`)
-                .get('/pacientes/1')
-                .reply(200, {
-                    id: 1,
-                    tipo: 'Paciente',
-                    nombre: 'Fulano',
-                    apellido: 'Detal',
-                    fecha_nacimiento: '2003-04-04T04:00:00.000Z',
-                    sexo: 'M',
-                    correo: 'test@gmail.com',
-                    direccion: 'Santo Domingo, RD',
-                    telefono: '8092859332',
-                    metodo_pago: 'Tarjeta de Credito',
-                    documento_identidad:'6326999485546',
-                    datos_financieros: null,
-                    cvv: null,
-                    fecha_expiracion: '03-03-2030',
-                    descripcion: 'Basico',
-                    categoria: 'Paciente',
-                    precio: 0
-                });
+            .get('/pacientes/1')
+            .reply(200, {
+                id: 1,
+                tipo: 'Paciente',
+                nombre: 'Fulano',
+                apellido: 'Detal',
+                fecha_nacimiento: '2003-04-04T04:00:00.000Z',
+                sexo: 'M',
+                correo: 'test@gmail.com',
+                direccion: 'Santo Domingo, RD',
+                telefono: '8092859332',
+                metodo_pago: 'Tarjeta de Credito',
+                documento_identidad: '6326999485546',
+                datos_financieros: null,
+                cvv: null,
+                fecha_expiracion: '03-03-2030',
+                descripcion: 'Basico',
+                categoria: 'Paciente',
+                precio: 0
+            });
 
 
         beforeAll(async () => {
@@ -44,71 +44,71 @@ describe('TEST DE PACIENTES', () => {
         });
 
         it('Se espera un Ok o 200 como respuesta', async () => {
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
         it('el ID debe ser 1', async () => {
-            expect(response.data.id).toBe(1);
+            expect(response?.data.id).toBe(1);
         });
         it('Se espera que el nombre sea Fulano', async () => {
-            expect(response.data.nombre).toBe('Fulano');
+            expect(response?.data.nombre).toBe('Fulano');
         });
         it('Se espera que el apellido sea Detal', async () => {
-            expect(response.data.apellido).toBe('Detal');
+            expect(response?.data.apellido).toBe('Detal');
         });
         it('Se espera que el sexo sea M', async () => {
-            expect(response.data.sexo).toBe("M");
+            expect(response?.data.sexo).toBe("M");
         });
         it('Se espera que el correo sea test@gmail.com', async () => {
-            expect(response.data.correo).toBe("test@gmail.com");
+            expect(response?.data.correo).toBe("test@gmail.com");
         });
         it('Se espera que la direccion sea Santo Domingo, RD', async () => {
-            expect(response.data.direccion).toBe('Santo Domingo, RD');
+            expect(response?.data.direccion).toBe('Santo Domingo, RD');
         });
 
         it('Se espera que el telefono', async () => {
-            expect(response.data.telefono).toBe('8092859332');
+            expect(response?.data.telefono).toBe('8092859332');
         });
         it('Se espera que el documento de identidad sea 6326999485546', async () => {
-            expect(response.data.documento_identidad).toBe('6326999485546');
+            expect(response?.data.documento_identidad).toBe('6326999485546');
         });
         it('Se espera que el metodo de pago sea Tarjeta de Credito', async () => {
-            expect(response.data.metodo_pago).toBe("Tarjeta de Credito");
+            expect(response?.data.metodo_pago).toBe("Tarjeta de Credito");
         });
         it('Se espera que la descripcion sea Basico', async () => {
-            expect(response.data.descripcion).toBe("Basico");
+            expect(response?.data.descripcion).toBe("Basico");
         });
         it('Se espera que el precio sea 0', async () => {
-            expect(response.data.precio).toBe(0);
+            expect(response?.data.precio).toBe(0);
         });
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
             try {
                 nock(`http://localhost:${PORT}`)
-                .get('/pacientes/abc')
-                .reply(400, {
-                    id: "abc",
-                    tipo: 'Paciente',
-                    nombre: 'Fulano',
-                    apellido: 'Detal',
-                    fecha_nacimiento: '2003-04-04T04:00:00.000Z',
-                    sexo: 'M',
-                    correo: 'test@gmail.com',
-                    direccion: 'Santo Domingo, RD',
-                    telefono: '8092859332',
-                    metodo_pago: 'Tarjeta de Credito',
-                    documento_identidad:'6326999485546',
-                    datos_financieros: null,
-                    cvv: null,
-                    fecha_expiracion: '03-03-2030',
-                    descripcion: 'Basico',
-                    categoria: 'Paciente',
-                    precio: 0
-                });
+                    .get('/pacientes/abc')
+                    .reply(400, {
+                        id: "abc",
+                        tipo: 'Paciente',
+                        nombre: 'Fulano',
+                        apellido: 'Detal',
+                        fecha_nacimiento: '2003-04-04T04:00:00.000Z',
+                        sexo: 'M',
+                        correo: 'test@gmail.com',
+                        direccion: 'Santo Domingo, RD',
+                        telefono: '8092859332',
+                        metodo_pago: 'Tarjeta de Credito',
+                        documento_identidad: '6326999485546',
+                        datos_financieros: null,
+                        cvv: null,
+                        fecha_expiracion: '03-03-2030',
+                        descripcion: 'Basico',
+                        categoria: 'Paciente',
+                        precio: 0
+                    });
                 response = await axios.get(`http://localhost:${PORT}/pacientes/abc`);
 
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
-                expect(error.response.status).toBe(400);
+                expect(error.response?.status).toBe(400);
             }
         });
     });
@@ -154,9 +154,9 @@ describe('TEST DE PACIENTES', () => {
                 precio: 0
             });
 
-            expect(response.status).toBe(201);
-            expect(response.data.id).toBe(2);
-            expect(response.data.categoria).toBe('Paciente');
+            expect(response?.status).toBe(201);
+            expect(response?.data.id).toBe(2);
+            expect(response?.data.categoria).toBe('Paciente');
         });
     });
     describe("PUT", () => {
@@ -189,7 +189,7 @@ describe('TEST DE PACIENTES', () => {
                 precio: 0
             });
 
-            expect(response.status).toBe(201);
+            expect(response?.status).toBe(201);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud PUT con un ID inválido", async () => {
@@ -207,22 +207,22 @@ describe('TEST DE PACIENTES', () => {
                     fecha_nacimiento: '2003-04-04T04:00:00.000Z',
                     sexo: 'M',
                     correo: 'fulano@gmail.com',
-                    direccion:  'ninguna',
+                    direccion: 'ninguna',
                     telefono: '8096357888',
                     metodo_pago: 'Tarjeta de Crédito',
-                    datos_financieros:  null,
+                    datos_financieros: null,
                     cvv: null,
-                    fecha_expiracion:  '03-03-2030',
-                    descripcion:  'Basico',
-                    categoria:  'Paciente',
-                    precio:  0
+                    fecha_expiracion: '03-03-2030',
+                    descripcion: 'Basico',
+                    categoria: 'Paciente',
+                    precio: 0
                 });
 
                 expect(true).toBe(false);
             } catch (error) {
 
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });
@@ -240,7 +240,7 @@ describe('TEST DE PACIENTES', () => {
 
             const response = await axios.delete(`http://localhost:${PORT}/pacientes/1`);
 
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud DELETE con un ID inválido", async () => {
@@ -254,8 +254,8 @@ describe('TEST DE PACIENTES', () => {
 
                 expect(true).toBe(false);
             } catch (error) {
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });

@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
     const model = new Consulta();
     const data = await model.get();
 
-    if (data.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
+    if (data?.length <= 0) return res.status(404).json({ 'message': 'Registro No Existe.' });
     return res.status(200).json(data);
 });
 router.get('/:id', id_validation, async (req, res) => {
@@ -51,15 +51,15 @@ router.get('/:id', id_validation, async (req, res) => {
         const consultas = await paciente.findUserRecords(paciente_data?.id, 'consultas');
         const transacciones = await paciente.findUserRecords(paciente_data?.id, 'transacciones');
 
-        consultas.forEach(element => {
+        consultas?.forEach(element => {
             element.especialista = `${especialista_data?.nombre} ${especialista_data?.apellido}` || 'Usuario Desconocido'
         });
-        cirugias.forEach(element => {
+        cirugias?.forEach(element => {
             element.especialista = `${especialista_data?.nombre} ${especialista_data?.apellido}` || 'Usuario Desconocido'
         });
 
-        data.estudios = JSON.parse(data.estudios) || [];
-        data.plan_tratamiento = JSON.parse(data.plan_tratamiento) || [];
+        data.estudios = JSON.parse(data?.estudios) || [];
+        data.plan_tratamiento = JSON.parse(data?.plan_tratamiento) || [];
         const payload = {
             ...data,
             paciente: `${paciente_data?.nombre} ${paciente_data?.apellido}` || 'Paciente Desconocido',
@@ -73,8 +73,8 @@ router.get('/:id', id_validation, async (req, res) => {
         return res.status(200).json(payload);
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.post('/', validaciones, async (req, res) => {
     const data = req.body;
@@ -86,12 +86,12 @@ router.post('/', validaciones, async (req, res) => {
         const model = new Consulta();
         const result = await model.insert(data);
 
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
     const id = req.params.id;
@@ -103,12 +103,12 @@ router.put('/:id', id_validation, edit_validaciones, async (req, res) => {
         const model = new Consulta();
         const result = await model.update(data, id);
 
-        if (result[0]?.success === false) return res.status(result[0].status).json(result);
+        if (result[0]?.success === false) return res.status(result[0]?.status).json(result);
         return res.status(201).json(result);
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 router.delete('/:id', id_validation, async (req, res) => {
     const id = req.params.id;
@@ -119,12 +119,12 @@ router.delete('/:id', id_validation, async (req, res) => {
         const model = new Consulta();
         const destroy = await model.delete(id);
         console.log(destroy);
-        if (destroy[0]?.success === false) return res.status(destroy[0].status).json({ 'message': 'Esa Consulta tiene un caso abierto.' });
+        if (destroy[0]?.success === false) return res.status(destroy[0]?.status).json({ 'message': 'Esa Consulta tiene un caso abierto.' });
         return res.status(200).json({ 'message': 'Registro Eliminado Exitosamente.' });
     }
 
-    const error_msg = validated.errors[0].msg;
-    return res.status(400).json({ 'message': error_msg });
+    const error_msg = validated?.errors[0]?.msg || 'Campo Invalido';
+    return res.status(400).json({ 'message': `${error_msg} para campo de ' ${validated.errors[0].path} '` });
 });
 
 module.exports = router;

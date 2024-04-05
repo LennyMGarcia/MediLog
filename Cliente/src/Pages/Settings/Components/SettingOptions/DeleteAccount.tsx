@@ -97,21 +97,21 @@ const DeleteAccount: React.FC = () => {
     const result = await axios.delete(getBackendConnectionString(`usuarios/${id}`))//usuarios
       .then((response) => {
         console.log(response);
-        if (response.status === 200 || response.status === 201) {
-          return { success: true, message: response.statusText };
+        if (response?.status === 200 || response?.status === 201) {
+          return { success: true, message: response?.statusText };
         }
-        setStatusCode(response.status);
+        setStatusCode(response?.status);
         setMessage(() => {
-          return getHTTPTextError(response.status);
+          return getHTTPTextError(response?.status);
         });
-        return { success: false, message: response.statusText };
+        return { success: false, message: response?.statusText };
       }).catch(error => {
         const error_msj = error?.response?.data?.message;
         console.log(error);
         console.log(error_msj);
-        setStatusCode(error.response.status);
+        setStatusCode(error.response?.status);
         setMessage(() => {
-          return getHTTPTextError(error.response.status);
+          return getHTTPTextError(error.response?.status);
         });
         setOpen(true);
         return { success: false, message: error_msj };
@@ -246,7 +246,7 @@ const DeleteAccount: React.FC = () => {
             backgroundColor: "red",
             marginLeft: isMediumScreen ? "7rem" : "2rem",
             "&:hover": { backgroundColor: "#8b0000" },
-            
+
           }}
           onClick={handleModalOpen}
         >

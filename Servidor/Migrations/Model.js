@@ -16,10 +16,12 @@ class Model {
         try {
             const query = new Builder(this.table);
             const [result, fields] = await DB.query(query.select_query('*'));
+            if (result?.length <= 0) {
+                return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+            }
             return result;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
@@ -28,10 +30,12 @@ class Model {
             this.id = id;
             const query = new Builder(this.table);
             const [result, fields] = await DB.query(query.select_query('*', 'id'), [this.id]);
+            if (result?.length <= 0) {
+                return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+            }
             return result[0];
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
@@ -40,16 +44,21 @@ class Model {
             this.id = id;
             const query = new Builder(table);
             const [result, fields] = await DB.query(query.select_query('*', 'pacientes_id'), [this.id]);
+            if (result?.length <= 0) {
+                return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+            }
             return result;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
     }
     async delete(id) {
         try {
             this.id = id;
             const [result, fields] = await DB.query(`DELETE FROM ${this.table} WHERE id = ?`, [this.id]);
+
+            if (!result) return [{ 'success': false, 'error': `Accesso Denegado.`, 'status': 401 }];
+
             return result;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];

@@ -30,7 +30,7 @@ class Usuario extends Model {
     //Funccion que se encarga de autentificar un usuario segun se numero de identificacion.
 
     async getUser() {
-        if (!this.id) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
+        if (!this.id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 401 }];
 
         try {
             const result = await this.find(this.id);
@@ -43,12 +43,12 @@ class Usuario extends Model {
                 const model = new Paciente();
                 const search = await model.find(this.member_id);
                 const rows = {
-                    id: result.id,
-                    member_id: result.member_id,
-                    nombre: search.nombre,
-                    apellido: search.apellido,
-                    correo: result.correo,
-                    tipo: result.tipo,
+                    id: result?.id || 'Desconocido',
+                    member_id: result?.member_id || 'Desconocido',
+                    nombre: search?.nombre || 'Desconocido',
+                    apellido: search?.apellido || 'Desconocido',
+                    correo: result?.correo || 'Desconocido',
+                    tipo: result?.tipo || 'Desconocido',
                     plan: productos_results[0]?.nombre || 'Basico'
                 }
                 return rows;
@@ -57,12 +57,12 @@ class Usuario extends Model {
                 const search = await model.find(this.member_id);
                 console.log(search);
                 const rows = {
-                    id: result.id,
-                    member_id: result.member_id,
-                    nombre: search.nombre,
-                    apellido: search.apellido,
-                    correo: result.correo,
-                    tipo: result.tipo,
+                    id: result?.id || 'Desconocido',
+                    member_id: result?.member_id || 'Desconocido',
+                    nombre: search?.nombre || 'Desconocido',
+                    apellido: search?.apellido || 'Desconocido',
+                    correo: result?.correo || 'Desconocido',
+                    tipo: result?.tipo || 'Desconocido',
                     plan: productos_results[0]?.nombre || 'Basico'
                 }
                 return rows;
@@ -72,7 +72,6 @@ class Usuario extends Model {
 
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
@@ -82,14 +81,18 @@ class Usuario extends Model {
         try {
             const query = new Builder(this.table);
             const [result, fields] = await DB.query(query.select_query('*', 'member_id'), [member_id]);
-            this.id = result[0]?.id;
-            this.member_id = result[0]?.member_id;
-            this.tipo = result[0]?.tipo;
-            this.plan = result[0]?.plan;
+            this.id = result[0]?.id || 'Desconocido';
+            this.member_id = result[0]?.member_id || 'Desconocido';
+            this.tipo = result[0]?.tipo || 'Desconocido';
+            this.plan = result[0]?.plan || 'Desconocido';
+
+            if (result?.length <= 0) {
+                return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+            }
+
             return result[0];
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
@@ -139,9 +142,8 @@ class Usuario extends Model {
                 const model = await paciente.insert(this.pacientes_values);
 
                 //Condicion que registra el usuario solamente si se creo el especialista correctamente.
-
-                if (model.insertId) {
-                    this.values[0] = model.insertId;
+                if (model?.insertId) {
+                    this.values[0] = model?.insertId;
                     const query = new Builder(this.table);
                     const [results, field] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
                     return results;
@@ -162,8 +164,8 @@ class Usuario extends Model {
                 const model = await especialista.insert(this.especialistas_values);
 
                 //Condicion que registra el usuario solamente si se creo el especialista correctamente.
-                if (model.insertId) {
-                    this.values[0] = model.insertId;
+                if (model?.insertId) {
+                    this.values[0] = model?.insertId;
                     const query = new Builder(this.table);
                     const [results, field] = await DB.execute(query.insert_query(this.columns, this.values), this.values);
                     return results;
@@ -172,12 +174,11 @@ class Usuario extends Model {
             }
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
     async update(data = {}, id = null) {
-        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 404 }];
 
         try {
             this.data = data;
@@ -210,12 +211,11 @@ class Usuario extends Model {
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
     async update_plan(data = null, id = null) {
-        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 404 }];
 
         try {
             this.data = data;
@@ -232,12 +232,12 @@ class Usuario extends Model {
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
     async update_password(data = null, id = null) {
-        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 404 }];
+        if (!data) return [{ 'success': false, 'error': 'Campos Obligatorios.', 'status': 400 }];
 
         try {
             this.data = data;
@@ -254,7 +254,6 @@ class Usuario extends Model {
 
             this.values[0] = hashed_password;
 
-            const query = new Builder(this.table);
             const [results, fields] = await DB.execute('UPDATE usuarios SET contrasena = ? where id=?', [hashed_password, id])
             return results;
 
@@ -270,18 +269,19 @@ class Usuario extends Model {
             this.correo = correo
             const query = new Builder(this.table);
             const [results, fields] = await DB.execute(query.select_query('contrasena, member_id, tipo, id', 'correo'), [this.correo]);
-
+            if (results?.length <= 0) {
+                return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
+            }
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
 
     //Funccion que se encarga de buscar los casos de un usuario especifico.
     async casos() {
-        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 401 }];
 
         const columns = [
             'id',
@@ -303,35 +303,33 @@ class Usuario extends Model {
                 const query = new Builder('casos');
                 const [results, fields] = await DB.execute(query.select_query(columns, 'pacientes_id'), [this.member_id]);
 
-                if (results.length <= 0) {
+                if (results?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
 
                 return results;
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
             }
         } else {
             try {
                 const query = new Builder('casos');
                 const [results, fields] = await DB.execute(query.select_query(columns, 'especialistas_id'), [this.member_id]);
 
-                if (results.length <= 0) {
+                if (results?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
 
                 return results;
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
             }
         }
     }
     //Funccion que se encarga de buscar los cirugias de un usuario especifico.
 
     async cirugias() {
-        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 401 }];
 
         const columns = [
             'id',
@@ -353,7 +351,7 @@ class Usuario extends Model {
                 const query = new Builder('cirugias');
                 const [results, fields] = await DB.execute(query.select_query(columns, 'pacientes_id'), [this.member_id]);
 
-                if (results.length <= 0) {
+                if (results?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
 
@@ -367,14 +365,13 @@ class Usuario extends Model {
                 const query = new Builder('cirugias');
                 const [results, fields] = await DB.execute(query.select_query(columns, 'especialistas_id'), [this.member_id]);
 
-                if (results.length <= 0) {
+                if (results?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
 
                 return results;
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
             }
         }
 
@@ -382,7 +379,7 @@ class Usuario extends Model {
     //Funccion que se encarga de buscar los consultas de un usuario especifico.
 
     async consultas() {
-        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 401 }];
 
         const columns = [
             'id',
@@ -402,35 +399,33 @@ class Usuario extends Model {
                 const query = new Builder('consultas');
                 const [results, fields] = await DB.execute(query.select_query(columns, 'pacientes_id'), [this.member_id]);
 
-                if (results.length <= 0) {
+                if (results?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
 
                 return results;
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
             }
         } else {
             try {
                 const query = new Builder('consultas');
                 const [results, fields] = await DB.execute(query.select_query(columns, 'especialistas_id'), [this.member_id]);
 
-                if (results.length <= 0) {
+                if (results?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
 
                 return results;
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
             }
         }
     }
     //Funccion que se encarga de buscar los pacientes de un usuario especifico.
 
     async pacientes() {
-        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado o Registro No Existe.', 'status': 400 }];
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado o Registro No Existe.', 'status': 401 }];
         const casos_columns = [
             'pacientes_id',
         ];
@@ -442,24 +437,23 @@ class Usuario extends Model {
                 const query = new Builder('casos');
                 const [results, fields] = await DB.execute(query.select_query(casos_columns, 'especialistas_id'), [this.member_id]);
 
-                if (results.length <= 0) {
+                if (results?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
-                results.forEach(el => {
+                results?.forEach(el => {
                     if (!pacientes_ids.includes(el.pacientes_id)) {
                         pacientes_ids.push(el.pacientes_id);
                     }
                 });
                 const res = this.getAllPacientes(pacientes_ids);
 
-                if (res.length <= 0) {
+                if (res?.length <= 0) {
                     return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
                 }
 
                 return res;
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
             }
         }
         return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
@@ -468,7 +462,7 @@ class Usuario extends Model {
     //Funccion que se encarga de buscar los pacientes de un usuario especifico.
 
     async getAllPacientes(ids = []) {
-        if (!ids) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+        if (!ids) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 401 }];
 
         const pacientes_columns = [
             'id',
@@ -493,10 +487,10 @@ class Usuario extends Model {
             try {
                 const query = new Builder('pacientes');
                 const [results, fields] = await DB.execute(query.select_query(pacientes_columns, 'id'), [id]);
+
                 pacientes.push(...results);
             } catch (error) {
                 return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-                // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
             }
         }
         return pacientes;
@@ -504,7 +498,7 @@ class Usuario extends Model {
     //Funccion que se encarga de buscar las transacciones de un usuario especifico.
 
     async transacciones() {
-        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 400 }];
+        if (!this.member_id) return [{ 'success': false, 'error': 'Acceso Denegado.', 'status': 401 }];
 
         const columns = [
             'productos_id',
@@ -517,13 +511,12 @@ class Usuario extends Model {
         try {
             const query = new Builder('transacciones');
             const [results, fields] = await DB.execute(query.select_query(columns, 'usuarios_id'), [this.member_id]);
-            if (results.length <= 0) {
+            if (results?.length <= 0) {
                 return [{ 'success': false, 'error': 'No Existe Registros.', 'status': 404 }];
             }
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
     }
 }

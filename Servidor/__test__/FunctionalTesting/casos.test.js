@@ -34,31 +34,31 @@ describe('TEST DE CASOS', () => {
         });
 
         it('Se espera un Ok o 200 como respuesta', async () => {
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
         it('el ID debe ser 9', async () => {
-            expect(response.data.id).toBe(9);
+            expect(response?.data.id).toBe(9);
         });
         it('Se espera que la descripcion sea Dolores cronicos', async () => {
-            expect(response.data.descripcion).toBe('Dolores Cronicos');
+            expect(response?.data.descripcion).toBe('Dolores Cronicos');
         });
         it('Se espera que la descripcion sea Fulano Detal', async () => {
-            expect(response.data.paciente).toBe('Fulano Detal');
+            expect(response?.data.paciente).toBe('Fulano Detal');
         });
         it('Se espera que el estado sea Activo', async () => {
-            expect(response.data.estado).toBe('Activo');
+            expect(response?.data.estado).toBe('Activo');
         });
         it('Se espera que el ID del paciente sea 1', async () => {
-            expect(response.data.pacientes_id).toBe(1);
+            expect(response?.data.pacientes_id).toBe(1);
         });
         it('Se espera que el ID del especialista sea 1', async () => {
-            expect(response.data.especialistas_id).toBe("1");
+            expect(response?.data.especialistas_id).toBe("1");
         });
         it('Se espera que la categoria sea Dialisis', async () => {
-            expect(response.data.categoria).toBe('Dialisis');
+            expect(response?.data.categoria).toBe('Dialisis');
         });
         it('Se espera que la el seguimiento sea Citas en 3 meses', async () => {
-            expect(response.data.seguimiento).toBe('Citas en 3 meses');
+            expect(response?.data.seguimiento).toBe('Citas en 3 meses');
         });
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
 
@@ -80,8 +80,8 @@ describe('TEST DE CASOS', () => {
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
-                expect(error.response.status).toBe(400);
-                
+                expect(error.response?.status).toBe(400);
+
             }
         });
     });
@@ -110,9 +110,9 @@ describe('TEST DE CASOS', () => {
                 seguimiento: 'Cita en 3 meses',
             });
 
-            expect(response.status).toBe(201);
-            expect(response.data.id).toBe(1);
-            expect(response.data.descripcion).toBe('Dolores cronicos');
+            expect(response?.status).toBe(201);
+            expect(response?.data.id).toBe(1);
+            expect(response?.data.descripcion).toBe('Dolores cronicos');
         });
     });
     describe("PUT", () => {
@@ -137,7 +137,7 @@ describe('TEST DE CASOS', () => {
                 seguimiento: 'Seguimiento de prueba',
             });
 
-            expect(response.status).toBe(201);
+            expect(response?.status).toBe(201);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud PUT con un ID inválido", async () => {
@@ -161,8 +161,8 @@ describe('TEST DE CASOS', () => {
                 expect(true).toBe(false);
             } catch (error) {
 
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });
@@ -180,7 +180,7 @@ describe('TEST DE CASOS', () => {
 
             const response = await axios.delete(`http://localhost:${PORT}/casos/9`);
 
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud DELETE con un ID inválido", async () => {
@@ -194,8 +194,8 @@ describe('TEST DE CASOS', () => {
 
                 expect(true).toBe(false);
             } catch (error) {
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });

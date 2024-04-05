@@ -45,9 +45,9 @@ export default function ConsultationMenu({ id, ruta }: any) {
       return false;
     }).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error.response?.status);
       });
       setOpenSnackbar(true);
       return false;

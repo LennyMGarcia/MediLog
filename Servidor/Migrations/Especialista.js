@@ -38,12 +38,11 @@ class Especialista extends Model {
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }
     async update(data = {}, id = null) {
-        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 400 }];
+        if (!id) return [{ 'success': false, 'error': 'Registro No Existe.', 'status': 404 }];
 
         try {
             this.data = data;
@@ -70,7 +69,6 @@ class Especialista extends Model {
             return results;
         } catch (error) {
             return [{ 'success': false, 'error': `${error}`, 'status': 500 }];
-            // return [{ 'success': false, 'error': 'Campos Obligatorios o Invalidos.' }];
         }
 
     }

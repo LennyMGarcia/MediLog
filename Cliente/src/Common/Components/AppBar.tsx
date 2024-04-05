@@ -18,13 +18,6 @@ import ModalAlert from "../Modals/ModalAlert";
 import useUserStore from "../Utils/setUserSession";
 import { globalTheme } from "../../theme/globalTheme";
 
-// Paginas para los pacientes
-const pagesPatients = [
-  { name: "Dashboard", link: "/dashboard" },
-  { name: "Casos", link: "/cases" },
-  { name: "Casos Terceros", link: "/externalCases" },
-  { name: "Perfil", link: "/profile" },
-];
 
 // Paginas para los doctores
 const pagesDoctors = [
@@ -44,6 +37,25 @@ function Appbar() {
   const { logoutUser } = useUserStore();
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
+  const plan = authenticated() ? getUser().plan : null;
+
+  // Paginas para los pacientes
+  var pagesPatients = []
+  if (plan === "Familiar") {
+    pagesPatients = [
+      { name: "Dashboard", link: "/dashboard" },
+      { name: "Casos", link: "/cases" },
+      { name: "Casos Terceros", link: "/externalCases" },
+      { name: "Perfil", link: "/profile" },
+    ]
+  } else {
+    pagesPatients = [
+      { name: "Dashboard", link: "/dashboard" },
+      { name: "Casos", link: "/cases" },
+      { name: "Perfil", link: "/profile" },
+    ];
+  }
+
 
   useEffect(() => {
     if (!authenticated()) {
@@ -55,6 +67,7 @@ function Appbar() {
 
   const nombre = authenticated() ? getUser().nombre : null;
   const apellido = authenticated() ? getUser().apellido : null;
+  const user_id = authenticated() ? getUser().member_id : null;
   const rol = authenticated() ? getUser().tipo : null;
   const pages = rol === 'Paciente' ? pagesPatients : pagesDoctors;
 
@@ -197,10 +210,19 @@ function Appbar() {
               flexGrow: 0,
               display: "flex",
               flexDirection: "row",
-              gap: "10px",
+              gap: "20px",
               alignItem: "center",
             }}
           >
+            <Box
+              sx={{
+                display: "flex",
+              }}
+            >
+              <Typography variant="h5" fontSize={16} textAlign={"left"}>
+                ID: {user_id}
+              </Typography>
+            </Box>
             <Box
               sx={{
                 width: "100%",
@@ -331,3 +353,10 @@ function Appbar() {
   );
 }
 export default Appbar;
+
+/*const pagesPatients = [
+   { name: "Dashboard", link: "/dashboard" },
+   { name: "Casos", link: "/cases" },
+   { name: "Casos Terceros", link: "/externalCases" },
+   { name: "Perfil", link: "/profile" },
+ ];*/

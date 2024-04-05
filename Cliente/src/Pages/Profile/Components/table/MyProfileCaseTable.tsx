@@ -1,4 +1,5 @@
 import Table from "@mui/material/Table";
+import { Button, LinearProgress } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -11,8 +12,6 @@ import {
     InputAdornment,
     TablePagination,
     TextField,
-    Button,
-    LinearProgress
 } from "@mui/material";
 import { useMemo, useState, useEffect } from "react";
 import {
@@ -23,13 +22,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { PendingActionsOutlined, Search } from "@mui/icons-material";
-import TableMenu from "./Menu";
-import useUserStore from "../../../Common/Utils/setUserSession";
+
+
 import { useNavigate } from "react-router";
 import { Link } from "@mui/material";
-import { searchRecordsFromArray } from "../Casos";
-import { globalTheme } from "../../../theme/globalTheme";
-import NoRecords from "../../../Common/Components/NoRecords";
+
+import { globalTheme } from "../../../../theme/globalTheme";
+import { searchRecordsFromArray } from "../../../Casos/Casos";
+
+import useUserStore from "../../../../Common/Utils/setUserSession";
+import MyProfileTableMenu from "./MyProfileTableMenu";
+import NoRecords from "../../../../Common/Components/NoRecords";
 
 type IPropsData = {
     id: number;
@@ -50,38 +53,34 @@ interface IProps {
     type: "all" | "Activo" | "Inactivo" | "Proceso" | "Suspendido";
 }
 
-export default function TablaCasosTerceros({ type }: IProps) {
+export default function MyProfileTablaCasos({ type }: IProps) {
     const navigate = useNavigate();
-    const { getFamiliares } = useUserStore();
-    const { authenticated } = useUserStore();
-    const { toggleLoading } = useUserStore();
+    const { autopopulate } = useUserStore();
     const { getUser } = useUserStore();
+    const { toggleLoading } = useUserStore();
     const loading = useUserStore(state => state.loading);
-    const familiares = useUserStore((state) => state.familiares);
-
-    const user_id = authenticated() ? getUser().member_id : null;
-
-    const [data, setData] = useState<any[]>(type === 'all' ? familiares : familiares?.filter((cases: any) => cases?.estado === type));
+    const casos = useUserStore((state) => state.casos);
+    const [data, setData] = useState<any[]>(type === 'all' ? casos : casos.filter((cases: any) => cases?.estado === type));
 
     useEffect(() => {
         //Zustand que permite la consulta de casos relacionados con el usuario
-        if (familiares.length <= 0) {
-            getFamiliares(user_id).then(result => {
-                const familiares = result || [];
-                if (result) {
+        if (casos.length <= 0) {
+            autopopulate().then(result => {
+                const casos = result.casos || [];
+                if (casos) {
                     //Funcciones que divide que los registros segun el estado
-                    const casos_abiertos = familiares.filter((cases: any) => cases?.estado === 'Activo');
-                    const casos_cerrados = familiares.filter((cases: any) => cases?.estado === 'Inactivo');
-                    const casos_proceso = familiares.filter((cases: any) => cases?.estado === 'Proceso');
-                    const casos_suspendidos = familiares.filter((cases: any) => cases?.estado === 'Suspendido');
+                    const casos_abiertos = casos.filter((cases: any) => cases?.estado === 'Activo');
+                    const casos_cerrados = casos.filter((cases: any) => cases?.estado === 'Inactivo');
+                    const casos_proceso = casos.filter((cases: any) => cases?.estado === 'Proceso');
+                    const casos_suspendidos = casos.filter((cases: any) => cases?.estado === 'Suspendido');
 
                     if (type === 'Activo') {
                         setData(casos_abiertos);
                         toggleLoading(false);
                         return;
                     } else if (type === 'Inactivo') {
-                        toggleLoading(false);
                         setData(casos_cerrados);
+                        toggleLoading(false);
                         return;
                     }
                     else if (type === 'Proceso') {
@@ -93,15 +92,12 @@ export default function TablaCasosTerceros({ type }: IProps) {
                         toggleLoading(false);
                         return;
                     }
-                    setData(familiares);
                     toggleLoading(false);
+                    setData(casos);
                     return;
                 }
             });
-            return;
         }
-        return;
-
     }, []);
 
 
@@ -179,7 +175,6 @@ export default function TablaCasosTerceros({ type }: IProps) {
     function stableSort(array: any[]) {
         const stabilized = array;
 
-
         setRowsTotal(stabilized.length);
         return stabilized;
     }
@@ -196,7 +191,7 @@ export default function TablaCasosTerceros({ type }: IProps) {
 
     const search_patient = (search: string) => {
         if (!search) return;
-        const payload: any[] = searchRecordsFromArray(familiares, search, 'descripcion', 'categoria', 'id');
+        const payload: any[] = searchRecordsFromArray(casos, search, 'descripcion', 'categoria', 'pacientes_id');
         setData(payload);
         return;
     }
@@ -297,12 +292,13 @@ export default function TablaCasosTerceros({ type }: IProps) {
                                 variant="contained"
                                 sx={{
                                     bgcolor: globalTheme.palette.secondary.main,
+                                    marginRight: "1rem"
                                 }}
                                 onClick={() => {
                                     search_patient(openInputSearch);
                                 }}
                             >
-                                Buscar Familiar
+                                Buscar caso
                             </Button>
                         </Box>
                         <Box
@@ -477,9 +473,10 @@ export default function TablaCasosTerceros({ type }: IProps) {
                         }}
                     >
                         {visibleRows?.length <= 0 ? <NoRecords /> :
+
                             <Table
                                 aria-label="simple table"
-                                sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
+                                sx={{ borderCollapse: "separate", borderSpacing: "0 8px", }}
                             >
                                 <TableHead
                                     sx={{
@@ -517,7 +514,7 @@ export default function TablaCasosTerceros({ type }: IProps) {
                                             }}
                                             align="left"
                                         >
-                                            Familiar ID
+                                            {isDoctor ? 'Pacientes' : 'Doctores'}
                                         </TableCell>
                                         <TableCell
                                             sx={{
@@ -616,9 +613,11 @@ export default function TablaCasosTerceros({ type }: IProps) {
                                                 }}
                                             >
                                                 <Link component='button' variant="body2" onClick={() => {
-                                                    navigate(`/pacientes/${data?.pacientes_id}`)
+                                                    if (isDoctor) {
+                                                        navigate(`/pacientes/${data?.pacientes_id}`)
+                                                    }
                                                     return;
-                                                }}>{data?.pacientes_id}</Link>
+                                                }}>{isDoctor ? data?.pacientes_id : data?.especialistas_id}</Link>
                                             </TableCell>
                                             <TableCell
                                                 align="left"
@@ -669,7 +668,7 @@ export default function TablaCasosTerceros({ type }: IProps) {
                                                     padding: "5px 16px",
                                                 }}
                                             >
-                                                <TableMenu id={data?.id} />
+                                                <MyProfileTableMenu id={data?.id} />
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -699,76 +698,3 @@ export default function TablaCasosTerceros({ type }: IProps) {
         </>
     );
 }
-// Data que debe cambiar en base al tipo que se paso
-/*const data = [
-  {
-    id: 1,
-    descripcion: "Consulta de rutina",
-    person: "Juan Pérez",
-    time: "2024-03-11T09:00:00",
-    estado: "open",
-    categoria: 2,
-  },
-  {
-    id: 2,
-    descripcion: "Examen de sangre",
-    person: "María Rodríguez",
-    time: "2024-03-12T10:30:00",
-    estado: "close",
-    categoria: 1,
-  },
-  {
-    id: 3,
-    descripcion: "Consulta de seguimiento",
-    person: "Luis García",
-    time: "2024-03-13T11:15:00",
-    estado: "pending",
-    categoria: 3,
-  },
-  {
-    id: 4,
-    descripcion: "Revisión de presión arterial",
-    person: "Ana Martínez",
-    time: "2024-03-14T15:45:00",
-    estado: "process",
-    categoria: 2,
-  },
-  {
-    id: 5,
-    descripcion: "Vacunación contra la gripe",
-    person: "Carlos Sánchez",
-    time: "2024-03-15T08:20:00",
-    estado: "open",
-    categoria: 1,
-  },
-];*/
-
-// if (dateStart)
-//   stabilized = stabilized.filter((a) => {
-//     const start = new Date(a.date);
-//     const startState = new Date(dateStart);
-
-//     // console.log(a.date);
-//     // console.log(dateStart);
-//     console.log(dayjs(start).isAfter(dayjs(startState)));
-//     return dayjs(a.date).isAfter(dateStart);
-//   });
-
-// if (dateEnd)
-//   stabilized = stabilized.filter((a) => {
-//     return dayjs(a.date).isBefore(dateEnd);
-//   });
-
-// if (dateEnd)
-//   stabilized = stabilized.filter((a) => {
-//     a.date <= dateEnd;
-//   });
-
-// if (openInputSearch)
-//   stabilized = stabilized.filter((item) => {
-//     // item.numberOrder == openInputSearch;
-
-//     return normalizeString(item.nameClient)
-//       .toLowerCase()
-//       .includes(openInputSearch.toLowerCase());
-//   });
