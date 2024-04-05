@@ -563,7 +563,7 @@ const SpecificCase: React.FC = () => {
                 <Box sx={{ width: '100%', height: "100%" }}>
                   <Formik
                     initialValues={consultationInitialValues}
-                    validationSchema={categoria == "Consulta" ? yupConsultationSchema : yupSurgerySchema}
+                    validationSchema={yupSurgerySchema}
                     onSubmit={() => console.log("adios")}
                   >
                     {({ handleSubmit, isValid }) => (
