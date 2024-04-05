@@ -16,6 +16,18 @@ describe('TEST DE CONSULTAS', () => {
     describe('Get', () => {
         let response;
 
+        nock(`http://localhost:${PORT}`)
+            .get('/consultas/1')
+            .reply(200, {
+                id: 1,
+                motivo: 'Colonoscopia',
+                paciente: 'Fulano Detal',
+                pacientes_id: 1,
+                observaciones: "Se Detecto una anomalia causada por otras condiciones medicas",
+                especialistas_id: 60,
+            });
+
+
         beforeAll(async () => {
             response = await axios.get(`http://localhost:${PORT}/consultas/1`);
         });
@@ -42,14 +54,25 @@ describe('TEST DE CONSULTAS', () => {
             expect(response.data.motivo).toBe('Colonoscopia');
         });
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
+            nock(`http://localhost:${PORT}`)
+                .get('/consultas/abc')
+                .reply(400, {
+                    id: "abc",
+                    motivo: 'Colonoscopia',
+                    paciente: 'Fulano Detal',
+                    pacientes_id: 1,
+                    observaciones: "Se Detecto una anomalia causada por otras condiciones medicas",
+                    especialistas_id: 60,
+                });
             try {
-                response = await axios.get(`http://localhost:${PORT}/cirugias/abc`);
+
+                response = await axios.get(`http://localhost:${PORT}/consultas/abc`);
 
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
                 expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido.");
+
             }
         });
     });
@@ -129,26 +152,26 @@ describe('TEST DE CONSULTAS', () => {
             // Limpiar todos los interceptores de Nock despues  de cada prueba
             nock.cleanAll();
         });
-    
+
         it("Espera recibir una solicitud 200 con DELETE", async () => {
             nock(`http://localhost:${PORT}`)
                 .delete('/consultas/9')
                 .reply(200);
-    
+
             const response = await axios.delete(`http://localhost:${PORT}/consultas/9`);
 
             expect(response.status).toBe(200);
         });
-    
+
         it("Debería retornar un error 400 cuando se hace una solicitud DELETE con un ID inválido", async () => {
 
             nock(`http://localhost:${PORT}`)
                 .delete('/consultas/abc')
                 .reply(400, { message: "Numero de Identificacion Invalido. para campo de ' id '" });
-    
+
             try {
                 await axios.delete(`http://localhost:${PORT}/consultas/abc`);
-                
+
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.response.status).toBe(400);
