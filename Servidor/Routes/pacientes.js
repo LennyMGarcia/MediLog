@@ -62,28 +62,30 @@ router.get('/:id', id_validation, async (req, res) => {
         const producto = await product_model.find(user?.plan)
 
         //Funccion que busca los familiares de un paciente si hay
-        const obj = JSON.parse(data?.familiares_id);
+        const obj = data?.familiares_id ? JSON.parse(data?.familiares_id) : null;
         var familias = []
         var ids = []
         var casos_familiares = [];
-        if (obj?.length >= 1) {
-            obj?.forEach((element) => {
-                if (typeof (element) === 'string') {
-                    const id = parseInt(element);
-                    ids.push(id);
-                } else {
-                    ids.push(element);
-                }
-            });
+        if (obj) {
+            if (obj?.length >= 1) {
+                obj?.forEach((element) => {
+                    if (typeof (element) === 'string') {
+                        const id = parseInt(element);
+                        ids.push(id);
+                    } else {
+                        ids.push(element);
+                    }
+                });
 
-            for (let i = 0; i < ids.length; i++) {
-                const element = ids[i];
-                const family_member = new Paciente();
-                const family_member_data = await family_member.find(element);
-                const cases_family_member = new Caso();
-                const cases_family_member_data = await family_member.findUserRecords(family_member_data?.id, 'casos');
-                familias.push(family_member_data);
-                casos_familiares.push(...cases_family_member_data);
+                for (let i = 0; i < ids.length; i++) {
+                    const element = ids[i];
+                    const family_member = new Paciente();
+                    const family_member_data = await family_member.find(element);
+                    const cases_family_member = new Caso();
+                    const cases_family_member_data = await family_member.findUserRecords(family_member_data?.id, 'casos');
+                    familias.push(family_member_data);
+                    casos_familiares.push(...cases_family_member_data);
+                }
             }
         }
 

@@ -18,13 +18,6 @@ import ModalAlert from "../Modals/ModalAlert";
 import useUserStore from "../Utils/setUserSession";
 import { globalTheme } from "../../theme/globalTheme";
 
-// Paginas para los pacientes
-const pagesPatients = [
-  { name: "Dashboard", link: "/dashboard" },
-  { name: "Casos", link: "/cases" },
-  { name: "Casos Terceros", link: "/externalCases" },
-  { name: "Perfil", link: "/profile" },
-];
 
 // Paginas para los doctores
 const pagesDoctors = [
@@ -44,6 +37,25 @@ function Appbar() {
   const { logoutUser } = useUserStore();
   const { getUser } = useUserStore();
   const { authenticated } = useUserStore();
+  const plan = authenticated() ? getUser().plan : null;
+
+  // Paginas para los pacientes
+  var pagesPatients = []
+  if (plan === "Familiar") {
+    pagesPatients = [
+      { name: "Dashboard", link: "/dashboard" },
+      { name: "Casos", link: "/cases" },
+      { name: "Casos Terceros", link: "/externalCases" },
+      { name: "Perfil", link: "/profile" },
+    ]
+  } else {
+    pagesPatients = [
+      { name: "Dashboard", link: "/dashboard" },
+      { name: "Casos", link: "/cases" },
+      { name: "Perfil", link: "/profile" },
+    ];
+  }
+
 
   useEffect(() => {
     if (!authenticated()) {
@@ -341,3 +353,10 @@ function Appbar() {
   );
 }
 export default Appbar;
+
+/*const pagesPatients = [
+   { name: "Dashboard", link: "/dashboard" },
+   { name: "Casos", link: "/cases" },
+   { name: "Casos Terceros", link: "/externalCases" },
+   { name: "Perfil", link: "/profile" },
+ ];*/

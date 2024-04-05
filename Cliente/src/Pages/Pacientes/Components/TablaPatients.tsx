@@ -25,7 +25,8 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import { useNavigate } from "react-router-dom";
 import { searchRecordsFromArray } from "../../Casos/Casos";
 import { globalTheme } from "../../../theme/globalTheme";
-
+import Typography from "@mui/material/Typography/Typography";
+import NoRecords from "../../../Common/Components/NoRecords";
 type IProps = {
   idPatient: number;
   name: string;
@@ -46,7 +47,7 @@ export default function TablaPatients() {
   useEffect(() => {
     //Zustand que permite la consulta de pacientes relacionados con el usuario
     autopopulate().then(result => {
-      setData(result.pacientes)
+      setData(result?.pacientes)
     });
     return;
 
@@ -56,7 +57,7 @@ export default function TablaPatients() {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [rowsTotal, setRowsTotal] = useState(data.length);
+  const [rowsTotal, setRowsTotal] = useState(data?.length);
   const [openInputSearch, setOpenInputSearch] = useState("");
   const [dateStart, setDateStart] = useState<string | null>();
   const [dateEnd, setDateEnd] = useState<string | null>();
@@ -80,7 +81,6 @@ export default function TablaPatients() {
 
   function stableSort(array: any[]) {
     const stabilized = array;
-
 
     setRowsTotal(stabilized.length);
     return stabilized;
@@ -214,225 +214,227 @@ export default function TablaPatients() {
               padding: "0px 24px",
             }}
           >
-            <Table
-              aria-label="simple table"
-              sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
-            >
-              <TableHead
-                sx={{
-                  backgroundColor: "#F4F4F5",
-                }}
-              >
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                  >
-                    No. de Paciente
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Nombre
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Apellido
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Genero
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Correo
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Telefono
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Accion
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody
-                sx={
-                  {
-                    // "& > *": {
-                    //   borderBottom: "none", // elimina la línea divisoria en las celdas
-                    // },
-                  }
-                }
-              >
-                {visibleRows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      borderRadius: "8px",
-                      "& > *": { borderBottom: "none" },
-                      ".css-1qanp6x-MuiTableCell-root": {
-                        borderBottom: "none",
-                      },
 
-                      //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
-                      // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
-                    }}
-                  >
+            {visibleRows?.length <= 0 ? <NoRecords /> :
+              <Table
+                aria-label="simple table"
+                sx={{ borderCollapse: "separate", borderSpacing: "0 8px" }}
+              >
+                <TableHead
+                  sx={{
+                    backgroundColor: "#F4F4F5",
+                  }}
+                >
+                  <TableRow>
                     <TableCell
-                      component="th"
-                      scope="row"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
                     >
-                      {row.id}
+                      No. de Paciente
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.nombre}
+                      Nombre
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.apellido}
+                      Apellido
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.sexo}
+                      Genero
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.correo}
+                      Correo
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {row.telefono}
+                      Telefono
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        // padding: "24px 16px",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      <Button
-                        variant="contained"
-                        sx={{
-                          bgcolor: globalTheme.palette.secondary.main,
-                        }}
-                        startIcon={<Person2 />}
-                        onClick={() => {
-                          navigate(`/pacientes/${row.id}`);
-                        }}
-                      >
-                        Ver Perfil
-                      </Button>
+                      Accion
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody
+                  sx={
+                    {
+                      // "& > *": {
+                      //   borderBottom: "none", // elimina la línea divisoria en las celdas
+                      // },
+                    }
+                  }
+                >
+                  {visibleRows.map((row) => (
+                    <TableRow
+                      key={row?.id}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        borderRadius: "8px",
+                        "& > *": { borderBottom: "none" },
+                        ".css-1qanp6x-MuiTableCell-root": {
+                          borderBottom: "none",
+                        },
+
+                        //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
+                        // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
+                      }}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row?.id}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row?.nombre}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row?.apellido}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row?.sexo}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row?.correo}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {row?.telefono}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          // padding: "24px 16px",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          sx={{
+                            bgcolor: globalTheme.palette.secondary.main,
+                          }}
+                          startIcon={<Person2 />}
+                          onClick={() => {
+                            navigate(`/pacientes/${row?.id}`);
+                          }}
+                        >
+                          Ver Perfil
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>}
           </Box>
         </TableContainer>
       }

@@ -11,6 +11,7 @@ import { useMemo, useState, useEffect } from "react";
 import useUserStore from "../../../Common/Utils/setUserSession";
 import { Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import NoRecords from "../../../Common/Components/NoRecords";
 
 type IPropsData = {
   id: number;
@@ -38,7 +39,8 @@ export default function ShortTable() {
   }, []);
 
   // Esto es para que la data que entra, solo se tomen 5
-  const rows = data.slice(0, 5);
+  //const rows = data.slice(0, 5);
+  const [rows, setRows] = useState<any | never>(data.slice(0, 5));
 
   const badgetStatus: Record<string, any> = {
     Inactivo: {
@@ -176,112 +178,112 @@ export default function ShortTable() {
             </TableCell>
           </TableRow>
         </TableHead>
+        {rows?.length >= 1 ?
+          <TableBody>
+            {/* Map para mostrar las diferetes filas en base de los datos del array */}
+            {rows?.map((row: any) => (
+              <TableRow
+                key={row?.id}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  borderRadius: "8px",
+                  "& > *": { borderBottom: "none" },
+                  ".css-1qanp6x-MuiTableCell-root": {
+                    borderBottom: "none",
+                  },
 
-        <TableBody>
-          {/* Map para mostrar las diferetes filas en base de los datos del array */}
-          {rows.map((row) => (
-            <TableRow
-              key={row?.id}
-              sx={{
-                "&:last-child td, &:last-child th": { border: 0 },
-                borderRadius: "8px",
-                "& > *": { borderBottom: "none" },
-                ".css-1qanp6x-MuiTableCell-root": {
-                  borderBottom: "none",
-                },
-
-                //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
-                // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
-              }}
-            >
-              <TableCell
-                component="th"
-                scope="row"
-                sx={{
-                  fontFamily: "Arial",
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  color: "#070708",
-                  // padding: "24px 16px",
-                  padding: "5px 16px",
+                  //Esto es una funcion para saber si esta orden fue creada dentro de las 12horas para que sea considerada como "nueva"
+                  // backgroundColor: In12Hour(row.time) ? "#F4F9EC" : "none",
                 }}
               >
-                <Link component='button' variant="body2" onClick={() => {
-                  navigate(`/cases/${row?.id}`)
-                }}>{row?.id}</Link>
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  fontFamily: "Arial",
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  color: "#070708",
-                  // padding: "24px 16px",
-                  padding: "5px 16px",
-                }}
-              >
-                {row?.descripcion}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  fontFamily: "Arial",
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  color: "#070708",
-                  // padding: "24px 16px",
-                  padding: "5px 16px",
-                }}
-              >
-                {isDoctor ? row?.pacientes_id : row?.especialistas_id}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  fontFamily: "Arial",
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  color: "#070708",
-                  // padding: "24px 16px",
-                  padding: "5px 16px",
-                }}
-              >
-                {row?.fecha}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  fontFamily: "Arial",
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  color: "#070708",
-                  // padding: "24px 16px",
-                  padding: "5px 16px",
-                }}
-              >
-                <Badge
-                  bg={badgetStatus[row?.estado]?.color}
-                  tipo={badgetStatus[row?.estado]?.name}
-                />
-                {/* {row.status} */}
-              </TableCell>
-              <TableCell
-                align="left"
-                sx={{
-                  fontFamily: "Arial",
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  color: "#070708",
-                  // padding: "24px 16px",
-                  padding: "5px 16px",
-                }}
-              >
-                {row?.categoria}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{
+                    fontFamily: "Arial",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    color: "#070708",
+                    // padding: "24px 16px",
+                    padding: "5px 16px",
+                  }}
+                >
+                  <Link component='button' variant="body2" onClick={() => {
+                    navigate(`/cases/${row?.id}`)
+                  }}>{row?.id}</Link>
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    fontFamily: "Arial",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    color: "#070708",
+                    // padding: "24px 16px",
+                    padding: "5px 16px",
+                  }}
+                >
+                  {row?.descripcion}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    fontFamily: "Arial",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    color: "#070708",
+                    // padding: "24px 16px",
+                    padding: "5px 16px",
+                  }}
+                >
+                  {isDoctor ? row?.pacientes_id : row?.especialistas_id}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    fontFamily: "Arial",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    color: "#070708",
+                    // padding: "24px 16px",
+                    padding: "5px 16px",
+                  }}
+                >
+                  {row?.fecha}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    fontFamily: "Arial",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    color: "#070708",
+                    // padding: "24px 16px",
+                    padding: "5px 16px",
+                  }}
+                >
+                  <Badge
+                    bg={badgetStatus[row?.estado]?.color}
+                    tipo={badgetStatus[row?.estado]?.name}
+                  />
+                  {/* {row.status} */}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    fontFamily: "Arial",
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    color: "#070708",
+                    // padding: "24px 16px",
+                    padding: "5px 16px",
+                  }}
+                >
+                  {row?.categoria}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody> : <NoRecords />}
       </Table>
     </TableContainer>
   );

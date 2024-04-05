@@ -103,22 +103,22 @@ const ChangePassword: React.FC = () => {
       newPass: newPass
     }).then(response => {
       console.log(response);
-      if (response.status === 201 || response.status === 200) {
-        return { success: true, message: response.statusText };
+      if (response?.status === 201 || response?.status === 200) {
+        return { success: true, message: response?.statusText };
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
-      return { success: false, message: response.statusText };
+      return { success: false, message: response?.statusText };
 
     }).catch(error => {
       const error_msj = error?.response?.data?.message;
       console.log(error);
       console.log(error_msj);
-      setStatusCode(error.response.status);
+      setStatusCode(error.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error.response?.status);
       });
       setOpen(true);
       return { success: false, message: error_msj };

@@ -131,21 +131,21 @@ const SpecificCase: React.FC = () => {
   const getRecordFromDB = async (id: number | string | any, table: string) => {
     const result = await axios.get(getBackendConnectionString(`${table}/${id}`)
     ).then(response => {
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
-        return response.data;
+        return response?.data;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       navigate('/404');
       return false;
@@ -156,25 +156,22 @@ const SpecificCase: React.FC = () => {
   const getSurgeryFromDB = async (id: number | string | any, table: string) => {
     const surgery = await axios.get(getBackendConnectionString(`${table}/${id}`)
     ).then(response => {
-      // console.log(response.data)
-      /* console.log(table)
-       console.log(id)
-       console.log(response.data)*/
-      if (response.status === 200 || response.status === 201) {
+
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
-        return response.data;
+        return response?.data;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error.response?.status);
       });
       setOpen(true);
       return false;
@@ -187,25 +184,21 @@ const SpecificCase: React.FC = () => {
     const consult = await axios.get(getBackendConnectionString(`${table}/${id}`)
     ).then(response => {
 
-      /* console.log(table)
-       console.log(id)
-       console.log(response.data)*/
-
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
-        return response.data;
+        return response?.data;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -223,21 +216,21 @@ const SpecificCase: React.FC = () => {
       }
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -255,21 +248,21 @@ const SpecificCase: React.FC = () => {
       }
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -384,11 +377,11 @@ const SpecificCase: React.FC = () => {
           }}
         >
           {isMediumScreen ?
-            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
+            <Typography variant="h6" sx={{ margin: "0.7rem", marginLeft: "5rem", color: globalTheme.font.primary.main }}>
               {CaseObj && CaseObj?.descripcion}
             </Typography>
             :
-            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem", color:globalTheme.font.primary.main }}>
+            <Typography variant="subtitle1" sx={{ margin: "0.7rem", marginLeft: "5rem", color: globalTheme.font.primary.main }}>
               {CaseObj && CaseObj?.descripcion}
             </Typography>}
 
@@ -399,15 +392,15 @@ const SpecificCase: React.FC = () => {
 
         </Box>}
       {false ? <LinearProgress /> :
-        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1, backgroundColor:globalTheme.palette.background.secondary, color: globalTheme.font.primary.main}}>
+        <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", background: "white", margin: isMediumScreen ? "4rem 4rem 0 4rem" : "4rem 0 0 0", padding: "2rem 0 2rem", boxShadow: 1, backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }}>
           <Box sx={{
             width: "100%",
             marginTop: "1rem",
             display: "flex",
             justifyContent: "space-between",
-            
+
           }}>
-            <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem", color:globalTheme.font.primary.main }}>Informacion del caso</Typography>
+            <Typography variant="h6" sx={{ padding: "0 2rem 2rem 2rem", color: globalTheme.font.primary.main }}>Informacion del caso</Typography>
             {/*EDITAR*/}
             {/*{rol === 'Admin' &&*/}
             <Button variant="contained" onClick={handleCaseInfoModalOpen} sx={{ width: "12rem", height: "2rem", backgroundColor: globalTheme.palette.primary.main, marginRight: "2rem" }}>Editar</Button>
@@ -540,7 +533,7 @@ const SpecificCase: React.FC = () => {
 
         </Box>
       }
-      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1, backgroundColor:globalTheme.palette.background.secondary, color:globalTheme.font.primary.main }}>
+      <Box sx={{ width: isMediumScreen ? "90vw" : "100vw", height: "auto", padding: "2rem 0 10rem 0", background: "white", margin: isMediumScreen ? "1rem 4rem 0 4rem" : "1rem 0 0 0 ", boxShadow: 1, backgroundColor: globalTheme.palette.background.secondary, color: globalTheme.font.primary.main }}>
         <Box sx={{
           width: "100%",
           marginTop: "1rem",
@@ -627,8 +620,9 @@ const SpecificCase: React.FC = () => {
                                       customClass: {
                                         container: profileStyle.sweetAlertContainer,
                                       }
+                                    }).then(onsubmit => {
+                                      window.location.reload();
                                     });
-                                    window.location.reload();
                                   } else {
                                     Swal.fire({
                                       title: 'No se aplicaron cambios',

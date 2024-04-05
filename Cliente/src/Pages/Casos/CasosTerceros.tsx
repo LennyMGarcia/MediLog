@@ -7,15 +7,9 @@ import Box from "@mui/material/Box/Box";
 import { Form, Formik } from "formik";
 import CreateCaseForm from "../specificCase/Components/forms/CreateCaseForn";
 import yupCreateCaseSchema from "../specificCase/Utils/yup-schema/yupCreateCaseSchema";
-import axios from "axios";
-import getBackendConnectionString from "../../Common/Utils/getBackendString";
 import Swal from "sweetalert2";
 import useCreateDataStore, { getAllCreateData } from "../specificCase/StateManagement/ZustandCreateCaseManagement";
 import profileStyle from "../Profile/style/profileStyle.module.css";
-import useUserStore from "../../Common/Utils/setUserSession";
-import LinearProgress from "@mui/material";
-import getHTTPTextError from "../../Common/snackbars/HttpErrorText";
-import BannerSnackbar from "../../Common/snackbars/BannerSnackBar";
 import { globalTheme } from "../../theme/globalTheme";
 
 const style = {
@@ -32,12 +26,6 @@ const style = {
 };
 
 export default function CasosTerceros() {
-
-    const [open, setOpen] = useState<boolean>(false);
-    const [statusCode, setStatusCode] = useState<string | number>('');
-    const [message, setMessage] = useState<string>('');
-
-
     return (
         <Grid
             container
@@ -66,7 +54,6 @@ export default function CasosTerceros() {
                 {/* Componente de tablas y tabs */}
                 <TabsTable type='CasosTerceros' />
             </Grid>
-            <BannerSnackbar status={statusCode} message={message} isOpen={open} onClose={() => setOpen(false)} />
         </Grid>
     );
 }
@@ -102,15 +89,15 @@ export default function CasosTerceros() {
             }
         ).then(response => {
             console.log(response);
-            if (response.status === 200 || response.status === 201) {
+            if (response?.status === 200 || response?.status === 201) {
                 return true;
             }
             return false;
         }
         ).catch(error => {
-            setStatusCode(error.response.status);
+            setStatusCode(error.response?.status);
             setMessage(() => {
-                return getHTTPTextError(error.response.status);
+                return getHTTPTextError(error.response?.status);
             });
             setOpen(true);
             console.log(error);

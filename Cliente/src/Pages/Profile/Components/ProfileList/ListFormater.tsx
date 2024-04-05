@@ -22,7 +22,7 @@ const ListFormater: React.FC<IDataListaFormater> = ({ formatData, isNavigate = f
     return (
         <>
             {Array.isArray(formatData) ? (
-                formatData.map((item, index) => (
+                formatData?.map((item, index) => (
                     <List key={index}>
                         <ListItem sx={{ marginTop: index == 0 ? "-1rem" : "-1.8rem" }} key={index} id={String(index)}>
                             <Box sx={{ display: 'flex', flexDirection: 'column' }} key={index}>

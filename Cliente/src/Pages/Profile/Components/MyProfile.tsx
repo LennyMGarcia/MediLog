@@ -39,7 +39,7 @@ import useUserStore from "../../../Common/Utils/setUserSession";
 import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
 import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
 import { globalTheme } from "../../../theme/globalTheme";
-import ProfileTabsTable from "./table/ProfileTabsTable";
+import MyProfileTabsTable from "./table/MyProfileTabsTable";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -194,6 +194,10 @@ const MyProfile: React.FC = () => {
 
         const id = data.id;
         if (!id) {
+            setStatusCode(404);
+            setMessage(() => {
+                return getHTTPTextError(404);
+            });
             console.log("No se encontró un ID en el objeto proporcionado.");
             return undefined;
         }
@@ -209,21 +213,21 @@ const MyProfile: React.FC = () => {
         const result = await axios.get(getBackendConnectionString(`${ruta}/${id}`)
         ).then(response => {
             console.log(response);
-            if (response.status === 200 || response.status === 201) {
+            if (response?.status === 200 || response?.status === 201) {
                 toggleLoading(false);
-                return response.data;
+                return response?.data;
             }
-            setStatusCode(response.status);
+            setStatusCode(response?.status);
             setMessage(() => {
-                return getHTTPTextError(response.status);
+                return getHTTPTextError(response?.status);
             });
             return false;
         }
         ).catch(error => {
             console.log(error);
-            setStatusCode(error.response.status);
+            setStatusCode(error.response?.status);
             setMessage(() => {
-                return getHTTPTextError(error.response.status);
+                return getHTTPTextError(error.response?.status);
             });
             setOpen(true);
             return false;
@@ -253,21 +257,21 @@ const MyProfile: React.FC = () => {
                 }
             ).then(response => {
                 console.log(response);
-                if (response.status === 200 || response.status === 201) {
+                if (response?.status === 200 || response?.status === 201) {
                     setUserType('Paciente');
                     toggleLoading(false);
                     return true;
                 }
-                setStatusCode(response.status);
+                setStatusCode(response?.status);
                 setMessage(() => {
-                    return getHTTPTextError(response.status);
+                    return getHTTPTextError(response?.status);
                 });
                 return false;
             }
             ).catch(error => {
-                setStatusCode(error.response.status);
+                setStatusCode(error?.response?.status);
                 setMessage(() => {
-                    return getHTTPTextError(error.response.status);
+                    return getHTTPTextError(error?.response?.status);
                 });
                 setOpen(true);
                 console.log(error);
@@ -291,22 +295,22 @@ const MyProfile: React.FC = () => {
                 }
             ).then(response => {
                 console.log(response);
-                if (response.status === 200 || response.status === 201) {
+                if (response?.status === 200 || response?.status === 201) {
                     setUserType('Especialista');
                     toggleLoading(false);
                     return true;
                 }
-                setStatusCode(response.status);
+                setStatusCode(response?.status);
                 setMessage(() => {
-                    return getHTTPTextError(response.status);
+                    return getHTTPTextError(response?.status);
                 });
                 return false;
             }
             ).catch(error => {
                 console.log(error);
-                setStatusCode(error.response.status);
+                setStatusCode(error.response?.status);
                 setMessage(() => {
-                    return getHTTPTextError(error.response.status);
+                    return getHTTPTextError(error.response?.status);
                 });
                 setOpen(true);
                 return false;
@@ -355,6 +359,10 @@ const MyProfile: React.FC = () => {
                 const fetchedProfileData = getFakeProfileData({ idOrName: idOrName || "", name: idOrName || "" }, profilesObject);;
 
                 if (!fetchedProfileData) {
+                    setStatusCode(404);
+                    setMessage(() => {
+                        return getHTTPTextError(404);
+                    });
                     console.log('No se encontró el perfil');
                     navigate('/404');
                     return;
@@ -378,6 +386,10 @@ const MyProfile: React.FC = () => {
         }
 
         if (!idOrName) {
+            setStatusCode(404);
+            setMessage(() => {
+                return getHTTPTextError(404);
+            });
             return undefined;
         }
 
@@ -394,6 +406,10 @@ const MyProfile: React.FC = () => {
 
 
         if (!profile && name === "") {
+            setStatusCode(401);
+            setMessage(() => {
+                return getHTTPTextError(401);
+            });
             profile = profiles[idOrName];
         }
 
@@ -583,6 +599,8 @@ const MyProfile: React.FC = () => {
                                                                                     customClass: {
                                                                                         container: profileStyle.sweetAlertContainer,
                                                                                     }
+                                                                                }).then(onsubmit => {
+                                                                                    window.location.reload();
                                                                                 });
                                                                             } else {
                                                                                 Swal.fire({
@@ -650,7 +668,7 @@ const MyProfile: React.FC = () => {
                                         { name: "Apellido", data: profileData?.apellido, },
                                         { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
                                         { name: "Sexo", data: profileData?.sexo, },
-                                        { name: "Especialidad", data: (profileData as ISpecialistProfileData).especialidad },
+                                        { name: "Especialidad", data: (profileData as ISpecialistProfileData)?.especialidad },
                                     ]} />
                                 }
                             </AccordionDetails>
@@ -697,7 +715,7 @@ const MyProfile: React.FC = () => {
                                     Tabla de casos
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <ProfileTabsTable id={profileData?.id} />
+                                    <MyProfileTabsTable />
                                 </AccordionDetails>
                             </Accordion>}
                     </Grid>

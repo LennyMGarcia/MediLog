@@ -21,7 +21,7 @@ describe('TEST DE usuarios', () => {
         });
 
         it('Se espera un Ok o 200 como respuesta', async () => {
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
 
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
@@ -31,8 +31,8 @@ describe('TEST DE usuarios', () => {
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });
@@ -61,9 +61,9 @@ describe('TEST DE usuarios', () => {
                 metodo_pago: "Tarjeta de Credito"
             });
 
-            expect(response.status).toBe(201);
-            expect(response.data.id).toBe(1);
-            expect(response.data.plan).toBe(1);
+            expect(response?.status).toBe(201);
+            expect(response?.data.id).toBe(1);
+            expect(response?.data.plan).toBe(1);
         });
     });
     describe("PUT", () => {
@@ -87,7 +87,7 @@ describe('TEST DE usuarios', () => {
                 metodo_pago: "Tarjeta de Credito"
             });
 
-            expect(response.status).toBe(201);
+            expect(response?.status).toBe(201);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud PUT con un ID inválido", async () => {
@@ -98,20 +98,20 @@ describe('TEST DE usuarios', () => {
 
             try {
                 await axios.put(`http://localhost:${PORT}/usuarios/abc`, {
-                    id:"abc",
-                    member_id:1,
-                    correo:"len@gmail.com",
-                    contrasena:"password",
-                    tipo:"paciente",
-                    plan:1,
-                    metodo_pago:"Tarjeta de Credito"
+                    id: "abc",
+                    member_id: 1,
+                    correo: "len@gmail.com",
+                    contrasena: "password",
+                    tipo: "paciente",
+                    plan: 1,
+                    metodo_pago: "Tarjeta de Credito"
                 });
 
                 expect(true).toBe(false);
             } catch (error) {
 
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });
@@ -129,7 +129,7 @@ describe('TEST DE usuarios', () => {
 
             const response = await axios.delete(`http://localhost:${PORT}/usuarios/9`);
 
-            expect(response.status).toBe(200);
+            expect(response?.status).toBe(200);
         });
 
         it("Debería retornar un error 400 cuando se hace una solicitud DELETE con un ID inválido", async () => {
@@ -143,8 +143,8 @@ describe('TEST DE usuarios', () => {
 
                 expect(true).toBe(false);
             } catch (error) {
-                expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
+                expect(error.response?.status).toBe(400);
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });

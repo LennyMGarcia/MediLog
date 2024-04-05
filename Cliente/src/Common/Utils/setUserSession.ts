@@ -25,8 +25,8 @@ const useUserStore = create((set: any, get: any) => ({
     }),
     getFamiliares: async (id: number) => {
         const result = axios.get(getBackendConnectionString(`pacientes/${id}`)).then((response) => {
-            const data = response.data.casos_familiares
-            if (response.status === 200 || response.status === 201) {
+            const data = response?.data?.casos_familiares
+            if (response?.status === 200 || response?.status === 201) {
                 set({ loading: false, familiares: data })
                 return data;
             }
@@ -40,8 +40,8 @@ const useUserStore = create((set: any, get: any) => ({
     },
     getPatientCases: async (id: number) => {
         const result = axios.get(getBackendConnectionString(`pacientes/${id}`)).then((response) => {
-            const data = response.data.casos;
-            if (response.status === 200 || response.status === 201) {
+            const data = response?.data?.casos;
+            if (response?.status === 200 || response?.status === 201) {
                 set({ loading: false, pacientCases: data })
                 return data;
             }
@@ -55,11 +55,11 @@ const useUserStore = create((set: any, get: any) => ({
     },
     autopopulate: async () => {
         const query = JSON.parse(localStorage.getItem('user') || '{}');
-        const id = query.id;
-        if (query.tipo === "Paciente") {
+        const id = query?.id;
+        if (query?.tipo === "Paciente") {
             const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
-                const data = response.data;
-                if (response.status === 200 || response.status === 201) {
+                const data = response?.data;
+                if (response?.status === 200 || response?.status === 201) {
                     //    console.log(data);
                     return data;
                 }
@@ -81,8 +81,8 @@ const useUserStore = create((set: any, get: any) => ({
             return result;
         }
         const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
-            const data = response.data;
-            if (response.status === 200 || response.status === 201) {
+            const data = response?.data;
+            if (response?.status === 200 || response?.status === 201) {
                 //   console.log(data);
                 return data;
             }
@@ -127,10 +127,10 @@ const useUserStore = create((set: any, get: any) => ({
 
     getUserData: async (id: number, dataType: string) => {
         const query = JSON.parse(localStorage.getItem('user') || '{}');
-        if (query.tipo === "Paciente") {
+        if (query?.tipo === "Paciente") {
             const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
-                const data = response.data;
-                if (response.status === 200 || response.status === 201) {
+                const data = response?.data;
+                if (response?.status === 200 || response?.status === 201) {
                     return data;
                 }
                 return null;
@@ -140,8 +140,8 @@ const useUserStore = create((set: any, get: any) => ({
             return result;
         }
         const result = await axios.get(getBackendConnectionString(`usuarios/${id}`)).then((response) => {
-            const data = response.data;
-            if (response.status === 200 || response.status === 201) {
+            const data = response?.data;
+            if (response?.status === 200 || response?.status === 201) {
                 return data;
             }
             return null;

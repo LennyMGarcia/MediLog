@@ -8,7 +8,7 @@ import List from "@mui/material/List/List";
 interface IProfileList {
     dataList?: {
         name: string | undefined,
-        data: any | React.ReactNode |undefined,
+        data: any | React.ReactNode | undefined,
     }[]
 }
 
@@ -17,7 +17,7 @@ const ProfileList: React.FC<IProfileList> = ({ dataList }) => {
     return (
         <>
             {Array.isArray(dataList) ? (
-                dataList.map((list, index) => (
+                dataList?.map((list, index) => (
                     <List key={index}>
                         <ListItem sx={{ marginTop: index == 0 ? "-1rem" : "none" }} key={index} id={String(index)}>
                             <Box sx={{ display: 'flex', flexDirection: 'column' }} key={index}>

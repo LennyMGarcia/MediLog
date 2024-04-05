@@ -14,7 +14,7 @@ export default function () {
       padding={"0.5rem 2.375rem"}
     >
       <Typography>SatoruScript Software Company</Typography>
-      <Typography>© 2020 SatoruScript. All rights reserved.</Typography>
+      <Typography>© 2024 SatoruScript. All rights reserved.</Typography>
     </Grid>
   );
 }

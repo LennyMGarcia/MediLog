@@ -196,6 +196,10 @@ const Profile: React.FC = () => {
 
     const id = data.id;
     if (!id) {
+      setStatusCode(404);
+      setMessage(() => {
+        return getHTTPTextError(404);
+      });
       console.log("No se encontró un ID en el objeto proporcionado.");
       return undefined;
     }
@@ -211,21 +215,21 @@ const Profile: React.FC = () => {
     const result = await axios.get(getBackendConnectionString(`pacientes/${id}`)
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
-        return response.data;
+        return response?.data;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -254,21 +258,21 @@ const Profile: React.FC = () => {
       }
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         toggleLoading(false);
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -379,6 +383,10 @@ const Profile: React.FC = () => {
     }
 
     if (!idOrName) {
+      setStatusCode(404);
+      setMessage(() => {
+        return getHTTPTextError(404);
+      });
       return undefined;
     }
 
@@ -419,21 +427,21 @@ const Profile: React.FC = () => {
       especialistas_id: user_id,
     }).then(res => {
       console.log(res)
-      if (res.status === 200 || res.status === 201) {
+      if (res?.status === 200 || res?.status === 201) {
         window.location.href = '/pacientes';
         toggleLoading(false);
         return true;
       }
-      setStatusCode(res.status);
+      setStatusCode(res?.status);
       setMessage(() => {
-        return getHTTPTextError(res.status);
+        return getHTTPTextError(res?.status);
       });
       return false;
     }).catch(error => {
       console.log(error)
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       return false;
     })
@@ -640,8 +648,11 @@ const Profile: React.FC = () => {
                                           customClass: {
                                             container: profileStyle.sweetAlertContainer,
                                           }
+                                        }).then(onsubmit => {
+                                          window.location.href = `/pacientes/${idOrName}`;
+                                          return onsubmit;
                                         });
-                                        window.location.href = `/pacientes/${idOrName}`;
+
                                       } else {
                                         Swal.fire({
                                           title: 'No se aplicaron cambios',
@@ -708,7 +719,7 @@ const Profile: React.FC = () => {
                     { name: "Apellido", data: profileData?.apellido, },
                     { name: "Fecha de nacimiento", data: profileData?.fecha_nacimiento, },
                     { name: "Sexo", data: profileData?.sexo, },
-                    { name: "Especialidad", data: (profileData as ISpecialistProfileData).especialidad },
+                    { name: "Especialidad", data: (profileData as ISpecialistProfileData)?.especialidad },
                   ]} />
                 }
               </AccordionDetails>
@@ -754,7 +765,7 @@ const Profile: React.FC = () => {
                 Tabla de casos
               </AccordionSummary>
               <AccordionDetails>
-                <ProfileTabsTable id={profileData?.id} />
+                <ProfileTabsTable id={idOrName} />
               </AccordionDetails>
             </Accordion>
           </Grid>

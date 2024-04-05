@@ -32,6 +32,7 @@ import { searchRecordsFromArray } from "../../../Casos/Casos";
 
 import useUserStore from "../../../../Common/Utils/setUserSession";
 import ProfileTableMenu from "./ProfileTableMenu";
+import NoRecords from "../../../../Common/Components/NoRecords";
 
 type IPropsData = {
   id: number;
@@ -57,36 +58,42 @@ export default function ProfileTablaCasos({ type, id }: IProps) {
   const navigate = useNavigate();
   const { getPatientCases } = useUserStore();
   const { getUser } = useUserStore();
+  const { toggleLoading } = useUserStore();
   const loading = useUserStore(state => state.loading);
   const casos = useUserStore((state) => state.pacientCases);
-  const [data, setData] = useState<any[]>(type === 'all' ? casos : casos.filter((cases: any) => cases.estado === type));
+  const [data, setData] = useState<any[]>(type === 'all' ? casos : casos.filter((cases: any) => cases?.estado === type));
 
   useEffect(() => {
     //Zustand que permite la consulta de casos relacionados con el usuario
     if (casos.length <= 0) {
       getPatientCases(id).then(result => {
-        const casos = result;
+        const casos = result || [];
         if (casos) {
           //Funcciones que divide que los registros segun el estado
-          const casos_abiertos = casos.filter((cases: any) => cases.estado === 'Activo');
-          const casos_cerrados = casos.filter((cases: any) => cases.estado === 'Inactivo');
-          const casos_proceso = casos.filter((cases: any) => cases.estado === 'Proceso');
-          const casos_suspendidos = casos.filter((cases: any) => cases.estado === 'Suspendido');
+          const casos_abiertos = casos.filter((cases: any) => cases?.estado === 'Activo');
+          const casos_cerrados = casos.filter((cases: any) => cases?.estado === 'Inactivo');
+          const casos_proceso = casos.filter((cases: any) => cases?.estado === 'Proceso');
+          const casos_suspendidos = casos.filter((cases: any) => cases?.estado === 'Suspendido');
 
           if (type === 'Activo') {
             setData(casos_abiertos);
+            toggleLoading(false);
             return;
           } else if (type === 'Inactivo') {
             setData(casos_cerrados);
+            toggleLoading(false);
             return;
           }
           else if (type === 'Proceso') {
             setData(casos_proceso);
+            toggleLoading(false);
             return;
           } else if (type === 'Suspendido') {
             setData(casos_suspendidos);
+            toggleLoading(false);
             return;
           }
+          toggleLoading(false);
           setData(casos);
           return;
         }
@@ -100,7 +107,7 @@ export default function ProfileTablaCasos({ type, id }: IProps) {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [rowsTotal, setRowsTotal] = useState(data.length);
+  const [rowsTotal, setRowsTotal] = useState(data?.length);
   const [openInputSearch, setOpenInputSearch] = useState("");
   const [dateStart, setDateStart] = useState<string | null>();
   const [dateEnd, setDateEnd] = useState<string | null>();
@@ -168,7 +175,6 @@ export default function ProfileTablaCasos({ type, id }: IProps) {
 
   function stableSort(array: any[]) {
     const stabilized = array;
-
 
     setRowsTotal(stabilized.length);
     return stabilized;
@@ -467,206 +473,208 @@ export default function ProfileTablaCasos({ type, id }: IProps) {
               padding: "0px 24px",
             }}
           >
-            <Table
-              aria-label="simple table"
-              sx={{ borderCollapse: "separate", borderSpacing: "0 8px", }}
-            >
-              <TableHead
-                sx={{
-                  backgroundColor: "#F4F4F5",
-                }}
+            {visibleRows?.length <= 0 ? <NoRecords /> :
+
+              <Table
+                aria-label="simple table"
+                sx={{ borderCollapse: "separate", borderSpacing: "0 8px", }}
               >
-                <TableRow>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                  >
-                    No. de Caso
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Caso
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    {isDoctor ? 'Pacientes' : 'Doctores'}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Fecha
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Estatus
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Categoria
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      fontFamily: "Arial",
-                      fontWeight: "700",
-                      fontSize: "14px",
-                      color: "#939497",
-                    }}
-                    align="left"
-                  >
-                    Acciones
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {visibleRows.map((data) => (
-                  <TableRow
-                    key={data.id}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                      borderRadius: "8px",
-                      "& > *": { borderBottom: "none" },
-                      ".css-1qanp6x-MuiTableCell-root": {
-                        borderBottom: "none",
-                      },
-                    }}
-                  >
+                <TableHead
+                  sx={{
+                    backgroundColor: "#F4F4F5",
+                  }}
+                >
+                  <TableRow>
                     <TableCell
-                      component="th"
-                      scope="row"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
                     >
-                      <Link component='button' variant="body2" onClick={() => {
-                        navigate(`/cases/${data?.id}`)
-                      }}>{data?.id}</Link>
+                      No. de Caso
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {data?.descripcion}
+                      Caso
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      <Link component='button' variant="body2" onClick={() => {
-                        if (isDoctor) {
-                          navigate(`/pacientes/${data?.pacientes_id}`)
-                        }
-                        return;
-                      }}>{isDoctor ? data?.pacientes_id : data?.especialistas_id}</Link>
+                      {isDoctor ? 'Pacientes' : 'Doctores'}
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {data?.fecha}
+                      Fecha
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      <Badge
-                        bg={badgetStatus[data.estado]?.color}
-                        tipo={badgetStatus[data.estado]?.name}
-                      />
+                      Estatus
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      {data?.categoria}
+                      Categoria
                     </TableCell>
                     <TableCell
-                      align="left"
                       sx={{
                         fontFamily: "Arial",
-                        fontWeight: "400",
+                        fontWeight: "700",
                         fontSize: "14px",
-                        color: "#070708",
-                        padding: "5px 16px",
+                        color: "#939497",
                       }}
+                      align="left"
                     >
-                      <ProfileTableMenu id={data?.id} />
+                      Acciones
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {visibleRows.map((data) => (
+                    <TableRow
+                      key={data?.id}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        borderRadius: "8px",
+                        "& > *": { borderBottom: "none" },
+                        ".css-1qanp6x-MuiTableCell-root": {
+                          borderBottom: "none",
+                        },
+                      }}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        <Link component='button' variant="body2" onClick={() => {
+                          navigate(`/cases/${data?.id}`)
+                        }}>{data?.id}</Link>
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {data?.descripcion}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        <Link component='button' variant="body2" onClick={() => {
+                          if (isDoctor) {
+                            navigate(`/pacientes/${data?.pacientes_id}`)
+                          }
+                          return;
+                        }}>{isDoctor ? data?.pacientes_id : data?.especialistas_id}</Link>
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {data?.fecha}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        <Badge
+                          bg={badgetStatus[data?.estado]?.color}
+                          tipo={badgetStatus[data?.estado]?.name}
+                        />
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        {data?.categoria}
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          fontFamily: "Arial",
+                          fontWeight: "400",
+                          fontSize: "14px",
+                          color: "#070708",
+                          padding: "5px 16px",
+                        }}
+                      >
+                        <ProfileTableMenu id={data?.id} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>}
           </Box>
         </TableContainer>}
       {!loading &&

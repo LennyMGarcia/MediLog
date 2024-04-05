@@ -10,9 +10,16 @@ import { TurnedIn, Visibility } from "@mui/icons-material";
 import axios from "axios";
 import getBackendConnectionString from "../../../Common/Utils/getBackendString";
 import { useNavigate } from "react-router-dom";
+import getHTTPTextError from "../../../Common/snackbars/HttpErrorText";
+import BannerSnackbar from "../../../Common/snackbars/BannerSnackBar";
 
 export default function TableMenu({ id }: any) {
   const navigate = useNavigate();
+
+  const [openBanner, setOpenBanner] = React.useState<boolean>(false);
+  const [statusCode, setStatusCode] = React.useState<string | number>('');
+  const [message, setMessage] = React.useState<string>('');
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,12 +34,24 @@ export default function TableMenu({ id }: any) {
   const destroyMediaFromDB = async () => {
     const success = await axios.delete(getBackendConnectionString(`casos/${id}`)).then(res => {
       console.log(res);
-      if (res.status === 200 || res.status === 201) {
+      if (res?.status === 200 || res?.status === 201) {
+        setStatusCode(res?.status);
+        setMessage(() => {
+          return getHTTPTextError(res?.status);
+        });
         return true;
       }
+      setStatusCode(res?.status);
+      setMessage(() => {
+        return getHTTPTextError(res?.status);
+      });
       return false;
     }).catch(error => {
       console.log(error);
+      setStatusCode(error.response?.status);
+      setMessage(() => {
+        return getHTTPTextError(error.response?.status);
+      });
       return false;
     })
     return success;
@@ -98,6 +117,7 @@ export default function TableMenu({ id }: any) {
           })
         }}
       />
+      <BannerSnackbar status={statusCode} message={message} isOpen={openBanner} onClose={() => setOpenBanner(false)} />
     </>
   );
 }

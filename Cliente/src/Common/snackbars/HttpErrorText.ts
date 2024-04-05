@@ -1,22 +1,25 @@
 
-interface IHTTPTextError{
-    erroNumber:string | number;
+interface IHTTPTextError {
+    erroNumber: string | number;
 }
 
-export default function getHTTPTextError<IHTTPTextError>(erroNumber: string | number):string {
-    switch(String(erroNumber)){
+export default function getHTTPTextError<IHTTPTextError>(erroNumber: string | number): string {
+    switch (String(erroNumber)) {
         case "400":
             return "Campos faltantes";
-        break;
+            break;
+        case "401":
+            return "Accesso Denegado";
+            break;
         case "404":
             return "Registro no existe";
-        break;
+            break;
         case "500":
             return "Conflicto con base de datos o acceso denegado";
-        break;
+            break;
         case "501":
             return "Falta de privilegio o falta de autorizacion";
-        break;
+            break;
         default:
             return "Se produjo un error al procesar la solicitud"
     }

@@ -39,25 +39,15 @@ export const searchRecordsFromArray = (record: any[], search: string, field: str
   record.forEach(element => {
     if (element[`${field}`]?.toLowerCase() === search?.toLowerCase()) {
       payload.push(element);
-      console.log('field')
-      console.log(element)
-
     } else if (element[`${backupfield}`]?.toLowerCase() === search?.toLowerCase()) {
       payload.push(element);
-      console.log('backupfield')
-      console.log(element)
     } else if (element[`${thirdfield}`] === parseInt(search)) {
       payload.push(element);
-      console.log('thirdfield')
-      console.log(element)
     } else if (element[`${fourthfield}`]?.toLowerCase() === search?.toLowerCase()) {
       payload.push(element);
-      console.log('backupfield')
-      console.log(element)
     }
   });
-  console.log('payload')
-  console.log(payload)
+
   return payload;
 }
 
@@ -87,20 +77,20 @@ export default function Casos() {
       }
     ).then(response => {
       console.log(response);
-      if (response.status === 200 || response.status === 201) {
+      if (response?.status === 200 || response?.status === 201) {
         return true;
       }
-      setStatusCode(response.status);
+      setStatusCode(response?.status);
       setMessage(() => {
-        return getHTTPTextError(response.status);
+        return getHTTPTextError(response?.status);
       });
       return false;
     }
     ).catch(error => {
       console.log(error);
-      setStatusCode(error.response.status);
+      setStatusCode(error?.response?.status);
       setMessage(() => {
-        return getHTTPTextError(error.response.status);
+        return getHTTPTextError(error?.response?.status);
       });
       setOpen(true);
       return false;
@@ -149,7 +139,7 @@ export default function Casos() {
     >
       <Grid item container xs={12} justifyContent={"space-between"}>
         <Grid item xs={1}>
-          <Typography variant="h5" fontSize={40} sx={{color:globalTheme.font.primary.main}}>
+          <Typography variant="h5" fontSize={40} sx={{ color: globalTheme.font.primary.main }}>
             Casos
           </Typography>
         </Grid>
@@ -249,8 +239,10 @@ export default function Casos() {
                                       customClass: {
                                         container: profileStyle.sweetAlertContainer,
                                       }
+                                    }).then(onsubmit => {
+                                      window.location.reload();
+                                      return onsubmit;
                                     });
-                                    //  window.location.reload();
                                   } else {
                                     Swal.fire({
                                       title: 'No se aplicaron cambios',
