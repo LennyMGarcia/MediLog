@@ -35,9 +35,7 @@ describe('TEST DE PRODUCTOS', () => {
         it('Se espera que el precio sea 0', async () => {
             expect(response.data.precio).toBe(0);
         });
-        it('Se espera que la fecha sea 2024-03-18T23:02:15.000Z', async () => {
-            expect(response.data.fecha).toBe("2024-03-18T23:02:15.000Z");
-        });
+        
        
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
             try {

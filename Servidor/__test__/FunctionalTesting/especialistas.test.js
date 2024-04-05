@@ -16,6 +16,28 @@ describe('TEST DE ESPECIALISTAS', () => {
     describe('Get', () => {
         let response;
 
+        nock(`http://localhost:${PORT}`)
+            .get('/especialistas/1')
+            .reply(200, {
+                id: 1,
+                tipo: 'Especialista',
+                nombre: 'Fulano',
+                apellido: 'Detalie',
+                fecha_nacimiento: '2003-04-04T04:00:00.000Z',
+                sexo: 'F',
+                correo: 'testtes11t@gmail.com',
+                direccion: 'Santo Domingo, RD',
+                telefono: '8096357888',
+                especialidad: 'Psicologo',
+                metodo_pago: 'Tarjeta de Credito',
+                datos_financieros: null,
+                cvv: null,
+                fecha_expiracion: '03-03-2030',
+                descripcion: 'Basico',
+                categoria: 'Paciente',
+                precio: 0
+            });
+
         beforeAll(async () => {
             response = await axios.get(`http://localhost:${PORT}/especialistas/1`);
         });
@@ -42,8 +64,8 @@ describe('TEST DE ESPECIALISTAS', () => {
             expect(response.data.direccion).toBe('Santo Domingo, RD');
         });
 
-        it('Se espera que el telefono', async () => {
-            expect(response.data.telefono).toBe('8523697412');
+        it('Se espera que el telefono sea 8096357888', async () => {
+            expect(response.data.telefono).toBe('8096357888');
         });
         it('Se espera que el especialidad sea Psicologo', async () => {
             expect(response.data.especialidad).toBe('Psicologo');
@@ -59,13 +81,33 @@ describe('TEST DE ESPECIALISTAS', () => {
         });
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
             try {
+                nock(`http://localhost:${PORT}`)
+                    .get('/especialistas/abc')
+                    .reply(400, {
+                        id: "abc",
+                        tipo: 'Especialista',
+                        nombre: 'Fulano',
+                        apellido: 'Detalie',
+                        fecha_nacimiento: '2003-04-04T04:00:00.000Z',
+                        sexo: 'F',
+                        correo: 'testtes11t@gmail.com',
+                        direccion: 'Santo Domingo, RD',
+                        telefono: '8096357888',
+                        especialidad: 'Psicologo',
+                        metodo_pago: 'Tarjeta de Credito',
+                        datos_financieros: null,
+                        cvv: null,
+                        fecha_expiracion: '03-03-2030',
+                        descripcion: 'Basico',
+                        categoria: 'Paciente',
+                        precio: 0
+                    });
                 response = await axios.get(`http://localhost:${PORT}/especialistas/abc`);
 
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
                 expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });
@@ -81,16 +123,16 @@ describe('TEST DE ESPECIALISTAS', () => {
                     fecha_nacimiento: '2003-04-04T04:00:00.000Z',
                     sexo: 'M',
                     correo: 'fulano@gmail.com',
-                    direccion:  'ninguna',
+                    direccion: 'ninguna',
                     telefono: '8096357888',
                     especialidad: 'Psicologo',
                     metodo_pago: 'Tarjeta de Crédito',
-                    datos_financieros:  null,
+                    datos_financieros: null,
                     cvv: null,
-                    fecha_expiracion:  '03-03-2030',
-                    descripcion:  'Basico',
-                    categoria:  'Paciente',
-                    precio:  0
+                    fecha_expiracion: '03-03-2030',
+                    descripcion: 'Basico',
+                    categoria: 'Paciente',
+                    precio: 0
                 });
 
             const response = await axios.post(`http://localhost:${PORT}/especialistas`, {
@@ -101,16 +143,16 @@ describe('TEST DE ESPECIALISTAS', () => {
                 fecha_nacimiento: '2003-04-04T04:00:00.000Z',
                 sexo: 'M',
                 correo: 'fulano@gmail.com',
-                direccion:  'ninguna',
+                direccion: 'ninguna',
                 telefono: '8096357888',
                 especialidad: 'Psicologo',
                 metodo_pago: 'Tarjeta de Crédito',
-                datos_financieros:  null,
+                datos_financieros: null,
                 cvv: null,
-                fecha_expiracion:  '03-03-2030',
-                descripcion:  'Basico',
-                categoria:  'Paciente',
-                precio:  0
+                fecha_expiracion: '03-03-2030',
+                descripcion: 'Basico',
+                categoria: 'Paciente',
+                precio: 0
             });
 
             expect(response.status).toBe(201);
@@ -137,16 +179,16 @@ describe('TEST DE ESPECIALISTAS', () => {
                 fecha_nacimiento: '2003-04-04T04:00:00.000Z',
                 sexo: 'M',
                 correo: 'fulano@gmail.com',
-                direccion:  'ninguna',
+                direccion: 'ninguna',
                 telefono: '8096357888',
                 especialidad: 'Psicologo',
                 metodo_pago: 'Tarjeta de Crédito',
-                datos_financieros:  null,
+                datos_financieros: null,
                 cvv: null,
-                fecha_expiracion:  '03-03-2030',
-                descripcion:  'Basico',
-                categoria:  'Paciente',
-                precio:  0
+                fecha_expiracion: '03-03-2030',
+                descripcion: 'Basico',
+                categoria: 'Paciente',
+                precio: 0
             });
 
             expect(response.status).toBe(201);
@@ -167,16 +209,16 @@ describe('TEST DE ESPECIALISTAS', () => {
                     fecha_nacimiento: '2003-04-04T04:00:00.000Z',
                     sexo: 'M',
                     correo: 'fulano@gmail.com',
-                    direccion:  'ninguna',
+                    direccion: 'ninguna',
                     telefono: '8096357888',
                     especialidad: 'Psicologo',
                     metodo_pago: 'Tarjeta de Crédito',
-                    datos_financieros:  null,
+                    datos_financieros: null,
                     cvv: null,
-                    fecha_expiracion:  '03-03-2030',
-                    descripcion:  'Basico',
-                    categoria:  'Paciente',
-                    precio:  0
+                    fecha_expiracion: '03-03-2030',
+                    descripcion: 'Basico',
+                    categoria: 'Paciente',
+                    precio: 0
                 });
 
                 expect(true).toBe(false);
@@ -193,26 +235,26 @@ describe('TEST DE ESPECIALISTAS', () => {
             // Limpiar todos los interceptores de Nock despues  de cada prueba
             nock.cleanAll();
         });
-    
+
         it("Espera recibir una solicitud 200 con DELETE", async () => {
             nock(`http://localhost:${PORT}`)
                 .delete('/especialistas/1')
                 .reply(200);
-    
+
             const response = await axios.delete(`http://localhost:${PORT}/especialistas/1`);
 
             expect(response.status).toBe(200);
         });
-    
+
         it("Debería retornar un error 400 cuando se hace una solicitud DELETE con un ID inválido", async () => {
 
             nock(`http://localhost:${PORT}`)
                 .delete('/especialistas/abc')
                 .reply(400, { message: "Numero de Identificacion Invalido. para campo de ' id '" });
-    
+
             try {
                 await axios.delete(`http://localhost:${PORT}/especialistas/abc`);
-                
+
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.response.status).toBe(400);

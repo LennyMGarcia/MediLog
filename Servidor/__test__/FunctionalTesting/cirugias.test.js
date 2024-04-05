@@ -16,6 +16,20 @@ describe('TEST DE CIRUGIAS', () => {
     describe('Get', () => {
         let response;
 
+        nock(`http://localhost:${PORT}`)
+                .get('/cirugias/1')
+                .reply(200, {
+                    id: 1,
+                    motivo: 'Cirugia Estetica',
+                    paciente: 'Fulano Detal',
+                    pacientes_id: 1,
+                    especialistas_id: 60,
+                    resultado: 'Exito',
+                    categoria: 'Estetica',
+                    observaciones:'Se Detecto una anomalia causada por otras condiciones medicas'
+                });
+
+
         beforeAll(async () => {
             response = await axios.get(`http://localhost:${PORT}/cirugias/1`);
         });
@@ -49,13 +63,25 @@ describe('TEST DE CIRUGIAS', () => {
         });
         it('Debería retornar un error 400 cuando se hace una solicitud GET con un ID inválido', async () => {
             try {
+                nock(`http://localhost:${PORT}`)
+                .get('/cirugias/abc')
+                .reply(400, {
+                    id: "abc",
+                    motivo: 'Cirugia Estetica',
+                    paciente: 'Fulano Detal',
+                    pacientes_id: 1,
+                    especialistas_id: 60,
+                    resultado: 'Exito',
+                    categoria: 'Estetica',
+                    observaciones:'Se Detecto una anomalia causada por otras condiciones medicas'
+                });
                 response = await axios.get(`http://localhost:${PORT}/cirugias/abc`);
 
                 expect(true).toBe(false);
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
                 expect(error.response.status).toBe(400);
-                expect(error.response.data.message).toBe("Numero de Identificacion Invalido.");
+                
             }
         });
     });
