@@ -418,6 +418,9 @@ export default function LandingPage() {
                   </Grid>
                   <Button
                     variant="contained"
+                    onClick={() => {
+                      window.location.href = '/register';
+                    }}
                     sx={{
                       height: "35px",
 
@@ -859,7 +862,7 @@ export default function LandingPage() {
           </Typography>
         </Grid> */}
         </Grid>
-      </Grid>
+      </Grid >
       <ModalLogin />
     </>
   );
