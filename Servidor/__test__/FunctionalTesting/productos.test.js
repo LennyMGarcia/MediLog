@@ -45,7 +45,7 @@ describe('TEST DE PRODUCTOS', () => {
             } catch (error) {
                 expect(error.isAxiosError).toBe(true);
                 expect(error.response?.status).toBe(400);
-                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido.");
+                expect(error.response?.data.message).toBe("Numero de Identificacion Invalido. para campo de ' id '");
             }
         });
     });
